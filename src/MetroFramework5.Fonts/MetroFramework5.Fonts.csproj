@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows7.0</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>MetroFramework.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="Resources\Open Sans License.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\Open_Sans.ttf" />
+      <EmbeddedResource Include="Resources\Open_Sans_Bold.ttf" />
+      <EmbeddedResource Include="Resources\Open_Sans_Light.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
+    </ItemGroup>
+
+</Project>

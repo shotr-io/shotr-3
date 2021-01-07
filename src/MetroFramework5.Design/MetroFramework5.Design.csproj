@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>MetroFramework.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Windows.Forms.Design, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+        <HintPath>..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\5.0.0\ref\net5.0\System.Windows.Forms.Design.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EnvDTE" Version="16.7.30508.193" />
+    </ItemGroup>
+
+</Project>
