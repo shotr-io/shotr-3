@@ -1,0 +1,244 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <UseWindowsForms>true</UseWindowsForms>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <FileVersion>1.0.0.0</FileVersion>
+        <SignAssembly>true</SignAssembly>
+        <PublicSign>false</PublicSign>
+        <AssemblyOriginatorKeyFile>MetroFramework.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Update="Components\MetroComponentBase.cs">
+        <DependentUpon>MetroComponentBase.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Components\MetroStyleExtender.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Components\MetroStyleManager.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Components\MetroToolTip.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Components\MetroComponentBase.cs">
+        <DependentUpon>MetroComponentBase.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\Aspects\BorderStyle.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>BorderStyle.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Controls\Aspects\FontStyle.cs">
+        <DependentUpon>FontStyle.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <SubType>Component</SubType>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Controls\Aspects\StyleColor.cs">
+        <DependentUpon>StyleColor.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <SubType>Component</SubType>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Controls\Aspects\Selectable.cs">
+        <DependentUpon>Selectable.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\Aspects\Transparency.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Transparency.tt</DependentUpon>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\Aspects\FontStyle.cs">
+        <DependentUpon>FontStyle.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <SubType>Component</SubType>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Controls\Aspects\StyleColor.cs">
+        <DependentUpon>StyleColor.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <SubType>Component</SubType>
+        <DesignTime>True</DesignTime>
+      </Compile>
+      <Compile Update="Controls\Aspects\Selectable.cs">
+        <DependentUpon>Selectable.tt</DependentUpon>
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\Aspects\Transparency.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Transparency.tt</DependentUpon>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroSelectableLabel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroButton.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroCheckBox.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroComboBox.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroLabel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroLink.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroPanel.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroProgressBar.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroProgressSpinner.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroRadioButton.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroScrollBar.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroTabPage.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroTextBox.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroTile.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroToggle.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroTrackBar.cs">
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroUserControl.cs">
+        <SubType>UserControl</SubType>
+      </Compile>
+      <Compile Update="Controls\MetroControlBase.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MetroControlBase.tt</DependentUpon>
+        <SubType>Component</SubType>
+      </Compile>
+      <Compile Update="Forms\MetroMessageBox.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Forms\MetroForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Forms\MetroTaskWindow.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Properties\Settings.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        <DependentUpon>Settings.settings</DependentUpon>
+      </Compile>
+      <Compile Update="Properties\Settings.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        <DependentUpon>Settings.settings</DependentUpon>
+      </Compile>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Controls\MetroControlBase.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MetroControlBase.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Components\MetroComponentBase.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MetroComponentBase.cs</LastGenOutput>
+      </None>
+      <None Update="Controls\Aspects\BorderStyle.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>BorderStyle.cs</LastGenOutput>
+      </None>
+      <None Update="Controls\Aspects\FontStyle.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>FontStyle.cs</LastGenOutput>
+      </None>
+      <None Update="Controls\Aspects\StyleColor.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>StyleColor.cs</LastGenOutput>
+      </None>
+      <None Update="Controls\Aspects\Selectable.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Selectable.cs</LastGenOutput>
+      </None>
+      <None Update="Controls\Aspects\Transparency.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Transparency.cs</LastGenOutput>
+      </None>
+      <None Update="Controls\MetroControlBase.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MetroControlBase.cs</LastGenOutput>
+      </None>
+      <None Update="XML\themes-2_0.xsd">
+        <SubType>Designer</SubType>
+      </None>
+      <None Update="Properties\Settings.settings">
+        <Generator>SettingsSingleFileGenerator</Generator>
+        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Localization\de\MetroToggle.xml" />
+      <EmbeddedResource Include="Localization\en\MetroToggle.xml" />
+      <EmbeddedResource Include="themes.xml">
+        <SubType>Designer</SubType>
+      </EmbeddedResource>
+      <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        <SubType>Designer</SubType>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+</Project>
