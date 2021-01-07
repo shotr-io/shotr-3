@@ -57,7 +57,7 @@ using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
-    [Designer("MetroFramework.Design.MetroProgressSpinnerDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroProgressSpinnerDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(ProgressBar))]
     public partial class MetroProgressSpinner : MetroControlBase
     {

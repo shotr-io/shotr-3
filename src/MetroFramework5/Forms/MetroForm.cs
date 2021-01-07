@@ -176,10 +176,10 @@ namespace MetroFramework5.Forms
         {
             base.OnHandleCreated(e);
 
-            if (DesignMode) return;
+            /*if (DesignMode) return;
 
             Microsoft.Win32.SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
-            UpdateShadow(ShadowType);
+            UpdateShadow(ShadowType);*/
         }
 
         protected override void OnLoad(EventArgs e)

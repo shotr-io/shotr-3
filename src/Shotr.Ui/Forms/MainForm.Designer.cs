@@ -250,11 +250,10 @@ namespace Shotr.Ui.Forms
             // metroTabPage4
             // 
             this.metroTabPage4.Controls.Add(this.betterListView1);
-            this.metroTabPage4.Enabled = true;
             this.metroTabPage4.HorizontalScrollbarBarColor = true;
             this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage4.Name = "metroTabPage4";
-            this.metroTabPage4.Size = new System.Drawing.Size(192, 71);
+            this.metroTabPage4.Size = new System.Drawing.Size(587, 282);
             this.metroTabPage4.Style = "NewTheme";
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "History";
@@ -279,7 +278,6 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.Controls.Add(this.metroPanel2);
             this.metroTabPage2.Controls.Add(this.metroPanel1);
             this.metroTabPage2.Controls.Add(this.metroPanel4);
-            this.metroTabPage2.Enabled = true;
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
@@ -289,7 +287,6 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.Text = "Settings";
             this.metroTabPage2.Theme = "NewTheme";
             this.metroTabPage2.VerticalScrollbarBarColor = true;
-            this.metroTabPage2.Visible = true;
             // 
             // metroPanel2
             // 
@@ -800,7 +797,6 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.metroLabel8);
             this.Controls.Add(this.metroTabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 61, 20, 21);

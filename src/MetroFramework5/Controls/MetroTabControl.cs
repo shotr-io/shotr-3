@@ -62,7 +62,7 @@ namespace MetroFramework5.Controls
 
     #endregion
 
-    [Designer("MetroFramework.Design.MetroTabControlDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroTabControlDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(TabControl))]
     public partial class MetroTabControl : MetroTabControlBase
     {

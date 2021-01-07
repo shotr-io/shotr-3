@@ -35,7 +35,7 @@ using System.Windows.Forms;
 namespace MetroFramework5.Controls
 {
     [ToolboxBitmap(typeof(CheckBox))]
-    [Designer("MetroFramework5.Design.MetroCheckBoxDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework5.Design.MetroCheckBoxDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public partial class MetroCheckBox : MetroCheckBoxBase
     {
 

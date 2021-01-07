@@ -35,7 +35,7 @@ using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
-    [Designer("MetroFramework.Design.MetroLinkDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroLinkDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(LinkLabel))]
     [DefaultEvent("Click")]
     public partial class MetroLink : MetroButtonBase

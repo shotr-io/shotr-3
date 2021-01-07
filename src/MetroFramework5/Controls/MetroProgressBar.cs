@@ -37,7 +37,7 @@ using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
-    [Designer("MetroFramework.Design.MetroProgressBarDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroProgressBarDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(ProgressBar))]
     public class MetroProgressBar : MetroProgressBarBase
     {

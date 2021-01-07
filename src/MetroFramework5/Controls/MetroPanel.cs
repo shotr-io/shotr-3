@@ -41,7 +41,7 @@ using MetroFramework5.Properties;
 namespace MetroFramework5.Controls
 {
     [ToolboxBitmap(typeof(Panel))]
-    [Designer("MetroFramework.Design.MetroPanelDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroPanelDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public partial class MetroPanel : MetroPanelBase
     {
 

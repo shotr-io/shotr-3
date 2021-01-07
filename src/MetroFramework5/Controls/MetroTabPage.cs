@@ -39,7 +39,7 @@ using MetroFramework5.Properties;
 namespace MetroFramework5.Controls
 {
     [ToolboxItem(false)]
-    [Designer("MetroFramework.Design.MetroTabPageDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroTabPageDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public partial class MetroTabPage : MetroTabPageBase
     {
 

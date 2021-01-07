@@ -37,7 +37,7 @@ using MetroFramework5.Properties;
 namespace MetroFramework5.Controls
 {
     [ToolboxBitmap(typeof (CheckBox))]
-    [Designer("MetroFramework.Design.MetroToggleDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroToggleDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     public partial class MetroToggle : MetroCheckBoxBase
     {
 

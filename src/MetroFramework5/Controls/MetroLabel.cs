@@ -33,7 +33,7 @@ using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
-    [Designer("MetroFramework.Design.MetroLabelDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
+    //[Designer("MetroFramework.Design.MetroLabelDesigner, " + AssemblyRef.MetroFrameworkDesignSN)]
     [ToolboxBitmap(typeof(Label))]
     public partial class MetroLabel : MetroLabelBase
     {
