@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Shotr.Ui.DpiScaling;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms.Settings
 {

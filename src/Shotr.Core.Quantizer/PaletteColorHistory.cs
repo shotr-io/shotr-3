@@ -12,7 +12,7 @@ namespace Shotr.Core.Quantizer
 
         public Color ToNormalizedColor()
         {
-            return (Sum != 0) ? Color.FromArgb((int)(Alpha /= Sum), (int)(Red /= Sum), (int)(Green /= Sum), (int)(Blue /= Sum)) : Color.Empty;
+            return (Sum != 0) ? Color.FromArgb(Alpha /= Sum, Red /= Sum, Green /= Sum, Blue /= Sum) : Color.Empty;
         }
 
         public void AddPixel(Pixel pixel)

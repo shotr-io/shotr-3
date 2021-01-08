@@ -1,4 +1,5 @@
-﻿using Shotr.Ui.DpiScaling;
+﻿using System.ComponentModel;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -7,7 +8,7 @@ namespace Shotr.Ui.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -186,14 +187,14 @@ namespace Shotr.Ui.Forms
 
         #endregion
 
-        private DpiScaling.DpiScaledButton dpiScaledButton1;
-        private DpiScaling.DpiScaledLabel dpiScaledLabel1;
-        private DpiScaling.DpiScaledTextbox dpiScaledTextbox1;
-        private DpiScaling.DpiScaledTextbox dpiScaledTextbox2;
-        private DpiScaling.DpiScaledLabel dpiScaledLabel2;
-        private DpiScaling.DpiScaledLabel dpiScaledLabel3;
-        private DpiScaling.DpiScaledCheckbox dpiScaledCheckbox1;
-        private DpiScaling.DpiScaledLinkLabel dpiScaledLinkLabel1;
-        private DpiScaling.DpiScaledLinkLabel dpiScaledLinkLabel2;
+        private DpiScaledButton dpiScaledButton1;
+        private DpiScaledLabel dpiScaledLabel1;
+        private DpiScaledTextbox dpiScaledTextbox1;
+        private DpiScaledTextbox dpiScaledTextbox2;
+        private DpiScaledLabel dpiScaledLabel2;
+        private DpiScaledLabel dpiScaledLabel3;
+        private DpiScaledCheckbox dpiScaledCheckbox1;
+        private DpiScaledLinkLabel dpiScaledLinkLabel1;
+        private DpiScaledLinkLabel dpiScaledLinkLabel2;
     }
 }

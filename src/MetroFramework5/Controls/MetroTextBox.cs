@@ -54,7 +54,7 @@ namespace MetroFramework5.Controls
             set { baseTextBox.PromptText = value; }
         }
 
-        private Image textBoxIcon = null;
+        private Image textBoxIcon;
         [Browsable(true)]
         [DefaultValue(null)]
         [Category(MetroDefaults.CatAppearance)]
@@ -64,7 +64,7 @@ namespace MetroFramework5.Controls
             set  { textBoxIcon = value; Invalidate(); }
         }
 
-        private bool textBoxIconRight = false;
+        private bool textBoxIconRight;
         [Browsable(true)]
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]

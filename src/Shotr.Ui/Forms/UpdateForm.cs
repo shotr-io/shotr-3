@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
-using Shotr.Ui.DpiScaling;
-using Shotr.Ui.UpdateFramework;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
     public partial class UpdateForm : DpiScaledForm
     {
-        private bool _allowClose = false;
+        private bool _allowClose;
 
         UpdaterJsonClass upd;
         public UpdateForm(UpdaterJsonClass p, bool allowClose = false)
@@ -82,7 +82,7 @@ namespace Shotr.Ui.Forms
             CompilerParameters param = new CompilerParameters();
             param.CompilerOptions = "/t:winexe";
             param.GenerateExecutable = true;
-            param.OutputAssembly = Program.FolderPath + "shotr-updater.exe";
+            param.OutputAssembly = Settings.FolderPath + "shotr-updater.exe";
             param.ReferencedAssemblies.Add("System.dll");
             string source = "using System; public class Program{public static void Main(){";
             source += "new System.Net.WebClient().DownloadFile(\"" + url + "\", @\"" + Application.ExecutablePath + ".tmp\");";
@@ -108,20 +108,20 @@ namespace Shotr.Ui.Forms
             if (!errored)
             {*/
             //download file.
-            WebClient m = new WebClient() { Proxy = null };
+            WebClient m = new WebClient { Proxy = null };
             try
             {
-                m.DownloadFile("https://shotr.io/latest", Program.FolderPath + "Shotr-Installer.exe");
+                m.DownloadFile("https://shotr.io/latest", Core.Utils.Settings.FolderPath + "Shotr-Installer.exe");
                 Process p = new Process();
                 p.StartInfo.Verb = "runas";
-                p.StartInfo.FileName = Program.FolderPath + "Shotr-Installer.exe";
-                p.StartInfo.Arguments = "--run-installer "+((bool)Program.Settings.GetValue("program_subscribe_to_alpha_beta_releases")[0] ? "--install-beta " : "")+"--silent";
+                p.StartInfo.FileName = Core.Utils.Settings.FolderPath + "Shotr-Installer.exe";
+                p.StartInfo.Arguments = "--run-installer "+((bool)Core.Utils.Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases")[0] ? "--install-beta " : "")+"--silent";
                 p.Start();
                 Environment.Exit(0);
             }
             catch(Exception ex)
             {
-                MessageBox.Show("There was an error while updating. Error message: " + ex.ToString());
+                MessageBox.Show("There was an error while updating. Error message: " + ex);
                 _allowClose = true;
                 Close();
             }

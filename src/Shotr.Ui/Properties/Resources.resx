@@ -118,61 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="_1416621381_Cloud_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416621381_Cloud-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1416620685_Paper_Plane_2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416620685_Paper_Plane-2-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1416620399_Cog_2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416620399_Cog-2-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1416620630_Newspaper_2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416620630_Newspaper-2-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1416620721_Search_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416620721_Search-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sounds_1046_et_voila" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sounds-1046-et-voila;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_1416620379_Clock_3_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416620379_Clock-3-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sounds_917_communication_channel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sounds-917-communication-channel;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\a;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="pvwMBA1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pvwMBA1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1416620451_Location_2_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1416620451_Location-2-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="audio_sniffer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\audio_sniffer;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="shotr_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\shotr-icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="shotr_icon1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shotr-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MetroFramework5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MetroFramework5;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Newtonsoft" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Newtonsoft.Json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Shotr.Core" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shotr.Core;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Shotr.Core.Quantizer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shotr.Core.Quantizer;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ShotrUploaderPlugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ShotrUploaderPlugin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

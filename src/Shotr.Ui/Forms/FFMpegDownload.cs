@@ -5,7 +5,8 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Ui.DpiScaling;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
@@ -26,7 +27,7 @@ namespace Shotr.Ui.Forms
             f.Proxy = null;
             f.DownloadFileCompleted += f_DownloadFileCompleted;
             f.DownloadProgressChanged += f_DownloadProgressChanged;
-            f.DownloadFileAsync(new Uri("http://shotr.io/ffmpeg.compr"), Program.FolderPath+ "ffmpeg.compressed");
+            f.DownloadFileAsync(new Uri("http://shotr.io/ffmpeg.compr"), Core.Utils.Settings.FolderPath+ "ffmpeg.compressed");
         }
 
         void f_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -40,10 +41,10 @@ namespace Shotr.Ui.Forms
             {
                 try
                 {
-                    Utils.Utils.Decompress(Program.FolderPath + "ffmpeg.compressed", Program.FolderPath + "ffmpeg.exe");
-                    File.Delete(Program.FolderPath + "ffmpeg.compressed");
+                    Utils.Decompress(Core.Utils.Settings.FolderPath + "ffmpeg.compressed", Core.Utils.Settings.FolderPath + "ffmpeg.exe");
+                    File.Delete(Core.Utils.Settings.FolderPath + "ffmpeg.compressed");
                     //d76946e2b54773afd1c0e202dd14e73e
-                    if (Utils.Utils.MD5File(Program.FolderPath + "ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
+                    if (Utils.MD5File(Core.Utils.Settings.FolderPath + "ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
                     {
                         throw new Exception();
                     }
@@ -57,7 +58,7 @@ namespace Shotr.Ui.Forms
                 {
                     //download was corrupted.
                     Process.Start("http://shotr.io/ffmpeg.exe");
-                    Process.Start(Program.FolderPath);
+                    Process.Start(Core.Utils.Settings.FolderPath);
                     MessageBox.Show("The download was corrupted. The program is now opening a link in your web browser and a folder on your computer. Please place the downloaded file in the folder that pops up, then press OK.");
                     Invoke((MethodInvoker)(() =>
                     {

@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using MetroFramework5.Properties;
+using MetroFramework5;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -68,11 +68,11 @@ using MetroFramework5.Properties;
 
 [assembly:AllowPartiallyTrustedCallers]
 
-[assembly: InternalsVisibleTo(MetroFramework5.AssemblyRef.MetroFrameworkDesignIVT)]
-[assembly: InternalsVisibleTo(MetroFramework5.AssemblyRef.MetroFrameworkFontsIVT)]
+[assembly: InternalsVisibleTo(AssemblyRef.MetroFrameworkDesignIVT)]
+[assembly: InternalsVisibleTo(AssemblyRef.MetroFrameworkFontsIVT)]
 
 #if DEBUG
-[assembly: InternalsVisibleTo("XmlHelper, PublicKey=" + MetroFramework5.AssemblyRef.MetroFrameworkKeyFull)]
+[assembly: InternalsVisibleTo("XmlHelper, PublicKey=" + AssemblyRef.MetroFrameworkKeyFull)]
 
 internal static class MetroFrameworkAssembly
 {

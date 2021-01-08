@@ -455,7 +455,7 @@ namespace MetroFramework5.Native
         {
             False = 0,
             True
-        };
+        }
 
         #endregion
 

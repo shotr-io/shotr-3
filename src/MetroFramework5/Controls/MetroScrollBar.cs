@@ -31,11 +31,9 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Reflection.Metadata;
 using System.Security;
 using System.Windows.Forms;
 using MetroFramework5.Native;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -140,7 +138,7 @@ namespace MetroFramework5.Controls
         private bool isHovered;
         private bool isPressed;
 
-        private bool useBarColor = false;
+        private bool useBarColor;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseBarColor
@@ -163,7 +161,7 @@ namespace MetroFramework5.Controls
             }
         }
 
-        private bool highlightOnWheel = false;
+        private bool highlightOnWheel;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool HighlightOnWheel
@@ -188,7 +186,7 @@ namespace MetroFramework5.Controls
             }
         }
 
-        private int minimum = 0;
+        private int minimum;
         [DefaultValue(0)]
         public int Minimum
         {
@@ -301,9 +299,9 @@ namespace MetroFramework5.Controls
             }
         }
 
-        private bool dontUpdateColor = false;
+        private bool dontUpdateColor;
 
-        private int curValue = 0;
+        private int curValue;
         [DefaultValue(0)]
         [Browsable(false)]
         public int Value
@@ -332,7 +330,7 @@ namespace MetroFramework5.Controls
                     {
                         autoHoverTimer = new Timer();
                         autoHoverTimer.Interval = 1000;
-                        autoHoverTimer.Tick += new EventHandler(autoHoverTimer_Tick);
+                        autoHoverTimer.Tick += autoHoverTimer_Tick;
                         autoHoverTimer.Start();
                     }
                     else
@@ -357,7 +355,7 @@ namespace MetroFramework5.Controls
             autoHoverTimer.Stop();
         }
 
-        private Timer autoHoverTimer = null;
+        private Timer autoHoverTimer;
 
         #endregion
 

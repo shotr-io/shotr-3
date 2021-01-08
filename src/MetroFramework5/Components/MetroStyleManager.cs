@@ -36,7 +36,6 @@ using MetroFramework5.Controls;
 using MetroFramework5.Drawing;
 using MetroFramework5.Forms;
 using MetroFramework5.Interfaces;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Components
 {

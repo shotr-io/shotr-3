@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Drawing;
 using System.Windows.Forms;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.Plugin;
 using Shotr.Ui.Custom;
-using Shotr.Ui.DpiScaling;
-using Shotr.Ui.Plugin;
 
 namespace Shotr.Ui.Forms.Settings
 {
     public partial class CustomUploader : DpiScaledForm
     {
-        private bool cuploader = false;
+        private bool cuploader;
         private NameValueCollection nvc = new NameValueCollection();
         public CustomUploader()
         {
@@ -73,7 +72,7 @@ namespace Shotr.Ui.Forms.Settings
         {
             metroComboBox1.Text = "POST";
             //load all custom uploaders.
-            object[] pl = Program.Settings.GetValue("program_custom_uploaders");
+            object[] pl = Core.Utils.Settings.Instance.GetValue("program_custom_uploaders");
             if (pl != null)
             {
                 foreach (CustomUploaderInstance u in ((List<CustomUploaderInstance>)pl[0]))
@@ -126,19 +125,19 @@ namespace Shotr.Ui.Forms.Settings
                 PluginCore.AddImageUploaderItem(m.Uploader);
                 //add to settings instance to save for later.
                 //"program_custom_uploaders"
-                object[] pl = Program.Settings.GetValue("program_custom_uploaders");
+                object[] pl = Core.Utils.Settings.Instance.GetValue("program_custom_uploaders");
                 if (pl != null)
                 {
                     ((List<CustomUploaderInstance>)pl[0]).Add(m);
-                    Program.Settings.ChangeKey("program_custom_uploaders", new object[] { ((List<CustomUploaderInstance>)pl[0]) });
+                    Core.Utils.Settings.Instance.ChangeKey("program_custom_uploaders", new object[] { ((List<CustomUploaderInstance>)pl[0]) });
                 }
                 else if (pl == null)
                 {
-                    Program.Settings.ChangeKey("program_custom_uploaders", new object[] { new List<CustomUploaderInstance>() { m } });
+                    Core.Utils.Settings.Instance.ChangeKey("program_custom_uploaders", new object[] { new List<CustomUploaderInstance> { m } });
                 }
                 ClearAllShits();
                 //add to lv1.
-                var l = new ListViewItem() { Text = m.Title };
+                var l = new ListViewItem { Text = m.Title };
                 betterListView1.Items.Add(l);
             }
             else
@@ -170,13 +169,13 @@ namespace Shotr.Ui.Forms.Settings
                         CustomUploaderInstance w = new CustomUploaderInstance(metroTextBox1.Text, metroTextBox5.Text, metroComboBox1.Text, metroTextBox4.Text, metroToggle1.Checked, x, cuploader, curl);
                         //remove from plugin core
                         PluginCore.RemoveImageUploaderItem(old.Uploader);
-                        object[] pl = Program.Settings.GetValue("program_custom_uploaders");
+                        object[] pl = Core.Utils.Settings.Instance.GetValue("program_custom_uploaders");
                         if (pl != null)
                         {
                             ((List<CustomUploaderInstance>)pl[0]).Remove(old);
                             ((List<CustomUploaderInstance>)pl[0]).Add(w);
-                            Program.Settings.ChangeKey("program_custom_uploaders", new object[] { ((List<CustomUploaderInstance>)pl[0]) });
-                            Program.Settings.SaveSettings();
+                            Core.Utils.Settings.Instance.ChangeKey("program_custom_uploaders", new object[] { ((List<CustomUploaderInstance>)pl[0]) });
+                            Core.Utils.Settings.Instance.SaveSettings();
                         }
                         PluginCore.AddImageUploaderItem(w.Uploader);
                         //get ready to add.
@@ -208,7 +207,7 @@ namespace Shotr.Ui.Forms.Settings
 
         private CustomUploaderInstance GetCustomUploaderInstance(string name)
         {
-            object[] pl = Program.Settings.GetValue("program_custom_uploaders");
+            object[] pl = Core.Utils.Settings.Instance.GetValue("program_custom_uploaders");
             if (pl != null)
             {
                 List<CustomUploaderInstance> m = ((List<CustomUploaderInstance>)pl[0]);
@@ -249,7 +248,7 @@ namespace Shotr.Ui.Forms.Settings
                     betterListView2.Items.Clear();
                     for (int i = 0; i < p.UploadValues.Count; i++)
                     {
-                        var l = new ListViewItem() { Text = p.UploadValues.Keys[i] };
+                        var l = new ListViewItem { Text = p.UploadValues.Keys[i] };
                         l.SubItems.Add(p.UploadValues[i]);
                         betterListView2.Items.Add(l);
                     }
@@ -272,11 +271,11 @@ namespace Shotr.Ui.Forms.Settings
                         CustomUploaderInstance old = GetCustomUploaderInstance(m.Text);
                         //remove from plugin core
                         PluginCore.RemoveImageUploaderItem(old.Uploader);
-                        object[] pl = Program.Settings.GetValue("program_custom_uploaders");
+                        object[] pl = Core.Utils.Settings.Instance.GetValue("program_custom_uploaders");
                         if (pl != null)
                         {
                             ((List<CustomUploaderInstance>)pl[0]).Remove(old);
-                            Program.Settings.ChangeKey("program_custom_uploaders", new object[] { ((List<CustomUploaderInstance>)pl[0]) });                           
+                            Core.Utils.Settings.Instance.ChangeKey("program_custom_uploaders", new object[] { ((List<CustomUploaderInstance>)pl[0]) });                           
                         }
                         betterListView1.Items.Remove(m);
                         break;

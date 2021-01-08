@@ -1,4 +1,6 @@
-﻿using Shotr.Ui.DpiScaling;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms.Settings
 {
@@ -7,7 +9,7 @@ namespace Shotr.Ui.Forms.Settings
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -469,13 +471,13 @@ namespace Shotr.Ui.Forms.Settings
         private DpiScaledCombobox metroComboBox1;
         private DpiScaledLabel metroLabel3;
         private DpiScaledLabel metroLabel1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem removeToolStripMenuItem;
+        private ContextMenuStrip contextMenuStrip2;
+        private ToolStripMenuItem toolStripMenuItem2;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem testToolStripMenuItem;
         private DpiScaledToggle metroToggle1;
         private DpiScaledLabel metroLabel6;
         private DpiScaledPanel metroPanel2;

@@ -30,7 +30,6 @@ Portions of this software are (c) 2011 Sven Walter, http://github.com/viperneo
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Net.Mime;
 using System.Windows.Forms;
 using MetroFramework5.Native;
 

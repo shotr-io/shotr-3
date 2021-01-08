@@ -1,4 +1,5 @@
-﻿using Shotr.Ui.DpiScaling;
+﻿using System.ComponentModel;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms.Settings
 {
@@ -7,7 +8,7 @@ namespace Shotr.Ui.Forms.Settings
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.

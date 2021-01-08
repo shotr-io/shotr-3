@@ -1,4 +1,7 @@
-﻿using Shotr.Ui.DpiScaling;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using MetroFramework5.Components;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -7,7 +10,7 @@ namespace Shotr.Ui.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -49,40 +52,42 @@ namespace Shotr.Ui.Forms
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroTextBox1 = new Shotr.Ui.DpiScaling.DpiScaledTextbox();
-            this.metroTabControl1 = new Shotr.Ui.DpiScaling.DpiScaledTabControl();
-            this.metroTabPage4 = new Shotr.Ui.DpiScaling.DpiScaledTabPage();
-            this.betterListView1 = new Shotr.Ui.DpiScaling.DpiScaledListbox();
-            this.metroTabPage2 = new Shotr.Ui.DpiScaling.DpiScaledTabPage();
-            this.metroPanel2 = new Shotr.Ui.DpiScaling.DpiScaledPanel();
-            this.hotkeyButton6 = new Shotr.Ui.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel7 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.hotkeyButton5 = new Shotr.Ui.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel15 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.hotkeyButton4 = new Shotr.Ui.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel14 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.hotkeyButton3 = new Shotr.Ui.DpiScaling.DpiScaledHotkeyButton();
-            this.hotkeyButton2 = new Shotr.Ui.DpiScaling.DpiScaledHotkeyButton();
-            this.hotkeyButton1 = new Shotr.Ui.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel1 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroLabel11 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroToggle3 = new Shotr.Ui.DpiScaling.DpiScaledToggle();
-            this.metroLabel9 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroLabel2 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroComboBox1 = new Shotr.Ui.DpiScaling.DpiScaledCombobox();
-            this.metroLabel3 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroLabel4 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroPanel1 = new Shotr.Ui.DpiScaling.DpiScaledPanel();
-            this.metroButton5 = new Shotr.Ui.DpiScaling.DpiScaledButton();
-            this.metroButton1 = new Shotr.Ui.DpiScaling.DpiScaledButton();
-            this.metroLabel5 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroButton2 = new Shotr.Ui.DpiScaling.DpiScaledButton();
-            this.metroPanel4 = new Shotr.Ui.DpiScaling.DpiScaledPanel();
-            this.metroButton6 = new Shotr.Ui.DpiScaling.DpiScaledButton();
-            this.metroButton4 = new Shotr.Ui.DpiScaling.DpiScaledButton();
-            this.uploadCountLabel = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.metroLabel10 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
-            this.emailLabel = new Shotr.Ui.DpiScaling.DpiScaledLabel();
+            this.metroTextBox1 = new Shotr.Core.DpiScaling.DpiScaledTextbox();
+            this.metroTabControl1 = new Shotr.Core.DpiScaling.DpiScaledTabControl();
+            this.metroTabPage4 = new Shotr.Core.DpiScaling.DpiScaledTabPage();
+            this.betterListView1 = new Shotr.Core.DpiScaling.DpiScaledListbox();
+            this.betterListViewColumnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.betterListViewColumnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.metroTabPage2 = new Shotr.Core.DpiScaling.DpiScaledTabPage();
+            this.metroPanel2 = new Shotr.Core.DpiScaling.DpiScaledPanel();
+            this.hotkeyButton6 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
+            this.metroLabel7 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.hotkeyButton5 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
+            this.metroLabel15 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.hotkeyButton4 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
+            this.metroLabel14 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.hotkeyButton3 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
+            this.hotkeyButton2 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
+            this.hotkeyButton1 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
+            this.metroLabel1 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroToggle3 = new Shotr.Core.DpiScaling.DpiScaledToggle();
+            this.metroLabel11 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroLabel9 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroLabel2 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroComboBox1 = new Shotr.Core.DpiScaling.DpiScaledCombobox();
+            this.metroLabel3 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroLabel4 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroPanel1 = new Shotr.Core.DpiScaling.DpiScaledPanel();
+            this.metroButton5 = new Shotr.Core.DpiScaling.DpiScaledButton();
+            this.metroButton1 = new Shotr.Core.DpiScaling.DpiScaledButton();
+            this.metroLabel5 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroButton2 = new Shotr.Core.DpiScaling.DpiScaledButton();
+            this.metroPanel4 = new Shotr.Core.DpiScaling.DpiScaledPanel();
+            this.metroButton6 = new Shotr.Core.DpiScaling.DpiScaledButton();
+            this.metroButton4 = new Shotr.Core.DpiScaling.DpiScaledButton();
+            this.uploadCountLabel = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroLabel10 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.emailLabel = new Shotr.Core.DpiScaling.DpiScaledLabel();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -91,7 +96,7 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroLabel8 = new Shotr.Ui.DpiScaling.DpiScaledLabel();
+            this.metroLabel8 = new Shotr.Core.DpiScaling.DpiScaledLabel();
             this.metroStyleExtender1 = new MetroFramework5.Components.MetroStyleExtender(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
@@ -259,19 +264,35 @@ namespace Shotr.Ui.Forms
             this.metroTabPage4.Text = "History";
             this.metroTabPage4.Theme = "NewTheme";
             this.metroTabPage4.VerticalScrollbarBarColor = true;
-            this.metroTabPage4.Visible = false;
             // 
             // betterListView1
             // 
             this.betterListView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(19)))), ((int)(((byte)(48)))));
             this.betterListView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.betterListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.betterListViewColumnHeader1,
+            this.betterListViewColumnHeader2});
             this.betterListView1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(231)))), ((int)(((byte)(255)))));
+            this.betterListView1.FullRowSelect = true;
             this.betterListView1.HideSelection = false;
             this.betterListView1.Location = new System.Drawing.Point(6, 6);
             this.betterListView1.Name = "betterListView1";
             this.betterListView1.Size = new System.Drawing.Size(575, 253);
             this.betterListView1.TabIndex = 2;
             this.betterListView1.UseCompatibleStateImageBehavior = false;
+            this.betterListView1.View = System.Windows.Forms.View.Details;
+            // 
+            // betterListViewColumnHeader1
+            // 
+            this.betterListViewColumnHeader1.Name = "betterListViewColumnHeader1";
+            this.betterListViewColumnHeader1.Text = "Image URL";
+            this.betterListViewColumnHeader1.Width = 260;
+            // 
+            // betterListViewColumnHeader2
+            // 
+            this.betterListViewColumnHeader2.Name = "betterListViewColumnHeader2";
+            this.betterListViewColumnHeader2.Text = "Time Uploaded";
+            this.betterListViewColumnHeader2.Width = 260;
             // 
             // metroTabPage2
             // 
@@ -281,7 +302,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(587, 282);
+            this.metroTabPage2.Size = new System.Drawing.Size(192, 71);
             this.metroTabPage2.Style = "NewTheme";
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";
@@ -301,8 +322,8 @@ namespace Shotr.Ui.Forms
             this.metroPanel2.Controls.Add(this.hotkeyButton2);
             this.metroPanel2.Controls.Add(this.hotkeyButton1);
             this.metroPanel2.Controls.Add(this.metroLabel1);
-            this.metroPanel2.Controls.Add(this.metroLabel11);
             this.metroPanel2.Controls.Add(this.metroToggle3);
+            this.metroPanel2.Controls.Add(this.metroLabel11);
             this.metroPanel2.Controls.Add(this.metroLabel9);
             this.metroPanel2.Controls.Add(this.metroLabel2);
             this.metroPanel2.Controls.Add(this.metroComboBox1);
@@ -449,6 +470,20 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.Theme = "NewTheme";
             this.metroLabel1.UseCompatibleTextRendering = true;
             // 
+            // metroToggle3
+            // 
+            this.metroToggle3.AutoSize = true;
+            this.metroToggle3.Location = new System.Drawing.Point(183, 250);
+            this.metroToggle3.Name = "metroToggle3";
+            this.metroToggle3.Size = new System.Drawing.Size(80, 19);
+            this.metroToggle3.Style = "NewTheme";
+            this.metroToggle3.TabIndex = 18;
+            this.metroToggle3.Text = "Off";
+            this.metroToggle3.Theme = "NewTheme";
+            this.metroToggle3.UseVisualStyleBackColor = false;
+            this.metroToggle3.Visible = false;
+            this.metroToggle3.CheckedChanged += new System.EventHandler(this.metroToggle3_CheckedChanged);
+            // 
             // metroLabel11
             // 
             this.metroLabel11.AutoSize = true;
@@ -463,20 +498,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel11.Theme = "NewTheme";
             this.metroLabel11.UseCompatibleTextRendering = true;
             this.metroLabel11.Visible = false;
-            // 
-            // metroToggle3
-            // 
-            this.metroToggle3.AutoSize = true;
-            this.metroToggle3.Location = new System.Drawing.Point(183, 250);
-            this.metroToggle3.Name = "metroToggle3";
-            this.metroToggle3.Size = new System.Drawing.Size(80, 19);
-            this.metroToggle3.Style = "NewTheme";
-            this.metroToggle3.TabIndex = 18;
-            this.metroToggle3.Text = "Off";
-            this.metroToggle3.Theme = "NewTheme";
-            this.metroToggle3.UseVisualStyleBackColor = false;
-            this.metroToggle3.Visible = false;
-            this.metroToggle3.CheckedChanged += new System.EventHandler(this.metroToggle3_CheckedChanged);
             // 
             // metroLabel9
             // 
@@ -797,6 +818,7 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.metroLabel8);
             this.Controls.Add(this.metroTabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 61, 20, 21);
@@ -826,33 +848,35 @@ namespace Shotr.Ui.Forms
 
         #endregion
 
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private NotifyIcon notifyIcon1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem exitToolStripMenuItem;
         private DpiScaledTextbox metroTextBox1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-        private System.Windows.Forms.ToolStripMenuItem clearHistoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem historyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem copyURLToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private MetroFramework5.Components.MetroStyleExtender metroStyleExtender1;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem colorPickerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem regionCaptureToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fullscreenCaptureToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem recordScreenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripMenuItem uploadClipboardToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private ContextMenuStrip contextMenuStrip2;
+        private ToolStripMenuItem clearHistoryToolStripMenuItem;
+        private ToolStripMenuItem historyToolStripMenuItem;
+        private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem copyURLToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator3;
+        private MetroStyleExtender metroStyleExtender1;
+        private ToolStripMenuItem deleteToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem2;
+        private ToolStripMenuItem saveImageToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator4;
+        private ColumnHeader betterListViewColumnHeader1;
+        private ColumnHeader betterListViewColumnHeader2;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem colorPickerToolStripMenuItem;
+        private ToolStripMenuItem regionCaptureToolStripMenuItem;
+        private ToolStripMenuItem fullscreenCaptureToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripMenuItem recordScreenToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator6;
+        private ToolStripMenuItem uploadClipboardToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator7;
         private DpiScaledTabControl metroTabControl1;
         private DpiScaledTabPage metroTabPage2;
         private DpiScaledLabel metroLabel4;

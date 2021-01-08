@@ -30,14 +30,12 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                         GENERATED FILE - DO NOT EDIT
 
  **************************************************************************************/
- 
- 
- 
+
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.ComponentModel;
 using System.Windows.Forms;
 using MetroFramework5.Components;
 using MetroFramework5.Drawing;

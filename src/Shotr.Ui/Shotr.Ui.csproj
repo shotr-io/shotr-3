@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
-    <ProjectReference Include="..\Shotr.Core.Quantizer\Shotr.Core.Quantizer.csproj" />
     <ProjectReference Include="..\Shotr.Core\Shotr.Core.csproj" />
     <ProjectReference Include="..\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj" />
   </ItemGroup>

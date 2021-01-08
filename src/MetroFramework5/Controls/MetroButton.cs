@@ -26,9 +26,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Net.Mime;
 using System.Windows.Forms;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -40,7 +38,7 @@ namespace MetroFramework5.Controls
 
         #region Properties
 
-        private bool highlight = false;
+        private bool highlight;
         [DefaultValue(false)]
         public bool Highlight
         {

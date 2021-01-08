@@ -1,5 +1,5 @@
 ﻿using System;
-using Shotr.Ui.DpiScaling;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -15,7 +15,7 @@ namespace Shotr.Ui.Forms
             //check for checkbox.
             if (metroCheckBox1.Checked)
             {
-                Program.Settings.ChangeKey("settings.show_record_warning", new object[] { false });
+                Core.Utils.Settings.Instance.ChangeKey("settings.show_record_warning", new object[] { false });
             }
             Close();
         }

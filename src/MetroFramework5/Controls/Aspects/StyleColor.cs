@@ -30,11 +30,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                         GENERATED FILE - DO NOT EDIT
 
  **************************************************************************************/
- 
- 
- 
 
-using System;
+
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -61,7 +58,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -94,7 +91,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -127,7 +124,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -160,7 +157,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -193,7 +190,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -226,7 +223,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -259,7 +256,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -292,7 +289,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors
@@ -325,7 +322,7 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-		private bool _useStyleColors = false;
+		private bool _useStyleColors;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseStyleColors

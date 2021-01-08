@@ -52,8 +52,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -98,7 +98,7 @@ namespace MetroFramework5.Controls
             }
         }
 
-        private int minimum = 0;
+        private int minimum;
 		/// <summary>
 		/// Gets or sets the minimum progress value.
 		/// </summary>
@@ -232,7 +232,7 @@ namespace MetroFramework5.Controls
             {
                 int padding = (int)Math.Ceiling((float)Width / 10);
 
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
                 // Draw spinner pie
                 if (progress != -1)
@@ -242,7 +242,7 @@ namespace MetroFramework5.Controls
 				    // angle +/- progress is the front end of the line
 				
                     float sweepAngle;
-                    float progFrac = (float)(progress - minimum) / (float)(maximum - minimum);
+                    float progFrac = (progress - minimum) / (float)(maximum - minimum);
 
                     if (ensureVisible)
                         sweepAngle = 30 + 300f * progFrac;

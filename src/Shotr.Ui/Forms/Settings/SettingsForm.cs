@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using Shotr.Ui.Capture;
-using Shotr.Ui.DpiScaling;
-using Shotr.Ui.Utils;
+using Shotr.Core.Capture;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms.Settings
@@ -43,7 +43,7 @@ namespace Shotr.Ui.Forms.Settings
         {
             ScreencastOptions k = new ScreencastOptions();
             FFmpegHelper fmp = new FFmpegHelper(k);
-            fmp.Options.FFmpeg.CLIPath = Path.Combine(Program.FolderPath, "ffmpeg.exe");
+            fmp.Options.FFmpeg.CLIPath = Path.Combine(Core.Utils.Settings.FolderPath, "ffmpeg.exe");
             DirectShowDevices p = fmp.GetDirectShowDevices();
             if (p.AudioDevices.Count < 0)
             {
@@ -59,15 +59,15 @@ namespace Shotr.Ui.Forms.Settings
                     audioDeviceCombo.Items.Add(p.AudioDevices[i]);
                 }
                 //check settings first.
-                if ((string)Program.Settings.GetValue("settings.screen_recording")[1].ToString() == "")
+                if ((string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[1].ToString() == "")
                 {
                     audioDeviceCombo.Text = p.AudioDevices[0];
                 }
                 else
                 {
-                    if (p.AudioDevices.Contains((string)Program.Settings.GetValue("settings.screen_recording")[4].ToString()))
+                    if (p.AudioDevices.Contains((string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[4].ToString()))
                     {
-                        audioDeviceCombo.Text = (string)Program.Settings.GetValue("settings.screen_recording")[4].ToString();
+                        audioDeviceCombo.Text = (string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[4].ToString();
                     }
                     else
                     {
@@ -135,12 +135,12 @@ namespace Shotr.Ui.Forms.Settings
 
         private void SaveOption(string name, object[] value)
         {
-            Program.Settings.ChangeKey(name, value);
+            Core.Utils.Settings.Instance.ChangeKey(name, value);
         }
 
         private object[] GetOptions(string name)
         {
-            return Program.Settings.GetValue(name);
+            return Core.Utils.Settings.Instance.GetValue(name);
         }
 
         private void saveToDirectoryToggle_CheckedChanged(object sender, EventArgs e)
@@ -172,7 +172,7 @@ namespace Shotr.Ui.Forms.Settings
         private void startupToggle_CheckedChanged(object sender, EventArgs e)
         {
             SaveOption("start_with_windows", new object[] { startupToggle.Checked });
-            Utils.Utils.AddToStartup(startupToggle.Checked);
+            Utils.AddToStartup(startupToggle.Checked);
         }
 
         private void minimizedToggle_CheckedChanged(object sender, EventArgs e)
@@ -216,7 +216,7 @@ namespace Shotr.Ui.Forms.Settings
             FileExtensions i = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
             CompressionLevel h = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
 
-            Program.Settings.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
+            Core.Utils.Settings.Instance.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
         }
 
         private void imageQualityCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -224,7 +224,7 @@ namespace Shotr.Ui.Forms.Settings
             FileExtensions i = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
             CompressionLevel h = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
 
-            Program.Settings.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
+            Core.Utils.Settings.Instance.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
         }
 
         private void imageCompressionToggle_CheckedChanged(object sender, EventArgs e)
@@ -232,7 +232,7 @@ namespace Shotr.Ui.Forms.Settings
             FileExtensions i = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
             CompressionLevel h = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
 
-            Program.Settings.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
+            Core.Utils.Settings.Instance.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
         }
 
         private void stitchFullscreenToggle_CheckedChanged(object sender, EventArgs e)

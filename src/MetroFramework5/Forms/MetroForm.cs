@@ -41,11 +41,12 @@ using MetroFramework5.Controls;
 using MetroFramework5.Drawing;
 using MetroFramework5.Interfaces;
 using MetroFramework5.Native;
+using Microsoft.Win32;
 
 namespace MetroFramework5.Forms
 {
 
-    public partial class MetroForm : MetroFormBase, IMetroForm
+    public class MetroForm : MetroFormBase, IMetroForm
     {
 
         #region Properties
@@ -67,7 +68,7 @@ namespace MetroFramework5.Forms
             set { isMovable = value; }
         }
 
-        private bool _showicon = false;
+        private bool _showicon;
         [Category(MetroDefaults.CatAppearance)]
         public bool ShowFormIcon
         {
@@ -211,7 +212,7 @@ namespace MetroFramework5.Forms
             }
         }
 
-        void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
+        void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
             /*
              *     ConsoleConnect = 1,
@@ -336,7 +337,7 @@ namespace MetroFramework5.Forms
                 using (SolidBrush b = new SolidBrush(GetThemeColor("Button.ForeColor.Disabled")) )
                 {
                     Size resizeHandleSize = new Size(2, 2);
-                    e.Graphics.FillRectangles(b, new Rectangle[] {
+                    e.Graphics.FillRectangles(b, new[] {
                         new Rectangle(new Point(ClientRectangle.Width-14,ClientRectangle.Height-6), resizeHandleSize),
                         new Rectangle(new Point(ClientRectangle.Width-10,ClientRectangle.Height-6), resizeHandleSize),
                         new Rectangle(new Point(ClientRectangle.Width-10,ClientRectangle.Height-10), resizeHandleSize),
