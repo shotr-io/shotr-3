@@ -53,7 +53,7 @@ namespace Shotr.Ui.Forms
                             loadedplugins.Add(coreplug);
                             Form test = coreplug.GetForm(new ShotrCore());
                             MetroTabPage lel = new MetroTabPage();
-                            lel.Theme = "Dark";
+                            lel.Theme = "NewTheme";
                             //if (test.Size.Width > this.metroTabPage2.Size.Width || test.Size.Height > this.metroTabPage2.Size.Height) continue;
                             while (test.Controls.Count > 0)
                             {
@@ -131,6 +131,20 @@ namespace Shotr.Ui.Forms
                         hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
                         break;
                     }
+                }
+                else if (e.Data == "--launch")
+                {
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        WindowState = FormWindowState.Minimized;
+                        Show();
+                        WindowState = FormWindowState.Normal;
+                        ShowInTaskbar = true;
+                        // Move to top.
+                        Focus();
+                        Activate();
+                    }));
+                    break;
                 }
             }
         }

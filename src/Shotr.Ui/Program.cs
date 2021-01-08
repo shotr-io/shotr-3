@@ -26,8 +26,7 @@ namespace Shotr.Ui
     static class Program
     {
         public static MainForm form;
-        public static Mutex mut;
-        
+
         private static bool CertCheck(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
         {
             return true;
@@ -37,14 +36,7 @@ namespace Shotr.Ui
         /// </summary>
         public static void Start(string[] args)
         {
-            //mutex.
-            bool mutex;
-            mut = new Mutex(true, "ShotrMutexHotKeyHook", out mutex);
-            if (!mutex)
-            {
-                MessageBox.Show("Shotr is already running! Please close Shotr before you attempt to run another instance.", "Duplicate instance.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            
             PluginCore.Initialize();
             try
             {
@@ -170,8 +162,8 @@ namespace Shotr.Ui
                 }
                 
                 Application.Run(form);
-                GC.KeepAlive(mut);
-                mut.ReleaseMutex();
+                GC.KeepAlive(PreRun.mut);
+                PreRun.mut.ReleaseMutex();
             }
             catch(Exception ex) 
             { 

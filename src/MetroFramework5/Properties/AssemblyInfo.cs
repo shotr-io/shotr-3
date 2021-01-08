@@ -74,6 +74,8 @@ using MetroFramework5;
 #if DEBUG
 [assembly: InternalsVisibleTo("XmlHelper, PublicKey=" + AssemblyRef.MetroFrameworkKeyFull)]
 
+#endif
+
 internal static class MetroFrameworkAssembly
 {
     internal const string Title = "MetroFramework.dll";
@@ -83,13 +85,8 @@ internal static class MetroFrameworkAssembly
     internal const string Company = "Jens Thiel";
     internal const string Product = "MetroFramework";
 }
-
 namespace MetroFramework5
 {
-#endif
-
-    
-
     internal static class AssemblyRef
     {
 

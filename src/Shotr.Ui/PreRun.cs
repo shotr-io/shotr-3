@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core;
 using Shotr.Core.Pipes;
@@ -10,6 +11,8 @@ namespace Shotr.Ui
 {
     static class PreRun
     {
+        public static Mutex mut;
+
         [DllImport("kernel32.dll")]
         static extern bool AttachConsole(int dwProcessId);
 
@@ -45,6 +48,15 @@ namespace Shotr.Ui
                         Environment.Exit(0);
                         break;
                 }
+            }
+
+            //mutex.
+            mut = new Mutex(true, "ShotrMutexHotKeyHook", out var mutex);
+            if (!mutex)
+            {
+                PipeClient.SendCommand("--launch");
+                Environment.Exit(0);
+                return;
             }
 
             Console.SetOut(new ConsoleWriter(DEBUG));
