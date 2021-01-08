@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
@@ -21,7 +22,7 @@ namespace Shotr.Ui.Forms
 
         private Bitmap screenshot;
 
-        private Pen pen = new Pen(Color.White, 1) { DashPattern = new float[] { 6.0F, 4.0F } };
+        private Pen pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
 
         private Pen pen1 = new Pen(Color.White, 1);
         private Pen blackpen = new Pen(Color.Black, 1);
@@ -35,9 +36,9 @@ namespace Shotr.Ui.Forms
         private Font metroF;
         private bool drawing = true;
 
-        private bool information = (Program.Settings.GetValue("region_capture_information") != null ? (bool)Program.Settings.GetValue("region_capture_information")[0] : true);
-        private bool zoom = (Program.Settings.GetValue("region_capture_zoom") != null ? (bool)Program.Settings.GetValue("region_capture_zoom")[0] : true);
-        private bool color = (Program.Settings.GetValue("region_capture_color") != null ? (bool)Program.Settings.GetValue("region_capture_color")[0] : true);
+        private bool information = (Core.Utils.Settings.Instance.GetValue("region_capture_information") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_information")[0]);
+        private bool zoom = (Core.Utils.Settings.Instance.GetValue("region_capture_zoom") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_zoom")[0]);
+        private bool color = (Core.Utils.Settings.Instance.GetValue("region_capture_color") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_color")[0]);
         public ColorPickerForm(Bitmap yolo, Font metroFont)
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
@@ -84,7 +85,7 @@ namespace Shotr.Ui.Forms
             screenshot = yolo;
             screenshot = new Bitmap(screenshot, width, height);
 
-            using (System.Drawing.Image image = Utils.Utils.Apply(Utils.Utils.Contrast(0.7f), screenshot))
+            using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
             {
                 TextureBrush brush = new TextureBrush(image);
                 brush.WrapMode = WrapMode.Clamp;
@@ -129,18 +130,18 @@ namespace Shotr.Ui.Forms
             {
                 //disable the zoom feature.
                 zoom = !zoom;
-                Program.Settings.ChangeKey("region_capture_zoom", new object[] { zoom });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_zoom", new object[] { zoom });
             }
             else if (e.KeyCode == Keys.I)
             {
                 //disable information.
                 information = !information;
-                Program.Settings.ChangeKey("region_capture_information", new object[] { information });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_information", new object[] { information });
             }
             else if (e.KeyCode == Keys.C)
             {
                 color = !color;
-                Program.Settings.ChangeKey("region_capture_color", new object[] { color });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_color", new object[] { color });
             }
         }    
         private void CloseWindow()
@@ -163,7 +164,7 @@ namespace Shotr.Ui.Forms
             return num;
         }
 
-        private Bitmap Magnifier(System.Drawing.Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
+        private Bitmap Magnifier(Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
         {
             horizontalPixelCount = Between(horizontalPixelCount | 1, 1, 0x65);
             verticalPixelCount = Between(verticalPixelCount | 1, 1, 0x65);
@@ -194,7 +195,7 @@ namespace Shotr.Ui.Forms
                     }
                 }
                 graphics.DrawRectangle(Pens.Black, ((width - pixelSize) / 2) - 1, ((height - pixelSize) / 2) - 1, pixelSize, pixelSize);
-                graphics.DrawRectangle(Pens.White, (int)((width - pixelSize) / 2), (int)((height - pixelSize) / 2), (int)(pixelSize - 2), (int)(pixelSize - 2));
+                graphics.DrawRectangle(Pens.White, (width - pixelSize) / 2, (height - pixelSize) / 2, pixelSize - 2, pixelSize - 2);
             }
             return image;
         }

@@ -31,18 +31,12 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
  **************************************************************************************/
 
- 
- 
- 
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using MetroFramework5;
 using MetroFramework5.Drawing;
-using MetroFramework5.Interfaces;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable PossibleNullReferenceException

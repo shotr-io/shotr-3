@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace MetroFramework5.Animation
 {
@@ -76,7 +78,7 @@ namespace MetroFramework5.Animation
 		protected static List<DelayedCall> dcList = new List<DelayedCall>();
 
 		private bool disposed;
-		protected System.Timers.Timer timer;
+		protected Timer timer;
 		protected object timerLock;
 		private Callback callback;
 		protected bool cancelled;
@@ -93,8 +95,8 @@ namespace MetroFramework5.Animation
 		}
 
 		#region Compatibility code
-		private DelayedCall<object>.Callback oldCallback = null;
-		private object oldData = null;
+		private DelayedCall<object>.Callback oldCallback;
+		private object oldData;
 
 		[Obsolete("Use the static method DelayedCall.Create instead.")]
 		public DelayedCall(Callback cb)
@@ -261,7 +263,7 @@ namespace MetroFramework5.Animation
 			}
 			if (dc.context == null) dc.context = new SynchronizationContext();   // Run asynchronously silently
 			
-			dc.timer = new System.Timers.Timer();
+			dc.timer = new Timer();
 			if (milliseconds > 0) dc.timer.Interval = milliseconds;
 			dc.timer.AutoReset = false;
 			dc.timer.Elapsed += dc.Timer_Elapsed;
@@ -364,7 +366,7 @@ namespace MetroFramework5.Animation
 			}
 		}
 
-		protected virtual void Timer_Elapsed(object o, System.Timers.ElapsedEventArgs e)
+		protected virtual void Timer_Elapsed(object o, ElapsedEventArgs e)
 		{
 			// We're in the timer thread now.
 
@@ -527,23 +529,24 @@ namespace MetroFramework5.Animation
 			set
 			{
 				lock (timerLock)
-				{
-					if (value < 0)
+                {
+                    if (value < 0)
 					{
 						throw new ArgumentOutOfRangeException("value", "The new timeout must be 0 or greater.");
 					}
-					else if (value == 0)
-					{
-						Cancel();
-						FireNow();
-						Unregister(this);
-					}
-					else
-					{
-						timer.Interval = value;
-						// TODO: Is this untested?
-					}
-				}
+
+                    if (value == 0)
+                    {
+                        Cancel();
+                        FireNow();
+                        Unregister(this);
+                    }
+                    else
+                    {
+                        timer.Interval = value;
+                        // TODO: Is this untested?
+                    }
+                }
 			}
 		}
 	}
@@ -553,7 +556,7 @@ namespace MetroFramework5.Animation
 	/// </summary>
 	internal class DelayedCall<T> : DelayedCall
 	{
-		public new delegate void Callback(T data);
+		public delegate void Callback(T data);
 
 		private Callback callback;
 		private T data;
@@ -654,7 +657,7 @@ namespace MetroFramework5.Animation
 	/// </summary>
 	internal class DelayedCall<T1, T2> : DelayedCall
 	{
-		public new delegate void Callback(T1 data1, T2 data2);
+		public delegate void Callback(T1 data1, T2 data2);
 
 		private Callback callback;
 		private T1 data1;
@@ -764,7 +767,7 @@ namespace MetroFramework5.Animation
 	/// </summary>
 	internal class DelayedCall<T1, T2, T3> : DelayedCall
 	{
-		public new delegate void Callback(T1 data1, T2 data2, T3 data3);
+		public delegate void Callback(T1 data1, T2 data2, T3 data3);
 
 		private Callback callback;
 		private T1 data1;

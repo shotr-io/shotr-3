@@ -1,11 +1,14 @@
-﻿namespace Shotr.Ui.Forms
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Shotr.Ui.Forms
 {
     partial class ScreenshotForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -53,6 +56,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer timer1;
+        private Timer timer1;
     }
 }

@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using Shotr.Ui.DpiScaling;
-using Shotr.Ui.Model;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.Model;
 
 namespace Shotr.Ui.Forms
 {
     public partial class LoginForm : DpiScaledForm
     {
-        private bool _isClosing = false;
+        private bool _isClosing;
 
         public LoginForm()
         {
@@ -39,10 +39,10 @@ namespace Shotr.Ui.Forms
                     // Sign in
                     _isClosing = true;
                     DialogResult = DialogResult.OK;
-                    Program.Settings.login = true;
-                    Program.Settings.token = user.Token;
-                    Program.Settings.email = user.Email;
-                    Program.Settings.ChangeKey("shotr.token", new object[] {user.Token});
+                    Core.Utils.Settings.Instance.login = true;
+                    Core.Utils.Settings.Instance.token = user.Token;
+                    Core.Utils.Settings.Instance.email = user.Email;
+                    Core.Utils.Settings.Instance.ChangeKey("shotr.token", new object[] {user.Token});
                     Close();
                 }
                 else

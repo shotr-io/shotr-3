@@ -25,11 +25,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #endregion
 
-using System.ComponentModel;
 using System.Drawing;
-using System.Net.Mime;
 using System.Windows.Forms;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {

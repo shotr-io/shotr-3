@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Ui.DpiScaling;
-using Shotr.Ui.Uploader;
-using Shotr.Ui.Utils;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.Uploader;
+using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
@@ -15,7 +15,7 @@ namespace Shotr.Ui.Forms
         private int time = 5;
         private FormAnimator animator;
 
-        private bool animatingout = false;
+        private bool animatingout;
         
         protected override bool ShowWithoutActivation
         {
@@ -32,7 +32,7 @@ namespace Shotr.Ui.Forms
             }
         }
         private ImageShell failed;
-        public ErrorNotification(System.Drawing.Image ico, ImageShell failedImg, UploadedImageJsonResult result)
+        public ErrorNotification(Image ico, ImageShell failedImg, UploadedImageJsonResult result)
         {
             InitializeComponent();
             ManualDpiScale();
@@ -121,7 +121,7 @@ namespace Shotr.Ui.Forms
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
-            Uploader.Uploader.AddToQueue(failed);
+            Uploader.AddToQueue(failed);
             Close();
         }
     }

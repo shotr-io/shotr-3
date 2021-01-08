@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using MetroFramework5.Properties;
+using MetroFramework5;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -68,11 +68,13 @@ using MetroFramework5.Properties;
 
 [assembly:AllowPartiallyTrustedCallers]
 
-[assembly: InternalsVisibleTo(MetroFramework5.AssemblyRef.MetroFrameworkDesignIVT)]
-[assembly: InternalsVisibleTo(MetroFramework5.AssemblyRef.MetroFrameworkFontsIVT)]
+[assembly: InternalsVisibleTo(AssemblyRef.MetroFrameworkDesignIVT)]
+[assembly: InternalsVisibleTo(AssemblyRef.MetroFrameworkFontsIVT)]
 
 #if DEBUG
-[assembly: InternalsVisibleTo("XmlHelper, PublicKey=" + MetroFramework5.AssemblyRef.MetroFrameworkKeyFull)]
+[assembly: InternalsVisibleTo("XmlHelper, PublicKey=" + AssemblyRef.MetroFrameworkKeyFull)]
+
+#endif
 
 internal static class MetroFrameworkAssembly
 {
@@ -83,13 +85,8 @@ internal static class MetroFrameworkAssembly
     internal const string Company = "Jens Thiel";
     internal const string Product = "MetroFramework";
 }
-
 namespace MetroFramework5
 {
-#endif
-
-    
-
     internal static class AssemblyRef
     {
 

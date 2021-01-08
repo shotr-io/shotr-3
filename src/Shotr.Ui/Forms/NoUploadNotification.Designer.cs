@@ -1,4 +1,6 @@
-﻿using Shotr.Ui.DpiScaling;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -7,7 +9,7 @@ namespace Shotr.Ui.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -72,7 +74,7 @@ namespace Shotr.Ui.Forms
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::Shotr.Ui.Properties.Resources.shotr_icon1;
+            this.pictureBox1.Image = global::Shotr.Ui.Properties.Resources.shotr_icon;
             this.pictureBox1.Location = new System.Drawing.Point(5, 10);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
@@ -106,9 +108,9 @@ namespace Shotr.Ui.Forms
 
         #endregion
 
-        private System.Windows.Forms.Timer timer1;
+        private Timer timer1;
         private DpiScaledLabel metroLabel1;
         private DpiScaledLabel metroLabel2;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private PictureBox pictureBox1;
     }
 }

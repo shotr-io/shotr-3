@@ -61,7 +61,7 @@ namespace Shotr.Core.Quantizer
 
             if ((bucket == Palette) && (pixelKey != 0))
             {
-                mLookup[pixelKey] = new LookupNode[] { bucket[bestMatch] };
+                mLookup[pixelKey] = new[] { bucket[bestMatch] };
             }
             
             return bestMatch;

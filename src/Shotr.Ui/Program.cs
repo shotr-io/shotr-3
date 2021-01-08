@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -11,25 +12,21 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Shotr.Core.Model;
+using Shotr.Core.Plugin;
+using Shotr.Core.UpdateFramework;
+using Shotr.Core.Uploader;
+using Shotr.Core.Utils;
 using Shotr.Ui.Forms;
-using Shotr.Ui.Model;
-using Shotr.Ui.Plugin;
 using Shotr.Ui.Properties;
-using Shotr.Ui.UpdateFramework;
-using Shotr.Ui.Utils;
+using ShotrUploaderPlugin;
 
 namespace Shotr.Ui
 {
     static class Program
     {
-        //let's compile dcrypt up into this biatch.
-        public static string FolderPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Shotr\\";
-        public static Settings Settings;
-        public static dcrypt dc = new dcrypt(Resources.a);
         public static MainForm form;
-        public static Mutex mut;
 
-        private static bool FirstUpdate = false;
         private static bool CertCheck(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
         {
             return true;
@@ -39,14 +36,7 @@ namespace Shotr.Ui
         /// </summary>
         public static void Start(string[] args)
         {
-            //mutex.
-            bool mutex;
-            mut = new Mutex(true, "ShotrMutexHotKeyHook", out mutex);
-            if (!mutex)
-            {
-                MessageBox.Show("Shotr is already running! Please close Shotr before you attempt to run another instance.", "Duplicate instance.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            
             PluginCore.Initialize();
             try
             {
@@ -55,19 +45,19 @@ namespace Shotr.Ui
                 //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                 //Create application directory.
-                if (!Directory.Exists(FolderPath))
+                if (!Directory.Exists(Settings.FolderPath))
                 {
-                    Directory.CreateDirectory(FolderPath);
+                    Directory.CreateDirectory(Settings.FolderPath);
                 }
-                if (!Directory.Exists($"{FolderPath}\\Cache"))
+                if (!Directory.Exists($"{Settings.FolderPath}\\Cache"))
                 {
-                    Directory.CreateDirectory($"{FolderPath}\\Cache");
+                    Directory.CreateDirectory($"{Settings.FolderPath}\\Cache");
                 }
                 //check if audio shit is installed, if not then register it.
-                if (!File.Exists(Path.Combine(FolderPath, "audio-sniffer.dll")))
+                if (!File.Exists(Path.Combine(Settings.FolderPath, "audio-sniffer.dll")))
                 {
                     //decrypt it and output it
-                    File.WriteAllBytes(Path.Combine(FolderPath, "audio-sniffer.dll"), dc.Decrypt(Resources.audio_sniffer));
+                    File.WriteAllBytes(Path.Combine(Settings.FolderPath, "audio-sniffer.dll"), Settings.dc.Decrypt(Resources.audio_sniffer));
                     //register it
                     ProcessStartInfo ps = new ProcessStartInfo
                     {
@@ -77,7 +67,7 @@ namespace Shotr.Ui
                         CreateNoWindow = true,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
-                        WorkingDirectory = FolderPath
+                        WorkingDirectory = Settings.FolderPath
                     };
                     //ps.Verb = "runas";
                     Process m = Process.Start(ps);
@@ -86,7 +76,7 @@ namespace Shotr.Ui
                     m.Close();
                 }
                 //clear out all remaining mp4 files.
-                foreach (string file in Directory.GetFiles($"{FolderPath}\\Cache"))
+                foreach (string file in Directory.GetFiles($"{Settings.FolderPath}\\Cache"))
                 {
                     try
                     {
@@ -102,7 +92,7 @@ namespace Shotr.Ui
                 ServicePointManager.UseNagleAlgorithm = false;
                 ServicePointManager.ServerCertificateValidationCallback += CertCheck;
 
-                Settings = new Settings();
+                Settings.Instance = new Settings();
                 PluginCore.InitCustoms();
                 TryEnableDPIAware();
 
@@ -113,20 +103,20 @@ namespace Shotr.Ui
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }*/
 
-                object[] min = Settings.GetValue("start_minimized");
+                object[] min = Settings.Instance.GetValue("start_minimized");
                 bool minimized = false;
                 if (min != null) minimized = (bool)min[0];
-                form = new MainForm()
+                form = new MainForm
                 {
                     ShowInTaskbar = !minimized,
                     Visible = !minimized,
                 };
 
-                object[] mini = Settings.GetValue("program_subscribe_to_alpha_beta_releases");
+                object[] mini = Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases");
                 Updater.OnUpdateCheck += Updater_OnUpdateCheck;
                 Updater.CheckForUpdates((bool?) mini?[0] ?? false);
 
-                if (!File.Exists(FolderPath + "\\ffmpeg.exe") || Utils.Utils.MD5File(FolderPath + "\\ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
+                if (!File.Exists(Settings.FolderPath + "\\ffmpeg.exe") || Utils.MD5File(Settings.FolderPath + "\\ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
                 {
                     FFMpegDownload mpg = new FFMpegDownload();
                     if (mpg.ShowDialog() == DialogResult.Cancel)
@@ -137,7 +127,7 @@ namespace Shotr.Ui
                 }
 
                 var successfulLogin = false;
-                var tokenSettings = Settings.GetValue("shotr.token");
+                var tokenSettings = Settings.Instance.GetValue("shotr.token");
                 if (tokenSettings != null && tokenSettings.Length > 0)
                 {
                     var token = (string)tokenSettings[0];
@@ -153,9 +143,9 @@ namespace Shotr.Ui
                             var user = JsonConvert.DeserializeObject<LoginResponse>(content);
                             if (user.Token == token)
                             {
-                                Settings.login = true;
-                                Settings.token = user.Token;
-                                Settings.email = user.Email;
+                                Settings.Instance.login = true;
+                                Settings.Instance.token = user.Token;
+                                Settings.Instance.email = user.Email;
                                 successfulLogin = true;
                             }
                         }
@@ -172,30 +162,16 @@ namespace Shotr.Ui
                 }
                 
                 Application.Run(form);
-                GC.KeepAlive(mut);
-                mut.ReleaseMutex();
+                GC.KeepAlive(PreRun.mut);
+                PreRun.mut.ReleaseMutex();
             }
             catch(Exception ex) 
             { 
                 //write to err.log
-                File.WriteAllText(FolderPath + "error.log", ex.ToString());
+                File.WriteAllText(Settings.FolderPath + "error.log", ex.ToString());
             }
         }
-
-        static bool CheckForInternetConnection()
-        {
-            try
-            {
-                using (var client = new WebClient())
-                using (client.OpenRead("http://google.com/generate_204"))
-                    return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
+        
         static void m_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             Console.WriteLine(e.Data);
@@ -216,14 +192,14 @@ namespace Shotr.Ui
                 if (e.updateInfo.alpha || e.updateInfo.beta)
                 {
                     //check if the user has subscribed to them or not.
-                    if (!(bool)Settings.GetValue("program_subscribe_to_alpha_beta_releases")[0])
+                    if (!(bool)Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases")[0])
                     {
                         //updat
                         return;
                     }
                 }
                 //show update form.
-                Console.WriteLine("There is an update available to Shotr - v{0}{1}.", m.ToString(), (e.updateInfo.alpha ? "a" : e.updateInfo.beta ? "b" : ""));               
+                Console.WriteLine("There is an update available to Shotr - v{0}{1}.", m, (e.updateInfo.alpha ? "a" : e.updateInfo.beta ? "b" : ""));               
                 if (form == null)
                 {
                     UpdateForm upd = new UpdateForm(e.updateInfo, e.updateInfo.alpha || e.updateInfo.beta);
@@ -232,7 +208,7 @@ namespace Shotr.Ui
                 else
                 {
                     //if fullscreen application is running, wait for fullscreen application to stop.
-                    while (Utils.Utils.GetForegroundProcess() != null)
+                    while (Utils.GetForegroundProcess() != null)
                     {
                         Thread.Sleep(5000);
                     }
@@ -250,26 +226,26 @@ namespace Shotr.Ui
                 //current version.
                 if (e.updateInfo.alpha)
                 {
-                    Console.WriteLine("You are running Shotr - v{0}a.", curr.ToString());
+                    Console.WriteLine("You are running Shotr - v{0}a.", curr);
                 }
                 else if(e.updateInfo.beta)
                 {
-                    Console.WriteLine("You are running Shotr - v{0}b.", curr.ToString());
+                    Console.WriteLine("You are running Shotr - v{0}b.", curr);
                 }
                 else
                 {
-                    Console.WriteLine("You are running Shotr - v{0}.", curr.ToString());
+                    Console.WriteLine("You are running Shotr - v{0}.", curr);
                 }
             }
             else
             {
-                if ((bool)Settings.GetValue("program_subscribe_to_alpha_beta_releases")[0])
+                if ((bool)Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases")[0])
                 {
                     //updat
                     return;
                 }
                 // Downgrade?
-                Console.WriteLine("There is an update (downgrade) available to Shotr - v{0}{1}.", m.ToString(), (e.updateInfo.alpha ? "a" : e.updateInfo.beta ? "b" : ""));
+                Console.WriteLine("There is an update (downgrade) available to Shotr - v{0}{1}.", m, (e.updateInfo.alpha ? "a" : e.updateInfo.beta ? "b" : ""));
                 if (form == null)
                 {
                     UpdateForm upd = new UpdateForm(e.updateInfo, true);
@@ -278,7 +254,7 @@ namespace Shotr.Ui
                 else
                 {
                     //if fullscreen application is running, wait for fullscreen application to stop.
-                    while (Utils.Utils.GetForegroundProcess() != null)
+                    while (Utils.GetForegroundProcess() != null)
                     {
                         Thread.Sleep(5000);
                     }
@@ -295,26 +271,26 @@ namespace Shotr.Ui
 
         public static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            File.WriteAllText(string.Format("{0}{1}", FolderPath, "error.log"), e.ExceptionObject.ToString());
-            Uploader.Uploader.RemoveHandlers();
-            Uploader.Uploader.OnUploaded += Uploader_OnUploaded;
-            Uploader.Uploader.OnError += Uploader_OnError;
-            Uploader.Uploader.AddToQueue(new ShotrUploaderPlugin.ImageShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString()), ShotrUploaderPlugin.FileExtensions.txt));
+            File.WriteAllText(string.Format("{0}{1}", Settings.FolderPath, "error.log"), e.ExceptionObject.ToString());
+            Uploader.RemoveHandlers();
+            Uploader.OnUploaded += Uploader_OnUploaded;
+            Uploader.OnError += Uploader_OnError;
+            Uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString()), FileExtensions.txt));
         }
 
-        static void Uploader_OnError(object sender, ShotrUploaderPlugin.ImageShell e)
+        static void Uploader_OnError(object sender, ImageShell e)
         {
             MessageBox.Show("Shotr has encountered an error and must close.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Environment.Exit(0);
         }
 
-        static void Uploader_OnUploaded(object sender, ShotrUploaderPlugin.UploadResult e)
+        static void Uploader_OnUploaded(object sender, UploadResult e)
         {
             try
             {
-                WebClient m = new WebClient() { Proxy = null };
+                WebClient m = new WebClient { Proxy = null };
                 m.Headers.Add("User-Agent: Shotr_Error_Reporter");
-                m.UploadValues("https://shotr.io/report_error", new System.Collections.Specialized.NameValueCollection() { { "error", e.PageURL } });
+                m.UploadValues("https://shotr.io/report_error", new NameValueCollection { { "error", e.PageURL } });
             }
             catch { }
             MessageBox.Show("Shotr has encountered an error and must close.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);

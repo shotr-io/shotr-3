@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
-using Shotr.Ui.Pipes;
-using Shotr.Ui.Properties;
-using Shotr.Ui.Utils;
+using Shotr.Core;
+using Shotr.Core.Pipes;
+using Shotr.Core.Utils;
 
 namespace Shotr.Ui
 {
     static class PreRun
     {
+        public static Mutex mut;
+
         [DllImport("kernel32.dll")]
         static extern bool AttachConsole(int dwProcessId);
 
         [DllImport("kernel32.dll")]
         private static extern bool AllocConsole();
-
-        static dcrypt dc = new(Resources.a);
 #if DEBUG
         private static bool DEBUG = true;
 #else
@@ -34,17 +34,15 @@ namespace Shotr.Ui
                 {
                     case "--debug":
                         if (!AttachConsole(-1))
-                        AllocConsole();
+                            AllocConsole();
                         DEBUG = true;
-                    break;
+                        break;
                     case "--region":
                     case "--record":
                         PipeClient.SendCommand(args[0]);
                         Environment.Exit(0);
                         break;
                     case "--dump-settings":
-                        LoadAssemblies();
-                        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                         var settings = new Settings();
                         settings.DumpSettings();
                         Environment.Exit(0);
@@ -52,48 +50,20 @@ namespace Shotr.Ui
                 }
             }
 
+            //mutex.
+            mut = new Mutex(true, "ShotrMutexHotKeyHook", out var mutex);
+            if (!mutex)
+            {
+                PipeClient.SendCommand("--launch");
+                Environment.Exit(0);
+                return;
+            }
+
             Console.SetOut(new ConsoleWriter(DEBUG));
 
-            Console.WriteLine("Starting Shotr v{0}...", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            LoadAssemblies();
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            
+            Console.WriteLine("Starting Shotr v{0}...", Assembly.GetExecutingAssembly().GetName().Version);
+
             Program.Start(args);
         }
-
-        private static Dictionary<string, byte[]> _loadedAssemblies;
-
-        private static void LoadAssemblies()
-        {
-            /*_loadedAssemblies = new Dictionary<string, byte[]>()
-            {
-                { "ShotrUploaderPlugin", Resources.ShotrUploaderPlugin },
-                { "Newtonsoft.Json", Resources.Newtonsoft },
-                { "MetroFramework", Resources.MetroFramework5 },
-                { "Shotr.Core.Quantizer", Resources.Shotr_Core_Quantizer },
-                { "Shotr.Core", Resources.Shotr_Core },
-            };*/
-        }
-        
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            /*try
-            {
-                foreach (KeyValuePair<string, byte[]> assm in _loadedAssemblies)
-                {
-                    if (args.Name.Contains(assm.Key))
-                    {
-                        //_loadedAssemblies.Remove(assm.Key);
-                        return Assembly.Load(dc.Decrypt(assm.Value));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("The executable seems to be corrupted...Please re-download a new copy. Attempted to load assembly: " +args.Name + " - " + ex.ToString());
-            }*/
-            return null;
-        }
-        
     }
 }

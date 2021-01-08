@@ -27,7 +27,6 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
  using System;
  using System.Collections.Generic;
- using System.Diagnostics;
  using System.Drawing;
  using System.Drawing.Text;
  using System.Linq;
@@ -63,10 +62,10 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             {
                 var resourceList = new List<byte[]>
                 {
-                    Properties.Resources.poppins_regular,
-                    Properties.Resources.poppins_light,
-                    Properties.Resources.poppins_extralight,
-                    Properties.Resources.poppins_medium,
+                    Resources.poppins_regular,
+                    Resources.poppins_light,
+                    Resources.poppins_extralight,
+                    Resources.poppins_medium,
                 };
                 _pfc = new PrivateFontCollection();
                 foreach (var item in resourceList)

@@ -30,7 +30,6 @@ Portions of this software are (c) 2011 Sven Walter, http://github.com/viperneo
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MetroFramework5.Controls
@@ -211,12 +210,12 @@ namespace MetroFramework5.Controls
             {
                 case Keys.Down:
                 case Keys.Left:
-                    SetProperValue(Value - (int)smallChange);
+                    SetProperValue(Value - smallChange);
                     OnScroll(ScrollEventType.SmallDecrement, Value);
                     break;
                 case Keys.Up:
                 case Keys.Right:
-                    SetProperValue(Value + (int)smallChange);
+                    SetProperValue(Value + smallChange);
                     OnScroll(ScrollEventType.SmallIncrement, Value);
                     break;
                 case Keys.Home:
@@ -226,11 +225,11 @@ namespace MetroFramework5.Controls
                     Value = barMaximum;
                     break;
                 case Keys.PageDown:
-                    SetProperValue(Value - (int)largeChange);
+                    SetProperValue(Value - largeChange);
                     OnScroll(ScrollEventType.LargeDecrement, Value);
                     break;
                 case Keys.PageUp:
-                    SetProperValue(Value + (int)largeChange);
+                    SetProperValue(Value + largeChange);
                     OnScroll(ScrollEventType.LargeIncrement, Value);
                     break;
             }
@@ -265,7 +264,7 @@ namespace MetroFramework5.Controls
             Point pt = e.Location;
             int p = pt.X;
                 
-            float coef = (float)(barMaximum - barMinimum) / (float)(ClientSize.Width - 3);
+            float coef = (barMaximum - barMinimum) / (float)(ClientSize.Width - 3);
             trackerValue = (int)(p * coef + barMinimum);
 
             if (trackerValue <= barMinimum)

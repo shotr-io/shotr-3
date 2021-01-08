@@ -26,13 +26,10 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
-using System.Net.Mime;
-using System.Reflection.Metadata;
 using System.Security;
 using System.Windows.Forms;
-using MetroFramework5.Properties;
+using MetroFramework5.Native;
 
 namespace MetroFramework5.Controls
 {
@@ -86,14 +83,14 @@ namespace MetroFramework5.Controls
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
-            Native.WinCaret.HideCaret(Handle);
+            WinCaret.HideCaret(Handle);
         }
 
         [SecuritySafeCritical]
         protected override void OnDoubleClick(EventArgs e)
         {
             SelectAll();
-            Native.WinCaret.HideCaret(Handle);
+            WinCaret.HideCaret(Handle);
         }
 
     }

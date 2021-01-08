@@ -104,8 +104,8 @@ namespace MetroFramework5.Components
             OwnerDraw = true;
             ShowAlways = true;
 
-            Draw += new DrawToolTipEventHandler(MetroToolTip_Draw);
-            Popup += new PopupEventHandler(MetroToolTip_Popup);
+            Draw += MetroToolTip_Draw;
+            Popup += MetroToolTip_Popup;
         }
 
         #endregion

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Shotr.Ui.Hotkey;
-using Shotr.Ui.Utils;
+using Shotr.Core.Hotkey;
+using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
@@ -26,7 +27,7 @@ namespace Shotr.Ui.Forms
         private Bitmap origscreenshot;
 
         private Point orig;
-        private Pen pen = new Pen(Color.White, 1) { DashPattern = new float[] { 6.0F, 4.0F } };
+        private Pen pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
 
         private Pen pen1 = new Pen(Color.White, 1);
         private Pen blackpen = new Pen(Color.Black, 1);
@@ -39,13 +40,13 @@ namespace Shotr.Ui.Forms
 
         private Font kfont = new Font(DefaultFont, FontStyle.Bold);
 
-        private bool activated = false;
-        private bool editing = false;
-        private bool drawing = false;
+        private bool activated;
+        private bool editing;
+        private bool drawing;
 
-        private bool information = (Program.Settings.GetValue("region_capture_information") != null ? (bool)Program.Settings.GetValue("region_capture_information")[0] : true);
-        private bool zoom = (Program.Settings.GetValue("region_capture_zoom") != null ? (bool)Program.Settings.GetValue("region_capture_zoom")[0] : true);
-        private bool color = (Program.Settings.GetValue("region_capture_color") != null ? (bool)Program.Settings.GetValue("region_capture_color")[0] : true);
+        private bool information = (Core.Utils.Settings.Instance.GetValue("region_capture_information") != null ? (bool)Core.Utils.Settings.Instance.GetValue("region_capture_information")[0] : true);
+        private bool zoom = (Core.Utils.Settings.Instance.GetValue("region_capture_zoom") != null ? (bool)Core.Utils.Settings.Instance.GetValue("region_capture_zoom")[0] : true);
+        private bool color = (Core.Utils.Settings.Instance.GetValue("region_capture_color") != null ? (bool)Core.Utils.Settings.Instance.GetValue("region_capture_color")[0] : true);
 
         private Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -101,7 +102,7 @@ namespace Shotr.Ui.Forms
             origscreenshot = (Bitmap)screenshot.Clone();
             screenshot = new Bitmap(screenshot, width, height);
             
-            using (System.Drawing.Image image = Utils.Utils.Apply(Utils.Utils.Contrast(0.7f), screenshot))
+            using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
             {
                 TextureBrush brush = new TextureBrush(image);
                 brush.WrapMode = WrapMode.Clamp;
@@ -158,18 +159,18 @@ namespace Shotr.Ui.Forms
             {
                 //disable the zoom feature.
                 zoom = !zoom;
-                Program.Settings.ChangeKey("region_capture_zoom", new object[] { zoom });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_zoom", new object[] { zoom });
             }
             else if (e.KeyCode == Keys.I)
             {
                 //disable information.
                 information = !information;
-                Program.Settings.ChangeKey("region_capture_information", new object[] { information });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_information", new object[] { information });
             }
             else if (e.KeyCode == Keys.C)
             {
                 color = !color;
-                Program.Settings.ChangeKey("region_capture_color", new object[] { color });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_color", new object[] { color });
             }
             else if (e.KeyCode == Keys.E)
             {
@@ -184,7 +185,7 @@ namespace Shotr.Ui.Forms
                 {
                     //save current image and get ready to output it on the form.
                     textbrush.Dispose();
-                    using (System.Drawing.Image image = Utils.Utils.Apply(Utils.Utils.Contrast(0.7f), screenshot))
+                    using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
                     {
                         TextureBrush brush = new TextureBrush(image);
                         brush.WrapMode = WrapMode.Clamp;
@@ -214,7 +215,7 @@ namespace Shotr.Ui.Forms
         private void UploadImage()
         {
             //save screenshot at x.
-            System.Drawing.Imaging.PixelFormat format = screenshot.PixelFormat;
+            PixelFormat format = screenshot.PixelFormat;
             try
             {
                 clonedBitmap = screenshot.Clone(new Rectangle(new Point(x.X, x.Y), new Size(x.Width, x.Height)), format);
@@ -265,11 +266,11 @@ namespace Shotr.Ui.Forms
             Hide();
         }
         Graphics edit;
-        private int prex = 0;
-        private int prey = 0;
+        private int prex;
+        private int prey;
         private Color chosenColor = Color.Red;
-        private int colorIndex = 0;
-        private List<Color> availableColors = new List<Color>()
+        private int colorIndex;
+        private List<Color> availableColors = new List<Color>
         {
             Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Blue, Color.Purple, Color.Black
         };
@@ -576,7 +577,7 @@ namespace Shotr.Ui.Forms
             return (num <= min ? min : (num >= max ? max : num));
         }
 
-        private Bitmap ShowSolidColor(System.Drawing.Image img, Point position, int width, int height, Color color)
+        private Bitmap ShowSolidColor(Image img, Point position, int width, int height, Color color)
         {
             Bitmap image = new Bitmap(width - 1, height - 1);
             using (Graphics graphics = Graphics.FromImage(image))
@@ -588,7 +589,7 @@ namespace Shotr.Ui.Forms
             return image;
         }
 
-        private Bitmap Magnifier(System.Drawing.Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
+        private Bitmap Magnifier(Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
         {
             horizontalPixelCount = Between(horizontalPixelCount | 1, 1, 0x65);
             verticalPixelCount = Between(verticalPixelCount | 1, 1, 0x65);
@@ -619,7 +620,7 @@ namespace Shotr.Ui.Forms
                     }
                 }
                 graphics.DrawRectangle(Pens.Black, ((width - pixelSize) / 2) - 1, ((height - pixelSize) / 2) - 1, pixelSize, pixelSize);
-                graphics.DrawRectangle(Pens.White, (int)((width - pixelSize) / 2), (int)((height - pixelSize) / 2), (int)(pixelSize - 2), (int)(pixelSize - 2));
+                graphics.DrawRectangle(Pens.White, (width - pixelSize) / 2, (height - pixelSize) / 2, pixelSize - 2, pixelSize - 2);
             }
             return image;
         }
@@ -767,8 +768,8 @@ namespace Shotr.Ui.Forms
                 }
             }
         }
-        private bool resizing = false;
-        private bool resizemove = false;
+        private bool resizing;
+        private bool resizemove;
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             if (resizing)
@@ -781,7 +782,7 @@ namespace Shotr.Ui.Forms
 
             if (!editing)
             {
-                if (((bool)Program.Settings.GetValue("screenshot.use_resizable_canvas")[0]) == false)
+                if (((bool)Core.Utils.Settings.Instance.GetValue("screenshot.use_resizable_canvas")[0]) == false)
                 {
                     UploadImage();
                     return;

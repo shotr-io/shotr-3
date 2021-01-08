@@ -1,11 +1,76 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
+    <ProjectReference Include="..\Shotr.Core.Quantizer\Shotr.Core.Quantizer.csproj" />
+    <ProjectReference Include="..\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DpiScaling\DpiScaledButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledCheckbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledCombobox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledLinkLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DpiScaling\DpiScaledToggle.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Hotkey\HotkeyButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Plugin\CorePlugins\CorePluginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

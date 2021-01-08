@@ -29,9 +29,9 @@ Portions of this software are (c) 2011 Sven Walter, http://github.com/viperneo
 
 using System.ComponentModel;
 using System.Drawing;
-using System.Net.Mime;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Windows.Forms;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -46,7 +46,7 @@ namespace MetroFramework5.Controls
 
         #region Interface
 
-        private Control activeControl = null;
+        private Control activeControl;
         [Browsable(false)]
         [DefaultValue(null)]
         public Control ActiveControl
@@ -80,7 +80,7 @@ namespace MetroFramework5.Controls
             set { paintTileCount = value; Invalidate();}
         }
 
-        private int tileCount = 0;
+        private int tileCount;
         [DefaultValue(0)]
         public int TileCount
         {
@@ -95,7 +95,7 @@ namespace MetroFramework5.Controls
             set { base.TextAlign = value; Invalidate();}
         }
 
-        private Image tileImage = null;
+        private Image tileImage;
         [DefaultValue(null)]
         [Category(MetroDefaults.CatAppearance)]
         public Image TileImage
@@ -104,7 +104,7 @@ namespace MetroFramework5.Controls
             set { tileImage = value; Invalidate();}
         }
 
-        private bool useTileImage = false;
+        private bool useTileImage;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool UseTileImage
@@ -168,14 +168,14 @@ namespace MetroFramework5.Controls
                 e.Graphics.DrawImage(TileImage, buttonRect, TileImageAlign);
             }
 
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+            e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
 
             if (PaintTileCount && TileCount > 0)
             {
-                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                 TextRenderer.DrawText(e.Graphics, TileCount.ToString(), GetThemeFont("Tile.Count"), buttonRect, foreColor,tileColor, TextFormatFlags.Right | TextFormatFlags.Top);
-                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+                e.Graphics.TextRenderingHint = TextRenderingHint.SystemDefault;
             }
 
             TextRenderer.DrawText(e.Graphics, Text, EffectiveFont, buttonRect, foreColor, tileColor, TextAlign.AsTextFormatFlags() | TextFormatFlags.LeftAndRightPadding | TextFormatFlags.EndEllipsis );

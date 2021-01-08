@@ -72,14 +72,14 @@ namespace MetroFramework5.Native
             }
         }
 
-        private bool alwaysOnTop = false;
+        private bool alwaysOnTop;
         public bool AlwaysOnTop
         {
             get { return alwaysOnTop; }
             private set { alwaysOnTop = value; }
         }
 
-        private bool autoHide = false;
+        private bool autoHide;
         public bool AutoHide
         {
             get { return autoHide; }

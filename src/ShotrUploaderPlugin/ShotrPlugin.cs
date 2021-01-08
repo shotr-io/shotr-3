@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace ShotrUploaderPlugin
 {
@@ -67,10 +63,10 @@ namespace ShotrUploaderPlugin
     [Serializable]
     public class UploadResult
     {
-        private bool _error = false;
+        private bool _error;
         private string _url = "";
         private string _delurl = "";
-        private long _time = 0;
+        private long _time;
         private string _uploader = "";
         private string _pageurl = "";
 

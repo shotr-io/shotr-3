@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Ui.DpiScaling;
-using Shotr.Ui.Utils;
+using Shotr.Core.DpiScaling;
+using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
@@ -14,7 +14,7 @@ namespace Shotr.Ui.Forms
         private int time = 5;
         private FormAnimator animator;
 
-        private bool animatingout = false;
+        private bool animatingout;
         
         protected override bool ShowWithoutActivation
         {
@@ -32,7 +32,7 @@ namespace Shotr.Ui.Forms
             }
         } 
         
-        public Notification(string url, System.Drawing.Image ico, string mime) : base()
+        public Notification(string url, Image ico, string mime)
         {
             InitializeComponent();
             ManualDpiScale();

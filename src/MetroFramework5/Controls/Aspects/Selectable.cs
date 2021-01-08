@@ -31,16 +31,12 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
  **************************************************************************************/
 
- 
- 
- 
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Forms;
-
 using MetroFramework5.Interfaces;
+using ButtonState = MetroFramework5.Controls.Helper.ButtonState;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable PossibleNullReferenceException
@@ -58,11 +54,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -79,11 +75,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -100,11 +96,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -121,11 +117,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -142,11 +138,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -163,11 +159,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -184,11 +180,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }
@@ -205,11 +201,11 @@ namespace MetroFramework5.Controls
 									GENERATED FILE - DO NOT EDIT
 		 **************************************************************************************/
 
-        protected Helper.ButtonState ButtonState;
+        protected ButtonState ButtonState;
 		private void UseSelectable()
 		{
 			SetStyle( ControlStyles.Selectable, true);
-			ButtonState = new Helper.ButtonState(this);
+			ButtonState = new ButtonState(this);
 		}
         protected override string MetroControlState { get { return ButtonState != null ? ButtonState.ToString() : base.MetroControlState; } }
     }

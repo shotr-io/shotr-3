@@ -33,7 +33,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using MetroFramework5.Native;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -185,7 +184,7 @@ namespace MetroFramework5.Controls
             graphics.FillRectangle(new SolidBrush(GetStyleColor()), 0, 0, (int)ProgressBarWidth, ClientRectangle.Height);
         }
 
-        private int marqueeX = 0;
+        private int marqueeX;
 
         private void DrawProgressMarquee(Graphics graphics)
         {

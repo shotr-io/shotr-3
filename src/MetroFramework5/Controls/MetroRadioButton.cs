@@ -28,12 +28,9 @@ Portions of this software are (c) 2011 Sven Walter, http://github.com/viperneo
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Net.Mime;
 using System.Windows.Forms;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {

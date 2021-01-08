@@ -126,16 +126,16 @@ namespace MetroFramework5.Forms
 
         #endregion
 
-        private bool cancelTimer = false;
+        private bool cancelTimer;
         public bool CancelTimer
         {
             get { return cancelTimer; }
             set { cancelTimer = value; }
         }
 
-        private readonly int closeTime = 0;
-        private int elapsedTime = 0;
-        private int progressWidth = 0;
+        private readonly int closeTime;
+        private int elapsedTime;
+        private int progressWidth;
         private DelayedCall timer;
 
         private readonly MetroPanel controlContainer;
@@ -157,7 +157,7 @@ namespace MetroFramework5.Forms
                 timer = DelayedCall.Start(UpdateProgress, 5);
         }
 
-        private bool isInitialized = false;
+        private bool isInitialized;
         protected override void OnActivated(EventArgs e)
         {
             if (!isInitialized)
@@ -230,8 +230,8 @@ namespace MetroFramework5.Forms
             if (cancelTimer)
                 elapsedTime = 0;
 
-            double perc = (double)elapsedTime / ((double)closeTime / 100);
-            progressWidth = (int)((double)Width * (perc / 100));
+            double perc = elapsedTime / ((double)closeTime / 100);
+            progressWidth = (int)(Width * (perc / 100));
             Invalidate(new Rectangle(0,0,Width,5));
 
             if (!cancelTimer)

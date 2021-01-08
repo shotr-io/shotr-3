@@ -40,12 +40,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
-using System.Reflection.Metadata;
 using System.Security;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using MetroFramework5.Native;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -69,8 +67,8 @@ namespace MetroFramework5.Controls
 
         #region Fields
 
-        private SubClass scUpDown = null;
-        private bool bUpDown = false;
+        private SubClass scUpDown;
+        private bool bUpDown;
 
         public const int TAB_BOTTOM_BORDER_HEIGHT = 3;
  

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Ui.Utils;
+using Shotr.Core.Utils;
 
 namespace Shotr.Ui
 {
@@ -127,7 +127,7 @@ namespace Shotr.Ui
         private static SemaphoreSlim semaphoreScale = new SemaphoreSlim(1, 1);
         internal delegate void VoidOfFloatFloatDelegate(float x, float y);
         static Int32 Oldscales = -1;
-        static bool isCurrentlyScaling=false;
+        static bool isCurrentlyScaling;
         internal static void Check_WM_DPICHANGED_WM_NCCREATE(VoidOfFloatFloatDelegate CallBackWithScale, Message m, IntPtr hwnd) {
             switch (m.Msg) { 
                 case 0x02E0:  //WM_DPICHANGED
@@ -157,8 +157,6 @@ namespace Shotr.Ui
                     break;
                 case 0x81: //WM_NCCREATE
                     try { EnableNonClientDpiScaling(hwnd); } catch { } //Scale header too if newer updates of Windows 10...
-                    break;
-                default:
                     break;
             }
         }

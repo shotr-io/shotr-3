@@ -30,15 +30,12 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                         GENERATED FILE - DO NOT EDIT
 
  **************************************************************************************/
- 
- 
- 
+
 
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-
 using MetroFramework5.Drawing;
 
 // ReSharper disable MemberCanBePrivate.Global

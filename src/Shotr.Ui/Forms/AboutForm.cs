@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using Shotr.Ui.DpiScaling;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -16,7 +16,7 @@ namespace Shotr.Ui.Forms
             //load changelog.
             try
             {
-                WebClient p = new WebClient() { Proxy = null };
+                WebClient p = new WebClient { Proxy = null };
                 string changelog = p.DownloadString("https://shotr.io/changelog");
                 changelog = changelog.Replace("<br>", "\r\n");
                 metroTextBox1.Text = changelog;

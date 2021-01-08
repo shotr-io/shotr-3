@@ -32,7 +32,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using MetroFramework5.Localization;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {

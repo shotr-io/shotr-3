@@ -8,9 +8,10 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using MetroFramework5.Controls;
-using Shotr.Ui.Capture;
-using Shotr.Ui.Hotkey;
-using Shotr.Ui.Utils;
+using Shotr.Core.Capture;
+using Shotr.Core.Hotkey;
+using Shotr.Core.Uploader;
+using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
@@ -31,7 +32,7 @@ namespace Shotr.Ui.Forms
         private Bitmap screenshot;
 
         private Point orig;
-        private Pen pen = new Pen(Color.White, 1) { DashPattern = new float[] { 6.0F, 4.0F } };
+        private Pen pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
 
         private Pen pen1 = new Pen(Color.White, 1);
         private Pen blackpen = new Pen(Color.Black, 1);
@@ -43,14 +44,14 @@ namespace Shotr.Ui.Forms
 
         private Font kfont = new Font(DefaultFont, FontStyle.Bold);
         private Font metroF;
-        private bool activated = false;
+        private bool activated;
         private bool drawing = true;
 
-        private bool information = (Program.Settings.GetValue("region_capture_information") != null ? (bool)Program.Settings.GetValue("region_capture_information")[0] : true);
-        private bool zoom = (Program.Settings.GetValue("region_capture_zoom") != null ? (bool)Program.Settings.GetValue("region_capture_zoom")[0] : true);
-        private bool color = (Program.Settings.GetValue("region_capture_color") != null ? (bool)Program.Settings.GetValue("region_capture_color")[0] : true);
+        private bool information = (Core.Utils.Settings.Instance.GetValue("region_capture_information") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_information")[0]);
+        private bool zoom = (Core.Utils.Settings.Instance.GetValue("region_capture_zoom") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_zoom")[0]);
+        private bool color = (Core.Utils.Settings.Instance.GetValue("region_capture_color") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_color")[0]);
 
-        private bool showrecording = false;
+        private bool showrecording;
 
         private SingleInstance Tasks;
         
@@ -102,7 +103,7 @@ namespace Shotr.Ui.Forms
             screenshot = yolo;
             screenshot = new Bitmap(screenshot, width, height);
 
-            using (System.Drawing.Image image = Utils.Utils.Apply(Utils.Utils.Contrast(0.7f), screenshot))
+            using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
             {
                 TextureBrush brush = new TextureBrush(image);
                 brush.WrapMode = WrapMode.Clamp;
@@ -157,18 +158,18 @@ namespace Shotr.Ui.Forms
             {
                 //disable the zoom feature.
                 zoom = !zoom;
-                Program.Settings.ChangeKey("region_capture_zoom", new object[] { zoom });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_zoom", new object[] { zoom });
             }
             else if (e.KeyCode == Keys.I)
             {
                 //disable information.
                 information = !information;
-                Program.Settings.ChangeKey("region_capture_information", new object[] { information });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_information", new object[] { information });
             }
             else if (e.KeyCode == Keys.C)
             {
                 color = !color;
-                Program.Settings.ChangeKey("region_capture_color", new object[] { color });
+                Core.Utils.Settings.Instance.ChangeKey("region_capture_color", new object[] { color });
             }
         }    
         private void CloseWindow()
@@ -192,7 +193,7 @@ namespace Shotr.Ui.Forms
             return num;
         }
 
-        private Bitmap Magnifier(System.Drawing.Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
+        private Bitmap Magnifier(Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
         {
             horizontalPixelCount = Between(horizontalPixelCount | 1, 1, 0x65);
             verticalPixelCount = Between(verticalPixelCount | 1, 1, 0x65);
@@ -230,7 +231,7 @@ namespace Shotr.Ui.Forms
                     }
                 }
                 graphics.DrawRectangle(Pens.Black, ((width - pixelSize) / 2) - 1, ((height - pixelSize) / 2) - 1, pixelSize, pixelSize);
-                graphics.DrawRectangle(Pens.White, (int)((width - pixelSize) / 2), (int)((height - pixelSize) / 2), (int)(pixelSize - 2), (int)(pixelSize - 2));
+                graphics.DrawRectangle(Pens.White, (width - pixelSize) / 2, (height - pixelSize) / 2, pixelSize - 2, pixelSize - 2);
             }
             return image;
         }
@@ -356,7 +357,7 @@ namespace Shotr.Ui.Forms
             Activate();
         }
         public FFmpegHelper fmp;
-        public bool Cancel = false;
+        public bool Cancel;
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             //resize form, set lime to transparent, and yolo swag.
@@ -406,8 +407,8 @@ namespace Shotr.Ui.Forms
 
                 //new Thread(delegate() { this.CaptureScreen(); }).Start();
                 ScreencastOptions sc = new ScreencastOptions();
-                sc.ScreenRecordFPS = (int)Program.Settings.GetValue("settings.screen_recording")[0];
-                sc.Threads = (int)Program.Settings.GetValue("settings.screen_recording")[1];
+                sc.ScreenRecordFPS = (int)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[0];
+                sc.Threads = (int)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[1];
                 //sc.Duration = 15;
                 int roundedX = ((x.X + 1) % 2 != 0 ? x.X + 2 : x.X + 1);
                 int roundedY = ((x.Y + 1) % 2 != 0 ? x.Y + 2 : x.Y + 1);
@@ -415,17 +416,17 @@ namespace Shotr.Ui.Forms
                 int roundedHeight = ((x.Height - 1) % 2 != 0 ? x.Height - 2 : x.Height - 1);
                 Rectangle w = new Rectangle(roundedX, roundedY, roundedWidth, roundedHeight);
                 sc.CaptureArea = w;
-                sc.OutputPath = Path.Combine(Program.FolderPath, "Cache\\" + Utils.Utils.GetRandomString(10) + ".mp4");
-                sc.DrawCursor = (bool)Program.Settings.GetValue("settings.screen_recording")[2];
+                sc.OutputPath = Path.Combine(Core.Utils.Settings.FolderPath, "Cache\\" + Utils.GetRandomString(10) + ".mp4");
+                sc.DrawCursor = (bool)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[2];
                 fmp = new FFmpegHelper(sc);
-                fmp.Options.FFmpeg.CLIPath = Path.Combine(Program.FolderPath, "ffmpeg.exe");
-                if ((bool)Program.Settings.GetValue("settings.screen_recording")[3])
+                fmp.Options.FFmpeg.CLIPath = Path.Combine(Core.Utils.Settings.FolderPath, "ffmpeg.exe");
+                if ((bool)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[3])
                 {
                     //Fixes audio source if it doesn't exist.
                     DirectShowDevices devices = fmp.GetDirectShowDevices();
-                    if (devices.AudioDevices.Contains((string)Program.Settings.GetValue("settings.screen_recording")[4].ToString()))
+                    if (devices.AudioDevices.Contains((string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[4].ToString()))
                     {
-                        fmp.Options.FFmpeg.AudioSource = (string)Program.Settings.GetValue("settings.screen_recording")[4].ToString();
+                        fmp.Options.FFmpeg.AudioSource = (string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[4].ToString();
                         fmp.Options.FFmpeg.AudioCodec = FFmpegAudioCodec.libvorbis;
                     }
                 }
@@ -445,7 +446,7 @@ namespace Shotr.Ui.Forms
                             Invoke((MethodInvoker)(() =>
                             {
                                 MessageBox.Show("Your recording is over the 100MB limit for Shotr uploads. You'll need to save your recording locally instead.");
-                                SaveFileDialog xz = new SaveFileDialog()
+                                SaveFileDialog xz = new SaveFileDialog
                                 {
                                     Filter = "MPEG4 | *.mp4",
                                     FileName = "*.mp4"
@@ -463,7 +464,7 @@ namespace Shotr.Ui.Forms
                             //process exits here.
 
                             //TODO: buffer file input into uploader, cause like idk huge file sizes.
-                            Uploader.Uploader.AddToQueue(new ImageShell(File.ReadAllBytes(sc.OutputPath), FileExtensions.mp4));
+                            Uploader.AddToQueue(new ImageShell(File.ReadAllBytes(sc.OutputPath), FileExtensions.mp4));
                         }
                     }
                     //lel die ked
@@ -503,7 +504,7 @@ namespace Shotr.Ui.Forms
             stopwatch.Stop();
             fmp.Close();
         }
-        private bool IsRecording = false;
+        private bool IsRecording;
         void fmp_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             Console.WriteLine(e.Data);

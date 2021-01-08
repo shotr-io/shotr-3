@@ -1,4 +1,6 @@
-﻿using Shotr.Ui.DpiScaling;
+﻿using System.ComponentModel;
+using MetroFramework5.Controls;
+using Shotr.Core.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -7,7 +9,7 @@ namespace Shotr.Ui.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -92,7 +94,7 @@ namespace Shotr.Ui.Forms
         #endregion
 
         private DpiScaledLabel metroLabel1;
-        private MetroFramework5.Controls.MetroProgressBar metroProgressBar1;
+        private MetroProgressBar metroProgressBar1;
         private DpiScaledButton metroButton1;
     }
 }

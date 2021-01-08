@@ -30,13 +30,10 @@ Portions of this software are (c) 2011 Sven Walter, http://github.com/viperneo
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection.Metadata;
 using System.Security;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using MetroFramework5.Drawing;
 using MetroFramework5.Native;
-using MetroFramework5.Properties;
 
 namespace MetroFramework5.Controls
 {
@@ -50,7 +47,7 @@ namespace MetroFramework5.Controls
         private MetroScrollBar verticalScrollbar = new MetroScrollBar(MetroScrollOrientation.Vertical);
         private MetroScrollBar horizontalScrollbar = new MetroScrollBar(MetroScrollOrientation.Horizontal);
 
-        private bool showHorizontalScrollbar = false;
+        private bool showHorizontalScrollbar;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool HorizontalScrollbar
@@ -80,7 +77,7 @@ namespace MetroFramework5.Controls
             set { horizontalScrollbar.HighlightOnWheel = value; }
         }
 
-        private bool showVerticalScrollbar = false;
+        private bool showVerticalScrollbar;
         [DefaultValue(false)]
         [Category(MetroDefaults.CatAppearance)]
         public bool VerticalScrollbar

@@ -34,9 +34,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 using System.Drawing;
-using MetroFramework5.Components;
+using System.Windows.Forms;
 using MetroFramework5.Drawing;
 using MetroFramework5.Interfaces;
 

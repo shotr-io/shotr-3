@@ -33,7 +33,7 @@ namespace MetroFramework5.Native
     {
         public delegate int SubClassWndProcEventHandler(ref Message m);
         public event SubClassWndProcEventHandler SubClassedWndProc;
-        private bool IsSubClassed = false;
+        private bool IsSubClassed;
 
         public SubClass(IntPtr Handle, bool _SubClass)
         {
