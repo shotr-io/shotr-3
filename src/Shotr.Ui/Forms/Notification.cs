@@ -11,10 +11,10 @@ namespace Shotr.Ui.Forms
 {
     public partial class Notification : DpiScaledForm
     {
-        private int time = 5;
-        private FormAnimator animator;
+        private int _time = 5;
+        private FormAnimator _animator;
 
-        private bool animatingout;
+        private bool _animatingout;
         
         protected override bool ShowWithoutActivation
         {
@@ -26,7 +26,7 @@ namespace Shotr.Ui.Forms
         {
             get
             {
-                CreateParams createParams = base.CreateParams;
+                var createParams = base.CreateParams;
                 createParams.ExStyle |= WS_EX_TOPMOST;
                 return createParams;
             }
@@ -43,19 +43,19 @@ namespace Shotr.Ui.Forms
             metroLink1.Text = url;
             metroLabel1.Text = (mime.Contains("text") ? "Text Uploaded!" : (mime.Contains("video") ? "Recording Uploaded!" : "Screenshot Uploaded!"));
             Closing += Notification_Closing;
-            animator = new FormAnimator(this);
-            animator.Direction = FormAnimator.AnimationDirection.Up;
-            animator.Method = FormAnimator.AnimationMethod.Slide;
-            animator.Duration = 500;
+            _animator = new FormAnimator(this);
+            _animator.Direction = FormAnimator.AnimationDirection.Up;
+            _animator.Method = FormAnimator.AnimationMethod.Slide;
+            _animator.Duration = 500;
         }
 
         void Notification_Closing(object sender, CancelEventArgs e)
         {
-            if (animatingout == false)
+            if (_animatingout == false)
             {
                 e.Cancel = true;
                 ShadowType = MetroFormShadowType.None;
-                animatingout = true;
+                _animatingout = true;
                 Close();
             }
         }
@@ -72,13 +72,13 @@ namespace Shotr.Ui.Forms
                 {
                     ShadowType = MetroFormShadowType.DropShadow;
                 }));
-                animator.Direction = FormAnimator.AnimationDirection.Down;
+                _animator.Direction = FormAnimator.AnimationDirection.Down;
             }).Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (time-- < 0)
+            if (_time-- < 0)
                 Close();
         }
 

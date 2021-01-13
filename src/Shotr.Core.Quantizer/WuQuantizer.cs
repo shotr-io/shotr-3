@@ -12,10 +12,10 @@ namespace Shotr.Core.Quantizer
             var lookup = new PaletteLookup(lookups);
             foreach (var pixelLine in image.PixelLines)
             {
-                for (int pixelIndex = 0; pixelIndex < pixelLine.Length; pixelIndex++)
+                for (var pixelIndex = 0; pixelIndex < pixelLine.Length; pixelIndex++)
                 {
-                    Pixel pixel = pixelLine[pixelIndex];
-                    byte bestMatch = AlphaColor;
+                    var pixel = pixelLine[pixelIndex];
+                    var bestMatch = AlphaColor;
                     if (pixel.Alpha > alphaThreshold)
                     {
                         bestMatch = lookup.GetPaletteIndex(pixel);
@@ -41,7 +41,7 @@ namespace Shotr.Core.Quantizer
 
         private static ColorPalette BuildPalette(ColorPalette palette, PaletteColorHistory[] paletteHistogram)
         {
-            for (int paletteColorIndex = 0; paletteColorIndex < paletteHistogram.Length; paletteColorIndex++)
+            for (var paletteColorIndex = 0; paletteColorIndex < paletteHistogram.Length; paletteColorIndex++)
             {
                 palette.Entries[paletteColorIndex] = paletteHistogram[paletteColorIndex].ToNormalizedColor();
             }

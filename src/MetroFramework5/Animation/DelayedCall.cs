@@ -198,7 +198,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall Create(Callback cb, int milliseconds)
 		{
-			DelayedCall dc = new DelayedCall();
+			var dc = new DelayedCall();
 			PrepareDCObject(dc, milliseconds, false);
 			dc.callback = cb;
 			return dc;
@@ -212,7 +212,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall CreateAsync(Callback cb, int milliseconds)
 		{
-			DelayedCall dc = new DelayedCall();
+			var dc = new DelayedCall();
 			PrepareDCObject(dc, milliseconds, true);
 			dc.callback = cb;
 			return dc;
@@ -226,7 +226,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall Start(Callback cb, int milliseconds)
 		{
-			DelayedCall dc = Create(cb, milliseconds);
+			var dc = Create(cb, milliseconds);
 			if (milliseconds > 0) dc.Start();
 			else if (milliseconds == 0) dc.FireNow();
 			return dc;
@@ -240,7 +240,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall StartAsync(Callback cb, int milliseconds)
 		{
-			DelayedCall dc = CreateAsync(cb, milliseconds);
+			var dc = CreateAsync(cb, milliseconds);
 			if (milliseconds > 0) dc.Start();
 			else if (milliseconds == 0) dc.FireNow();
 			return dc;
@@ -314,7 +314,7 @@ namespace MetroFramework5.Animation
 			{
 				lock (dcList)
 				{
-					foreach (DelayedCall dc in dcList)
+					foreach (var dc in dcList)
 					{
 						if (dc.IsWaiting) return true;
 					}
@@ -330,7 +330,7 @@ namespace MetroFramework5.Animation
 		{
 			lock (dcList)
 			{
-				foreach (DelayedCall dc in dcList)
+				foreach (var dc in dcList)
 				{
 					dc.Cancel();
 				}
@@ -344,7 +344,7 @@ namespace MetroFramework5.Animation
 		{
 			lock (dcList)
 			{
-				foreach (DelayedCall dc in dcList)
+				foreach (var dc in dcList)
 				{
 					dc.Fire();
 				}
@@ -570,7 +570,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T> Create(Callback cb, T data, int milliseconds)
 		{
-			DelayedCall<T> dc = new DelayedCall<T>();
+			var dc = new DelayedCall<T>();
 			PrepareDCObject(dc, milliseconds, false);
 			dc.callback = cb;
 			dc.data = data;
@@ -586,7 +586,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T> CreateAsync(Callback cb, T data, int milliseconds)
 		{
-			DelayedCall<T> dc = new DelayedCall<T>();
+			var dc = new DelayedCall<T>();
 			PrepareDCObject(dc, milliseconds, true);
 			dc.callback = cb;
 			dc.data = data;
@@ -602,7 +602,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T> Start(Callback cb, T data, int milliseconds)
 		{
-			DelayedCall<T> dc = Create(cb, data, milliseconds);
+			var dc = Create(cb, data, milliseconds);
 			dc.Start();
 			return dc;
 		}
@@ -616,7 +616,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T> StartAsync(Callback cb, T data, int milliseconds)
 		{
-			DelayedCall<T> dc = CreateAsync(cb, data, milliseconds);
+			var dc = CreateAsync(cb, data, milliseconds);
 			dc.Start();
 			return dc;
 		}
@@ -673,7 +673,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2> Create(Callback cb, T1 data1, T2 data2, int milliseconds)
 		{
-			DelayedCall<T1, T2> dc = new DelayedCall<T1, T2>();
+			var dc = new DelayedCall<T1, T2>();
 			PrepareDCObject(dc, milliseconds, false);
 			dc.callback = cb;
 			dc.data1 = data1;
@@ -691,7 +691,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2> CreateAsync(Callback cb, T1 data1, T2 data2, int milliseconds)
 		{
-			DelayedCall<T1, T2> dc = new DelayedCall<T1, T2>();
+			var dc = new DelayedCall<T1, T2>();
 			PrepareDCObject(dc, milliseconds, true);
 			dc.callback = cb;
 			dc.data1 = data1;
@@ -709,7 +709,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2> Start(Callback cb, T1 data1, T2 data2, int milliseconds)
 		{
-			DelayedCall<T1, T2> dc = Create(cb, data1, data2, milliseconds);
+			var dc = Create(cb, data1, data2, milliseconds);
 			dc.Start();
 			return dc;
 		}
@@ -724,7 +724,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2> StartAsync(Callback cb, T1 data1, T2 data2, int milliseconds)
 		{
-			DelayedCall<T1, T2> dc = CreateAsync(cb, data1, data2, milliseconds);
+			var dc = CreateAsync(cb, data1, data2, milliseconds);
 			dc.Start();
 			return dc;
 		}
@@ -785,7 +785,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2, T3> Create(Callback cb, T1 data1, T2 data2, T3 data3, int milliseconds)
 		{
-			DelayedCall<T1, T2, T3> dc = new DelayedCall<T1, T2, T3>();
+			var dc = new DelayedCall<T1, T2, T3>();
 			PrepareDCObject(dc, milliseconds, false);
 			dc.callback = cb;
 			dc.data1 = data1;
@@ -805,7 +805,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2, T3> CreateAsync(Callback cb, T1 data1, T2 data2, T3 data3, int milliseconds)
 		{
-			DelayedCall<T1, T2, T3> dc = new DelayedCall<T1, T2, T3>();
+			var dc = new DelayedCall<T1, T2, T3>();
 			PrepareDCObject(dc, milliseconds, true);
 			dc.callback = cb;
 			dc.data1 = data1;
@@ -825,7 +825,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2, T3> Start(Callback cb, T1 data1, T2 data2, T3 data3, int milliseconds)
 		{
-			DelayedCall<T1, T2, T3> dc = Create(cb, data1, data2, data3, milliseconds);
+			var dc = Create(cb, data1, data2, data3, milliseconds);
 			dc.Start();
 			return dc;
 		}
@@ -841,7 +841,7 @@ namespace MetroFramework5.Animation
 		/// <returns>Newly created <c>DelayedCall</c> instance that can be used for later controlling of the invocation process</returns>
 		public static DelayedCall<T1, T2, T3> StartAsync(Callback cb, T1 data1, T2 data2, T3 data3, int milliseconds)
 		{
-			DelayedCall<T1, T2, T3> dc = CreateAsync(cb, data1, data2, data3, milliseconds);
+			var dc = CreateAsync(cb, data1, data2, data3, milliseconds);
 			dc.Start();
 			return dc;
 		}

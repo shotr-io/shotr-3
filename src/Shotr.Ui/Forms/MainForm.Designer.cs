@@ -804,7 +804,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel8.Size = new System.Drawing.Size(289, 22);
             this.metroLabel8.Style = "NewTheme";
             this.metroLabel8.TabIndex = 2;
-            this.metroLabel8.Text = "Shotr v{0} - Copyright © 2018 Shotr, Inc.";
+            this.metroLabel8.Text = "Shotr v{0} - Copyright © 2021 Shotr, Inc.";
             this.metroLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.metroLabel8.Theme = "NewTheme";
             this.metroLabel8.UseCompatibleTextRendering = true;

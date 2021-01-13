@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Shotr.Core.DpiScaling;
 using Shotr.Core.Model;
+using Shotr.Core.Settings;
 
 namespace Shotr.Ui.Forms
 {
@@ -12,8 +13,12 @@ namespace Shotr.Ui.Forms
     {
         private bool _isClosing;
 
-        public LoginForm()
+        private readonly BaseSettings _settings;
+
+        public LoginForm(BaseSettings settings)
         {
+            _settings = settings;
+            
             InitializeComponent();
         }
 
@@ -39,10 +44,8 @@ namespace Shotr.Ui.Forms
                     // Sign in
                     _isClosing = true;
                     DialogResult = DialogResult.OK;
-                    Core.Utils.Settings.Instance.login = true;
-                    Core.Utils.Settings.Instance.token = user.Token;
-                    Core.Utils.Settings.Instance.email = user.Email;
-                    Core.Utils.Settings.Instance.ChangeKey("shotr.token", new object[] {user.Token});
+                    _settings.Login.Token = user.Token;
+                    _settings.Login.Email = user.Email;
                     Close();
                 }
                 else

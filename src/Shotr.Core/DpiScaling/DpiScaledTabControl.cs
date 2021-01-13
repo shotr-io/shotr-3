@@ -55,7 +55,7 @@ namespace Shotr.Core.DpiScaling
             }
             
             TabPage tabPage = TabPages[index];
-            Rectangle tabRect = GetTabRect(index);
+            var tabRect = GetTabRect(index);
 
             if (index == 0)
             {
@@ -98,8 +98,8 @@ namespace Shotr.Core.DpiScaling
 
             using (Brush selectionBrush = new SolidBrush(GetStyleColor()))
             {
-                Rectangle selectedTabRect = GetTabRect(index);
-                Rectangle borderRectangle = new Rectangle(
+                var selectedTabRect = GetTabRect(index);
+                var borderRectangle = new Rectangle(
                     selectedTabRect.X + (index == 0 ? 2 : 0),
                     GetTabRect(index).Bottom + 1 - TAB_BOTTOM_BORDER_HEIGHT, 
                     selectedTabRect.Width, 
@@ -120,7 +120,7 @@ namespace Shotr.Core.DpiScaling
             
             using (Brush bgBrush = new SolidBrush( GetThemeColor("BorderColor")))
             {
-                Rectangle borderRectangle = new Rectangle(
+                var borderRectangle = new Rectangle(
                     DisplayRectangle.X, 
                     GetTabRect(index).Bottom + 1 - TAB_BOTTOM_BORDER_HEIGHT, 
                     DisplayRectangle.Width, 

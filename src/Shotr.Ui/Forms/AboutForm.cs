@@ -16,8 +16,8 @@ namespace Shotr.Ui.Forms
             //load changelog.
             try
             {
-                WebClient p = new WebClient { Proxy = null };
-                string changelog = p.DownloadString("https://shotr.io/changelog");
+                var p = new WebClient { Proxy = null };
+                var changelog = p.DownloadString("https://shotr.io/changelog");
                 changelog = changelog.Replace("<br>", "\r\n");
                 metroTextBox1.Text = changelog;
             }

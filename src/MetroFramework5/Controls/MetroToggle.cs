@@ -75,38 +75,38 @@ namespace MetroFramework5.Controls
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            using (Pen p = new Pen(GetThemeColor("BorderColor")))
+            using (var p = new Pen(GetThemeColor("BorderColor")))
             {
-                int width = ClientRectangle.Width - (DisplayStatus ? 31 : 1);
-                Rectangle boxRect = new Rectangle((DisplayStatus ? 30 : 0), 0, width, ClientRectangle.Height - 1);
+                var width = ClientRectangle.Width - (DisplayStatus ? 31 : 1);
+                var boxRect = new Rectangle((DisplayStatus ? 30 : 0), 0, width, ClientRectangle.Height - 1);
                 e.Graphics.DrawRectangle(p, boxRect);
             }
 
-            Color fillColor = Checked ? GetStyleColor() : GetThemeColor("CheckBox.BorderColor.Normal");
-            using (SolidBrush b = new SolidBrush(fillColor))
+            var fillColor = Checked ? GetStyleColor() : GetThemeColor("CheckBox.BorderColor.Normal");
+            using (var b = new SolidBrush(fillColor))
             {
-                int width = ClientRectangle.Width - (DisplayStatus ? 34 : 4);
-                Rectangle boxRect = new Rectangle(DisplayStatus ? 32 : 2, 2, width, ClientRectangle.Height - 4);
+                var width = ClientRectangle.Width - (DisplayStatus ? 34 : 4);
+                var boxRect = new Rectangle(DisplayStatus ? 32 : 2, 2, width, ClientRectangle.Height - 4);
                 e.Graphics.FillRectangle(b, boxRect);
             }
 
-            using (SolidBrush b = new SolidBrush(EffectiveBackColor)) // TODO: ????
+            using (var b = new SolidBrush(EffectiveBackColor)) // TODO: ????
             {
-                int left = Checked ? Width - 11 : (DisplayStatus ? 30 : 0);
-                Rectangle boxRect = new Rectangle(left, 0, 11, ClientRectangle.Height);
+                var left = Checked ? Width - 11 : (DisplayStatus ? 30 : 0);
+                var boxRect = new Rectangle(left, 0, 11, ClientRectangle.Height);
                 e.Graphics.FillRectangle(b, boxRect);
             }
 
-            using (SolidBrush b = new SolidBrush(GetThemeColor("CheckBox.BorderColor.Hover")))
+            using (var b = new SolidBrush(GetThemeColor("CheckBox.BorderColor.Hover")))
             {
-                int left = Checked ? Width - 10 : (DisplayStatus ? 30 : 0);
-                Rectangle boxRect = new Rectangle(left, 0, 10, ClientRectangle.Height);
+                var left = Checked ? Width - 10 : (DisplayStatus ? 30 : 0);
+                var boxRect = new Rectangle(left, 0, 10, ClientRectangle.Height);
                 e.Graphics.FillRectangle(b, boxRect);
             }
 
             if (DisplayStatus)
             {
-                Rectangle textRect = new Rectangle(0, 0, 30, ClientRectangle.Height);
+                var textRect = new Rectangle(0, 0, 30, ClientRectangle.Height);
                 TextRenderer.DrawText(e.Graphics, Text, EffectiveFont, textRect, EffectiveForeColor, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
             }
         }
@@ -119,7 +119,7 @@ namespace MetroFramework5.Controls
 
         public override Size GetPreferredSize(Size proposedSize)
         {
-            Size preferredSize = base.GetPreferredSize(proposedSize);
+            var preferredSize = base.GetPreferredSize(proposedSize);
             preferredSize.Width = DisplayStatus ? 80 : 50;
             return preferredSize;
         }

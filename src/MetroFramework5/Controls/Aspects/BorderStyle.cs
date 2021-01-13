@@ -82,10 +82,10 @@ namespace MetroFramework5.Controls
 
         private void DrawBorder(Object sender, PaintEventArgs e)
         {
-			MetroBorderStyle bs = BorderStyle;
+			var bs = BorderStyle;
             if (bs == MetroBorderStyle.Default && ! TryGetThemeProperty("BorderStyle", out bs) ) return;
             if (bs != MetroBorderStyle.FixedSingle) return;
-            using (Pen pen = new Pen(GetThemeColor("BorderColor")))
+            using (var pen = new Pen(GetThemeColor("BorderColor")))
                 e.Graphics.DrawRectangle(pen, 0, 0, Width-1, Height-1);
 		}
 
@@ -136,10 +136,10 @@ namespace MetroFramework5.Controls
 
         private void DrawBorder(Object sender, PaintEventArgs e)
         {
-			MetroBorderStyle bs = BorderStyle;
+			var bs = BorderStyle;
             if (bs == MetroBorderStyle.Default && ! TryGetThemeProperty("BorderStyle", out bs) ) return;
             if (bs != MetroBorderStyle.FixedSingle) return;
-            using (Pen pen = new Pen(GetThemeColor("BorderColor")))
+            using (var pen = new Pen(GetThemeColor("BorderColor")))
                 e.Graphics.DrawRectangle(pen, 0, 0, Width-1, Height-1);
 		}
 

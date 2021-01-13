@@ -141,7 +141,7 @@ namespace MetroFramework5.Controls
                 }
                 using (Brush bgBrush = new SolidBrush(EffectiveBackColor))
                 {
-                    Region r = new Region(ClientRectangle);
+                    var r = new Region(ClientRectangle);
                     r.Exclude(DisplayRectangle);
                     e.Graphics.FillRegion(bgBrush, r);
                 }
@@ -171,7 +171,7 @@ namespace MetroFramework5.Controls
         {
             using (Brush bgBrush = new SolidBrush( GetThemeColor("BorderColor")))
             {
-                Rectangle borderRectangle = new Rectangle(DisplayRectangle.X, GetTabRect(index).Bottom + 2 - TAB_BOTTOM_BORDER_HEIGHT, 
+                var borderRectangle = new Rectangle(DisplayRectangle.X, GetTabRect(index).Bottom + 2 - TAB_BOTTOM_BORDER_HEIGHT, 
                     DisplayRectangle.Width, TAB_BOTTOM_BORDER_HEIGHT);
 
                 graphics.FillRectangle(bgBrush, borderRectangle);
@@ -182,9 +182,9 @@ namespace MetroFramework5.Controls
         {
             using (Brush selectionBrush = new SolidBrush(GetStyleColor()))
             {
-                Rectangle selectedTabRect = GetTabRect(index);
+                var selectedTabRect = GetTabRect(index);
                 //Size textAreaRect = MeasureText(TabPages[index].Text);
-                Rectangle borderRectangle = new Rectangle(
+                var borderRectangle = new Rectangle(
                     selectedTabRect.X + ((index == 0) ? 2 : 0),
                     selectedTabRect.Bottom + 2 - TAB_BOTTOM_BORDER_HEIGHT, 
                     selectedTabRect.Width + ((index == 0) ? 0 : 2), 
@@ -207,8 +207,8 @@ namespace MetroFramework5.Controls
 
         public virtual void DrawTab(int index, Graphics graphics)
         {
-            TabPage tabPage = TabPages[index];
-            Rectangle tabRect = GetTabRect(index);
+            var tabPage = TabPages[index];
+            var tabRect = GetTabRect(index);
 
             if (index == 0)
             {
@@ -230,7 +230,7 @@ namespace MetroFramework5.Controls
         [SecuritySafeCritical]
         private void DrawUpDown(Graphics graphics)
         {
-            RECT borderRect = new RECT();
+            var borderRect = new RECT();
             WinApi.GetClientRect(scUpDown.Handle, ref borderRect);
 
             graphics.CompositingQuality = CompositingQuality.HighQuality;
@@ -239,7 +239,7 @@ namespace MetroFramework5.Controls
             graphics.Clear(EffectiveBackColor);
 
             using (Brush b = new SolidBrush(GetThemeColor("BorderColor")))
-            using (GraphicsPath gp = new GraphicsPath(FillMode.Winding))
+            using (var gp = new GraphicsPath(FillMode.Winding))
             {
                 PointF[] pts = {new PointF(6, 6), new PointF(16, 0), new PointF(16, 12)};
                 gp.AddLines(pts);
@@ -310,7 +310,7 @@ namespace MetroFramework5.Controls
             {
                 if (!TabPages[SelectedIndex].Focused)
                 {
-                    bool subControlFocused = false;
+                    var subControlFocused = false;
                     foreach (Control ctrl in TabPages[SelectedIndex].Controls)
                     {
                         if (ctrl.Focused)
@@ -368,13 +368,13 @@ namespace MetroFramework5.Controls
         [SecuritySafeCritical]
         private void FindUpDown()
         {
-            bool bFound = false;
-            IntPtr pWnd = WinApi.GetWindow(Handle, WinApi.GW_CHILD);
+            var bFound = false;
+            var pWnd = WinApi.GetWindow(Handle, WinApi.GW_CHILD);
             while (pWnd != IntPtr.Zero)
             {
-                char[] className = new char[33];
-                int length = WinApi.GetClassName(pWnd, className, 32);
-                string s = new string(className, 0, length);
+                var className = new char[33];
+                var length = WinApi.GetClassName(pWnd, className, 32);
+                var s = new string(className, 0, length);
                 if (s == "msctls_updown32")
                 {
                     bFound = true;
@@ -400,7 +400,7 @@ namespace MetroFramework5.Controls
             {
                 if (WinApi.IsWindowVisible(scUpDown.Handle))
                 {
-                    RECT rect = new RECT();
+                    var rect = new RECT();
                     WinApi.GetClientRect(scUpDown.Handle, ref rect);
                     WinApi.InvalidateRect(scUpDown.Handle, ref rect, true);
                 }
@@ -413,10 +413,10 @@ namespace MetroFramework5.Controls
             switch (m.Msg)
             {
                 case WinApi.Messages.WM_PAINT:
-                    IntPtr hDC = WinApi.GetWindowDC(scUpDown.Handle);
+                    var hDC = WinApi.GetWindowDC(scUpDown.Handle);
                     try
                     {
-                        using (Graphics g = Graphics.FromHdc(hDC))
+                        using (var g = Graphics.FromHdc(hDC))
                             DrawUpDown(g);
                     }
                     finally 
@@ -424,7 +424,7 @@ namespace MetroFramework5.Controls
                         WinApi.ReleaseDC(scUpDown.Handle, hDC);
                     }
                     m.Result = IntPtr.Zero;
-                    RECT rect = new RECT();
+                    var rect = new RECT();
                     WinApi.GetClientRect(scUpDown.Handle, ref rect);
                     WinApi.ValidateRect(scUpDown.Handle, ref rect);
                     return 1;

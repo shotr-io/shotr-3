@@ -228,9 +228,9 @@ namespace MetroFramework5.Controls
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            using (Pen forePen = new Pen(EffectiveForeColor, (float)Width / 5))
+            using (var forePen = new Pen(EffectiveForeColor, (float)Width / 5))
             {
-                int padding = (int)Math.Ceiling((float)Width / 10);
+                var padding = (int)Math.Ceiling((float)Width / 10);
 
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
@@ -242,7 +242,7 @@ namespace MetroFramework5.Controls
 				    // angle +/- progress is the front end of the line
 				
                     float sweepAngle;
-                    float progFrac = (progress - minimum) / (float)(maximum - minimum);
+                    var progFrac = (progress - minimum) / (float)(maximum - minimum);
 
                     if (ensureVisible)
                         sweepAngle = 30 + 300f * progFrac;
@@ -261,18 +261,18 @@ namespace MetroFramework5.Controls
 				    // angle +/- 180° is the transparent tail end of the line
 
                     const int maxOffset = 180;
-                    for (int offset = 0; offset <= maxOffset; offset += 15)
+                    for (var offset = 0; offset <= maxOffset; offset += 15)
                     {
-                        int alpha = 290 - (offset * 290 / maxOffset);
+                        var alpha = 290 - (offset * 290 / maxOffset);
 
                         if (alpha > 255)
                             alpha = 255;
                         else if (alpha < 0)
                             alpha = 0;
-                        Color col = Color.FromArgb(alpha, forePen.Color);
-                        using (Pen gradPen = new Pen(col, forePen.Width))
+                        var col = Color.FromArgb(alpha, forePen.Color);
+                        using (var gradPen = new Pen(col, forePen.Width))
                         {
-                            float startAngle = angle + (offset - (ensureVisible ? 30 : 0)) * (backwards ? 1 : -1);
+                            var startAngle = angle + (offset - (ensureVisible ? 30 : 0)) * (backwards ? 1 : -1);
                             float sweepAngle = 15 * (backwards ? 1 : -1);	// draw in reverse direction
                             e.Graphics.DrawArc(gradPen, padding, padding, Width - 2 * padding - 1, Height - 2 * padding - 1, startAngle, sweepAngle);
                         }

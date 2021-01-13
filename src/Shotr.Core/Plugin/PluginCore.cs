@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Shotr.Core.Custom;
+using Shotr.Core.Settings;
 using Shotr.Core.Utils;
-using Shotr.Ui.Custom;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Plugin
 {
     public class PluginCore
     {
+        public PluginCore(BaseSettings settings)
+        {
+
+        }
+        
         public static List<ImageUploader> Uploaders = new List<ImageUploader>();
         public static List<ShotrCorePlugin> CorePlugin = new List<ShotrCorePlugin>();
 
@@ -54,9 +60,9 @@ namespace Shotr.Core.Plugin
             return null;
         }
 
-        public static void InitCustoms()
+        /*public static void InitCustoms()
         {
-            object[] pl = Settings.Instance.GetValue("program_custom_uploaders");
+            object[] pl = Utils.Settings.Instance.GetValue("program_custom_uploaders");
             if (pl != null)
             {
                 try
@@ -70,7 +76,7 @@ namespace Shotr.Core.Plugin
                 }
                 catch { }
             }
-        }
+        }*/
 
         public static bool LoadCorePlugins()
         {
@@ -99,9 +105,9 @@ namespace Shotr.Core.Plugin
                     Console.WriteLine(p.ToString());
             }
             //Load Plugins.
-            if (!Directory.Exists(Settings.FolderPath + "Plugins")) { Directory.CreateDirectory(Settings.FolderPath + "Plugins"); }
-            Console.WriteLine("Loading core plugin types from " + Settings.FolderPath + "Plugins");
-            foreach (string filename in Directory.GetFiles(Settings.FolderPath + "Plugins\\"))
+            if (!Directory.Exists(SettingsHelper.FolderPath + "Plugins")) { Directory.CreateDirectory(SettingsHelper.FolderPath + "Plugins"); }
+            Console.WriteLine("Loading core plugin types from " + SettingsHelper.FolderPath + "Plugins");
+            foreach (string filename in Directory.GetFiles(SettingsHelper.FolderPath + "Plugins\\"))
             {
                 if (filename.EndsWith(".dll"))
                 {
@@ -156,9 +162,9 @@ namespace Shotr.Core.Plugin
                     Console.WriteLine(p.ToString());
             }
             //Load Plugins.
-            if (!Directory.Exists(Settings.FolderPath + "Plugins")) { Directory.CreateDirectory(Settings.FolderPath + "Plugins"); }
-            Console.WriteLine("Loading types from "+ Settings.FolderPath + "Plugins");
-            foreach (string filename in Directory.GetFiles(Settings.FolderPath + "Plugins\\"))
+            if (!Directory.Exists(SettingsHelper.FolderPath + "Plugins")) { Directory.CreateDirectory(SettingsHelper.FolderPath + "Plugins"); }
+            Console.WriteLine("Loading types from "+ SettingsHelper.FolderPath + "Plugins");
+            foreach (string filename in Directory.GetFiles(SettingsHelper.FolderPath + "Plugins\\"))
             {
                 if (filename.EndsWith(".dll"))
                 {

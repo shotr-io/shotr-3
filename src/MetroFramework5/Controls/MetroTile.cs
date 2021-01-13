@@ -154,11 +154,11 @@ namespace MetroFramework5.Controls
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            Color foreColor = EffectiveForeColor;
-            Color tileColor = GetStyleColor();
-            Rectangle buttonRect = DisplayRectangle;
+            var foreColor = EffectiveForeColor;
+            var tileColor = GetStyleColor();
+            var buttonRect = DisplayRectangle;
 
-            using (SolidBrush b = new SolidBrush(tileColor))
+            using (var b = new SolidBrush(tileColor))
             {
                 e.Graphics.FillRectangle(b, buttonRect);
             }

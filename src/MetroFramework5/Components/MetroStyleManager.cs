@@ -94,7 +94,7 @@ namespace MetroFramework5.Components
                 // The singleton instance must always have a non-default value
                 if (_styleManager == null && value == AMBIENT_VALUE) value = Styles.DefaultStyle.Name;
 
-                bool changed = Style != value;
+                var changed = Style != value;
                 _metroStyle = value;
                 if(changed) OnMetroStyleChanged(this, new EventArgs());
             }
@@ -117,7 +117,7 @@ namespace MetroFramework5.Components
                 // The singleton instance must always have a non-default value
                 if (_styleManager == null && value == AMBIENT_VALUE) value = Styles.DefaultTheme.Name;
 
-                bool changed = Theme != value;
+                var changed = Theme != value;
                 _metroTheme = value;
                 if(changed) OnMetroStyleChanged(this, new EventArgs());
             }         
@@ -132,7 +132,7 @@ namespace MetroFramework5.Components
             {
                 if(value==null) throw new ArgumentNullException();
                 if(value==this) throw new ArgumentException();
-                bool changed = value.Theme != Theme || value.Style != Style;
+                var changed = value.Theme != Theme || value.Style != Style;
                 if( _styleManager != null) _styleManager.MetroStyleChanged -= OnMetroStyleChanged;
                 _styleManager = value;
                 _styleManager.MetroStyleChanged += OnMetroStyleChanged;
@@ -156,7 +156,7 @@ namespace MetroFramework5.Components
                 if (_owner != null)
                 {
                     if (_owner.StyleManager == this) _owner.StyleManager = null;
-                    ContainerControl cc = _owner as ContainerControl;
+                    var cc = _owner as ContainerControl;
                     if (cc != null) cc.ControlAdded -= ControlAdded;
                 }
 
@@ -165,7 +165,7 @@ namespace MetroFramework5.Components
                 if (value != null)
                 {
                     value.StyleManager = this;
-                    ContainerControl cc = _owner as ContainerControl;
+                    var cc = _owner as ContainerControl;
                     if (cc != null) cc.ControlAdded += ControlAdded;
 
                     if (!isInitializing)
@@ -296,7 +296,7 @@ namespace MetroFramework5.Components
 
             // If a container control is exposing a Style Manager, we link to it
             // but do not access the container's children.
-            IMetroContainerControl container = control as IMetroContainerControl;
+            var container = control as IMetroContainerControl;
             if (container != null && container.StyleManager != null && !ReferenceEquals(this, container.StyleManager))
             {
                 ((IMetroStyledComponent)container.StyleManager).InternalStyleManager = this;
@@ -304,7 +304,7 @@ namespace MetroFramework5.Components
             }
 
             // Link to metro controls
-            IMetroStyledComponent styledComponent = control as IMetroStyledComponent;
+            var styledComponent = control as IMetroStyledComponent;
             if (styledComponent != null)
             {
                 styledComponent.InternalStyleManager = this;
@@ -316,7 +316,7 @@ namespace MetroFramework5.Components
             }
 
             // descend into tab pages
-            TabControl tabControl = control as TabControl;
+            var tabControl = control as TabControl;
             if (tabControl != null)
             {
                 foreach (TabPage tp in tabControl.TabPages)
@@ -362,7 +362,7 @@ namespace MetroFramework5.Components
         {
             try
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, MetroStyles.THEMES_XML);
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, MetroStyles.THEMES_XML);
                 Trace.WriteLine(path);
                 if (File.Exists(path))
                 {
@@ -418,7 +418,7 @@ namespace MetroFramework5.Components
             MetroStyles.Theme theme;
             if (!Styles.Themes.TryGetValue(Theme, out theme)) theme = Styles.DefaultTheme;
 
-            int dots = property.Count(c => c == '.');
+            var dots = property.Count(c => c == '.');
             Debug.Assert(dots > 1 || (category != null && state != null));
 
             // Fully-qualified property name

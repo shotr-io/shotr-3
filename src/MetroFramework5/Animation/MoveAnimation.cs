@@ -34,8 +34,8 @@ namespace MetroFramework5.Animation
             base.Start(control, transitionType, duration,
                 delegate
                 {
-                    int x = DoMoveAnimation(control.Location.X, targetPoint.X);
-                    int y = DoMoveAnimation(control.Location.Y, targetPoint.Y);
+                    var x = DoMoveAnimation(control.Location.X, targetPoint.X);
+                    var y = DoMoveAnimation(control.Location.Y, targetPoint.Y);
 
                     control.Location = new Point(x, y);
                 },
@@ -47,10 +47,10 @@ namespace MetroFramework5.Animation
 
         private int DoMoveAnimation(int startPos, int targetPos)
         {
-            float t = (float)counter - startTime;
+            var t = (float)counter - startTime;
             float b = startPos;
-            float c = (float)targetPos - startPos;
-            float d = (float)targetTime - startTime;
+            var c = (float)targetPos - startPos;
+            var d = (float)targetTime - startTime;
 
             return MakeTransition(t, b, d, c);
         }

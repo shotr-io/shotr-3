@@ -47,16 +47,16 @@ namespace Shotr.Core.Utils
                 {
                     const int size = 4096;
                     byte[] buffer = new byte[size];
-                    int count = 0;
-                    int pos = 0;
-                    int lastprogress = 0;
+                    var count = 0;
+                    var pos = 0;
+                    var lastprogress = 0;
                     while ((count = ms.Read(buffer, 0, size)) > 0)
                     {
                         rs.Write(buffer, 0, count);
                         rs.Flush();
                         pos += count;
                         //report progress.
-                        int progress = Convert.ToInt32(pos / (double)file.Length * 100);
+                        var progress = Convert.ToInt32(pos / (double)file.Length * 100);
                         if (lastprogress != progress)
                         {
                             Console.WriteLine("Reporting Upload Progress: {0}%", Convert.ToInt32(progress));

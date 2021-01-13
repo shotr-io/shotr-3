@@ -36,7 +36,7 @@ namespace Shotr.Core.DpiScaling
                     Font = DpiScaler.ScaleFont(_original, this, 0.5f);
 
                     var totalColumnWidth = Size.Width;
-                    for (int i = 0; i < Columns.Count; i++)
+                    for (var i = 0; i < Columns.Count; i++)
                     {
                         float colPercentage = (Convert.ToInt32(totalColumnWidth / Columns.Count));
                         Columns[i].Width = (int) colPercentage;

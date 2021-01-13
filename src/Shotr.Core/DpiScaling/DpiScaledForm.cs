@@ -69,7 +69,7 @@ namespace Shotr.Core.DpiScaling
             }
 
             var dpiScalingFactor = DpiScaler.GetScalingFactor(this);
-            int BORDER_WIDTH = (int)(5 * dpiScalingFactor);
+            var BORDER_WIDTH = (int)(5 * dpiScalingFactor);
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             using (SolidBrush b = new SolidBrush(GetStyleColor()))
                 e.Graphics.FillRectangle(b, 0, 0, Width, BORDER_WIDTH);
@@ -83,14 +83,14 @@ namespace Shotr.Core.DpiScaling
                         e.Graphics.DrawImage(Icon.ToBitmap(), new Rectangle((int)(dpiScalingFactor * 15), (int)(dpiScalingFactor * 22), (int)(dpiScalingFactor * 30), (int)(dpiScalingFactor * 30)));
                 }
                 catch { }
-                Rectangle bounds = new Rectangle((ShowIcon ? (int)(dpiScalingFactor * (15+30)) : (int)(dpiScalingFactor * 20)), (int)(dpiScalingFactor * 20), (int)(dpiScalingFactor * ((ClientRectangle.Width - 2) * 20)), (int)(dpiScalingFactor * 40));
+                var bounds = new Rectangle((ShowIcon ? (int)(dpiScalingFactor * (15+30)) : (int)(dpiScalingFactor * 20)), (int)(dpiScalingFactor * 20), (int)(dpiScalingFactor * ((ClientRectangle.Width - 2) * 20)), (int)(dpiScalingFactor * 40));
                 
                 TextRenderer.DrawText(e.Graphics, Text, GetThemeFont("Form.Title"), bounds, EffectiveForeColor, AsTextFormatFlags(TextAlign) | TextFormatFlags.EndEllipsis);
                 
                 //e.Graphics.DrawString(Text, GetThemeFont("Form.Title"), new SolidBrush(EffectiveForeColor), bounds);
             }
 
-            MetroBorderStyle bs = BorderStyle;
+            var bs = BorderStyle;
             if (bs == MetroBorderStyle.Default && !TryGetThemeProperty("BorderStyle", out bs))
                 bs = MetroBorderStyle.None;
 
@@ -112,7 +112,7 @@ namespace Shotr.Core.DpiScaling
             {
                 using (SolidBrush b = new SolidBrush(GetThemeColor("Button.ForeColor.Disabled")) )
                 {
-                    Size resizeHandleSize = new Size(2, 2);
+                    var resizeHandleSize = new Size(2, 2);
                     e.Graphics.FillRectangles(b, new[] {
                         new Rectangle(new Point(ClientRectangle.Width-14,ClientRectangle.Height-6), resizeHandleSize),
                         new Rectangle(new Point(ClientRectangle.Width-10,ClientRectangle.Height-6), resizeHandleSize),
@@ -136,9 +136,9 @@ namespace Shotr.Core.DpiScaling
             if (!ControlBox) return;
 
             var dpiScalingFactor = DpiScaler.GetScalingFactor(this);
-            int BORDER_WIDTH = (int)(5 * dpiScalingFactor);
+            var BORDER_WIDTH = (int)(5 * dpiScalingFactor);
 
-            Point location = new Point((int)(ClientRectangle.Width - BORDER_WIDTH - 25 * dpiScalingFactor), BORDER_WIDTH);
+            var location = new Point((int)(ClientRectangle.Width - BORDER_WIDTH - 25 * dpiScalingFactor), BORDER_WIDTH);
             foreach (var metroFormButton in _windowButtons.Where(metroFormButton => metroFormButton != null))
             {
                 metroFormButton.Location = location;

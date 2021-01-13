@@ -303,7 +303,7 @@ namespace Shotr.Core.Utils
             // Do not attempt to animate MDI child forms while showing or hiding as they do not behave as expected.
             if (_form.MdiParent == null)
             {
-                int flags = (int)_method | (int)_direction;
+                var flags = (int)_method | (int)_direction;
 
                 if (_form.Visible)
                 {

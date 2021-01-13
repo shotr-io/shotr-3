@@ -172,9 +172,9 @@ namespace MetroFramework5.Controls
 
             DrawProgressText(e.Graphics);
 
-            using (Pen p = new Pen(GetThemeColor("BorderColor")))
+            using (var p = new Pen(GetThemeColor("BorderColor")))
             {
-                Rectangle borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
+                var borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
                 e.Graphics.DrawRectangle(p, borderRect);
             }
         }

@@ -56,7 +56,7 @@ namespace MetroFramework5.Controls
         {
             base.OnMetroStyleChanged(e);
             BaseFont = EffectiveFont;
-            Color backColor = EffectiveBackColor;
+            var backColor = EffectiveBackColor;
             if( backColor.A == 255) BaseBackColor = backColor;
             BaseForeColor = EffectiveForeColor;
             if( IsHandleCreated)

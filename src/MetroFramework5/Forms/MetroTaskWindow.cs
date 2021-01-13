@@ -78,7 +78,7 @@ namespace MetroFramework5.Forms
             singletonWindow.Resizable = false;
             singletonWindow.StartPosition = FormStartPosition.Manual;
 
-            IMetroForm parentForm = parent as IMetroForm;
+            var parentForm = parent as IMetroForm;
             if (parentForm != null && parentForm.StyleManager != null)
             {
                 ((IMetroStyledComponent)singletonWindow.metroStyleManager).InternalStyleManager = parentForm.StyleManager;
@@ -171,7 +171,7 @@ namespace MetroFramework5.Forms
 
                 Size = new Size(400, 200);
 
-                Taskbar myTaskbar = new Taskbar();
+                var myTaskbar = new Taskbar();
                 switch (myTaskbar.Position)
                 {
                     case TaskbarPosition.Left:
@@ -198,7 +198,7 @@ namespace MetroFramework5.Forms
 
                 isInitialized = true;
 
-                MoveAnimation myMoveAnim = new MoveAnimation();
+                var myMoveAnim = new MoveAnimation();
                 myMoveAnim.Start(controlContainer, new Point(20, 60), TransitionType.EaseInOutCubic, 15);
             }
 
@@ -209,7 +209,7 @@ namespace MetroFramework5.Forms
         {
             base.OnPaint(e);
 
-            using (SolidBrush b = new SolidBrush(EffectiveBackColor))
+            using (var b = new SolidBrush(EffectiveBackColor))
             {
                 e.Graphics.FillRectangle(b, new Rectangle(Width - progressWidth, 0, progressWidth, 5));
             }
@@ -230,7 +230,7 @@ namespace MetroFramework5.Forms
             if (cancelTimer)
                 elapsedTime = 0;
 
-            double perc = elapsedTime / ((double)closeTime / 100);
+            var perc = elapsedTime / ((double)closeTime / 100);
             progressWidth = (int)(Width * (perc / 100));
             Invalidate(new Rectangle(0,0,Width,5));
 

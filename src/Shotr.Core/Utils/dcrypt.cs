@@ -67,9 +67,9 @@ namespace Shotr.Core.Utils
             //start in here.
             byte[] p = new byte[1];
             rng.GetBytes(p);
-            byte randchr = p[0];
-            byte chr = key[randchr][randchr];
-            for (int i = offset; i < count; i++)
+            var randchr = p[0];
+            var chr = key[randchr][randchr];
+            for (var i = offset; i < count; i++)
             {
                 chr = key[chr][data[i]];
                 Buffer.BlockCopy(new[] { chr }, 0, newdata, i, 1);
@@ -87,13 +87,13 @@ namespace Shotr.Core.Utils
         public byte[] Decrypt(byte[] data, int offset, int count)
         {
             byte[] newdata = new byte[count - 1];
-            byte chr = data[count - 1];
+            var chr = data[count - 1];
             chr = key[chr][chr];
             byte xchr = 0x00;
-            for (int i = offset; i < count - 1; i++)
+            for (var i = offset; i < count - 1; i++)
             {
                 xchr = data[i];
-                for (int j = 0; j < 256; j++)
+                for (var j = 0; j < 256; j++)
                 {
                     if (key[chr][j] == xchr)
                     {
@@ -119,7 +119,7 @@ namespace Shotr.Core.Utils
                 throw new InvalidDataException();
             key = new List<byte[]>();
             byte[] buff = new byte[256];
-            for (int j = 0; j < 256; j++)
+            for (var j = 0; j < 256; j++)
             {
                 Buffer.BlockCopy(data, (j == 0 ? 0 : j * 256), buff, 0, buff.Length);
                 //add to list.
@@ -135,7 +135,7 @@ namespace Shotr.Core.Utils
         {
             //write all bytes to a file in order.
             byte[] buff = new byte[65536];
-            for (int i = 0; i < key.Count; i++)
+            for (var i = 0; i < key.Count; i++)
             {
                 Array.Reverse(key[i]);
                 Buffer.BlockCopy(key[i], 0, buff, i * 256, key[i].Length);
@@ -149,21 +149,21 @@ namespace Shotr.Core.Utils
         private List<byte[]> PopulateGraph()
         {
             List<byte[]> x = new List<byte[]>();
-            for (int i = 0; i < 256; i++)
+            for (var i = 0; i < 256; i++)
             {
                 byte[] arr = new byte[256];
                 x.Add(arr);
             }
 
             byte[] ar = new byte[256];
-            for (int w = 0; w < ar.Length; w++)
+            for (var w = 0; w < ar.Length; w++)
                 ar[w] = (byte)w;
 
-            for (int i = 0; i < 256; i++)
+            for (var i = 0; i < 256; i++)
             {
                 //generate a 255-byte array.
                 byte[] p = RearrangeBytes(ar);
-                for (int j = 0; j < 256; j++)
+                for (var j = 0; j < 256; j++)
                 {
                     x[i] = p;
                 }
@@ -182,7 +182,7 @@ namespace Shotr.Core.Utils
                     byte[] buffer = new byte[size];
                     using (MemoryStream memory = new MemoryStream())
                     {
-                        int count = 0;
+                        var count = 0;
                         do
                         {
                             count = decompress.Read(buffer, 0, size);
@@ -218,16 +218,16 @@ namespace Shotr.Core.Utils
         {
             List<byte> w = new List<byte>();
             //populate w with arr.
-            for (int i = 0; i < arr.Length; i++)
+            for (var i = 0; i < arr.Length; i++)
                 w.Add(arr[i]);
 
             byte[] newarr = new byte[256];
-            int kkk = 0;
+            var kkk = 0;
             while (true)
             {
                 byte[] p = new byte[1];
                 rng.GetBytes(p);
-                byte f = w[p[0] % w.Count];
+                var f = w[p[0] % w.Count];
                 w.Remove(f);
                 Buffer.BlockCopy(new[] { f }, 0, newarr, kkk, 1);
                 kkk++;

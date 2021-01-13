@@ -110,7 +110,7 @@ namespace Shotr.Core.Hotkey
         public HotKeyHook RegisterHotKey(HotKeyData key)
         {
             // increment the counter.
-            int id = 1;
+            var id = 1;
             if (_ids.Count > 0)
                 id = _ids[_ids.Count - 1] + 1;
             _ids.Add(id);
@@ -140,7 +140,7 @@ namespace Shotr.Core.Hotkey
         public void Dispose()
         {
             // unregister all the registered hot keys.
-            for (int i = 0; i < _ids.Count; i++)
+            for (var i = 0; i < _ids.Count; i++)
             {
                 UnregisterHotKey(_window.Handle, _ids[i]);
             }

@@ -40,7 +40,7 @@ namespace MetroFramework5.Localization
 
         public string CurrentLanguage()
         {
-            string language = Application.CurrentCulture.TwoLetterISOLanguageName;
+            var language = Application.CurrentCulture.TwoLetterISOLanguageName;
             if (language.Length == 0)
             {
                 language = DefaultLanguage();
@@ -61,10 +61,10 @@ namespace MetroFramework5.Localization
 
         private void importManifestResource(string ctrlName)
         {
-            Assembly callingAssembly = Assembly.GetCallingAssembly();
+            var callingAssembly = Assembly.GetCallingAssembly();
 
-            string localizationFilename = callingAssembly.GetName().Name + ".Localization." + CurrentLanguage()  + "." + ctrlName + ".xml";
-            Stream xmlStream = callingAssembly.GetManifestResourceStream(localizationFilename);
+            var localizationFilename = callingAssembly.GetName().Name + ".Localization." + CurrentLanguage()  + "." + ctrlName + ".xml";
+            var xmlStream = callingAssembly.GetManifestResourceStream(localizationFilename);
 
             if (xmlStream == null)
             {
@@ -78,7 +78,7 @@ namespace MetroFramework5.Localization
 
             if (xmlStream != null)
             {
-                DataSet importDataset = new DataSet();
+                var importDataset = new DataSet();
                 importDataset.ReadXml(xmlStream);
 
                 languageDataset.Merge(importDataset);
@@ -108,7 +108,7 @@ namespace MetroFramework5.Localization
                 return "~" + key;
             }
 
-            DataRow[] languageRows = languageDataset.Tables["Localization"].Select("Key='" + key + "'");
+            var languageRows = languageDataset.Tables["Localization"].Select("Key='" + key + "'");
             if (languageRows.Length <= 0)
             {
                 return "~" + key;
@@ -119,26 +119,26 @@ namespace MetroFramework5.Localization
 
         public string translate(string key, object var1)
         {
-            string str = translate(key);
+            var str = translate(key);
             return str.Replace("#1", convertVar(var1));
         }
 
         public string translate(string key, object var1, object var2)
         {
-            string str = translate(key);
+            var str = translate(key);
             str = str.Replace("#1", convertVar(var1));
             return str.Replace("#2", convertVar(var2));
         }
         public string getValue(string key, object var1, object var2, object var3)
         {
-            string str = translate(key);
+            var str = translate(key);
             str = str.Replace("#1", convertVar(var1));
             str = str.Replace("#2", convertVar(var2));
             return str.Replace("#3", convertVar(var3));
         }
         public string getValue(string key, object var1, object var2, object var3, object var4)
         {
-            string str = translate(key);
+            var str = translate(key);
             str = str.Replace("#1", convertVar(var1));
             str = str.Replace("#2", convertVar(var2));
             str = str.Replace("#3", convertVar(var3));
@@ -146,7 +146,7 @@ namespace MetroFramework5.Localization
         }
         public string getValue(string key, object var1, object var2, object var3, object var4, object var5)
         {
-            string str = translate(key);
+            var str = translate(key);
             str = str.Replace("#1", convertVar(var1));
             str = str.Replace("#2", convertVar(var2));
             str = str.Replace("#3", convertVar(var3));

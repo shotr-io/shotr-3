@@ -71,7 +71,7 @@ namespace Shotr.Core.Hotkey
         public Modifiers ModifiersEnum
         {
             get {
-                Modifiers mod = Modifiers.None;
+                var mod = Modifiers.None;
                 if (Alt) mod |= Modifiers.Alt;
                 if (Control) mod |= Modifiers.Control;
                 if (Shift) mod |= Modifiers.Shift;
@@ -100,60 +100,26 @@ namespace Shotr.Core.Hotkey
         {
             string text = string.Empty;
 
-            if (KeyCode != Keys.None)
+            text += KeyCode switch
             {
-                if (Control)
-                {
-                    text += "Ctrl + ";
-                }
+                { } when KeyCode != Keys.None && Control => "Ctrl + ",
+                { } when KeyCode != Keys.None && Shift   => "Shift + ",
+                { } when KeyCode != Keys.None && Alt     => "Alt + "
+            };
 
-                if (Shift)
-                {
-                    text += "Shift + ";
-                }
-
-                if (Alt)
-                {
-                    text += "Alt + ";
-                }
-            }
-
-            if (IsOnlyModifiers)
+            text += KeyCode switch
             {
-                text += "...";
-            }
-            else if (KeyCode == Keys.Back)
-            {
-                text += "Backspace";
-            }
-            else if (KeyCode == Keys.Return)
-            {
-                text += "Enter";
-            }
-            else if (KeyCode == Keys.Capital)
-            {
-                text += "Caps Lock";
-            }
-            else if (KeyCode == Keys.Next)
-            {
-                text += "Page Down";
-            }
-            else if (KeyCode == Keys.Scroll)
-            {
-                text += "Scroll Lock";
-            }
-            else if (KeyCode >= Keys.D0 && KeyCode <= Keys.D9)
-            {
-                text += (KeyCode - Keys.D0).ToString();
-            }
-            else if (KeyCode >= Keys.NumPad0 && KeyCode <= Keys.NumPad9)
-            {
-                text += "Numpad " + (KeyCode - Keys.NumPad0);
-            }
-            else
-            {
-                text += ToStringWithSpaces(KeyCode);
-            }
+                {} when IsOnlyModifiers                                    => "...",
+                Keys.Back                                                  => "Backspace",
+                Keys.Return                                                => "Enter",
+                Keys.Capital                                               => "Caps Lock",
+                Keys.Next                                                  => "Page Down",
+                Keys.Scroll                                                => "Scroll Lock",
+                Keys.Oemtilde                                              => "~",
+                {} when KeyCode >= Keys.D0 && KeyCode <= Keys.D9           => (KeyCode - Keys.D0).ToString(),
+                {} when KeyCode >= Keys.NumPad0 && KeyCode <= Keys.NumPad9 => (KeyCode - Keys.NumPad0).ToString(),
+                _                                                          => ToStringWithSpaces(KeyCode)
+            };
 
             return text;
         }
@@ -164,7 +130,7 @@ namespace Shotr.Core.Hotkey
 
             StringBuilder result = new StringBuilder();
 
-            for (int i = 0; i < name.Length; i++)
+            for (var i = 0; i < name.Length; i++)
             {
                 if (i > 0 && char.IsUpper(name[i]))
                 {

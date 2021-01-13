@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using Shotr.Core.Custom;
+using Shotr.Core.Entities;
 using Shotr.Core.Hotkey;
 using Shotr.Core.Properties;
-using Shotr.Ui.Custom;
+using Shotr.Core.Settings;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Utils
@@ -13,8 +15,7 @@ namespace Shotr.Core.Utils
     [Serializable]
     public class Settings
     {
-        public static Settings Instance { get; set; }
-        public static string FolderPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\Shotr\\";
+        //public static Settings Instance { get; set; }
         public static dcrypt dc = new dcrypt(Resources.a);
 
         public BinaryFormatter bin = new BinaryFormatter();
@@ -23,11 +24,6 @@ namespace Shotr.Core.Utils
 
         public Dictionary<string, object[]> settings = new Dictionary<string, object[]>();
         public Dictionary<long, UploadResult> ImageHistory = new Dictionary<long, UploadResult>();
-
-        public string email;
-        public string password;
-        public string token;
-        public bool login = false;
 
         public void CreateNewSettings()
         {
@@ -91,18 +87,19 @@ namespace Shotr.Core.Utils
         //save status of shit.
         public void LoadSettings()
         {
-            if (File.Exists(FolderPath + "history"))
+            bin.Binder = new SettingsSerializationBinder();
+            if (File.Exists(SettingsHelper.FolderPath + "history"))
             {
-                MemoryStream ms = new MemoryStream(File.ReadAllBytes(FolderPath + "history"));
+                MemoryStream ms = new MemoryStream(File.ReadAllBytes(SettingsHelper.FolderPath + "history"));
                 try
                 {
                     ImageHistory = (Dictionary<long, UploadResult>)bin.Deserialize(ms);
                 }
                 catch { /*MessageBox.Show(ex.ToString());*/ }
             }
-            if (File.Exists(FolderPath + "settings"))
+            if (File.Exists(SettingsHelper.FolderPath + "settings"))
             {
-                MemoryStream ms = new MemoryStream(File.ReadAllBytes(FolderPath + "settings"));
+                MemoryStream ms = new MemoryStream(File.ReadAllBytes(SettingsHelper.FolderPath + "settings"));
                 try
                 {
                     settings = (Dictionary<string, object[]>)bin.Deserialize(ms);
@@ -136,12 +133,12 @@ namespace Shotr.Core.Utils
                         }
                     }
                     bin.Serialize(ok, settings);
-                    File.WriteAllBytes(FolderPath + "settings", ok.ToArray());
+                    File.WriteAllBytes(SettingsHelper.FolderPath + "settings", ok.ToArray());
                 }
                 using (MemoryStream ok = new MemoryStream())
                 {
                     bin.Serialize(ok, ImageHistory);
-                    File.WriteAllBytes(FolderPath + "history", ok.ToArray());
+                    File.WriteAllBytes(SettingsHelper.FolderPath + "history", ok.ToArray());
                 }
             }
             catch
@@ -521,7 +518,7 @@ namespace Shotr.Core.Utils
                 if (failed.Count > 0)
                 {
                     string list = "";
-                    foreach (KeyTask i in failed)
+                    foreach (var i in failed)
                     {
                         list += "\"" + i + "\"\n";
                     }
@@ -545,12 +542,5 @@ namespace Shotr.Core.Utils
         region_noupload_hotkey = 6,
     }
 
-    public enum CompressionLevel
-    {
-        Maximum = 100,
-        Ultra = 90,
-        High = 75,
-        Medium = 50,
-        Low = 40
-    }
+    
 }

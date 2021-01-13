@@ -85,8 +85,8 @@ namespace Shotr.Core.Capture
 
         public bool Record()
         {
-            int errorCode = OpenNoOutput(Options.FFmpeg.CLIPath, Options.GetFFmpegCommands());
-            bool result = errorCode == 0;
+            var errorCode = OpenNoOutput(Options.FFmpeg.CLIPath, Options.GetFFmpegCommands());
+            var result = errorCode == 0;
             return result;
         }
 
@@ -100,7 +100,7 @@ namespace Shotr.Core.Capture
                 Open(Options.FFmpeg.CLIPath, arg);
                 string output = Output.ToString();
                 string[] lines = output.Split('\n');
-                bool isVideo = true;
+                var isVideo = true;
                 Regex regex = new Regex("\\[dshow @ \\w+\\]  \"(.+)\"", RegexOptions.Compiled | RegexOptions.CultureInvariant);
                 foreach (string line in lines)
                 {
@@ -147,7 +147,7 @@ namespace Shotr.Core.Capture
             Thread.Sleep(200);
             if (!Closed)
             {
-                int i = 0;
+                var i = 0;
                 while (true)
                 {
                     if (!Closed)

@@ -93,17 +93,17 @@ namespace MetroFramework5.Controls
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            Color foreColor = EffectiveForeColor;
+            var foreColor = EffectiveForeColor;
 
             // border
-            using (Pen p = new Pen(GetThemeColor("BorderColor")))
+            using (var p = new Pen(GetThemeColor("BorderColor")))
             {
-                Rectangle boxRect = new Rectangle(0, 0, Width - 1, Height - 1);
+                var boxRect = new Rectangle(0, 0, Width - 1, Height - 1);
                 e.Graphics.DrawRectangle(p, boxRect);
             }
 
             // drop-down arrow
-            using (SolidBrush b = new SolidBrush(foreColor))
+            using (var b = new SolidBrush(foreColor))
             {
                 e.Graphics.FillPolygon(b, new[]
                     {
@@ -113,7 +113,7 @@ namespace MetroFramework5.Controls
                     });
             }
 
-            Rectangle textRect = new Rectangle(2, 2, Width - 20, Height - 4);
+            var textRect = new Rectangle(2, 2, Width - 20, Height - 4);
             TextRenderer.DrawText(e.Graphics, Text, EffectiveFont, textRect, foreColor, /*EffectiveBackColor,*/ TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
 
             if (drawPrompt)
@@ -130,15 +130,15 @@ namespace MetroFramework5.Controls
                 return;
             }
 
-            bool normal = e.State == (DrawItemState.NoAccelerator | DrawItemState.NoFocusRect) || e.State == DrawItemState.None;
+            var normal = e.State == (DrawItemState.NoAccelerator | DrawItemState.NoFocusRect) || e.State == DrawItemState.None;
             // TODO: We need a real background color for transparent drawing
-            Color backColor = normal ? EffectiveBackColor : GetStyleColor();
+            var backColor = normal ? EffectiveBackColor : GetStyleColor();
             // replace transparent background colors for drawing items
             if (normal && backColor.A < 255) backColor = GetThemeColor("BackColor");
             // TODO: We need complementing foreground colors for the styles !!
-            Color foreColor = normal ? EffectiveForeColor : GetThemeColor("Tile.ForeColor.Normal");
+            var foreColor = normal ? EffectiveForeColor : GetThemeColor("Tile.ForeColor.Normal");
 
-            using (SolidBrush b = new SolidBrush(backColor))
+            using (var b = new SolidBrush(backColor))
             {
                 e.Graphics.FillRectangle(b, e.Bounds);
             }
@@ -159,7 +159,7 @@ namespace MetroFramework5.Controls
 
         private void DrawTextPrompt()
         {
-            using (Graphics graphics = CreateGraphics())
+            using (var graphics = CreateGraphics())
             {
                 DrawTextPrompt(graphics);
             }
@@ -167,7 +167,7 @@ namespace MetroFramework5.Controls
 
         public virtual void DrawTextPrompt(Graphics g)
         {
-            Rectangle textRect = new Rectangle(2, 2, Width - 20, Height - 4);
+            var textRect = new Rectangle(2, 2, Width - 20, Height - 4);
             TextRenderer.DrawText(g, promptText, EffectiveFont, textRect, GetThemeColor("ForeColor", "Disabled"),
                 /*EffectiveBackColor,*/ TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
         }
@@ -180,9 +180,9 @@ namespace MetroFramework5.Controls
         {
             using (var g = CreateGraphics())
             {
-                string measureText = Text.Length > 0 ? Text : "MeasureText";
+                var measureText = Text.Length > 0 ? Text : "MeasureText";
                 proposedSize = new Size(int.MaxValue, int.MaxValue);
-                Size preferredSize = TextRenderer.MeasureText(g, measureText, EffectiveFont, proposedSize, TextFormatFlags.LeftAndRightPadding );
+                var preferredSize = TextRenderer.MeasureText(g, measureText, EffectiveFont, proposedSize, TextFormatFlags.LeftAndRightPadding );
                 preferredSize.Height += 4;
                 return preferredSize;
             }

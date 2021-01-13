@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
-namespace Shotr.Ui.Custom
+namespace Shotr.Core.Custom
 {
     [Serializable]
     public class CustomUploaderInstance
@@ -113,7 +113,7 @@ namespace Shotr.Ui.Custom
             //parse page for inst values.
             try
             {
-                string m = FileUploader.UploadFile(UploaderURL, k.Data, string.Format("{0}.{1}", Utils.GetRandomString(5), k.Extension.ToString()), FileValueName, k.ContentType, UploadValues, HeaderValues);
+                string m = FileUploader.UploadFile(UploaderURL, k.Data, string.Format("{0}.{1}", Utils.Utils.GetRandomString(5), k.Extension.ToString()), FileValueName, k.ContentType, UploadValues, HeaderValues);
                 //attempt to parse the URL out of it.
                 Uri s = new Uri(inst.CustomUploaderURL);
                 m = m.Replace("\\", "");
@@ -123,7 +123,7 @@ namespace Shotr.Ui.Custom
                                                   || char.IsWhiteSpace(c)
                                                   || c == '-' || c == '/' || c == '.' || c == ':')));
                 string newm = "";
-                for (int i = 0; i < m.Length; i++)
+                for (var i = 0; i < m.Length; i++)
                 {
                     if (!arr.Contains(m[i]))
                         newm += ' ';
@@ -141,7 +141,7 @@ namespace Shotr.Ui.Custom
                 reg = new Regex("(.*\\.)");
                 Match x = reg.Match(p.Value);
 
-                return new UploadResult(p.Value, x.Success ? x.Value.Substring(0, x.Value.Length - 1) : "", "", Utils.ToUnixTime(DateTime.Now), Title, false);
+                return new UploadResult(p.Value, x.Success ? x.Value.Substring(0, x.Value.Length - 1) : "", "", Utils.Utils.ToUnixTime(DateTime.Now), Title, false);
             }
             catch
             {

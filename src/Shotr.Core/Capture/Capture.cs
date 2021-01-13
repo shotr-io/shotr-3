@@ -12,7 +12,7 @@ namespace Shotr.Core.Capture
             {
                 Bitmap bmp;
                 IntPtr hicon;
-                Win32Stuff.CURSORINFO ci = new Win32Stuff.CURSORINFO();
+                var ci = new Win32Stuff.CURSORINFO();
                 Win32Stuff.ICONINFO icInfo;
                 ci.cbSize = Marshal.SizeOf(ci);
                 if (Win32Stuff.GetCursorInfo(out ci))

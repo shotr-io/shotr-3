@@ -10,7 +10,7 @@ namespace Shotr.Ui.Forms.Settings
         {
             InitializeComponent();
         }
-        public string UploaderURL = "";
+        public string UploaderUrl = "";
         private void CustomUploaderPrompt_Load(object sender, EventArgs e)
         {
             metroTextBox2.Text = "http://yoursite.com/PskdaAf.png\r\nhttp://sub.yoursite.com/Image.png\r\nhttp://yoursite.com/Image.jpg\r\n";
@@ -24,7 +24,7 @@ namespace Shotr.Ui.Forms.Settings
                 MessageBox.Show("Please input a valid URL.");
                 return;
             }
-            UploaderURL = metroTextBox1.Text;
+            UploaderUrl = metroTextBox1.Text;
             DialogResult = DialogResult.OK;
         }
     }

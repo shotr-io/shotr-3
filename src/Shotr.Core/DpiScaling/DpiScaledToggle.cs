@@ -48,7 +48,7 @@ namespace Shotr.Core.DpiScaling
             }
 
             var scalingFactor = DpiScaler.GetScalingFactor(this);
-            Size preferredSize = base.GetPreferredSize(proposedSize);
+            var preferredSize = base.GetPreferredSize(proposedSize);
             preferredSize.Width = (int)(scalingFactor * 80);
             //preferredSize.Height = scalingFactor * preferredSize.Height;
             return preferredSize;
@@ -65,36 +65,36 @@ namespace Shotr.Core.DpiScaling
             var dpiScalingFactor = DpiScaler.GetScalingFactor(this);
             using (Pen p = new Pen(GetThemeColor("BorderColor")))
             {
-                int width = ClientRectangle.Width - (DisplayStatus ? (int)(dpiScalingFactor * 31) : 1);
-                Rectangle boxRect = new Rectangle((DisplayStatus ? (int)(dpiScalingFactor * 30) : 0), 0, width, ClientRectangle.Height - 1);
+                var width = ClientRectangle.Width - (DisplayStatus ? (int)(dpiScalingFactor * 31) : 1);
+                var boxRect = new Rectangle((DisplayStatus ? (int)(dpiScalingFactor * 30) : 0), 0, width, ClientRectangle.Height - 1);
                 e.Graphics.DrawRectangle(p, boxRect);
             }
 
-            Color fillColor = Checked ? GetStyleColor() : GetThemeColor("CheckBox.BorderColor.Normal");
+            var fillColor = Checked ? GetStyleColor() : GetThemeColor("CheckBox.BorderColor.Normal");
             using (SolidBrush b = new SolidBrush(fillColor))
             {
-                int width = ClientRectangle.Width - (DisplayStatus ? (int)(dpiScalingFactor * 34) : 4);
-                Rectangle boxRect = new Rectangle(DisplayStatus ? (int)(dpiScalingFactor * 32) : 2, 2, width, ClientRectangle.Height - 4);
+                var width = ClientRectangle.Width - (DisplayStatus ? (int)(dpiScalingFactor * 34) : 4);
+                var boxRect = new Rectangle(DisplayStatus ? (int)(dpiScalingFactor * 32) : 2, 2, width, ClientRectangle.Height - 4);
                 e.Graphics.FillRectangle(b, boxRect);
             }
 
             using (SolidBrush b = new SolidBrush(EffectiveBackColor)) // TODO: ????
             {
-                int left = Checked ? Width - 11 : (DisplayStatus ? (int)(dpiScalingFactor * 30) : 0);
-                Rectangle boxRect = new Rectangle(left, 0, 11, ClientRectangle.Height);
+                var left = Checked ? Width - 11 : (DisplayStatus ? (int)(dpiScalingFactor * 30) : 0);
+                var boxRect = new Rectangle(left, 0, 11, ClientRectangle.Height);
                 e.Graphics.FillRectangle(b, boxRect);
             }
 
             using (SolidBrush b = new SolidBrush(GetThemeColor("CheckBox.BorderColor.Hover")))
             {
-                int left = Checked ? Width - 10 : (DisplayStatus ? (int)(dpiScalingFactor * 30) : 0);
-                Rectangle boxRect = new Rectangle(left, 0, 10, ClientRectangle.Height);
+                var left = Checked ? Width - 10 : (DisplayStatus ? (int)(dpiScalingFactor * 30) : 0);
+                var boxRect = new Rectangle(left, 0, 10, ClientRectangle.Height);
                 e.Graphics.FillRectangle(b, boxRect);
             }
 
             if (DisplayStatus)
             {
-                Rectangle textRect = new Rectangle(0, 0, (int)(dpiScalingFactor * 30), ClientRectangle.Height);
+                var textRect = new Rectangle(0, 0, (int)(dpiScalingFactor * 30), ClientRectangle.Height);
                 TextRenderer.DrawText(e.Graphics, Text, EffectiveFont, textRect, EffectiveForeColor, AsTextFormatFlags(TextAlign) | TextFormatFlags.EndEllipsis);
             }
         }

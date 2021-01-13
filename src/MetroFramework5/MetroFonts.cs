@@ -70,7 +70,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 _pfc = new PrivateFontCollection();
                 foreach (var item in resourceList)
                 {
-                    IntPtr data = Marshal.AllocCoTaskMem(item.Length);
+                    var data = Marshal.AllocCoTaskMem(item.Length);
                     Marshal.Copy(item, 0, data, item.Length);
                     uint dummy = 0;
                     AddFontMemResourceEx(data, (uint)item.Length, IntPtr.Zero, ref dummy);

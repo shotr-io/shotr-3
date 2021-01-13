@@ -42,7 +42,7 @@ namespace MetroFramework5
         /// </summary>
         public static StringFormat AsStringFormat(this ContentAlignment textAlign)
         {
-            StringFormat stringFormat = new StringFormat();
+            var stringFormat = new StringFormat();
             /*
                 TopLeft = 1,
                 TopCenter = 2,

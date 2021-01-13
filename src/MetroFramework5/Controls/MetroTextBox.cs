@@ -90,10 +90,10 @@ namespace MetroFramework5.Controls
             {
                 if (displayIcon && textBoxIcon != null)
                 {
-                    Size originalSize = textBoxIcon.Size;
-                    double resizeFactor = (ClientRectangle.Height - 2) / (double)originalSize.Height;
+                    var originalSize = textBoxIcon.Size;
+                    var resizeFactor = (ClientRectangle.Height - 2) / (double)originalSize.Height;
 
-                    Point iconLocation = new Point(1, 1);
+                    var iconLocation = new Point(1, 1);
                     return new Size((int)(originalSize.Width * resizeFactor), (int)(originalSize.Height * resizeFactor));
                 }
 
@@ -314,7 +314,7 @@ namespace MetroFramework5.Controls
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            using (Pen p = new Pen(UseStyleColors ? GetStyleColor() : GetThemeColor("BorderColor")))
+            using (var p = new Pen(UseStyleColors ? GetStyleColor() : GetThemeColor("BorderColor")))
             {
                 e.Graphics.DrawRectangle(p, new Rectangle(0, 0, Width - 1, Height - 1));
             }
@@ -326,7 +326,7 @@ namespace MetroFramework5.Controls
         {
             if (displayIcon && textBoxIcon != null)
             {
-                Point iconLocation = new Point(textBoxIconRight ? ClientRectangle.Width - IconSize.Width - 1 : 1, 1);
+                var iconLocation = new Point(textBoxIconRight ? ClientRectangle.Width - IconSize.Width - 1 : 1, 1);
                 g.DrawImage(textBoxIcon, iconLocation);
 
                 UpdateBaseTextBox();
@@ -402,7 +402,7 @@ namespace MetroFramework5.Controls
 
             if (displayIcon)
             {
-                Point textBoxLocation = new Point(IconSize.Width + 4, 3);
+                var textBoxLocation = new Point(IconSize.Width + 4, 3);
                 if (textBoxIconRight)
                 {
                     textBoxLocation = new Point(3, 3);
@@ -444,7 +444,7 @@ namespace MetroFramework5.Controls
 
             private void DrawTextPrompt()
             {
-                using (Graphics graphics = CreateGraphics())
+                using (var graphics = CreateGraphics())
                 {
                     DrawTextPrompt(graphics);
                 }
@@ -452,7 +452,7 @@ namespace MetroFramework5.Controls
 
             private void DrawTextPrompt(Graphics g)
             {
-                Rectangle clientRectangle = ClientRectangle;
+                var clientRectangle = ClientRectangle;
                 clientRectangle.Offset(TextAlign == HorizontalAlignment.Left ? 1 : 0, 1);
 
                 TextRenderer.DrawText(g, promptText, Font, clientRectangle, SystemColors.GrayText, BackColor, 

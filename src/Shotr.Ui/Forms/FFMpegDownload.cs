@@ -6,13 +6,14 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.DpiScaling;
+using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class FFMpegDownload : DpiScaledForm
+    public partial class FfMpegDownload : DpiScaledForm
     {
-        public FFMpegDownload()
+        public FfMpegDownload()
         {
             InitializeComponent();
         }
@@ -23,11 +24,11 @@ namespace Shotr.Ui.Forms
             metroButton1.Visible = false;
             metroProgressBar1.Visible = true;
             metroProgressBar1.Maximum = 100;
-            WebClient f = new WebClient();
+            var f = new WebClient();
             f.Proxy = null;
             f.DownloadFileCompleted += f_DownloadFileCompleted;
             f.DownloadProgressChanged += f_DownloadProgressChanged;
-            f.DownloadFileAsync(new Uri("http://shotr.io/ffmpeg.compr"), Core.Utils.Settings.FolderPath+ "ffmpeg.compressed");
+            f.DownloadFileAsync(new Uri("http://shotr.io/ffmpeg.compr"), SettingsHelper.FolderPath + "ffmpeg.compressed");
         }
 
         void f_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -41,10 +42,10 @@ namespace Shotr.Ui.Forms
             {
                 try
                 {
-                    Utils.Decompress(Core.Utils.Settings.FolderPath + "ffmpeg.compressed", Core.Utils.Settings.FolderPath + "ffmpeg.exe");
-                    File.Delete(Core.Utils.Settings.FolderPath + "ffmpeg.compressed");
+                    Utils.Decompress(SettingsHelper.FolderPath + "ffmpeg.compressed", SettingsHelper.FolderPath + "ffmpeg.exe");
+                    File.Delete(SettingsHelper.FolderPath + "ffmpeg.compressed");
                     //d76946e2b54773afd1c0e202dd14e73e
-                    if (Utils.MD5File(Core.Utils.Settings.FolderPath + "ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
+                    if (Utils.MD5File(SettingsHelper.FolderPath + "ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
                     {
                         throw new Exception();
                     }
@@ -58,7 +59,7 @@ namespace Shotr.Ui.Forms
                 {
                     //download was corrupted.
                     Process.Start("http://shotr.io/ffmpeg.exe");
-                    Process.Start(Core.Utils.Settings.FolderPath);
+                    Process.Start(SettingsHelper.FolderPath);
                     MessageBox.Show("The download was corrupted. The program is now opening a link in your web browser and a folder on your computer. Please place the downloaded file in the folder that pops up, then press OK.");
                     Invoke((MethodInvoker)(() =>
                     {

@@ -60,7 +60,7 @@ namespace MetroFramework5.Controls
 
 	// I wish we had mix-ins...
 
-	string[] controls = new string[] 
+	var controls = new string[] 
 		{ 
 			"Control", 
 			"Button", 
@@ -77,18 +77,18 @@ namespace MetroFramework5.Controls
 			"UserControl"
 		};
 
-	Type tContainer = typeof(IContainerControl);
-	Type tScrollable = typeof(ScrollableControl);
+	var tContainer = typeof(IContainerControl);
+	var tScrollable = typeof(ScrollableControl);
 	Debug.Assert(tContainer!=null&&tScrollable!=null);
 
 	foreach( var control in controls )
     {
 
-		Type tc = Type.GetType("System.Windows.Forms."+control+", " + tContainer.Assembly.FullName);
+		var tc = Type.GetType("System.Windows.Forms."+control+", " + tContainer.Assembly.FullName);
 		Debug.Assert( tc != null );
-		bool isContainer = tContainer.IsAssignableFrom(tc) || tScrollable.IsAssignableFrom(tc);
+		var isContainer = tContainer.IsAssignableFrom(tc) || tScrollable.IsAssignableFrom(tc);
 
-		string additionalInterfaces = isContainer ? "IMetroContainerControl, " : string.Empty;
+		var additionalInterfaces = isContainer ? "IMetroContainerControl, " : string.Empty;
 
 #>
 

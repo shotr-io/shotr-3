@@ -29,7 +29,7 @@ namespace Shotr.Core.Pipes
         public int WriteString(string outString)
         {
             byte[] outBuffer = streamEncoding.GetBytes(outString);
-            int len = outBuffer.Length;
+            var len = outBuffer.Length;
             if (len > UInt16.MaxValue)
             {
                 len = UInt16.MaxValue;

@@ -75,9 +75,9 @@ namespace MetroFramework5.Controls
         {
             if (Highlight && MetroControlState == "Normal")
             {
-                using (Pen p = new Pen(GetStyleColor()))
+                using (var p = new Pen(GetStyleColor()))
                 {
-                    Rectangle borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
+                    var borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
                     e.Graphics.DrawRectangle(p, borderRect);
                     borderRect = new Rectangle(1, 1, Width - 3, Height - 3);
                     e.Graphics.DrawRectangle(p, borderRect);
@@ -85,9 +85,9 @@ namespace MetroFramework5.Controls
             }
             else
             {
-                using (Pen p = new Pen(GetThemeColor("BorderColor")))
+                using (var p = new Pen(GetThemeColor("BorderColor")))
                 {
-                    Rectangle borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
+                    var borderRect = new Rectangle(0, 0, Width - 1, Height - 1);
                     e.Graphics.DrawRectangle(p, borderRect);
                 }
             }

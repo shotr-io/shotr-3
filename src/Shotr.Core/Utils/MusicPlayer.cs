@@ -1,33 +1,44 @@
 ﻿using System.IO;
 using System.Media;
 using Shotr.Core.Properties;
+using Shotr.Core.Settings;
 
 namespace Shotr.Core.Utils
 {
     public class MusicPlayer
     {
-        private static SoundPlayer sp;
-        public static void PlayCaptured()
+        private readonly BaseSettings _settings;
+        private readonly dcrypt _dcrypt;
+
+        private readonly SoundPlayer _capturedSound;
+        private readonly SoundPlayer _uploadedSound;
+
+        public MusicPlayer(BaseSettings settings, dcrypt dcrypt)
         {
-            if (Settings.Instance.GetValue("play_sounds") == null || (bool)Settings.Instance.GetValue("play_sounds")[0])
+            _settings = settings;
+            _dcrypt = dcrypt;
+
+            var capturedMemoryStream = new MemoryStream(_dcrypt.Decrypt(Resources.sounds_1046_et_voila));
+            _capturedSound = new SoundPlayer(capturedMemoryStream);
+                
+                
+            var uploadedMemoryStream = new MemoryStream(_dcrypt.Decrypt(Resources.sounds_917_communication_channel));
+            _uploadedSound = new SoundPlayer(uploadedMemoryStream);
+        }
+        
+        public void PlayCaptured()
+        {
+            if (_settings.PlaySounds)
             {
-                using (MemoryStream p = new MemoryStream(Settings.dc.Decrypt(Resources.sounds_1046_et_voila)))
-                {
-                    sp = new SoundPlayer(p);
-                    sp.Play();
-                }
+                _capturedSound.Play();
             }
         }
 
-        public static void PlayUploaded()
+        public void PlayUploaded()
         {
-            if (Settings.Instance.GetValue("play_sounds") == null || (bool)Settings.Instance.GetValue("play_sounds")[0])
+            if (_settings.PlaySounds)
             {
-                using (MemoryStream p = new MemoryStream(Settings.dc.Decrypt(Resources.sounds_917_communication_channel)))
-                {
-                    sp = new SoundPlayer(p);
-                    sp.Play();
-                }
+                _uploadedSound.Play();
             }
         }
     }

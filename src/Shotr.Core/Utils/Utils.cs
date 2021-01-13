@@ -50,7 +50,7 @@ namespace Shotr.Core.Utils
         public static System.Drawing.Image Apply(ColorMatrix matrix, System.Drawing.Image img)
         {
             Bitmap dest = CreateEmptyBitmap(img, PixelFormat.Format32bppArgb);
-            Rectangle destRect = new Rectangle(0, 0, dest.Width, dest.Height);
+            var destRect = new Rectangle(0, 0, dest.Width, dest.Height);
             return Apply(matrix, img, dest, destRect);
         }
 
@@ -86,7 +86,7 @@ namespace Shotr.Core.Utils
         public static Bitmap CopyActiveWindow(Rectangle src)
         {
 			try {
-            Rectangle CurrScreen = Screen.FromPoint(Cursor.Position).Bounds;
+            var CurrScreen = Screen.FromPoint(Cursor.Position).Bounds;
             Bitmap bmpScreenCapture = new Bitmap(src.Width, src.Height);
             Graphics g = Graphics.FromImage(bmpScreenCapture);
             g.CopyFromScreen(new Point(src.Left, src.Top),
@@ -114,11 +114,11 @@ namespace Shotr.Core.Utils
 
         public static Bitmap CopyScreen()
         {
-            int height = 0;
-            int width = 0;
-            int left = 0;
-            int top = 0;
-            int i = 0;
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
+            var i = 0;
             foreach (var screen in Screen.AllScreens)
             {
                 screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
@@ -132,7 +132,7 @@ namespace Shotr.Core.Utils
                 i++;
             }
             
-            Rectangle CurrScreen = new Rectangle(new Point(left, top), new Size(width, height));
+            var CurrScreen = new Rectangle(new Point(left, top), new Size(width, height));
 
             Console.WriteLine("Post Scaling: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", CurrScreen.Y, CurrScreen.X, CurrScreen.Width, CurrScreen.Height);
 
@@ -182,7 +182,7 @@ namespace Shotr.Core.Utils
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                int pos = filePath.LastIndexOf('.');
+                var pos = filePath.LastIndexOf('.');
 
                 if (pos >= 0)
                 {
@@ -276,12 +276,12 @@ namespace Shotr.Core.Utils
         public static extern IntPtr GetWindowDC(IntPtr ptr);
         public static Bitmap BitBltCopy(Rectangle scr)
         {
-            IntPtr hDesk = GetDesktopWindow();
-            IntPtr hSrce = GetWindowDC(hDesk);
-            IntPtr hDest = CreateCompatibleDC(hSrce);
-            IntPtr hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
-            IntPtr hOldBmp = SelectObject(hDest, hBmp);
-            bool b = BitBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
+            var hDesk = GetDesktopWindow();
+            var hSrce = GetWindowDC(hDesk);
+            var hDest = CreateCompatibleDC(hSrce);
+            var hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
+            var hOldBmp = SelectObject(hDest, hBmp);
+            var b = BitBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
             Bitmap bmp = System.Drawing.Image.FromHbitmap(hBmp);
             SelectObject(hDest, hOldBmp);
             DeleteObject(hBmp);
@@ -292,12 +292,12 @@ namespace Shotr.Core.Utils
 
         public static Bitmap StrechBltCopy(Rectangle scr)
         {
-            IntPtr hDesk = GetDesktopWindow();
-            IntPtr hSrce = GetWindowDC(hDesk);
-            IntPtr hDest = CreateCompatibleDC(hSrce);
-            IntPtr hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
-            IntPtr hOldBmp = SelectObject(hDest, hBmp);
-            bool b = StretchBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, scr.Width, scr.Height, TernaryRasterOperations.SRCCOPY | TernaryRasterOperations.CAPTUREBLT);
+            var hDesk = GetDesktopWindow();
+            var hSrce = GetWindowDC(hDesk);
+            var hDest = CreateCompatibleDC(hSrce);
+            var hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
+            var hOldBmp = SelectObject(hDest, hBmp);
+            var b = StretchBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, scr.Width, scr.Height, TernaryRasterOperations.SRCCOPY | TernaryRasterOperations.CAPTUREBLT);
             Bitmap bmp = System.Drawing.Image.FromHbitmap(hBmp);
             SelectObject(hDest, hOldBmp);
             DeleteObject(hBmp);
@@ -480,7 +480,7 @@ namespace Shotr.Core.Utils
                         byte[] buffer = new byte[size];
                         using (FileStream m = File.OpenWrite(outputpath))
                         {
-                            int count = 0;
+                            var count = 0;
                             do
                             {
                                 count = decompress.Read(buffer, 0, size);
@@ -522,7 +522,7 @@ namespace Shotr.Core.Utils
             {
                 screen = Screen.PrimaryScreen;
             }
-            RECT rect = new RECT();
+            var rect = new RECT();
             GetWindowRect(new HandleRef(null, GetForegroundWindow()), ref rect);
             return new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top).Contains(screen.Bounds);
         }
@@ -546,7 +546,7 @@ namespace Shotr.Core.Utils
 
         public static bool IsDXFullScreen()
         {
-            int x = SHQueryUserNotificationState(out var qu);
+            var x = SHQueryUserNotificationState(out var qu);
             return qu == QUERY_USER_NOTIFICATION_STATE.QUNS_RUNNING_D3D_FULL_SCREEN;
         }
 
