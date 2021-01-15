@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using MetroFramework5.Components;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
@@ -52,42 +52,42 @@ namespace Shotr.Ui.Forms
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroTextBox1 = new Shotr.Core.DpiScaling.DpiScaledTextbox();
-            this.metroTabControl1 = new Shotr.Core.DpiScaling.DpiScaledTabControl();
-            this.metroTabPage4 = new Shotr.Core.DpiScaling.DpiScaledTabPage();
-            this.betterListView1 = new Shotr.Core.DpiScaling.DpiScaledListbox();
+            this.metroTextBox1 = new DpiScaledTextbox();
+            this.metroTabControl1 = new DpiScaledTabControl();
+            this.metroTabPage4 = new DpiScaledTabPage();
+            this.betterListView1 = new DpiScaledListbox();
             this.betterListViewColumnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.betterListViewColumnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.metroTabPage2 = new Shotr.Core.DpiScaling.DpiScaledTabPage();
-            this.metroPanel2 = new Shotr.Core.DpiScaling.DpiScaledPanel();
-            this.hotkeyButton6 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel7 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.hotkeyButton5 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel15 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.hotkeyButton4 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel14 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.hotkeyButton3 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
-            this.hotkeyButton2 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
-            this.hotkeyButton1 = new Shotr.Core.DpiScaling.DpiScaledHotkeyButton();
-            this.metroLabel1 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroToggle3 = new Shotr.Core.DpiScaling.DpiScaledToggle();
-            this.metroLabel11 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroLabel9 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroLabel2 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroComboBox1 = new Shotr.Core.DpiScaling.DpiScaledCombobox();
-            this.metroLabel3 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroLabel4 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroPanel1 = new Shotr.Core.DpiScaling.DpiScaledPanel();
-            this.metroButton5 = new Shotr.Core.DpiScaling.DpiScaledButton();
-            this.metroButton1 = new Shotr.Core.DpiScaling.DpiScaledButton();
-            this.metroLabel5 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroButton2 = new Shotr.Core.DpiScaling.DpiScaledButton();
-            this.metroPanel4 = new Shotr.Core.DpiScaling.DpiScaledPanel();
-            this.metroButton6 = new Shotr.Core.DpiScaling.DpiScaledButton();
-            this.metroButton4 = new Shotr.Core.DpiScaling.DpiScaledButton();
-            this.uploadCountLabel = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.metroLabel10 = new Shotr.Core.DpiScaling.DpiScaledLabel();
-            this.emailLabel = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroTabPage2 = new DpiScaledTabPage();
+            this.metroPanel2 = new DpiScaledPanel();
+            this.noUploadHotKeyButton = new DpiScaledHotkeyButton();
+            this.metroLabel7 = new DpiScaledLabel();
+            this.uploadClipboardHotKeyButton = new DpiScaledHotkeyButton();
+            this.metroLabel15 = new DpiScaledLabel();
+            this.recordScreenHotKeyButton = new DpiScaledHotkeyButton();
+            this.metroLabel14 = new DpiScaledLabel();
+            this.activeWindowHotKeyButton = new DpiScaledHotkeyButton();
+            this.fullScreenHotKeyButton = new DpiScaledHotkeyButton();
+            this.regionHotKeyButton = new DpiScaledHotkeyButton();
+            this.metroLabel1 = new DpiScaledLabel();
+            this.directUrlToggle = new DpiScaledToggle();
+            this.metroLabel11 = new DpiScaledLabel();
+            this.metroLabel9 = new DpiScaledLabel();
+            this.metroLabel2 = new DpiScaledLabel();
+            this.selectedImageUploader = new DpiScaledCombobox();
+            this.metroLabel3 = new DpiScaledLabel();
+            this.metroLabel4 = new DpiScaledLabel();
+            this.metroPanel1 = new DpiScaledPanel();
+            this.metroButton5 = new DpiScaledButton();
+            this.metroButton1 = new DpiScaledButton();
+            this.metroLabel5 = new DpiScaledLabel();
+            this.metroButton2 = new DpiScaledButton();
+            this.metroPanel4 = new DpiScaledPanel();
+            this.metroButton6 = new DpiScaledButton();
+            this.metroButton4 = new DpiScaledButton();
+            this.uploadCountLabel = new DpiScaledLabel();
+            this.metroLabel10 = new DpiScaledLabel();
+            this.emailLabel = new DpiScaledLabel();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -96,7 +96,7 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroLabel8 = new Shotr.Core.DpiScaling.DpiScaledLabel();
+            this.metroLabel8 = new DpiScaledLabel();
             this.metroStyleExtender1 = new MetroFramework5.Components.MetroStyleExtender(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
@@ -200,7 +200,6 @@ namespace Shotr.Ui.Forms
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
             this.historyToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.historyToolStripMenuItem.Text = "History";
-            this.historyToolStripMenuItem.Click += new System.EventHandler(this.historyToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -312,21 +311,21 @@ namespace Shotr.Ui.Forms
             // metroPanel2
             // 
             this.metroPanel2.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
-            this.metroPanel2.Controls.Add(this.hotkeyButton6);
+            this.metroPanel2.Controls.Add(this.noUploadHotKeyButton);
             this.metroPanel2.Controls.Add(this.metroLabel7);
-            this.metroPanel2.Controls.Add(this.hotkeyButton5);
+            this.metroPanel2.Controls.Add(this.uploadClipboardHotKeyButton);
             this.metroPanel2.Controls.Add(this.metroLabel15);
-            this.metroPanel2.Controls.Add(this.hotkeyButton4);
+            this.metroPanel2.Controls.Add(this.recordScreenHotKeyButton);
             this.metroPanel2.Controls.Add(this.metroLabel14);
-            this.metroPanel2.Controls.Add(this.hotkeyButton3);
-            this.metroPanel2.Controls.Add(this.hotkeyButton2);
-            this.metroPanel2.Controls.Add(this.hotkeyButton1);
+            this.metroPanel2.Controls.Add(this.activeWindowHotKeyButton);
+            this.metroPanel2.Controls.Add(this.fullScreenHotKeyButton);
+            this.metroPanel2.Controls.Add(this.regionHotKeyButton);
             this.metroPanel2.Controls.Add(this.metroLabel1);
-            this.metroPanel2.Controls.Add(this.metroToggle3);
+            this.metroPanel2.Controls.Add(this.directUrlToggle);
             this.metroPanel2.Controls.Add(this.metroLabel11);
             this.metroPanel2.Controls.Add(this.metroLabel9);
             this.metroPanel2.Controls.Add(this.metroLabel2);
-            this.metroPanel2.Controls.Add(this.metroComboBox1);
+            this.metroPanel2.Controls.Add(this.selectedImageUploader);
             this.metroPanel2.Controls.Add(this.metroLabel3);
             this.metroPanel2.Controls.Add(this.metroLabel4);
             this.metroPanel2.HorizontalScrollbarBarColor = true;
@@ -343,15 +342,15 @@ namespace Shotr.Ui.Forms
             // 
             // hotkeyButton6
             // 
-            this.hotkeyButton6.HotKey = null;
-            this.hotkeyButton6.Location = new System.Drawing.Point(121, 55);
-            this.hotkeyButton6.Name = "hotkeyButton6";
-            this.hotkeyButton6.Size = new System.Drawing.Size(142, 21);
-            this.hotkeyButton6.Style = "Hotkey";
-            this.hotkeyButton6.TabIndex = 32;
-            this.hotkeyButton6.Text = "None";
-            this.hotkeyButton6.Theme = "NewTheme";
-            this.hotkeyButton6.OnHotKeyChanged += new System.EventHandler(this.hotkeyButton6_OnHotKeyChanged);
+            this.noUploadHotKeyButton.HotKey = null;
+            this.noUploadHotKeyButton.Location = new System.Drawing.Point(121, 55);
+            this.noUploadHotKeyButton.Name = "noUploadHotKeyButton";
+            this.noUploadHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.noUploadHotKeyButton.Style = "Hotkey";
+            this.noUploadHotKeyButton.TabIndex = 32;
+            this.noUploadHotKeyButton.Text = "None";
+            this.noUploadHotKeyButton.Theme = "NewTheme";
+            this.noUploadHotKeyButton.OnHotKeyChanged += new System.EventHandler(this.noUploadHotKeyButton_OnHotKeyChanged);
             // 
             // metroLabel7
             // 
@@ -369,15 +368,15 @@ namespace Shotr.Ui.Forms
             // 
             // hotkeyButton5
             // 
-            this.hotkeyButton5.HotKey = null;
-            this.hotkeyButton5.Location = new System.Drawing.Point(121, 162);
-            this.hotkeyButton5.Name = "hotkeyButton5";
-            this.hotkeyButton5.Size = new System.Drawing.Size(142, 21);
-            this.hotkeyButton5.Style = "Hotkey";
-            this.hotkeyButton5.TabIndex = 30;
-            this.hotkeyButton5.Text = "None";
-            this.hotkeyButton5.Theme = "NewTheme";
-            this.hotkeyButton5.OnHotKeyChanged += new System.EventHandler(this.hotkeyButton5_OnHotKeyChanged);
+            this.uploadClipboardHotKeyButton.HotKey = null;
+            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 162);
+            this.uploadClipboardHotKeyButton.Name = "uploadClipboardHotKeyButton";
+            this.uploadClipboardHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.uploadClipboardHotKeyButton.Style = "Hotkey";
+            this.uploadClipboardHotKeyButton.TabIndex = 30;
+            this.uploadClipboardHotKeyButton.Text = "None";
+            this.uploadClipboardHotKeyButton.Theme = "NewTheme";
+            this.uploadClipboardHotKeyButton.OnHotKeyChanged += new System.EventHandler(this.uploadClipboardHotKeyButton_OnHotKeyChanged);
             // 
             // metroLabel15
             // 
@@ -395,15 +394,15 @@ namespace Shotr.Ui.Forms
             // 
             // hotkeyButton4
             // 
-            this.hotkeyButton4.HotKey = null;
-            this.hotkeyButton4.Location = new System.Drawing.Point(121, 136);
-            this.hotkeyButton4.Name = "hotkeyButton4";
-            this.hotkeyButton4.Size = new System.Drawing.Size(142, 21);
-            this.hotkeyButton4.Style = "Hotkey";
-            this.hotkeyButton4.TabIndex = 28;
-            this.hotkeyButton4.Text = "None";
-            this.hotkeyButton4.Theme = "NewTheme";
-            this.hotkeyButton4.OnHotKeyChanged += new System.EventHandler(this.hotkeyButton4_OnHotKeyChanged);
+            this.recordScreenHotKeyButton.HotKey = null;
+            this.recordScreenHotKeyButton.Location = new System.Drawing.Point(121, 136);
+            this.recordScreenHotKeyButton.Name = "recordScreenHotKeyButton";
+            this.recordScreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.recordScreenHotKeyButton.Style = "Hotkey";
+            this.recordScreenHotKeyButton.TabIndex = 28;
+            this.recordScreenHotKeyButton.Text = "None";
+            this.recordScreenHotKeyButton.Theme = "NewTheme";
+            this.recordScreenHotKeyButton.OnHotKeyChanged += new System.EventHandler(this.recordScreenHotKeyButton_OnHotKeyChanged);
             // 
             // metroLabel14
             // 
@@ -421,39 +420,39 @@ namespace Shotr.Ui.Forms
             // 
             // hotkeyButton3
             // 
-            this.hotkeyButton3.HotKey = null;
-            this.hotkeyButton3.Location = new System.Drawing.Point(121, 109);
-            this.hotkeyButton3.Name = "hotkeyButton3";
-            this.hotkeyButton3.Size = new System.Drawing.Size(142, 21);
-            this.hotkeyButton3.Style = "Hotkey";
-            this.hotkeyButton3.TabIndex = 26;
-            this.hotkeyButton3.Text = "None";
-            this.hotkeyButton3.Theme = "NewTheme";
-            this.hotkeyButton3.OnHotKeyChanged += new System.EventHandler(this.hotkeyButton3_OnHotKeyChanged);
+            this.activeWindowHotKeyButton.HotKey = null;
+            this.activeWindowHotKeyButton.Location = new System.Drawing.Point(121, 109);
+            this.activeWindowHotKeyButton.Name = "activeWindowHotKeyButton";
+            this.activeWindowHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.activeWindowHotKeyButton.Style = "Hotkey";
+            this.activeWindowHotKeyButton.TabIndex = 26;
+            this.activeWindowHotKeyButton.Text = "None";
+            this.activeWindowHotKeyButton.Theme = "NewTheme";
+            this.activeWindowHotKeyButton.OnHotKeyChanged += new System.EventHandler(this.activeWindowHotKeyButton_OnHotKeyChanged);
             // 
             // hotkeyButton2
             // 
-            this.hotkeyButton2.HotKey = null;
-            this.hotkeyButton2.Location = new System.Drawing.Point(121, 82);
-            this.hotkeyButton2.Name = "hotkeyButton2";
-            this.hotkeyButton2.Size = new System.Drawing.Size(142, 21);
-            this.hotkeyButton2.Style = "Hotkey";
-            this.hotkeyButton2.TabIndex = 25;
-            this.hotkeyButton2.Text = "None";
-            this.hotkeyButton2.Theme = "NewTheme";
-            this.hotkeyButton2.OnHotKeyChanged += new System.EventHandler(this.hotkeyButton2_OnHotKeyChanged);
+            this.fullScreenHotKeyButton.HotKey = null;
+            this.fullScreenHotKeyButton.Location = new System.Drawing.Point(121, 82);
+            this.fullScreenHotKeyButton.Name = "fullScreenHotKeyButton";
+            this.fullScreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.fullScreenHotKeyButton.Style = "Hotkey";
+            this.fullScreenHotKeyButton.TabIndex = 25;
+            this.fullScreenHotKeyButton.Text = "None";
+            this.fullScreenHotKeyButton.Theme = "NewTheme";
+            this.fullScreenHotKeyButton.OnHotKeyChanged += new System.EventHandler(this.fullScreenHotKeyButton_OnHotKeyChanged);
             // 
             // hotkeyButton1
             // 
-            this.hotkeyButton1.HotKey = null;
-            this.hotkeyButton1.Location = new System.Drawing.Point(121, 27);
-            this.hotkeyButton1.Name = "hotkeyButton1";
-            this.hotkeyButton1.Size = new System.Drawing.Size(142, 21);
-            this.hotkeyButton1.Style = "Hotkey";
-            this.hotkeyButton1.TabIndex = 24;
-            this.hotkeyButton1.Text = "None";
-            this.hotkeyButton1.Theme = "NewTheme";
-            this.hotkeyButton1.OnHotKeyChanged += new System.EventHandler(this.hotkeyButton1_OnHotKeyChanged);
+            this.regionHotKeyButton.HotKey = null;
+            this.regionHotKeyButton.Location = new System.Drawing.Point(121, 27);
+            this.regionHotKeyButton.Name = "regionHotKeyButton";
+            this.regionHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.regionHotKeyButton.Style = "Hotkey";
+            this.regionHotKeyButton.TabIndex = 24;
+            this.regionHotKeyButton.Text = "None";
+            this.regionHotKeyButton.Theme = "NewTheme";
+            this.regionHotKeyButton.OnHotKeyChanged += new System.EventHandler(this.regionHotkeyButton_OnHotKeyChanged);
             // 
             // metroLabel1
             // 
@@ -472,17 +471,16 @@ namespace Shotr.Ui.Forms
             // 
             // metroToggle3
             // 
-            this.metroToggle3.AutoSize = true;
-            this.metroToggle3.Location = new System.Drawing.Point(183, 250);
-            this.metroToggle3.Name = "metroToggle3";
-            this.metroToggle3.Size = new System.Drawing.Size(80, 19);
-            this.metroToggle3.Style = "NewTheme";
-            this.metroToggle3.TabIndex = 18;
-            this.metroToggle3.Text = "Off";
-            this.metroToggle3.Theme = "NewTheme";
-            this.metroToggle3.UseVisualStyleBackColor = false;
-            this.metroToggle3.Visible = false;
-            this.metroToggle3.CheckedChanged += new System.EventHandler(this.metroToggle3_CheckedChanged);
+            this.directUrlToggle.AutoSize = true;
+            this.directUrlToggle.Location = new System.Drawing.Point(183, 250);
+            this.directUrlToggle.Name = "directUrlToggle";
+            this.directUrlToggle.Size = new System.Drawing.Size(80, 19);
+            this.directUrlToggle.Style = "NewTheme";
+            this.directUrlToggle.TabIndex = 18;
+            this.directUrlToggle.Text = "Off";
+            this.directUrlToggle.Theme = "NewTheme";
+            this.directUrlToggle.UseVisualStyleBackColor = false;
+            this.directUrlToggle.Visible = false;
             // 
             // metroLabel11
             // 
@@ -530,15 +528,15 @@ namespace Shotr.Ui.Forms
             // 
             // metroComboBox1
             // 
-            this.metroComboBox1.FormattingEnabled = true;
-            this.metroComboBox1.ItemHeight = 29;
-            this.metroComboBox1.Location = new System.Drawing.Point(18, 211);
-            this.metroComboBox1.Name = "metroComboBox1";
-            this.metroComboBox1.Size = new System.Drawing.Size(245, 35);
-            this.metroComboBox1.Style = "NewTheme";
-            this.metroComboBox1.TabIndex = 15;
-            this.metroComboBox1.Theme = "NewTheme";
-            this.metroComboBox1.SelectedIndexChanged += new System.EventHandler(this.metroComboBox1_SelectedIndexChanged);
+            this.selectedImageUploader.FormattingEnabled = true;
+            this.selectedImageUploader.ItemHeight = 29;
+            this.selectedImageUploader.Location = new System.Drawing.Point(18, 211);
+            this.selectedImageUploader.Name = "selectedImageUploader";
+            this.selectedImageUploader.Size = new System.Drawing.Size(245, 35);
+            this.selectedImageUploader.Style = "NewTheme";
+            this.selectedImageUploader.TabIndex = 15;
+            this.selectedImageUploader.Theme = "NewTheme";
+            this.selectedImageUploader.SelectedIndexChanged += new System.EventHandler(this.metroComboBox1_SelectedIndexChanged);
             // 
             // metroLabel3
             // 
@@ -599,7 +597,7 @@ namespace Shotr.Ui.Forms
             this.metroButton5.TabIndex = 30;
             this.metroButton5.Text = "Global Settings";
             this.metroButton5.Theme = "NewTheme";
-            this.metroButton5.Click += new System.EventHandler(this.metroButton5_Click);
+            this.metroButton5.Click += new System.EventHandler(this.settingsButton_Click);
             // 
             // metroButton1
             // 
@@ -613,7 +611,7 @@ namespace Shotr.Ui.Forms
             this.metroButton1.TabIndex = 27;
             this.metroButton1.Text = "Reset To Default Settings";
             this.metroButton1.Theme = "NewTheme";
-            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click_1);
+            this.metroButton1.Click += new System.EventHandler(this.resetSettingsButton_Click);
             // 
             // metroLabel5
             // 
@@ -642,7 +640,7 @@ namespace Shotr.Ui.Forms
             this.metroButton2.TabIndex = 23;
             this.metroButton2.Text = "Custom Uploaders";
             this.metroButton2.Theme = "NewTheme";
-            this.metroButton2.Click += new System.EventHandler(this.metroButton2_Click);
+            this.metroButton2.Click += new System.EventHandler(this.customUploaderButton_Click);
             // 
             // metroPanel4
             // 
@@ -690,7 +688,7 @@ namespace Shotr.Ui.Forms
             this.metroButton4.TabIndex = 31;
             this.metroButton4.Text = "Log Out";
             this.metroButton4.Theme = "NewTheme";
-            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click);
+            this.metroButton4.Click += new System.EventHandler(this.logoutButton_Click);
             // 
             // uploadCountLabel
             // 
@@ -748,14 +746,12 @@ namespace Shotr.Ui.Forms
             this.clearHistoryToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(148, 126);
-            this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
             this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveImageToolStripMenuItem.Text = "Save Image";
-            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
@@ -774,7 +770,6 @@ namespace Shotr.Ui.Forms
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -786,7 +781,6 @@ namespace Shotr.Ui.Forms
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(147, 22);
             this.toolStripMenuItem2.Text = "Remove Entry";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // clearHistoryToolStripMenuItem
             // 
@@ -808,7 +802,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.metroLabel8.Theme = "NewTheme";
             this.metroLabel8.UseCompatibleTextRendering = true;
-            this.metroLabel8.Click += new System.EventHandler(this.metroLabel8_Click);
+            this.metroLabel8.Click += new System.EventHandler(this.aboutLabel_Click);
             // 
             // MainForm
             // 
@@ -830,7 +824,7 @@ namespace Shotr.Ui.Forms
             this.Text = "Shotr";
             this.Theme = "NewTheme";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage4.ResumeLayout(false);
@@ -887,20 +881,20 @@ namespace Shotr.Ui.Forms
         private DpiScaledLabel metroLabel8;
         private DpiScaledTabPage metroTabPage4;
         private DpiScaledLabel metroLabel9;
-        private DpiScaledCombobox metroComboBox1;
-        private DpiScaledToggle metroToggle3;
+        private DpiScaledCombobox selectedImageUploader;
+        private DpiScaledToggle directUrlToggle;
         private DpiScaledLabel metroLabel11;
         private DpiScaledListbox betterListView1;
         private DpiScaledButton metroButton2;
         private DpiScaledPanel metroPanel2;
         private DpiScaledPanel metroPanel1;
-        private DpiScaledHotkeyButton hotkeyButton3;
-        private DpiScaledHotkeyButton hotkeyButton2;
-        private DpiScaledHotkeyButton hotkeyButton1;
+        private DpiScaledHotkeyButton activeWindowHotKeyButton;
+        private DpiScaledHotkeyButton fullScreenHotKeyButton;
+        private DpiScaledHotkeyButton regionHotKeyButton;
         private DpiScaledButton metroButton1;
-        private DpiScaledHotkeyButton hotkeyButton4;
+        private DpiScaledHotkeyButton recordScreenHotKeyButton;
         private DpiScaledLabel metroLabel14;
-        private DpiScaledHotkeyButton hotkeyButton5;
+        private DpiScaledHotkeyButton uploadClipboardHotKeyButton;
         private DpiScaledLabel metroLabel15;
         private DpiScaledButton metroButton5;
         private DpiScaledPanel metroPanel4;
@@ -909,7 +903,7 @@ namespace Shotr.Ui.Forms
         private DpiScaledLabel emailLabel;
         private DpiScaledButton metroButton4;
         private DpiScaledButton metroButton6;
-        private DpiScaledHotkeyButton hotkeyButton6;
+        private DpiScaledHotkeyButton noUploadHotKeyButton;
         private DpiScaledLabel metroLabel7;
     }
 }

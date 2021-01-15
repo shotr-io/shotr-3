@@ -33,12 +33,12 @@ namespace Shotr.Ui.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScreenshotForm));
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this._timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // timer1
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this._timer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // ScreenshotForm
             // 
@@ -56,6 +56,6 @@ namespace Shotr.Ui.Forms
 
         #endregion
 
-        private Timer timer1;
+        private Timer _timer;
     }
 }

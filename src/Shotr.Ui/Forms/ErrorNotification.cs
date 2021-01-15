@@ -3,7 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
@@ -30,10 +31,8 @@ namespace Shotr.Ui.Forms
             }
         }
         private ImageShell _failed;
-        public ErrorNotification(Uploader uploader)
+        public ErrorNotification(ImageShell failedImg, UploadedImageJsonResult result)
         {
-            _uploader = uploader;
-            
             InitializeComponent();
             ManualDpiScale();
             ScaleForm = false;
@@ -41,10 +40,6 @@ namespace Shotr.Ui.Forms
             StartPosition = FormStartPosition.Manual;           
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             Closing += ErrorNotification_Closing;
-        }
-
-        public void SetUpForm(ImageShell failedImg, UploadedImageJsonResult result)
-        {
             _animator = new FormAnimator(this);
             _animator.Direction = FormAnimator.AnimationDirection.Up;
             _animator.Method = FormAnimator.AnimationMethod.Slide;

@@ -3,7 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
@@ -30,7 +31,7 @@ namespace Shotr.Ui.Forms
             }
         }
 
-        public NoUploadNotification(Image ico, string mime)
+        public NoUploadNotification(string mime)
         {
             InitializeComponent();
             ManualDpiScale();
@@ -38,12 +39,13 @@ namespace Shotr.Ui.Forms
             ShadowType = MetroFormShadowType.None;
             StartPosition = FormStartPosition.Manual;
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
-            metroLabel1.Text = (mime.Contains("text") ? "Text Saved!" : (mime.Contains("video") ? "Recording Saved!" : "Screenshot Saved!"));
             Closing += Notification_Closing;
             _animator = new FormAnimator(this);
             _animator.Direction = FormAnimator.AnimationDirection.Up;
             _animator.Method = FormAnimator.AnimationMethod.Slide;
             _animator.Duration = 500;
+            
+            metroLabel1.Text = mime.Contains("text") ? "Text Saved!" : mime.Contains("video") ? "Recording Saved!" : "Screenshot Saved!";
         }
 
         void Notification_Closing(object sender, CancelEventArgs e)

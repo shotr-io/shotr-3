@@ -4,18 +4,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Security;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using CustomEnvironmentConfig;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Shotr.Core;
+using Shotr.Core.Entities;
+using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Model;
-using Shotr.Core.Plugin;
+using Shotr.Core.Pipes;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 using Shotr.Core.Uploader;
@@ -30,8 +31,14 @@ namespace Shotr.Ui
     static class Program
     {
         private static ServiceProvider _serviceProvider;
-
-        private static Form _form;
+        private static Mutex _mutex;
+        
+#if DEBUG
+        private static bool _debug = true;
+#else
+        private static bool DEBUG = false;
+#endif
+        
         /// <summary>
         /// Configure services with DI
         /// </summary>
@@ -45,34 +52,70 @@ namespace Shotr.Ui
             services.AddSingleton<LoginForm>();
             services.AddSingleton<UpdateForm>();
             services.AddSingleton<SettingsForm>();
+            
             //services.AddSingleton<CustomUploader>();
-
-            services.AddTransient<ColorPickerForm>();
-            services.AddTransient<ErrorNotification>();
-            services.AddTransient<GifRecorderForm>();
-            services.AddTransient<Notification>();
-            services.AddTransient<NoUploadNotification>();
-            services.AddTransient<RecordingNotice>();
-            services.AddTransient<ScreenshotForm>();
-            services.AddTransient<CustomUploaderPrompt>();
+            //services.AddTransient<CustomUploaderPrompt>();
 
             // Settings
+            var settings = SettingsService.Load();
+            services.AddSingleton(settings);
+            services.AddTransient<SettingsService>();
+            
+            // Plugins
+            PluginService.Initialize(services);
             
             // etc
-            services.AddSingleton<PluginCore>();
             services.AddSingleton(_ => new dcrypt(Resources.a));
-            
+            services.AddTransient<Uploader>();
+            services.AddSingleton<MusicPlayerService>();
+            services.AddSingleton<HotKeyService>();
+            services.AddSingleton<PipeServer>();
+            services.AddSingleton<SingleInstance>();
+            services.AddSingleton<KeyboardHook>();
         }
         
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        public static void Start(string[] args)
+        [STAThread]
+        static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
+            if (args.Length > 0)
+            {
+                foreach (var arg in args)
+                {
+                    switch (arg)
+                    {
+                        case "--debug":
+                            if (!WinApi.AttachConsole(-1))
+                                WinApi.AllocConsole();
+                            _debug = true;
+                            break;
+                        case "--region":
+                        case "--record":
+                            PipeClient.SendCommand(args[0]);
+                            Environment.Exit(0);
+                            break;
+                    }
+                }
+            }
+            
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            
+            _mutex = new Mutex(true, "ShotrMutexHotKeyHook", out var mutex);
+            if (!mutex)
+            {
+                PipeClient.SendCommand("--launch");
+                Environment.Exit(0);
+                return;
+            }
+
+            Console.SetOut(new ConsoleWriter(_debug));
+
+            Console.WriteLine($"Starting Shotr v{Assembly.GetExecutingAssembly().GetName().Version}...");
             
             TryEnableDpiAware();
 
@@ -84,98 +127,82 @@ namespace Shotr.Ui
             ConfigureApplication();
 
             var form = _serviceProvider.GetService<MainForm>();
+            var settings = _serviceProvider.GetService<BaseSettings>();
+            var hotkeys = _serviceProvider.GetService<HotKeyService>();
+            
+            hotkeys.LoadHotKeys();
+            
+            form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
+            
+            Updater.OnUpdateCheck += Updater_OnUpdateCheck;
+            Updater.CheckForUpdates(settings);
+            
+            if (!File.Exists(SettingsService.FolderPath + "\\ffmpeg.exe") || Utils.MD5File(SettingsService.FolderPath + "\\ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
+            {
+                var mpg = new FfMpegDownload();
+                if (mpg.ShowDialog() == DialogResult.Cancel)
+                {
+                    Application.Restart();
+                    return;
+                }
+            }
 
-            Application.Run(form);
-            GC.KeepAlive(PreRun.Mut);
-            PreRun.Mut.ReleaseMutex();
-            // End
-
-            PluginCore.Initialize();
             try
             {
-                Settings.Instance = new Settings();
-                PluginCore.InitCustoms();
-
-                object[] min = Settings.Instance.GetValue("start_minimized");
-                var minimized = false;
-                if (min != null) minimized = (bool)min[0];
-                form = new MainForm
-                {
-                    ShowInTaskbar = !minimized,
-                    Visible = !minimized,
-                };
-
-                object[] mini = Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases");
-                Updater.OnUpdateCheck += Updater_OnUpdateCheck;
-                Updater.CheckForUpdates((bool?) mini?[0] ?? false);
-
-                if (!File.Exists(SettingsHelper.FolderPath + "\\ffmpeg.exe") || Utils.MD5File(SettingsHelper.FolderPath + "\\ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
-                {
-                    var mpg = new FfMpegDownload();
-                    if (mpg.ShowDialog() == DialogResult.Cancel)
-                    {
-                        Application.Restart();
-                        return;
-                    }
-                }
-
                 var successfulLogin = false;
-                var tokenSettings = Settings.Instance.GetValue("shotr.token");
-                if (tokenSettings != null && tokenSettings.Length > 0)
+                if (settings.Login.Token is {})
                 {
-                    var token = (string)tokenSettings[0];
-                    if (!string.IsNullOrEmpty(token))
+                    var httpClient = new HttpClient();
+                    httpClient.DefaultRequestHeaders.Add("token", settings.Login.Token);
+                    // Api call, and make sure token is valid.
+                    var response = httpClient.GetAsync("https://shotr.dev/api").Result;
+                    if (response.IsSuccessStatusCode)
                     {
-                        var httpClient = new HttpClient();
-                        httpClient.DefaultRequestHeaders.Add("token", token);
-                        // Api call, and make sure token is valid.
-                        var response = httpClient.GetAsync("https://shotr.dev/api").Result;
-                        if (response.IsSuccessStatusCode)
+                        var content = response.Content.ReadAsStringAsync().Result;
+                        var user = JsonConvert.DeserializeObject<LoginResponse>(content);
+                        if (user.Token == settings.Login.Token)
                         {
-                            var content = response.Content.ReadAsStringAsync().Result;
-                            var user = JsonConvert.DeserializeObject<LoginResponse>(content);
-                            if (user.Token == token)
-                            {
-                                Settings.Instance.login = true;
-                                Settings.Instance.token = user.Token;
-                                Settings.Instance.email = user.Email;
-                                successfulLogin = true;
-                            }
+                            settings.Login.Email = user.Email;
+                            settings.Login.Token = user.Token;
+                            successfulLogin = true;
                         }
                     }
                 }
                 
                 if (!successfulLogin)
                 {
-                    var loginForm = new LoginForm();
+                    var loginForm = _serviceProvider.GetService<LoginForm>();
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
                         Environment.Exit(0);
                     }
                 }
-                
             }
-            catch(Exception ex) 
-            { 
-                //write to err.log
-                File.WriteAllText(SettingsHelper.FolderPath + "error.log", ex.ToString());
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                File.WriteAllText(SettingsService.FolderPath + "error.log", ex.ToString());
             }
+
+            Application.Run(form);
+            GC.KeepAlive(_mutex);
+            _mutex.ReleaseMutex();
         }
 
         static void ConfigureApplication()
         {
             //Create application directory.
-            if (!Directory.Exists(SettingsHelper.FolderPath))
+            if (!Directory.Exists(SettingsService.FolderPath))
             {
-                Directory.CreateDirectory(SettingsHelper.FolderPath);
+                Directory.CreateDirectory(SettingsService.FolderPath);
             }
-            if (!Directory.Exists(SettingsHelper.CachePath))
+            if (!Directory.Exists(SettingsService.CachePath))
             {
-                Directory.CreateDirectory(SettingsHelper.CachePath);
+                Directory.CreateDirectory(SettingsService.CachePath);
             }
             
             //check if audio shit is installed, if not then register it.
-            var audioSnifferPath = Path.Combine(SettingsHelper.FolderPath, "audio-sniffer.dll");
+            var audioSnifferPath = Path.Combine(SettingsService.FolderPath, "audio-sniffer.dll");
             if (!File.Exists(audioSnifferPath))
             {
                 //decrypt it and output it
@@ -190,7 +217,7 @@ namespace Shotr.Ui
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    WorkingDirectory = SettingsHelper.FolderPath
+                    WorkingDirectory = SettingsService.FolderPath
                 };
                 //ps.Verb = "runas";
                 var m = Process.Start(ps);
@@ -203,7 +230,7 @@ namespace Shotr.Ui
             }
             
             //clear out all remaining mp4 files.
-            foreach (var file in Directory.GetFiles(SettingsHelper.CachePath))
+            foreach (var file in Directory.GetFiles(SettingsService.CachePath))
             {
                 try
                 {
@@ -221,56 +248,46 @@ namespace Shotr.Ui
 
         static void Updater_OnUpdateCheck(object sender, UpdaterInfoArgs e)
         {
-            if (e.updateInfo == null || e.error)
+            if (e.UpdateInfo == null || e.Error)
             {
                 return;
             }
             //check version.
-            var m = new Version(e.updateInfo.version);
+            var m = new Version(e.UpdateInfo.version);
             var curr = Assembly.GetExecutingAssembly().GetName().Version;
             if (m > curr)
             {
                 //check if it's an alpha or beta update.
-                if (e.updateInfo.alpha || e.updateInfo.beta)
+                if (e.UpdateInfo.alpha || e.UpdateInfo.beta)
                 {
                     //check if the user has subscribed to them or not.
-                    if (!(bool)Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases")[0])
+                    if (!e.Settings.SubscribeToAlphaBeta)
                     {
-                        //updat
                         return;
                     }
                 }
                 //show update form.
-                Console.WriteLine("There is an update available to Shotr - v{0}{1}.", m, (e.updateInfo.alpha ? "a" : e.updateInfo.beta ? "b" : ""));               
-                if (_form == null)
+                Console.WriteLine("There is an update available to Shotr - v{0}{1}.", m, e.UpdateInfo.alpha ? "a" : e.UpdateInfo.beta ? "b" : "");
+
+                while (Utils.GetForegroundProcess() != null)
                 {
-                    var upd = new UpdateForm(e.updateInfo, e.updateInfo.alpha || e.updateInfo.beta);
-                    upd.ShowDialog();
+                    Thread.Sleep(5000);
                 }
-                else
-                {
-                    //if fullscreen application is running, wait for fullscreen application to stop.
-                    while (Utils.GetForegroundProcess() != null)
-                    {
-                        Thread.Sleep(5000);
-                    }
-                    _form.Invoke((MethodInvoker)(() =>
-                    {
-                        _form.Show();
-                        var upd = new UpdateForm(e.updateInfo, e.updateInfo.alpha || e.updateInfo.beta);
-                        upd.ShowDialog();
-                    }));
-                }
+                
+                var updateForm = _serviceProvider.GetService<UpdateForm>();
+                updateForm.SetUpForm(e.UpdateInfo, e.UpdateInfo.alpha || e.UpdateInfo.beta);
+                updateForm.ShowDialog();
+                
                 Updater.Check = false;
             }
             else if (m == curr)
             {
                 //current version.
-                if (e.updateInfo.alpha)
+                if (e.UpdateInfo.alpha)
                 {
                     Console.WriteLine("You are running Shotr - v{0}a.", curr);
                 }
-                else if(e.updateInfo.beta)
+                else if(e.UpdateInfo.beta)
                 {
                     Console.WriteLine("You are running Shotr - v{0}b.", curr);
                 }
@@ -281,41 +298,32 @@ namespace Shotr.Ui
             }
             else
             {
-                if ((bool)Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases")[0])
+                if (e.Settings.SubscribeToAlphaBeta)
                 {
-                    //updat
                     return;
                 }
                 // Downgrade?
-                Console.WriteLine("There is an update (downgrade) available to Shotr - v{0}{1}.", m, (e.updateInfo.alpha ? "a" : e.updateInfo.beta ? "b" : ""));
-                if (_form == null)
+                Console.WriteLine("There is an update (downgrade) available to Shotr - v{0}{1}.", m, (e.UpdateInfo.alpha ? "a" : e.UpdateInfo.beta ? "b" : ""));
+                while (Utils.GetForegroundProcess() != null)
                 {
-                    var upd = new UpdateForm(e.updateInfo, true);
-                    upd.ShowDialog();
+                    Thread.Sleep(5000);
                 }
-                else
-                {
-                    //if fullscreen application is running, wait for fullscreen application to stop.
-                    while (Utils.GetForegroundProcess() != null)
-                    {
-                        Thread.Sleep(5000);
-                    }
-                    _form.Invoke((MethodInvoker)(() =>
-                    {
-                        _form.Show();
-                        var upd = new UpdateForm(e.updateInfo, true);
-                        upd.ShowDialog();
-                    }));
-                }
+                
+                var updateForm = _serviceProvider.GetService<UpdateForm>();
+                updateForm.SetUpForm(e.UpdateInfo, e.UpdateInfo.alpha || e.UpdateInfo.beta);
+                updateForm.ShowDialog();
+                
                 Updater.Check = false;
             }
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            File.WriteAllText(SettingsHelper.ErrorPath, e.ExceptionObject.ToString());
-            Uploader.RemoveHandlers();
-            Uploader.OnUploaded += (_, e) =>
+            File.WriteAllText(SettingsService.ErrorPath, e.ExceptionObject.ToString());
+
+            var uploader = _serviceProvider.GetService<Uploader>();
+            uploader.RemoveHandlers();
+            uploader.OnUploaded += (_, e) =>
             {
                 try
                 {
@@ -327,13 +335,13 @@ namespace Shotr.Ui
                 MessageBox.Show("Shotr has encountered an error and must close.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             };
-            Uploader.OnError += (_, e) =>
+            uploader.OnError += (_, e) =>
             {
                 MessageBox.Show("Shotr has encountered an error and must close.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             };
             
-            Uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString()), FileExtensions.txt));
+            uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString()), FileExtensions.txt));
         }
 
         [DllImport("SHCore.dll")]

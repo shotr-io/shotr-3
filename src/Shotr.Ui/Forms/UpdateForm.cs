@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 
@@ -14,7 +15,7 @@ namespace Shotr.Ui.Forms
         private readonly BaseSettings _settings;
         private bool _allowClose;
 
-        UpdaterJsonClass _upd;
+        UpdaterResponse _upd;
         public UpdateForm(BaseSettings settings)
         {
             _settings = settings;
@@ -24,7 +25,7 @@ namespace Shotr.Ui.Forms
             ScaleForm = false;
         }
 
-        public void SetUpForm(UpdaterJsonClass p, bool allowClose = false)
+        public void SetUpForm(UpdaterResponse p, bool allowClose = false)
         {
             metroTextBox1.Text = p.changelog;
             TopMost = false;
@@ -89,10 +90,10 @@ namespace Shotr.Ui.Forms
             var m = new WebClient { Proxy = null };
             try
             {
-                m.DownloadFile("https://shotr.io/latest", SettingsHelper.FolderPath + "Shotr-Installer.exe");
+                m.DownloadFile("https://shotr.io/latest", SettingsService.FolderPath + "Shotr-Installer.exe");
                 var p = new Process();
                 p.StartInfo.Verb = "runas";
-                p.StartInfo.FileName = SettingsHelper.FolderPath + "Shotr-Installer.exe";
+                p.StartInfo.FileName = SettingsService.FolderPath + "Shotr-Installer.exe";
                 p.StartInfo.Arguments = "--run-installer --silent"+(_settings.SubscribeToAlphaBeta ? " --install-beta " : "");
                 p.Start();
                 Environment.Exit(0);

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Shotr.Core.Model;
 using Shotr.Core.Plugin;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
@@ -25,20 +26,20 @@ namespace Shotr.Core.Uploader
 
         private Queue<ImageShell> _uploadQueue = new Queue<ImageShell>();
 
-        private readonly MusicPlayer _musicPlayer;
+        private readonly MusicPlayerService _musicPlayerService;
         private readonly BaseSettings _settings;
-        private readonly IEnumerable<ImageUploader> _imageUploaders;
+        private readonly IEnumerable<IImageUploader> _imageUploaders;
 
-        public Uploader(MusicPlayer musicPlayer, BaseSettings settings, IEnumerable<ImageUploader> imageUploaders)
+        public Uploader(MusicPlayerService musicPlayerService, BaseSettings settings, IEnumerable<IImageUploader> imageUploaders)
         {
-            _musicPlayer = musicPlayer;
+            _musicPlayerService = musicPlayerService;
             _settings = settings;
             _imageUploaders = imageUploaders;
         }
 
         public void StartQueue()
         {
-            FileUploader.OnUploadProgress += FileUploader_OnUploadProgress;
+            FileUploaderService.OnUploadProgress += FileUploader_OnUploadProgress;
             new Thread(delegate()
                 {
                     while (true)
@@ -101,7 +102,7 @@ namespace Shotr.Core.Uploader
 
                 try
                 {
-                    string output = FileUploader.UploadFile(imageUploader.UploaderURL, f.Data,
+                    var output = FileUploaderService.UploadFile(imageUploader.UploaderURL, f.Data,
                         Utils.Utils.GetRandomString(6) + "." + f.Extension, imageUploader.FileValueName, f.ContentType, new NameValueCollection(), 
                         uploadHeaders);
                     json = JsonConvert.DeserializeObject<UploadedItemResult>(output);
@@ -134,7 +135,7 @@ namespace Shotr.Core.Uploader
             }
             if (!m.Error)
             {
-                _musicPlayer.PlayUploaded();
+                _musicPlayerService.PlayUploaded();
                 
                 OnUploaded(new object[] { f.ContentType, f.Data }, m);
                 f.Data = null;
@@ -162,7 +163,7 @@ namespace Shotr.Core.Uploader
             OnError(json, f);
         }
 
-        private ImageUploader? GetUploader(string name)
+        private IImageUploader? GetUploader(string name)
         {
             return _imageUploaders.FirstOrDefault(p => p.Title == name);
         }

@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core;
+using Shotr.Core.Controls;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
@@ -32,7 +34,7 @@ namespace Shotr.Ui.Forms
             }
         } 
         
-        public Notification(string url, Image ico, string mime)
+        public Notification(string url, string mime)
         {
             InitializeComponent();
             ManualDpiScale();
@@ -40,13 +42,15 @@ namespace Shotr.Ui.Forms
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             ShadowType = MetroFormShadowType.None;
             StartPosition = FormStartPosition.Manual;
-            metroLink1.Text = url;
-            metroLabel1.Text = (mime.Contains("text") ? "Text Uploaded!" : (mime.Contains("video") ? "Recording Uploaded!" : "Screenshot Uploaded!"));
+            
             Closing += Notification_Closing;
             _animator = new FormAnimator(this);
             _animator.Direction = FormAnimator.AnimationDirection.Up;
             _animator.Method = FormAnimator.AnimationMethod.Slide;
             _animator.Duration = 500;
+            
+            metroLink1.Text = url;
+            metroLabel1.Text = mime.Contains("text") ? "Text Uploaded!" : mime.Contains("video") ? "Recording Uploaded!" : "Screenshot Uploaded!";
         }
 
         void Notification_Closing(object sender, CancelEventArgs e)
@@ -60,7 +64,6 @@ namespace Shotr.Ui.Forms
             }
         }
         
-
         private void Notification_Load(object sender, EventArgs e)
         {
             timer1.Interval = 1000;
@@ -91,9 +94,9 @@ namespace Shotr.Ui.Forms
         {
             try
             {
-                Process.Start(metroLink1.Text);
+                metroLink1.Text.OpenUrl();
             }
-            catch { }
+            catch(Exception ex) { }
         }
     }
 }

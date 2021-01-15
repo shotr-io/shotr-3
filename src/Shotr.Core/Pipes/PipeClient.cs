@@ -13,13 +13,13 @@ namespace Shotr.Core.Pipes
         {
             try
             {
-                NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "ShotrInputHandler", PipeDirection.InOut, PipeOptions.None);
+                var pipeClient = new NamedPipeClientStream(".", "ShotrInputHandler", PipeDirection.InOut, PipeOptions.None);
                 Console.WriteLine("[PIPE CLIENT] Connecting to pipe server.\n");
 
                 pipeClient.Connect(2000);
 
                 Console.WriteLine("[PIPE CLIENT] Sending request to pipe server.");
-                StreamString ss = new StreamString(pipeClient);
+                var ss = new StreamString(pipeClient);
 
                 ss.WriteString(arg);
                 Console.WriteLine("[PIPE CLIENT] Sent request to pipe server!");

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using Shotr.Core.Capture;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Entities;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
@@ -46,8 +46,8 @@ namespace Shotr.Ui.Forms.Settings
         private void SettingsForm_Load(object sender, EventArgs e)
         {
             var k = new ScreencastOptions();
-            var fmp = new FFmpegHelper(k);
-            fmp.Options.FFmpeg.CLIPath = Path.Combine(SettingsHelper.FolderPath, "ffmpeg.exe");
+            var fmp = new FFmpegHelperService(k);
+            fmp.Options.FFmpeg.CLIPath = Path.Combine(SettingsService.FolderPath, "ffmpeg.exe");
             var p = fmp.GetDirectShowDevices();
             if (p.AudioDevices.Count < 0)
             {
@@ -121,7 +121,9 @@ namespace Shotr.Ui.Forms.Settings
 
         void useresizablecanvas_CheckedChanged(object sender, EventArgs e)
         {
-            _settings.Capture.UseResizableCanvas = useresizablecanvas.Checked;        }
+            _settings.Capture.UseResizableCanvas = useresizablecanvas.Checked;
+            SettingsService.Save(_settings);
+        }
         
         private string ChooseDir()
         {
@@ -154,22 +156,26 @@ namespace Shotr.Ui.Forms.Settings
                 _settings.Capture.SaveToDirectory = false;
                 _settings.Capture.SaveToDirectoryPath = null;
             }
+            SettingsService.Save(_settings);
         }
 
         private void showNotificationsToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.ShowNotifications = showNotificationsToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void startupToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.StartWithWindows = startupToggle.Checked;
             Utils.AddToStartup(startupToggle.Checked);
+            SettingsService.Save(_settings);
         }
 
         private void minimizedToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.StartMinimized = minimizedToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void alphaToggle_CheckedChanged(object sender, EventArgs e)
@@ -179,6 +185,7 @@ namespace Shotr.Ui.Forms.Settings
             {
                 case DialogResult.Yes:
                     _settings.SubscribeToAlphaBeta = alphaToggle.Checked;
+                    SettingsService.Save(_settings);
                     Application.Restart();
                     Environment.Exit(0);
                     break;
@@ -193,53 +200,63 @@ namespace Shotr.Ui.Forms.Settings
         private void soundToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.PlaySounds = soundToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void imageCodecCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             var imageCodec = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
             _settings.Capture.Extension = imageCodec;
+            SettingsService.Save(_settings);
         }
 
         private void imageQualityCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             var imageQuality = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
             _settings.Capture.CompressionLevel = imageQuality;
+            SettingsService.Save(_settings);
         }
 
         private void imageCompressionToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.Capture.CompressionEnabled = imageCompressionToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void stitchFullscreenToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.Capture.StitchFullscreen = stitchFullscreenToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void framerateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             _settings.Record.Framerate = Convert.ToInt32(framerateCombo.Text);
+            SettingsService.Save(_settings);
         }
 
         private void encodingCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             _settings.Record.Threads = Convert.ToInt32(encodingCombo.Text);
+            SettingsService.Save(_settings);
         }
 
         private void recordCursorToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.Record.RecordCursor = recordCursorToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void recordAudioToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.Record.RecordAudio = recordAudioToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void audioDeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             _settings.Record.AudioDevice = audioDeviceCombo.Text;
+            SettingsService.Save(_settings);
         }
     }
 }

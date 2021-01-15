@@ -1,5 +1,5 @@
 ﻿using System;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Settings;
 
 namespace Shotr.Ui.Forms

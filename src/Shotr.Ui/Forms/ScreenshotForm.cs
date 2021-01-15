@@ -6,7 +6,8 @@ using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Shotr.Core.Hotkey;
+using Shotr.Core.Entities;
+using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Settings;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
@@ -49,7 +50,7 @@ namespace Shotr.Ui.Forms
         private readonly BaseSettings _settings;
         private readonly Uploader _uploader;
 
-        public ScreenshotForm(BaseSettings settings, Uploader uploader)
+        public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks)
         {
             _settings = settings;
             _uploader = uploader;
@@ -66,14 +67,67 @@ namespace Shotr.Ui.Forms
 
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
-        }
-
-        public void SetUpForm(Bitmap bitmap, SingleInstance tasks)
-        {
             _screenshot = bitmap;
             _tasks = tasks;
-        }
+            
+            _timer.Interval = 10;
+            _timer.Start();
 
+            Paint += ScreenshotForm_Paint;
+            FormBorderStyle = FormBorderStyle.None;
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
+            var i = 0;
+            foreach (var screen in Screen.AllScreens)
+            {
+                screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
+                //take smallest height
+                float scale = 1;//(dpiX / 96f);
+                //take smallest height
+                height = (int)Math.Round(((screen.Bounds.Height * scale) >= height) ? (screen.Bounds.Height * scale) : height);
+                width += (int)Math.Round(screen.Bounds.Width * scale);
+                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
+                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
+                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + (int)Math.Round(screen.Bounds.Height * scale);
+                if (top < 0 || screen.Bounds.Y >= height) height += (int)Math.Round(screen.Bounds.Height * scale);
+                Console.WriteLine("Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
+                i++;
+            }
+
+            Size = new Size(width, height);
+            //get point of left-most monitor.
+            Location = new Point(left, top);
+
+            KeyUp += ScreenshotForm_KeyUp;
+            KeyDown += ScreenshotForm_KeyDown;
+
+            Cursor = Cursors.Cross;
+
+            _origscreenshot = (Bitmap)_screenshot.Clone();
+            _screenshot = new Bitmap(_screenshot, width, height);
+            
+            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
+            {
+                var brush = new TextureBrush(image);
+                brush.WrapMode = WrapMode.Clamp;
+                _textbrush = brush;
+            }
+
+            var brush1 = new TextureBrush(_screenshot);
+            brush1.WrapMode = WrapMode.Clamp;
+
+            DoubleBuffered = true;
+            
+            _edit = Graphics.FromImage(_screenshot);
+            
+            MouseMove += ScreenshotForm_MouseMove;
+            MouseDown += ScreenshotForm_MouseDown;
+            MouseUp += ScreenshotForm_MouseUp;
+            MouseWheel += ScreenshotForm_MouseWheel;
+        }
+        
         void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
@@ -673,64 +727,6 @@ namespace Shotr.Ui.Forms
 
         private void ScreenshotForm_Load(object sender, EventArgs e)
         {
-            
-            timer1.Interval = 10;
-            timer1.Start();
-
-            Paint += ScreenshotForm_Paint;
-            FormBorderStyle = FormBorderStyle.None;
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            var i = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
-                //take smallest height
-                float scale = 1;//(dpiX / 96f);
-                //take smallest height
-                height = (int)Math.Round(((screen.Bounds.Height * scale) >= height) ? (screen.Bounds.Height * scale) : height);
-                width += (int)Math.Round(screen.Bounds.Width * scale);
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + (int)Math.Round(screen.Bounds.Height * scale);
-                if (top < 0 || screen.Bounds.Y >= height) height += (int)Math.Round(screen.Bounds.Height * scale);
-                Console.WriteLine("Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
-                i++;
-            }
-
-            Size = new Size(width, height);
-            //get point of left-most monitor.
-            Location = new Point(left, top);
-
-            KeyUp += ScreenshotForm_KeyUp;
-            KeyDown += ScreenshotForm_KeyDown;
-
-            Cursor = Cursors.Cross;
-
-            _origscreenshot = (Bitmap)_screenshot.Clone();
-            _screenshot = new Bitmap(_screenshot, width, height);
-            
-            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
-            {
-                var brush = new TextureBrush(image);
-                brush.WrapMode = WrapMode.Clamp;
-                _textbrush = brush;
-            }
-
-            var brush1 = new TextureBrush(_screenshot);
-            brush1.WrapMode = WrapMode.Clamp;
-
-            DoubleBuffered = true;
-            ShowInTaskbar = false;
-            
-            _edit = Graphics.FromImage(_screenshot);
-            
-            MouseMove += ScreenshotForm_MouseMove;
-            MouseDown += ScreenshotForm_MouseDown;
-            MouseUp += ScreenshotForm_MouseUp;
-            MouseWheel += ScreenshotForm_MouseWheel;
             // force window to have focus
             var foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
             var appThread = GetCurrentThreadId();

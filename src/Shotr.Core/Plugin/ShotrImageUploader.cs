@@ -5,7 +5,7 @@ using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Plugin
 {
-    public class ShotrImageUploader : ImageUploader
+    public class ShotrImageUploader : IImageUploader
     {
         private readonly BaseSettings _settings;
         public ShotrImageUploader(BaseSettings settings)
@@ -13,9 +13,9 @@ namespace Shotr.Core.Plugin
             _settings = settings;
         }
         
-        public override NameValueCollection UploadValues => null;
+        public NameValueCollection UploadValues => null;
 
-        public override NameValueCollection HeaderValues
+        public NameValueCollection HeaderValues
         {
             get
             {
@@ -28,9 +28,9 @@ namespace Shotr.Core.Plugin
             }
         }
 
-        public override string FileValueName => "file";
+        public string FileValueName => "file";
 
-        public override string UploaderURL
+        public string UploaderURL
         {
             get { 
 #if DEBUG
@@ -42,24 +42,24 @@ namespace Shotr.Core.Plugin
             }
         }
 
-        public override string Title => "Shotr";
+        public string Title => "Shotr";
 
-        public override bool UseUploadMethod => false;
+        public bool UseUploadMethod => false;
 
-        public override UploadResult UploadImage(ImageShell k)
+        public UploadResult UploadImage(ImageShell k)
         {
             throw new NotImplementedException();
         }
 
-        public override NameValueCollection DeletionValues =>
+        public NameValueCollection DeletionValues =>
             new NameValueCollection
             {
                 {"confirm", "true"}
             };
 
-        public override bool SupportsPages => true;
+        public bool SupportsPages => true;
 
-        public override string PageURL
+        public string PageURL
         {
             get { 
 #if DEBUG

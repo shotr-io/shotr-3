@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using Shotr.Core.DpiScaling;
+using Shotr.Core;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Model;
 using Shotr.Core.Settings;
 
@@ -63,9 +64,9 @@ namespace Shotr.Ui.Forms
         {
             // Open browser with link to forgot page
 #if DEBUG
-            Process.Start("https://shotr.dev/auth/forgot");
+            "https://shotr.dev/auth/forgot".OpenUrl();
 #else
-            Process.Start("https://shotr.io/auth/forgot");
+            "https://shotr.io/auth/forgot".OpenUrl();
 #endif
         }
 
@@ -73,9 +74,9 @@ namespace Shotr.Ui.Forms
         {
             // Register page
 #if DEBUG
-            Process.Start("https://shotr.dev/auth/register");
+            "https://shotr.dev/auth/register".OpenUrl();
 #else
-            Process.Start("https://shotr.io/auth/forgot");
+            "https://shotr.io/auth/forgot".OpenUrl();
 #endif
         }
 

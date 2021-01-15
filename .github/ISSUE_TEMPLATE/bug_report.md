@@ -29,10 +29,15 @@ Describe here the issue that you are experiencing.
 - that reproduce the bug
 
 **Actual result:** Describe here what happens after you run the steps above (i.e. the buggy behaviour)
+
 **Expected result:** Describe here what should happen after you run the steps above (i.e. what would be the correct behaviour)
 
 ### Screenshots
 <!-- you can drag and drop images below -->
+
+
+### Logs
+<!-- if you run Shotr with the `--debug` flag, paste your logs here -->
 
 
 ### Version info

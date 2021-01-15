@@ -15,7 +15,7 @@ namespace Shotr.Core.Pipes
             Console.WriteLine("[PIPE SERVER] Starting pipe server.");
             new Thread(delegate()
             {
-                PipeSecurity ps = new PipeSecurity();
+                var ps = new PipeSecurity();
                 ps.AddAccessRule(new PipeAccessRule("Everyone", PipeAccessRights.FullControl, AccessControlType.Allow));
                 while (true)
                 {
@@ -29,8 +29,8 @@ namespace Shotr.Core.Pipes
                         Console.WriteLine("[PIPE SERVER] Got client through pipe server.");
                         try
                         {
-                            StreamString ss = new StreamString(pipeServer);
-                            string data = ss.ReadString();
+                            var ss = new StreamString(pipeServer);
+                            var data = ss.ReadString();
                             PipeServerReceivedClient.Invoke(this, new PipeServerEventArgs(data));
                         }
                         catch (IOException e)
@@ -55,6 +55,6 @@ namespace Shotr.Core.Pipes
             _data = p;
         }
         private string _data;
-        public string Data { get { return _data; } }
+        public string Data => _data;
     }
 }

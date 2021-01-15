@@ -32,7 +32,7 @@ namespace Shotr.Ui.Forms
         private bool _drawing = true;
 
         private readonly BaseSettings _settings;
-        public ColorPickerForm(BaseSettings settings)
+        public ColorPickerForm(BaseSettings settings, Bitmap bitmap)
         {
             _settings = settings;
             
@@ -40,10 +40,7 @@ namespace Shotr.Ui.Forms
             InitializeComponent();
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
-        }
-
-        public void SetBitmap(Bitmap bitmap)
-        {
+            
             _screenshot = bitmap;
         }
 

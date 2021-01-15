@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using MetroFramework5.Controls;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {

@@ -5,19 +5,19 @@ namespace Shotr.Core.Settings
 {
     public class Hotkey
     {
-        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.NumPad4)]
+        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.D4)]
         public Keys Region { get; set; }
         
-        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.NumPad3)]
+        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.D3)]
         public Keys Fullscreen { get; set; }
         
-        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.NumPad2)]
+        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.D2)]
         public Keys ActiveWindow { get; set; }
         
-        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.NumPad1)]
+        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.D1)]
         public Keys RecordScreen { get; set; }
         
-        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.NumPad5)]
+        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.D5)]
         public Keys Clipboard { get; set; }
         
         [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.Oemtilde)]

@@ -1,65 +1,7 @@
 ﻿using System;
-using System.Collections.Specialized;
 
 namespace ShotrUploaderPlugin
 {
-    [Serializable]
-    public abstract class ImageUploader
-    {
-        /// <summary>
-        /// The title of your uploader (also the title that shows in Shotr).
-        /// </summary>
-        public abstract string Title { get; }
-
-        /// <summary>
-        /// To use your own custom upload method, set this to true and override the UploadImage function.
-        /// </summary>
-        public abstract bool UseUploadMethod { get; }
-
-        /// <summary>
-        /// The file value upload. Only used if UseUploadMethod is set to false.        
-        /// </summary>
-        public abstract string FileValueName { get; }
-
-        /// <summary>
-        /// The URL to the uploader script. Only used if UseUploadMethod is set to false.
-        /// </summary>
-        public abstract string UploaderURL { get; }
-
-        /// <summary>
-        /// Values to submit when uploading. Only used if UseUploadMethod is set to false.
-        /// </summary>
-        public abstract NameValueCollection UploadValues { get; }
-
-        /// <summary>
-        /// Values to add to headers when uploading. Only used if UseUploadMethod is set to false.
-        /// </summary>
-        public abstract NameValueCollection HeaderValues { get; }
-
-        /// <summary>
-        /// Supports non-direct URLs (for instance, http://imgur.com/customimage)
-        /// </summary>
-        public abstract bool SupportsPages { get; }
-
-        /// <summary>
-        /// The non-direct URL starting.
-        /// </summary>
-        public abstract string PageURL { get; }
-
-        /// <summary>
-        /// Values to submit when posting to the website to delete an image.
-        /// </summary>
-        public abstract NameValueCollection DeletionValues { get; }
-
-        /// <summary>
-        /// Your custom image uploader handler. To use this, set UseUploadMethod to true.
-        /// </summary>
-        /// <param name="filedata">A memorystream containing the data to the image.</param>
-        /// <param name="filename">The filename of the image being uploaded.</param>
-        /// <returns>new UploadResult Instance. If the upload fails, UploadResult.Error should be set to true.</returns>
-        public abstract UploadResult UploadImage(ImageShell k);
-    }
-
     [Serializable]
     public class UploadResult
     {
