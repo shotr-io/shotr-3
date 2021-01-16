@@ -34,12 +34,16 @@ namespace Shotr.Core.Services
 
         public void LoadHotKeys()
         {
-            LoadHotKey(_settings.Hotkey.Clipboard, KeyTask.UploadClipboard);
-            LoadHotKey(_settings.Hotkey.Fullscreen, KeyTask.Fullscreen);
-            LoadHotKey(_settings.Hotkey.RecordScreen, KeyTask.RecordScreen);
-            LoadHotKey(_settings.Hotkey.ActiveWindow, KeyTask.ActiveWindow);
+            if (_settings.Login.Enabled == true)
+            {
+                LoadHotKey(_settings.Hotkey.Clipboard, KeyTask.UploadClipboard);
+                LoadHotKey(_settings.Hotkey.Fullscreen, KeyTask.Fullscreen);
+                LoadHotKey(_settings.Hotkey.RecordScreen, KeyTask.RecordScreen);
+                LoadHotKey(_settings.Hotkey.ActiveWindow, KeyTask.ActiveWindow);
+                LoadHotKey(_settings.Hotkey.Region, KeyTask.Region);
+            }
+            
             LoadHotKey(_settings.Hotkey.NoUpload, KeyTask.RegionNoUpload);
-            LoadHotKey(_settings.Hotkey.Region, KeyTask.Region);
         }
 
         public void UnloadHotKeys()
@@ -54,6 +58,21 @@ namespace Shotr.Core.Services
             }
             _hotkeys.Clear();
         }
+
+        public void LoadSingleHotKey(Keys keys, KeyTask task)
+        {
+            LoadHotKey(keys, task);
+        }
+
+        public void UnloadHotKey(KeyTask task)
+        {
+            var hotkey = _hotkeys.FirstOrDefault(p => p.Task == task);
+            if (hotkey is { })
+            {
+                _keyboardHook.UnregisterHotKey(hotkey.Id);
+                _hotkeys.Remove(hotkey);
+            }
+        }
         
         public bool SetNewHook(HotKeyModifiers modifiers, Keys keys, KeyTask task)
         {
@@ -67,30 +86,31 @@ namespace Shotr.Core.Services
                 
                 _keyboardHook.UnregisterHotKey(hotkey.Id);
                 _hotkeys.Remove(hotkey);
-                try
+            }
+
+            try
+            {
+                if (keys == Keys.None)
                 {
-                    if (keys == Keys.None)
-                    {
-                        var newHotKey = new HotKeyHook(-1, 0, 0);
-                        newHotKey.Task = task;
-                        _hotkeys.Add(newHotKey);
-                        return true;
-                    }
-                    
-                    var tempHotKey = _keyboardHook.RegisterHotKey(new HotKeyData(keys));
-                    tempHotKey.Task = task;
-                    _hotkeys.Add(tempHotKey);
-                    Console.WriteLine($"Modified hook for {task}.");
+                    var newHotKey = new HotKeyHook(-1, 0, 0);
+                    newHotKey.Task = task;
+                    _hotkeys.Add(newHotKey);
+                    return true;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    //register old hotkey.
-                    var oldHotKey = _keyboardHook.RegisterHotKey(new HotKeyData(hotkey.Keys));
-                    oldHotKey.Task = task;
-                    _hotkeys.Add(oldHotKey);
-                    return false;
-                }
+
+                var tempHotKey = _keyboardHook.RegisterHotKey(new HotKeyData(keys));
+                tempHotKey.Task = task;
+                _hotkeys.Add(tempHotKey);
+                Console.WriteLine($"Modified hook for {task}.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                //register old hotkey.
+                var oldHotKey = _keyboardHook.RegisterHotKey(new HotKeyData(hotkey.Keys));
+                oldHotKey.Task = task;
+                _hotkeys.Add(oldHotKey);
+                return false;
             }
 
             return true;

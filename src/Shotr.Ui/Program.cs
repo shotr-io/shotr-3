@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Shotr.Core;
 using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Model;
@@ -49,7 +48,6 @@ namespace Shotr.Ui
             services.AddSingleton<MainForm>();
             services.AddSingleton<AboutForm>();
             services.AddSingleton<FfMpegDownload>();
-            services.AddSingleton<LoginForm>();
             services.AddSingleton<UpdateForm>();
             services.AddSingleton<SettingsForm>();
             
@@ -137,58 +135,55 @@ namespace Shotr.Ui
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
             Updater.CheckForUpdates(settings);
             
-            if (!File.Exists(SettingsService.FolderPath + "\\ffmpeg.exe") || Utils.MD5File(SettingsService.FolderPath + "\\ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
+            // Do not require mandatory login
+            if (settings.Login.Enabled == true)
             {
-                var mpg = new FfMpegDownload();
-                if (mpg.ShowDialog() == DialogResult.Cancel)
+                try
                 {
-                    Application.Restart();
-                    return;
-                }
-            }
-
-            try
-            {
-                var successfulLogin = false;
-                if (settings.Login.Token is {})
-                {
-                    var httpClient = new HttpClient();
-                    httpClient.DefaultRequestHeaders.Add("token", settings.Login.Token);
-                    // Api call, and make sure token is valid.
-                    var response = httpClient.GetAsync("https://shotr.dev/api").Result;
-                    if (response.IsSuccessStatusCode)
+                    var successfulLogin = false;
+                    if (settings.Login.Token is {})
                     {
-                        var content = response.Content.ReadAsStringAsync().Result;
-                        var user = JsonConvert.DeserializeObject<LoginResponse>(content);
-                        if (user.Token == settings.Login.Token)
+                        var httpClient = new HttpClient();
+                        httpClient.DefaultRequestHeaders.Add("token", settings.Login.Token);
+                        // Api call, and make sure token is valid.
+                        var response = httpClient.GetAsync("https://shotr.dev/api").Result;
+                        if (response.IsSuccessStatusCode)
                         {
-                            settings.Login.Email = user.Email;
-                            settings.Login.Token = user.Token;
-                            successfulLogin = true;
+                            var content = response.Content.ReadAsStringAsync().Result;
+                            var user = JsonConvert.DeserializeObject<LoginResponse>(content);
+                            if (user.Token == settings.Login.Token)
+                            {
+                                settings.Login.Email = user.Email;
+                                settings.Login.Token = user.Token;
+                                settings.Uploads = user.Uploads;
+                                successfulLogin = true;
+                            }
+                        }
+                    }
+                
+                    if (!successfulLogin)
+                    {
+                        var loginForm = new LoginForm(settings);
+                        if (loginForm.ShowDialog() != DialogResult.OK)
+                        {
+                            settings.Login.Enabled = false;
+                            settings.Login.Token = null;
+                            settings.Login.Email = null;
                         }
                     }
                 }
-                
-                if (!successfulLogin)
+                catch (Exception ex)
                 {
-                    var loginForm = _serviceProvider.GetService<LoginForm>();
-                    if (loginForm.ShowDialog() != DialogResult.OK)
-                    {
-                        Environment.Exit(0);
-                    }
+                    Console.WriteLine(ex.ToString());
+                    File.WriteAllText(SettingsService.FolderPath + "error.log", ex.ToString());
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                File.WriteAllText(SettingsService.FolderPath + "error.log", ex.ToString());
-            }
-
+            
             Application.Run(form);
             GC.KeepAlive(_mutex);
             _mutex.ReleaseMutex();
         }
-
+        
         static void ConfigureApplication()
         {
             //Create application directory.
@@ -244,7 +239,6 @@ namespace Shotr.Ui
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.ServerCertificateValidationCallback += (_, _, _, _) => true;
         }
-        
 
         static void Updater_OnUpdateCheck(object sender, UpdaterInfoArgs e)
         {
@@ -275,7 +269,7 @@ namespace Shotr.Ui
                 }
                 
                 var updateForm = _serviceProvider.GetService<UpdateForm>();
-                updateForm.SetUpForm(e.UpdateInfo, e.UpdateInfo.alpha || e.UpdateInfo.beta);
+                updateForm.SetUpForm(e.UpdateInfo);
                 updateForm.ShowDialog();
                 
                 Updater.Check = false;
@@ -310,7 +304,7 @@ namespace Shotr.Ui
                 }
                 
                 var updateForm = _serviceProvider.GetService<UpdateForm>();
-                updateForm.SetUpForm(e.UpdateInfo, e.UpdateInfo.alpha || e.UpdateInfo.beta);
+                updateForm.SetUpForm(e.UpdateInfo);
                 updateForm.ShowDialog();
                 
                 Updater.Check = false;

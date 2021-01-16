@@ -50,7 +50,9 @@ namespace Shotr.Core.Services
             {
                 decryptedConfig.Login.DcryptKey = config.Login.DcryptKey;
             }
-            
+
+            decryptedConfig.LegacyHistory = LoadLegacyHistory();
+
             Save(decryptedConfig);
             
             return decryptedConfig;
@@ -73,13 +75,13 @@ namespace Shotr.Core.Services
             ConfigurationWriter.WriteToFile(settings, _settingsPath, encryptHandler, true);
         }
 
-        public Dictionary<long, UploadResult>? LoadLegacyHistory()
+        private static Dictionary<long, UploadResult>? LoadLegacyHistory()
         {
             var bin = new BinaryFormatter();
             bin.Binder = new SettingsSerializationBinder();
-            if (File.Exists(FolderPath + "history"))
+            if (File.Exists(Path.Combine(FolderPath, "history")))
             {
-                var ms = new MemoryStream(File.ReadAllBytes(FolderPath + "history"));
+                var ms = new MemoryStream(File.ReadAllBytes(Path.Combine(FolderPath, "history")));
                 try
                 {
 #pragma warning disable 618

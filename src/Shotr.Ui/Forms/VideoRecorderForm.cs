@@ -54,7 +54,7 @@ namespace Shotr.Ui.Forms
         private readonly MusicPlayerService _musicPlayerService;
         private readonly Uploader _uploader;
 
-        public VideoRecorderForm(BaseSettings settings, MusicPlayerService musicPlayerService, Uploader uploader)
+        public VideoRecorderForm(BaseSettings settings, MusicPlayerService musicPlayerService, Uploader uploader, Bitmap bitmap, Font metroFont, SingleInstance tasks)
         {
             _settings = settings;
             _musicPlayerService = musicPlayerService;
@@ -65,6 +65,64 @@ namespace Shotr.Ui.Forms
             InitializeComponent();
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
+
+            _screenshot = bitmap;
+            _metroF = metroFont;
+            _tasks = tasks;
+
+            timer1.Interval = 10;
+            timer1.Start();
+
+            Paint += ScreenshotForm_Paint;
+            FormBorderStyle = FormBorderStyle.None;
+
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
+            foreach (var screen in Screen.AllScreens)
+            {
+                //take smallest height
+                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
+                width += screen.Bounds.Width;
+                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
+                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
+                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
+                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
+            }
+            Size = new Size(width, height);
+            //get point of left-most monitor.
+            Location = new Point(left, top);
+
+            KeyUp += ScreenshotForm_KeyUp;
+            KeyDown += ScreenshotForm_KeyDown;
+
+            Cursor = Cursors.Cross;
+
+            _screenshot = new Bitmap(_screenshot, width, height);
+
+            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
+            {
+                var brush = new TextureBrush(image);
+                brush.WrapMode = WrapMode.Clamp;
+                _textbrush = brush;
+            }
+
+            DoubleBuffered = true;
+            //ShowInTaskbar = false;
+            timer2.Interval = 1000;
+            timer2.Start();
+
+            foreach (var p in Process.GetProcessesByName("ffmpeg"))
+            {
+                try
+                {
+                    p.Kill();
+                }
+                catch { }
+            }
+            MouseDown += ScreenshotForm_MouseDown;
+            MouseUp += ScreenshotForm_MouseUp;
         }
 
         void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
@@ -269,68 +327,8 @@ namespace Shotr.Ui.Forms
                 color.B);
         }
 
-        public void SetUpForm(Bitmap bitmap, Font metroFont, SingleInstance tasks)
-        {
-            _screenshot = bitmap;
-            _metroF = metroFont;
-            _tasks = tasks;
-        }
-
         private void ScreenshotForm_Load(object sender, EventArgs e)
         {
-            timer1.Interval = 10;
-            timer1.Start();
-
-            Paint += ScreenshotForm_Paint;
-            FormBorderStyle = FormBorderStyle.None;
-
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                //take smallest height
-                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
-                width += screen.Bounds.Width;
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
-                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
-            }
-            Size = new Size(width, height);
-            //get point of left-most monitor.
-            Location = new Point(left, top);
-          
-            KeyUp += ScreenshotForm_KeyUp;
-            KeyDown += ScreenshotForm_KeyDown;
-
-            Cursor = Cursors.Cross;
-
-            _screenshot = new Bitmap(_screenshot, width, height);
-
-            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
-            {
-                var brush = new TextureBrush(image);
-                brush.WrapMode = WrapMode.Clamp;
-                _textbrush = brush;
-            }
-          
-            DoubleBuffered = true;
-            //ShowInTaskbar = false;
-            timer2.Interval = 1000;
-            timer2.Start();
-
-            foreach (var p in Process.GetProcessesByName("ffmpeg"))
-            {
-                try
-                {
-                    p.Kill();
-                }
-                catch { }
-            }
-            MouseDown += ScreenshotForm_MouseDown;
-            MouseUp += ScreenshotForm_MouseUp;
             // force window to have focus
             var foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
             var appThread = GetCurrentThreadId();

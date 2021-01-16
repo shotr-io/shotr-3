@@ -47,6 +47,8 @@ namespace Shotr.Ui.Forms
                     DialogResult = DialogResult.OK;
                     _settings.Login.Token = user.Token;
                     _settings.Login.Email = user.Email;
+                    _settings.Uploads = user.Uploads;
+                    _settings.Login.Enabled = true;
                     Close();
                 }
                 else
@@ -78,19 +80,6 @@ namespace Shotr.Ui.Forms
 #else
             "https://shotr.io/auth/forgot".OpenUrl();
 #endif
-        }
-
-        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!_isClosing)
-            {
-                Environment.Exit(0);
-            }
-        }
-
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-            
         }
     }
 }
