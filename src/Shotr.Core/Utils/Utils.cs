@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using Shotr.Core.Entities;
 using Shotr.Core.Quantizer;
 using ShotrUploaderPlugin;
 
@@ -49,16 +48,16 @@ namespace Shotr.Core.Utils
 
         public static System.Drawing.Image Apply(ColorMatrix matrix, System.Drawing.Image img)
         {
-            Bitmap dest = CreateEmptyBitmap(img, PixelFormat.Format32bppArgb);
-            Rectangle destRect = new Rectangle(0, 0, dest.Width, dest.Height);
+            var dest = CreateEmptyBitmap(img, PixelFormat.Format32bppArgb);
+            var destRect = new Rectangle(0, 0, dest.Width, dest.Height);
             return Apply(matrix, img, dest, destRect);
         }
 
         public static System.Drawing.Image Apply(ColorMatrix matrix, System.Drawing.Image src, System.Drawing.Image dest, Rectangle destRect)
         {
-            using (Graphics graphics = Graphics.FromImage(dest))
+            using (var graphics = Graphics.FromImage(dest))
             {
-                using (ImageAttributes attributes = new ImageAttributes())
+                using (var attributes = new ImageAttributes())
                 {
                     attributes.ClearColorMatrix();
                     attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
@@ -74,7 +73,7 @@ namespace Shotr.Core.Utils
         public static Bitmap CreateEmptyBitmap(System.Drawing.Image img, PixelFormat pixelFormat, int widthOffset = 0, int heightOffset = 0)
         {
 			try {
-            Bitmap bitmap = new Bitmap(img.Width + widthOffset, img.Height + heightOffset, pixelFormat);
+            var bitmap = new Bitmap(img.Width + widthOffset, img.Height + heightOffset, pixelFormat);
             bitmap.SetResolution(img.HorizontalResolution, img.VerticalResolution);
             return bitmap;
 			}
@@ -86,9 +85,9 @@ namespace Shotr.Core.Utils
         public static Bitmap CopyActiveWindow(Rectangle src)
         {
 			try {
-            Rectangle CurrScreen = Screen.FromPoint(Cursor.Position).Bounds;
-            Bitmap bmpScreenCapture = new Bitmap(src.Width, src.Height);
-            Graphics g = Graphics.FromImage(bmpScreenCapture);
+            var CurrScreen = Screen.FromPoint(Cursor.Position).Bounds;
+            var bmpScreenCapture = new Bitmap(src.Width, src.Height);
+            var g = Graphics.FromImage(bmpScreenCapture);
             g.CopyFromScreen(new Point(src.Left, src.Top),
                                      Point.Empty,
                                      src.Size);
@@ -99,26 +98,13 @@ namespace Shotr.Core.Utils
 			}
         }
 
-        [DllImport("gdi32.dll")]
-        static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-        public enum DeviceCap
-        {
-            VERTRES = 10,
-            DESKTOPVERTRES = 117,
-
-            // http://pinvoke.net/default.aspx/gdi32/GetDeviceCaps.html
-        }
-
-        [DllImport("gdi32.dll")]
-        public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
-
         public static Bitmap CopyScreen()
         {
-            int height = 0;
-            int width = 0;
-            int left = 0;
-            int top = 0;
-            int i = 0;
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
+            var i = 0;
             foreach (var screen in Screen.AllScreens)
             {
                 screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
@@ -132,17 +118,17 @@ namespace Shotr.Core.Utils
                 i++;
             }
             
-            Rectangle CurrScreen = new Rectangle(new Point(left, top), new Size(width, height));
+            var CurrScreen = new Rectangle(new Point(left, top), new Size(width, height));
 
             Console.WriteLine("Post Scaling: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", CurrScreen.Y, CurrScreen.X, CurrScreen.Width, CurrScreen.Height);
 
-            Bitmap w = BitBltCopy(CurrScreen);
-            Graphics g = Graphics.FromImage(w);
+            var w = BitBltCopy(CurrScreen);
+            var g = Graphics.FromImage(w);
             Bitmap cursor;
             try
             {
                 int x = 0, y = 0;
-                cursor = Capture.Capture.CaptureCursor(ref x, ref y);
+                cursor = WinApi.CaptureCursor(ref x, ref y);
                 //calculate x & y's real position relative to the form.
                 //which is (-left)+x | (-top)+y
                 x = x + -left;
@@ -156,33 +142,12 @@ namespace Shotr.Core.Utils
             g.Dispose();
             return w;
         }
-        
-        public static System.Drawing.Image LoadImage(string filePath)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(filePath) && IsImageFile(filePath) && File.Exists(filePath))
-                {
-                    return System.Drawing.Image.FromStream(new MemoryStream(File.ReadAllBytes(filePath)));
-                }
-            }
-            catch
-            {
-
-            }
-
-            return null;
-        }
-        public static bool IsImageFile(string filePath)
-        {
-            return IsValidFile(filePath, typeof(FileExtensions));
-        }
 
         public static string GetFilenameExtension(string filePath)
         {
             if (!string.IsNullOrEmpty(filePath))
             {
-                int pos = filePath.LastIndexOf('.');
+                var pos = filePath.LastIndexOf('.');
 
                 if (pos >= 0)
                 {
@@ -191,18 +156,6 @@ namespace Shotr.Core.Utils
             }
 
             return null;
-        }
-
-        public static bool IsValidFile(string filePath, Type enumType)
-        {
-            string ext = GetFilenameExtension(filePath);
-
-            if (!string.IsNullOrEmpty(ext))
-            {
-                return Enum.GetNames(enumType).Any(x => ext.Equals(x, StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -276,13 +229,13 @@ namespace Shotr.Core.Utils
         public static extern IntPtr GetWindowDC(IntPtr ptr);
         public static Bitmap BitBltCopy(Rectangle scr)
         {
-            IntPtr hDesk = GetDesktopWindow();
-            IntPtr hSrce = GetWindowDC(hDesk);
-            IntPtr hDest = CreateCompatibleDC(hSrce);
-            IntPtr hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
-            IntPtr hOldBmp = SelectObject(hDest, hBmp);
-            bool b = BitBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
-            Bitmap bmp = System.Drawing.Image.FromHbitmap(hBmp);
+            var hDesk = GetDesktopWindow();
+            var hSrce = GetWindowDC(hDesk);
+            var hDest = CreateCompatibleDC(hSrce);
+            var hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
+            var hOldBmp = SelectObject(hDest, hBmp);
+            var b = BitBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt);
+            var bmp = System.Drawing.Image.FromHbitmap(hBmp);
             SelectObject(hDest, hOldBmp);
             DeleteObject(hBmp);
             DeleteDC(hDest);
@@ -290,36 +243,6 @@ namespace Shotr.Core.Utils
             return bmp;
         }
 
-        public static Bitmap StrechBltCopy(Rectangle scr)
-        {
-            IntPtr hDesk = GetDesktopWindow();
-            IntPtr hSrce = GetWindowDC(hDesk);
-            IntPtr hDest = CreateCompatibleDC(hSrce);
-            IntPtr hBmp = CreateCompatibleBitmap(hSrce, scr.Width, scr.Height);
-            IntPtr hOldBmp = SelectObject(hDest, hBmp);
-            bool b = StretchBlt(hDest, 0, 0, scr.Width, scr.Height, hSrce, scr.X, scr.Y, scr.Width, scr.Height, TernaryRasterOperations.SRCCOPY | TernaryRasterOperations.CAPTUREBLT);
-            Bitmap bmp = System.Drawing.Image.FromHbitmap(hBmp);
-            SelectObject(hDest, hOldBmp);
-            DeleteObject(hBmp);
-            DeleteDC(hDest);
-            ReleaseDC(hDesk, hSrce);
-            return bmp;
-        }
-
-        private static ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                {
-                    return codec;
-                }
-            }
-            return null;
-        }
-        
         public static Rectangle GetActiveWindowCoords()
         {
             var foregroundWindowsHandle = GetForegroundWindow();
@@ -332,20 +255,20 @@ namespace Shotr.Core.Utils
 
         public static ColorMatrix Contrast(float value)
         {
-            float[][] newColorMatrix = new float[5][];
-            float[] numArray2 = new float[5];
+            var newColorMatrix = new float[5][];
+            var numArray2 = new float[5];
             numArray2[0] = value;
             newColorMatrix[0] = numArray2;
-            float[] numArray3 = new float[5];
+            var numArray3 = new float[5];
             numArray3[1] = value;
             newColorMatrix[1] = numArray3;
-            float[] numArray4 = new float[5];
+            var numArray4 = new float[5];
             numArray4[2] = value;
             newColorMatrix[2] = numArray4;
-            float[] numArray5 = new float[5];
+            var numArray5 = new float[5];
             numArray5[3] = 1f;
             newColorMatrix[3] = numArray5;
-            float[] numArray6 = new float[5];
+            var numArray6 = new float[5];
             numArray6[4] = 1f;
             newColorMatrix[4] = numArray6;
             return new ColorMatrix(newColorMatrix);
@@ -353,7 +276,7 @@ namespace Shotr.Core.Utils
 
         public static string GetRandomString(int len)
         {
-            string path = Path.GetRandomFileName();
+            var path = Path.GetRandomFileName();
             path = path.Replace(".", "");
             if (path.Length < len)
             {
@@ -388,42 +311,37 @@ namespace Shotr.Core.Utils
             return null;
         }
 
-        public static byte[] imageToByteArray(System.Drawing.Image imageIn, FileExtensions ext, bool compress, long quality)
+        public static byte[] ImageToByteArray(System.Drawing.Image imageIn, FileExtensions ext, bool compress, long quality)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                //encoder params.
-                if (ext != FileExtensions.png)
+                if (compress)
                 {
-                    ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/" + (ext == FileExtensions.jpeg ? "jpeg" : ext == FileExtensions.jpg ? "jpeg" : ext.ToString()));
-                    Encoder myEncoder = Encoder.Quality;
-                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
-                    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, quality);
+                    var myImageCodecInfo =
+                        GetEncoderInfo("image/" + (ext == FileExtensions.jpeg ? "jpeg" :
+                                                   ext == FileExtensions.jpg ? "jpeg" : ext.ToString()));
+                    var myEncoder = Encoder.Quality;
+                    var myEncoderParameters = new EncoderParameters(1);
+                    var myEncoderParameter = new EncoderParameter(myEncoder, quality);
                     myEncoderParameters.Param[0] = myEncoderParameter;
-                   
+
                     imageIn.Save(ms, myImageCodecInfo, myEncoderParameters);
                 }
                 else
                 {
-                    ImageFormat m = null;
-                    switch (ext)
+                    var imageFormat = ext switch
                     {
-                        case FileExtensions.gif:
-                            m = ImageFormat.Gif;
-                            break;
-                        case FileExtensions.png:
-                            m = ImageFormat.Png;
-                            break;
-                        case FileExtensions.jpg:
-                        case FileExtensions.jpeg:
-                            m = ImageFormat.Jpeg;
-                            break;
-                        case FileExtensions.bmp:
-                            m = ImageFormat.Bmp;
-                            break;
-                    }
-                    imageIn.Save(ms, m);
+                        FileExtensions.gif  => ImageFormat.Gif,
+                        FileExtensions.png  => ImageFormat.Png,
+                        FileExtensions.bmp  => ImageFormat.Bmp,
+                        FileExtensions.jpg  => ImageFormat.Jpeg,
+                        FileExtensions.jpeg => ImageFormat.Jpeg,
+                        _                   => ImageFormat.Png,
+                    };
+                    
+                    imageIn.Save(ms, imageFormat);
                 }
+
                 return ms.ToArray();
             }
         }
@@ -444,13 +362,13 @@ namespace Shotr.Core.Utils
         {
             if (add)
             {
-                RegistryKey addt = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                var addt = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 addt.SetValue("Shotr", "\"" + Application.ExecutablePath + "\"");
                 addt.Close();
             }
             else
             {
-                RegistryKey remove = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                var remove = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 remove.DeleteValue("Shotr");
                 remove.Close();
             }
@@ -461,7 +379,7 @@ namespace Shotr.Core.Utils
         {
             using (var md5 = MD5.Create())
             {
-                using (FileStream stream = File.OpenRead(filepath))
+                using (var stream = File.OpenRead(filepath))
                 {
                     return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
                 }
@@ -470,17 +388,17 @@ namespace Shotr.Core.Utils
 
         public static void Decompress(string filepath, string outputpath)
         {
-            using (FileStream f = File.OpenRead(filepath))
+            using (var f = File.OpenRead(filepath))
             {
                 using (var decompress = new GZipStream(f, CompressionMode.Decompress, false))
                 {
                     try
                     {
                         const int size = 1024;
-                        byte[] buffer = new byte[size];
-                        using (FileStream m = File.OpenWrite(outputpath))
+                        var buffer = new byte[size];
+                        using (var m = File.OpenWrite(outputpath))
                         {
-                            int count = 0;
+                            var count = 0;
                             do
                             {
                                 count = decompress.Read(buffer, 0, size);
@@ -522,19 +440,19 @@ namespace Shotr.Core.Utils
             {
                 screen = Screen.PrimaryScreen;
             }
-            RECT rect = new RECT();
+            var rect = new RECT();
             GetWindowRect(new HandleRef(null, GetForegroundWindow()), ref rect);
             return new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top).Contains(screen.Bounds);
         }
 
-        public static Process GetForegroundProcess()
+        public static Process? GetForegroundProcess()
         {
             if (IsForegroundFullScreen())
             {
                 //get process name
                 uint pid = 0;
                 GetWindowThreadProcessId(GetForegroundWindow(), out pid);
-                Process x = Process.GetProcessById((int)pid);
+                var x = Process.GetProcessById((int)pid);
                 if (x.ProcessName.Contains("explorer") || x.ProcessName.Contains(Process.GetCurrentProcess().ProcessName))
                 {
                     return null;
@@ -542,40 +460,6 @@ namespace Shotr.Core.Utils
                 return x;
             }
             return null;
-        }
-
-        public static bool IsDXFullScreen()
-        {
-            int x = SHQueryUserNotificationState(out var qu);
-            return qu == QUERY_USER_NOTIFICATION_STATE.QUNS_RUNNING_D3D_FULL_SCREEN;
-        }
-
-        [DllImport("shell32.dll")]
-        static extern int SHQueryUserNotificationState(
-             out QUERY_USER_NOTIFICATION_STATE pquns);
-
-        enum QUERY_USER_NOTIFICATION_STATE
-        {
-            QUNS_NOT_PRESENT = 1,
-            QUNS_BUSY = 2,
-            QUNS_RUNNING_D3D_FULL_SCREEN = 3,
-            QUNS_PRESENTATION_MODE = 4,
-            QUNS_ACCEPTS_NOTIFICATIONS = 5,
-            QUNS_QUIET_TIME = 6,
-            QUNS_APP = 7
-        }
-
-        /* Form loader */
-        public static List<Control> GetControls(Control Item)
-        {
-            List<Control> ctrl = new List<Control>();
-            if (Item.Controls.Count <= 0) ctrl.Add(Item);
-            foreach (Control p in Item.Controls)
-            {
-                foreach (Control x in GetControls(p))
-                    ctrl.Add(x);
-            }
-            return ctrl;
         }
     }
 }

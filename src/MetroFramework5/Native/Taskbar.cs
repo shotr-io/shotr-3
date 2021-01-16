@@ -89,12 +89,12 @@ namespace MetroFramework5.Native
         [SecuritySafeCritical]
         public Taskbar()
         {
-            IntPtr taskbarHandle = WinApi.FindWindow(ClassName, null);
+            var taskbarHandle = WinApi.FindWindow(ClassName, null);
 
-            WinApi.APPBARDATA data = new WinApi.APPBARDATA();
+            var data = new WinApi.APPBARDATA();
             data.cbSize = (uint)Marshal.SizeOf(typeof(WinApi.APPBARDATA));
             data.hWnd = taskbarHandle;
-            IntPtr result = WinApi.SHAppBarMessage(WinApi.ABM.GetTaskbarPos, ref data);
+            var result = WinApi.SHAppBarMessage(WinApi.ABM.GetTaskbarPos, ref data);
             if (result == IntPtr.Zero)
                 throw new InvalidOperationException();
 
@@ -103,7 +103,7 @@ namespace MetroFramework5.Native
 
             data.cbSize = (uint)Marshal.SizeOf(typeof(WinApi.APPBARDATA));
             result = WinApi.SHAppBarMessage(WinApi.ABM.GetState, ref data);
-            int state = result.ToInt32();
+            var state = result.ToInt32();
             AlwaysOnTop = (state & WinApi.AlwaysOnTop) == WinApi.AlwaysOnTop;
             AutoHide = (state & WinApi.Autohide) == WinApi.Autohide;
         }

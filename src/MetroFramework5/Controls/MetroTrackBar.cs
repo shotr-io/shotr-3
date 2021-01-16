@@ -171,20 +171,20 @@ namespace MetroFramework5.Controls
 
         private void DrawTrackBar(Graphics g, Color thumbColor, Color barColor)
         {
-            int trackX = (((trackerValue - barMinimum) * (Width - 6)) / (barMaximum - barMinimum));
+            var trackX = (((trackerValue - barMinimum) * (Width - 6)) / (barMaximum - barMinimum));
 
-            using (SolidBrush b = new SolidBrush(thumbColor))
+            using (var b = new SolidBrush(thumbColor))
             {
-                Rectangle barRect = new Rectangle(0, Height / 2 - 2, trackX, 4);
+                var barRect = new Rectangle(0, Height / 2 - 2, trackX, 4);
                 g.FillRectangle(b, barRect);
 
-                Rectangle thumbRect = new Rectangle(trackX, Height / 2 - 8, 6, 16);
+                var thumbRect = new Rectangle(trackX, Height / 2 - 8, 6, 16);
                 g.FillRectangle(b, thumbRect);
             }
 
-            using (SolidBrush b = new SolidBrush(barColor))
+            using (var b = new SolidBrush(barColor))
             {
-                Rectangle barRect = new Rectangle(trackX + 7, Height / 2 - 2, Width - trackX + 7, 4);
+                var barRect = new Rectangle(trackX + 7, Height / 2 - 2, Width - trackX + 7, 4);
                 g.FillRectangle(b, barRect);
             }
         }
@@ -240,7 +240,7 @@ namespace MetroFramework5.Controls
             if (Value == barMaximum)
                 OnScroll(ScrollEventType.Last, Value);
 
-            Point pt = PointToClient(Cursor.Position);
+            var pt = PointToClient(Cursor.Position);
             OnMouseMove(new MouseEventArgs(MouseButtons.None, 0, pt.X, pt.Y, 0));
         }
 
@@ -260,11 +260,11 @@ namespace MetroFramework5.Controls
             base.OnMouseMove(e);
             if (!(Capture & e.Button == MouseButtons.Left)) return;
 
-            ScrollEventType set = ScrollEventType.ThumbPosition;
-            Point pt = e.Location;
-            int p = pt.X;
+            var set = ScrollEventType.ThumbPosition;
+            var pt = e.Location;
+            var p = pt.X;
                 
-            float coef = (barMaximum - barMinimum) / (float)(ClientSize.Width - 3);
+            var coef = (barMaximum - barMinimum) / (float)(ClientSize.Width - 3);
             trackerValue = (int)(p * coef + barMinimum);
 
             if (trackerValue <= barMinimum)
@@ -287,7 +287,7 @@ namespace MetroFramework5.Controls
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
-            int v = e.Delta / 120 * (barMaximum - barMinimum) / mouseWheelBarPartitions;
+            var v = e.Delta / 120 * (barMaximum - barMinimum) / mouseWheelBarPartitions;
             SetProperValue(Value + v);
         }
 

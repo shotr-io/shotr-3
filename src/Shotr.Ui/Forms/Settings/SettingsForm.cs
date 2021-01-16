@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using Shotr.Core.Capture;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Entities;
+using Shotr.Core.Services;
+using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
@@ -11,6 +12,8 @@ namespace Shotr.Ui.Forms.Settings
 {
     public partial class SettingsForm : DpiScaledForm
     {
+        private readonly BaseSettings _settings;
+
         /*
          { "region_hotkey", new object[] { Keys.Control | Keys.Shift | Keys.D4 } },
          { "region_fullscreen", new object[] { Keys.Control | Keys.Shift | Keys.D3 } },
@@ -34,17 +37,18 @@ namespace Shotr.Ui.Forms.Settings
          this.ChangeKey("settings.screenshot", new object[] { FileExtensions.png, CompressionLevel.High, true });
          this.ChangeKey("region_clipboard", new object[] { Keys.Control | Keys.Shift | Keys.D5 });
         */
-        public SettingsForm()
+        public SettingsForm(BaseSettings settings)
         {
+            _settings = settings;
             InitializeComponent();
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            ScreencastOptions k = new ScreencastOptions();
-            FFmpegHelper fmp = new FFmpegHelper(k);
-            fmp.Options.FFmpeg.CLIPath = Path.Combine(Core.Utils.Settings.FolderPath, "ffmpeg.exe");
-            DirectShowDevices p = fmp.GetDirectShowDevices();
+            var k = new ScreencastOptions();
+            var fmp = new FFmpegHelperService(k);
+            fmp.Options.FFmpeg.CLIPath = Path.Combine(SettingsService.FolderPath, "ffmpeg.exe");
+            var p = fmp.GetDirectShowDevices();
             if (p.AudioDevices.Count < 0)
             {
                 recordAudioToggle.Checked = false;
@@ -54,20 +58,20 @@ namespace Shotr.Ui.Forms.Settings
             else
             {
                 //add to combobox
-                for (int i = 0; i < p.AudioDevices.Count; i++)
+                for (var i = 0; i < p.AudioDevices.Count; i++)
                 {
                     audioDeviceCombo.Items.Add(p.AudioDevices[i]);
                 }
                 //check settings first.
-                if ((string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[1].ToString() == "")
+                if (_settings.Record.AudioDevice is null || string.IsNullOrEmpty(_settings.Record.AudioDevice))
                 {
                     audioDeviceCombo.Text = p.AudioDevices[0];
                 }
                 else
                 {
-                    if (p.AudioDevices.Contains((string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[4].ToString()))
+                    if (p.AudioDevices.Contains(_settings.Record.AudioDevice))
                     {
-                        audioDeviceCombo.Text = (string)Core.Utils.Settings.Instance.GetValue("settings.screen_recording")[4].ToString();
+                        audioDeviceCombo.Text = _settings.Record.AudioDevice;
                     }
                     else
                     {
@@ -76,26 +80,26 @@ namespace Shotr.Ui.Forms.Settings
                 }
             }
             //load all settings here.
-            if (GetOptions("general.savetodirectory").Length > 1)
+            if (_settings.Capture.SaveToDirectory)
             {
-                metroTextBox1.Text = (string)GetOptions("general.savetodirectory")[1];
+                metroTextBox1.Text = _settings.Capture.SaveToDirectoryPath;
             }
-            saveToDirectoryToggle.Checked = (bool)GetOptions("general.savetodirectory")[0];
-            showNotificationsToggle.Checked = (bool)GetOptions("program_show_notifications")[0];
-            startupToggle.Checked = (bool)GetOptions("start_with_windows")[0];
-            minimizedToggle.Checked = (bool)GetOptions("start_minimized")[0];
-            alphaToggle.Checked = (bool)GetOptions("program_subscribe_to_alpha_beta_releases")[0];
-            soundToggle.Checked = (bool)GetOptions("play_sounds")[0];
-            imageCodecCombo.Text = (string)GetOptions("settings.screenshot")[0].ToString();
-            imageQualityCombo.Text = (string)GetOptions("settings.screenshot")[1].ToString();
-            imageCompressionToggle.Checked = (bool)GetOptions("settings.screenshot")[2];
-            stitchFullscreenToggle.Checked = (bool)GetOptions("program_stitch_fullscreen")[0];
-            framerateCombo.Text = (string)GetOptions("settings.screen_recording")[0].ToString();
-            encodingCombo.Text = (string)GetOptions("settings.screen_recording")[1].ToString();
-            recordCursorToggle.Checked = (bool)GetOptions("settings.screen_recording")[2];
-            recordAudioToggle.Checked = (bool)GetOptions("settings.screen_recording")[3];
-            audioDeviceCombo.Text = (string)GetOptions("settings.screen_recording")[4].ToString();
-            useresizablecanvas.Checked = (bool)GetOptions("screenshot.use_resizable_canvas")[0];
+            saveToDirectoryToggle.Checked = _settings.Capture.SaveToDirectory;
+            showNotificationsToggle.Checked = _settings.ShowNotifications;
+            startupToggle.Checked = _settings.StartWithWindows;
+            minimizedToggle.Checked = _settings.StartMinimized;
+            alphaToggle.Checked = _settings.SubscribeToAlphaBeta;
+            soundToggle.Checked = _settings.PlaySounds;
+            imageCodecCombo.Text = _settings.Capture.Extension.ToString();
+            imageQualityCombo.Text = _settings.Capture.CompressionLevel.ToString();
+            imageCompressionToggle.Checked = _settings.Capture.CompressionEnabled;
+            stitchFullscreenToggle.Checked = _settings.Capture.StitchFullscreen;
+            framerateCombo.Text = _settings.Record.Framerate.ToString();
+            encodingCombo.Text = _settings.Record.Threads.ToString();
+            recordCursorToggle.Checked = _settings.Record.RecordCursor;
+            recordAudioToggle.Checked = _settings.Record.RecordAudio;
+            audioDeviceCombo.Text = _settings.Record.AudioDevice;
+            useresizablecanvas.Checked = _settings.Capture.UseResizableCanvas;
 
             saveToDirectoryToggle.CheckedChanged += saveToDirectoryToggle_CheckedChanged;
             showNotificationsToggle.CheckedChanged += showNotificationsToggle_CheckedChanged;
@@ -117,12 +121,13 @@ namespace Shotr.Ui.Forms.Settings
 
         void useresizablecanvas_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("screenshot.use_resizable_canvas", new object[] { useresizablecanvas.Checked });
+            _settings.Capture.UseResizableCanvas = useresizablecanvas.Checked;
+            SettingsService.Save(_settings);
         }
         
         private string ChooseDir()
         {
-            FolderBrowserDialog f = new FolderBrowserDialog();
+            var f = new FolderBrowserDialog();
             f.Description = "Choose a directory for Shotr to save files in before upload: ";
             if (f.ShowDialog() == DialogResult.OK)
             {
@@ -131,138 +136,127 @@ namespace Shotr.Ui.Forms.Settings
             return null;
         }
 
-        private List<string> done = new List<string>();
-
-        private void SaveOption(string name, object[] value)
-        {
-            Core.Utils.Settings.Instance.ChangeKey(name, value);
-        }
-
-        private object[] GetOptions(string name)
-        {
-            return Core.Utils.Settings.Instance.GetValue(name);
-        }
-
         private void saveToDirectoryToggle_CheckedChanged(object sender, EventArgs e)
         {
             //unhide textbox, allow them to browse.
             if(saveToDirectoryToggle.Checked) 
             {
                 //show folder browser.
-                string m = ChooseDir();
-                if(m != null)
+                var saveDirectoryChoosePath = ChooseDir();
+                if(saveDirectoryChoosePath != null)
                 {
-                    metroTextBox1.Text = m;
-                    //save option.
-                    SaveOption("general.savetodirectory", new object[] { true, m });
+                    metroTextBox1.Text = saveDirectoryChoosePath;
+                    _settings.Capture.SaveToDirectory = true;
+                    _settings.Capture.SaveToDirectoryPath = saveDirectoryChoosePath;
                 }
             }
             else
             {
                 metroTextBox1.Text = "";
-                SaveOption("general.savetodirectory", new object[] { false, "" });
+                _settings.Capture.SaveToDirectory = false;
+                _settings.Capture.SaveToDirectoryPath = null;
             }
+            SettingsService.Save(_settings);
         }
 
         private void showNotificationsToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("program_show_notifications", new object[] { showNotificationsToggle.Checked });
+            _settings.ShowNotifications = showNotificationsToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void startupToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("start_with_windows", new object[] { startupToggle.Checked });
+            _settings.StartWithWindows = startupToggle.Checked;
             Utils.AddToStartup(startupToggle.Checked);
+            SettingsService.Save(_settings);
         }
 
         private void minimizedToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("start_minimized", new object[] { minimizedToggle.Checked });
+            _settings.StartMinimized = minimizedToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void alphaToggle_CheckedChanged(object sender, EventArgs e)
         {
-            DialogResult p = MessageBox.Show(this, "Shotr will restart to check for updates to the latest alpha release. Is that okay?", "Confirm?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            var p = MessageBox.Show(this, "Shotr will restart to check for updates to the latest alpha release. Is that okay?", "Confirm?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             switch (p)
             {
                 case DialogResult.Yes:
-                    {
-                        SaveOption("program_subscribe_to_alpha_beta_releases", new object[] { alphaToggle.Checked });
-                        Application.Restart();
-                        Environment.Exit(0);
-                    }
+                    _settings.SubscribeToAlphaBeta = alphaToggle.Checked;
+                    SettingsService.Save(_settings);
+                    Application.Restart();
+                    Environment.Exit(0);
                     break;
                 case DialogResult.No:
-                    {
-                        SaveOption("program_subscribe_to_alpha_beta_releases", new object[] { !alphaToggle.Checked });
-                        alphaToggle.Checked = !alphaToggle.Checked;
-                    }
-                    break;
                 case DialogResult.Cancel:
-                    {
-                        alphaToggle.Checked = false;
-                    }
+                    alphaToggle.Checked = false;
+                    _settings.SubscribeToAlphaBeta = alphaToggle.Checked;
                     break;
             }
         }
 
         private void soundToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("play_sounds", new object[] { soundToggle.Checked });
+            _settings.PlaySounds = soundToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void imageCodecCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FileExtensions i = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
-            CompressionLevel h = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
-
-            Core.Utils.Settings.Instance.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
+            var imageCodec = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
+            _settings.Capture.Extension = imageCodec;
+            SettingsService.Save(_settings);
         }
 
         private void imageQualityCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FileExtensions i = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
-            CompressionLevel h = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
-
-            Core.Utils.Settings.Instance.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
+            var imageQuality = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
+            _settings.Capture.CompressionLevel = imageQuality;
+            SettingsService.Save(_settings);
         }
 
         private void imageCompressionToggle_CheckedChanged(object sender, EventArgs e)
         {
-            FileExtensions i = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
-            CompressionLevel h = (CompressionLevel)Enum.Parse(typeof(CompressionLevel), imageQualityCombo.Text);
-
-            Core.Utils.Settings.Instance.ChangeKey("settings.screenshot", new object[] { i, h, imageCompressionToggle.Checked });
+            _settings.Capture.CompressionEnabled = imageCompressionToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void stitchFullscreenToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("program_stitch_fullscreen", new object[] { stitchFullscreenToggle.Checked });
+            _settings.Capture.StitchFullscreen = stitchFullscreenToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void framerateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveOption("settings.screen_recording", new object[] { Convert.ToInt32(framerateCombo.Text), Convert.ToInt32(encodingCombo.Text), recordCursorToggle.Checked, recordAudioToggle.Checked, audioDeviceCombo.Text });
+            _settings.Record.Framerate = Convert.ToInt32(framerateCombo.Text);
+            SettingsService.Save(_settings);
         }
 
         private void encodingCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveOption("settings.screen_recording", new object[] { Convert.ToInt32(framerateCombo.Text), Convert.ToInt32(encodingCombo.Text), recordCursorToggle.Checked, recordAudioToggle.Checked, audioDeviceCombo.Text });
+            _settings.Record.Threads = Convert.ToInt32(encodingCombo.Text);
+            SettingsService.Save(_settings);
         }
 
         private void recordCursorToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("settings.screen_recording", new object[] { Convert.ToInt32(framerateCombo.Text), Convert.ToInt32(encodingCombo.Text), recordCursorToggle.Checked, recordAudioToggle.Checked, audioDeviceCombo.Text });
+            _settings.Record.RecordCursor = recordCursorToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void recordAudioToggle_CheckedChanged(object sender, EventArgs e)
         {
-            SaveOption("settings.screen_recording", new object[] { Convert.ToInt32(framerateCombo.Text), Convert.ToInt32(encodingCombo.Text), recordCursorToggle.Checked, recordAudioToggle.Checked, audioDeviceCombo.Text });
+            _settings.Record.RecordAudio = recordAudioToggle.Checked;
+            SettingsService.Save(_settings);
         }
 
         private void audioDeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SaveOption("settings.screen_recording", new object[] { Convert.ToInt32(framerateCombo.Text), Convert.ToInt32(encodingCombo.Text), recordCursorToggle.Checked, recordAudioToggle.Checked, audioDeviceCombo.Text });
+            _settings.Record.AudioDevice = audioDeviceCombo.Text;
+            SettingsService.Save(_settings);
         }
     }
 }

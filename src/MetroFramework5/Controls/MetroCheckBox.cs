@@ -49,23 +49,23 @@ namespace MetroFramework5.Controls
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            using (Pen p = new Pen(GetThemeColor("BorderColor")))
+            using (var p = new Pen(GetThemeColor("BorderColor")))
             {
-                Rectangle boxRect = new Rectangle(0, Height / 2 - 6, 12, 12);
+                var boxRect = new Rectangle(0, Height / 2 - 6, 12, 12);
                 e.Graphics.DrawRectangle(p, boxRect);
             }
 
             if (Checked)
             {
-                Color fillColor = CheckState == CheckState.Indeterminate ? GetThemeColor("BorderColor") : GetStyleColor();
-                using (SolidBrush b = new SolidBrush(fillColor))
+                var fillColor = CheckState == CheckState.Indeterminate ? GetThemeColor("BorderColor") : GetStyleColor();
+                using (var b = new SolidBrush(fillColor))
                 {
-                    Rectangle boxRect = new Rectangle(2, Height / 2 - 4, 9, 9);
+                    var boxRect = new Rectangle(2, Height / 2 - 4, 9, 9);
                     e.Graphics.FillRectangle(b, boxRect);
                 }
             }
 
-            Rectangle textRect = new Rectangle(16, 0, Width - 16, Height);
+            var textRect = new Rectangle(16, 0, Width - 16, Height);
             TextRenderer.DrawText(e.Graphics, Text, EffectiveFont, textRect, EffectiveForeColor, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
         }
 
@@ -80,7 +80,7 @@ namespace MetroFramework5.Controls
             using (var g = CreateGraphics())
             {
                 proposedSize = new Size(int.MaxValue, int.MaxValue);
-                Size preferredSize = TextRenderer.MeasureText(g, Text, EffectiveFont, proposedSize, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
+                var preferredSize = TextRenderer.MeasureText(g, Text, EffectiveFont, proposedSize, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
                 preferredSize.Width += 16;
                 return preferredSize;
             }

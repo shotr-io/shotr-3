@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Net;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Controls;
-using Shotr.Core.DpiScaling;
-using Shotr.Core.Hotkey;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Image;
 using Shotr.Core.Pipes;
-using Shotr.Core.Plugin;
+using Shotr.Core.Services;
+using Shotr.Core.Settings;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using Shotr.Ui.Forms.Settings;
@@ -25,115 +21,82 @@ namespace Shotr.Ui.Forms
 {
     public partial class MainForm : DpiScaledForm
     {
-        private PipeServer _pipeserver;
-        private Icon shotr_icon;
-        private Bitmap shotr_icon_bmp;
-        private List<ShotrCorePlugin> loadedplugins;
+        private readonly BaseSettings _settings;
+        private readonly Uploader _uploader;
+        private readonly PipeServer _pipeServer;
+        private readonly SettingsForm _settingsForm;
+        private readonly AboutForm _aboutForm;
+        
+        private readonly SingleInstance _tasks;
 
-        public MainForm()
+        private readonly HotKeyService _hotkeyService;
+        private readonly SettingsService _settingsService;
+
+        private readonly IEnumerable<IImageUploader> _uploaders;
+        private readonly MusicPlayerService _musicPlayerService;
+        
+        private Icon _shotrIcon;
+        private VideoRecorderForm _videoRecorderForm;
+
+        public MainForm(BaseSettings settings,
+                        Uploader uploader,
+                        PipeServer pipeServer,
+                        SingleInstance tasks, 
+                        SettingsForm settingsForm,
+                        HotKeyService hotkeyService, 
+                        SettingsService settingsService, 
+                        IEnumerable<IImageUploader> uploaders, 
+                        MusicPlayerService musicPlayerService, 
+                        AboutForm aboutForm)
         {
-            InitializeComponent();
-            FormBorderStyle = FormBorderStyle.None;
-            Shown += MainFormShown;
-            _pipeserver = new PipeServer();
-            _pipeserver.PipeServerReceivedClient += _pipeserver_PipeServerReceivedClient;
-            _pipeserver.StartServer();
-            loadedplugins = new List<ShotrCorePlugin>();
-            //plugin handler.
-            PluginCore.OnPluginsChanged += (sender, e) => {
-                //see if it's in our loaded plugins list already.
-                foreach (ShotrCorePlugin coreplug in PluginCore.CorePlugin)
-                {
-                    if (!loadedplugins.Contains(coreplug))
-                    {
-                        if (coreplug.Enabled)
-                        {
-                            //load up the plugin.
-                            Console.WriteLine("Recognized new plugin {0}. Loading default methods.", coreplug.Name);
-                            loadedplugins.Add(coreplug);
-                            Form test = coreplug.GetForm(new ShotrCore());
-                            MetroTabPage lel = new MetroTabPage();
-                            lel.Theme = "NewTheme";
-                            //if (test.Size.Width > this.metroTabPage2.Size.Width || test.Size.Height > this.metroTabPage2.Size.Height) continue;
-                            while (test.Controls.Count > 0)
-                            {
-                                foreach (Control w in Utils.GetControls(test.Controls[0]))
-                                {
-                                    lel.Controls.Add(w);
-                                }
-                            }
-                            //p.BackColor = Color.FromArgb(32, 33, 37);
-                            lel.Text = coreplug.Name;
-                            metroTabControl1.TabPages.Add(lel);
-                        }
-                    }
-                }
-            };
-            //load up core plugins.
-            PluginCore.LoadCorePlugins();
+            _settings = settings;
+            _uploader = uploader;
+            _pipeServer = pipeServer;
+            _tasks = tasks;
+            _hotkeyService = hotkeyService;
+            _settingsService = settingsService;
+            _uploaders = uploaders;
+            _musicPlayerService = musicPlayerService;
+            _aboutForm = aboutForm;
+            _settingsForm = settingsForm;
 
-            new Thread(delegate ()
-            {
-                bool isforeground = false;
-                while (true)
-                {
-                    try
-                    {
-                        if (isforeground == false && Utils.IsDXFullScreen())
-                        {
-                            Invoke((MethodInvoker)(() =>
-                            {
-                                Core.Utils.Settings.Instance.UnloadHotKeys();
-                            }));
-                            //get pid and wait for process to end?
-                            isforeground = true;
-                            Console.WriteLine("Found foreground process: {0}", Utils.GetForegroundProcess().ProcessName);
-                        }
-                        else if (isforeground && !Utils.IsDXFullScreen())
-                        {
-                            //Thread.Sleep(5000);
-                            Console.WriteLine("Reloaded hotkeys.");
-                            Invoke((MethodInvoker)(() =>
-                            {
-                                Core.Utils.Settings.Instance.LoadHotKeys();
-                            }));
-                            Console.WriteLine("Finished reloading hotkeys");
-                            isforeground = false;
-                        }
-                    }
-                    catch
-                    {
-                        //wot.
-                    }
-                    Thread.Sleep(5000);
-                }
-            }).Start();
-            shotr_icon = Icon;
-            shotr_icon_bmp = shotr_icon.ToBitmap();
+            InitializeComponent();
+            
+            FormBorderStyle = FormBorderStyle.None;
+            
+            Shown += MainFormShown;
+            _pipeServer.PipeServerReceivedClient += _pipeserver_PipeServerReceivedClient;
+            _pipeServer.StartServer();
+
+            _shotrIcon = Icon;
+            _shotrIcon.ToBitmap();
+        }
+
+        public void SetUpForm(bool showInTaskBar, bool visible)
+        {
+            ShowInTaskbar = showInTaskBar;
+            Visible = visible;
         }
 
         void _pipeserver_PipeServerReceivedClient(object sender, PipeServerEventArgs e)
         {
-            foreach (HotKeyHook m in Core.Utils.Settings.Instance.hotkeys)
+            switch (e.Data)
             {
-                if (e.Data == "--region")
-                {
-                    if (m.Task == KeyTask.Region)
+                case "--region":
+                    var regionHotkey = _hotkeyService.GetHotKey(KeyTask.Region);
+                    if (regionHotkey is { })
                     {
-                        hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
-                        break;
+                        hook_KeyPressed(this, new KeyPressedEventArgs(regionHotkey.Id));
                     }
-                }
-                else if (e.Data == "--record")
-                {
-                    if (m.Task == KeyTask.RecordScreen)
+                    break;
+                case "--record":
+                    var recordHotkey = _hotkeyService.GetHotKey(KeyTask.RecordScreen);
+                    if (recordHotkey is { })
                     {
-                        hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
-                        break;
+                        hook_KeyPressed(this, new KeyPressedEventArgs(recordHotkey.Id));
                     }
-                }
-                else if (e.Data == "--launch")
-                {
+                    break;
+                case "--launch":
                     Invoke((MethodInvoker)(() =>
                     {
                         WindowState = FormWindowState.Minimized;
@@ -145,44 +108,34 @@ namespace Shotr.Ui.Forms
                         Activate();
                     }));
                     break;
-                }
             }
         }
-        bool start;
+
         private void MainFormShown(object sender, EventArgs e)
         {
-            if (!start)
+            if (_settings.StartMinimized)
             {
-                if (Core.Utils.Settings.Instance.settings.ContainsKey("start_minimized") && (bool)Core.Utils.Settings.Instance.settings["start_minimized"][0])
-                {
-                    ShadowType = MetroFormShadowType.DropShadow;
-                    ShowInTaskbar = false;
-                    Visible = false;
-                    start = true;
-                }
-                else
-                {
-                    ShowInTaskbar = true;
-                    Visible = true;
-                    start = true;
-                }
+                ShowInTaskbar = false;
+                Visible = false;
             }
             else
             {
+                ShadowType = MetroFormShadowType.DropShadow;
                 ShowInTaskbar = true;
                 Visible = true;
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            Core.Utils.Settings.Instance.hook.KeyPressed += hook_KeyPressed;
+            _hotkeyService.KeyPressed += hook_KeyPressed;
             UpdateControls();
-            Uploader.StartQueue();
-            Uploader.OnUploaded += Uploader_OnUploaded;
-            Uploader.OnError += Uploader_OnError;
-            Uploader.OnProgress += Uploader_OnProgress;
-            notifyIcon1.Disposed += (o, args) =>
+            _uploader.StartQueue();
+            _uploader.OnUploaded += Uploader_OnUploaded;
+            _uploader.OnError += Uploader_OnError;
+            _uploader.OnProgress += Uploader_OnProgress;
+            
+            notifyIcon1.Disposed += (_, _) =>
             {
                 notifyIcon1 = new NotifyIcon
                 {
@@ -191,13 +144,9 @@ namespace Shotr.Ui.Forms
                 };
                 notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
             };
-            //minimize to window.
+            
             notifyIcon1.Text = "Shotr";
-            notifyIcon1.Icon = (Icon)shotr_icon.Clone();
-            //add shit to listView.
-            itm = deleteToolStripMenuItem;
-            PluginCore.OnPluginsChanged += PluginCore_OnPluginsChanged;
-            //check if needed to login to shotr.
+            notifyIcon1.Icon = (Icon)_shotrIcon.Clone();
         }
 
         void Uploader_OnProgress(object sender, double progress)
@@ -209,7 +158,7 @@ namespace Shotr.Ui.Forms
                 {
                     if (progress == 101)
                     {
-                        Icon m = ImageManipulation.DefaultImage();
+                        var m = ImageManipulation.DefaultImage();
                         notifyIcon1.Icon.Dispose();
                         notifyIcon1.Icon = m;
                         notifyIcon1.Text = "Shotr";
@@ -219,14 +168,14 @@ namespace Shotr.Ui.Forms
 
                     if (progress == 100)
                     {
-                        Icon m = ImageManipulation.ImageStatus(99);
+                        var m = ImageManipulation.ImageStatus(99);
                         notifyIcon1.Icon.Dispose();
                         notifyIcon1.Icon = m;
                         notifyIcon1.Text = "Server is processing upload...";
                         m.Dispose();
                         return;
                     }
-                    Icon s = ImageManipulation.ImageStatus(Convert.ToInt32(progress));
+                    var s = ImageManipulation.ImageStatus(Convert.ToInt32(progress));
                     notifyIcon1.Icon.Dispose();
                     notifyIcon1.Icon = s;
                     notifyIcon1.Text = string.Format("Upload Progress: {0}%", Convert.ToInt32(progress));
@@ -236,25 +185,9 @@ namespace Shotr.Ui.Forms
             catch { }
         }
 
-        void PluginCore_OnPluginsChanged(object sender, EventArgs e)
-        {
-            //clear plugin list and reload.
-            metroComboBox1.Items.Clear();
-            foreach (ImageUploader p in PluginCore.Uploaders)
-            {
-                metroComboBox1.Items.Add(p.Title);
-            }
-            metroComboBox1.Text = (Core.Utils.Settings.Instance.GetValue("image_uploader") != null ? (string)Core.Utils.Settings.Instance.GetValue("image_uploader")[0] : "");
-            if (metroComboBox1.Text == "" && metroComboBox1.Items.Count > 0)
-            {
-                metroComboBox1.Text = "Shotr";
-            }
-        }
-
         void Uploader_OnError(object sender, ImageShell e)
         {
-            ErrorNotification not = null;
-            UploadedImageJsonResult f = (UploadedImageJsonResult)sender;
+            var f = (UploadedImageJsonResult)sender;
             if (f != null && f.ErrorCode == -7)
             {
                 Invoke((MethodInvoker)(() =>
@@ -271,10 +204,8 @@ namespace Shotr.Ui.Forms
             {
                 try
                 {
-                    Invoke((MethodInvoker)(() =>
-                    {
-                        not = new ErrorNotification(shotr_icon_bmp, e, f) { Visible = true };
-                    }));
+                    var errorNotification = new ErrorNotification(e, f);
+                    Invoke((MethodInvoker) (() => { errorNotification.Show(); }));
                 }
                 catch
                 {
@@ -282,30 +213,23 @@ namespace Shotr.Ui.Forms
                 }
             }
         }
-        List<UploadResult> ImageHistory = new List<UploadResult>();
+
         private void Uploader_OnUploaded(object sender, UploadResult e)
         {
-            if (e != null)
+            if (_settings.Capture.SaveToDirectory)
             {
-                //Make uploaded sound.
-                Core.Utils.Settings.Instance.ImageHistory.Add(e.Time, e);
-                Core.Utils.Settings.Instance.SaveSettings();
-                if (ImageHistory.Count >= 5)
+                if (_settings.Capture.SaveToDirectoryPath is {} && !Directory.Exists(_settings.Capture.SaveToDirectoryPath))
                 {
-                    ImageHistory.Remove(ImageHistory[0]);
+                    Directory.CreateDirectory(_settings.Capture.SaveToDirectoryPath);
                 }
-                ImageHistory.Add(e);
 
+                var extension = e != null ? Path.GetExtension(e.URL) : ((FileExtensions) ((object[]) sender)[2]).ToString();
+                var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_hh-mm-ss-tt}{extension}";
+
+                File.WriteAllBytes(filename, (byte[])((object[])sender)[1]);
             }
 
-            Notification not = null;
-            NoUploadNotification nuot = null;
-            ListViewItem x = null;
-            bool directurl = false;
-            if (e != null)
-            {
-                directurl = ((Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url") != null && (bool)Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url")[0]) || e.PageURL == "" || !PluginCore.GetUploader(e.Uploader).SupportsPages);
-            }
+            var url = e is {} ? _settings.Capture.DirectUrl ? e.URL : e.PageURL : "";
 
             Invoke((MethodInvoker)(() =>
             {
@@ -313,14 +237,15 @@ namespace Shotr.Ui.Forms
                 {
                     Image jpg;
                     Bitmap b;
-                    using (MemoryStream k = new MemoryStream((byte[])((object[])sender)[1]))
+                    using (var k = new MemoryStream((byte[]) ((object[]) sender)[1]))
                     {
                         jpg = Image.FromStream(k);
                         b = new Bitmap(jpg);
                     }
-                    DataObject dataobj = new DataObject();
+
+                    var dataobj = new DataObject();
                     if (e != null)
-                        dataobj.SetText((directurl ? e.URL : e.PageURL));
+                        dataobj.SetText(url);
                     dataobj.SetImage(b);
                     Clipboard.SetDataObject(dataobj);
                     jpg.Dispose();
@@ -330,77 +255,32 @@ namespace Shotr.Ui.Forms
                 {
                     Console.WriteLine("Cannot set image and text in clipboard at same time, error: {0}", ex);
                     if (e != null)
-                        Clipboard.SetText((directurl ? e.URL : e.PageURL));
+                        Clipboard.SetText(url);
                 }
-                try
-                {
-                    if (e != null)
-                    {
-                        if ((Core.Utils.Settings.Instance.GetValue("program_show_notifications") == null || (bool)Core.Utils.Settings.Instance.GetValue("program_show_notifications")[0]))
-                            not = new Notification((directurl ? e.URL : e.PageURL), shotr_icon_bmp, (string)((object[])sender)[0]) { Visible = true };
-                    }
-                    else
-                    {
-                        if ((Core.Utils.Settings.Instance.GetValue("program_show_notifications") == null || (bool)Core.Utils.Settings.Instance.GetValue("program_show_notifications")[0]))
-                            nuot = new NoUploadNotification(shotr_icon_bmp, (string)((object[])sender)[0]) { Visible = true };
-                    }
-                }
-                catch { }
-            }));
-            //save to directory.
-            if ((bool)Core.Utils.Settings.Instance.GetValue("general.savetodirectory")[0])
-            {
-                try
-                {
-                    if (!Directory.Exists((string)Core.Utils.Settings.Instance.GetValue("general.savetodirectory")[1])) Directory.CreateDirectory((string)Core.Utils.Settings.Instance.GetValue("general.savetodirectory")[1]);
-                    string filename = "";
-                    if (e != null)
-                    {
-                        filename = string.Format("{0}\\{1:yyyy-MM-dd_hh-mm-ss-tt}{2}", (string)Core.Utils.Settings.Instance.GetValue("general.savetodirectory")[1], DateTime.Now, Path.GetExtension(e.URL));
-                    }
-                    else
-                    {
-                        filename = string.Format("{0}\\{1:yyyy-MM-dd_hh-mm-ss-tt}.{2}", (string)Core.Utils.Settings.Instance.GetValue("general.savetodirectory")[1], DateTime.Now, ((FileExtensions)((object[])sender)[2]).ToString());
-                    }
-                    File.WriteAllBytes(filename, (byte[])((object[])sender)[1]);
-                }
-                catch { }
-            }
-            if (e != null)
-            {
-                x = new ListViewItem { Text = (directurl ? e.URL : e.PageURL) };
-                //update list with that shit.
-                x.SubItems.Add(Utils.FromUnixTime(e.Time).ToString());
-                Invoke((MethodInvoker)(() =>
-                {
-                    betterListView1.Items.Insert(0, x);
-                }));
-                //make last 4 images show in tray icon.
-                foreach (ToolStripItem w in historyToolStripMenuItem.DropDownItems)
-                {
-                    w.Click -= p_Click;
-                }
-                Invoke((MethodInvoker)(() =>
-                {
-                    historyToolStripMenuItem.DropDownItems.Clear();
-                    foreach (UploadResult h in ImageHistory)
-                    {
-                        ToolStripItem p = historyToolStripMenuItem.DropDownItems.Add((directurl ? h.URL : h.PageURL) + " - " + Utils.FromUnixTime(h.Time));
-                        p.Click += p_Click;
-                        //add dropdown items to p.
-                    }
-                }));
-            }
-        }
 
-        void p_Click(object sender, EventArgs e)
-        {
-            //open url of text.
-            try
-            {
-                Process.Start(((ToolStripItem)sender).Text.Split('-')[0]);
-            }
-            catch { }
+                try
+                {
+                    if (e != null)
+                    {
+                        if (_settings.ShowNotifications)
+                        {
+                            var notification = new Notification(url, (string) ((object[]) sender)[0]);
+                            notification.Show();
+                        }
+                    }
+                    else
+                    {
+                        if (_settings.ShowNotifications)
+                        {
+                            var notification = new NoUploadNotification((string) ((object[]) sender)[0]);
+                            notification.Show();
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }));
         }
 
         private void UpdateControls()
@@ -413,69 +293,65 @@ namespace Shotr.Ui.Forms
             //update other settings.
             metroLabel8.Text = string.Format(metroLabel8.Text, Assembly.GetExecutingAssembly().GetName().Version);
 
-            foreach (ImageUploader p in PluginCore.Uploaders)
+            foreach (var uploader in _uploaders)
             {
-                metroComboBox1.Items.Add(p.Title);
+                selectedImageUploader.Items.Add(uploader.Title);
             }
-            metroComboBox1.Text = (Core.Utils.Settings.Instance.GetValue("image_uploader") != null ? (string)Core.Utils.Settings.Instance.GetValue("image_uploader")[0] : "");
-            if (metroComboBox1.Text == "" && metroComboBox1.Items.Count > 0)
-            {
-                metroComboBox1.Text = (string)metroComboBox1.Items[0];
-            }
-            UpdateDirectURL();
 
-            emailLabel.Text = Core.Utils.Settings.Instance.email;
+            selectedImageUploader.Text = _settings.Capture.Uploader;
+            if (selectedImageUploader.Text == "" && selectedImageUploader.Items.Count > 0)
+            {
+                selectedImageUploader.Text = (string)selectedImageUploader.Items[0];
+            }
+            UpdateDirectUrl();
+
+            emailLabel.Text = _settings.Login.Email;
         }
 
-        private void UpdateDirectURL()
+        private void UpdateDirectUrl()
         {
             //check if uploader has support for indirect URLs.
-            ImageUploader p = PluginCore.GetUploader(metroComboBox1.Text);
-            if (p == null) return;
+            var uploader = GetUploader(_settings.Capture.Uploader);
+            if (uploader == null) return;
             //check if it supports indirect urls.
-            if (p.SupportsPages)
+            if (uploader.SupportsPages)
             {
                 //enable control for selecting page support.
                 metroLabel11.Visible = true;
-                metroToggle3.Visible = true;
+                directUrlToggle.Visible = true;
                 //get from settings or set to default.
-                metroToggle3.Checked = (Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url") != null && (bool)Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url")[0]);
-                if (Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url") == null)
-                {
-                    Core.Utils.Settings.Instance.ChangeKey("image_uploader_direct_url", new object[] { false });
-                }
+                directUrlToggle.Checked = _settings.Capture.DirectUrl;
             }
             else
             {
                 metroLabel11.Visible = false;
-                metroToggle3.Visible = false;
+                directUrlToggle.Visible = false;
             }
         }
 
         private void UpdateListView()
         {
             UpdateListViewColumnSize();
-            List<UploadResult> templist = new List<UploadResult>();
-            foreach (KeyValuePair<long, UploadResult> p in Core.Utils.Settings.Instance.ImageHistory)
+            var templist = new List<UploadResult>();
+            var history = _settingsService.LoadLegacyHistory();
+            if (history is { })
             {
-                templist.Add(p.Value);
+                templist.AddRange(history.Select(p => p.Value).ToList());
             }
-            bool exists = (Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url") != null);
-            bool ps = false;
-            if (exists)
-                ps = (bool)Core.Utils.Settings.Instance.GetValue("image_uploader_direct_url")[0];
-            for (int i = templist.Count - 1; i >= 0; i--)
+
+            var directUrl = _settings.Capture.DirectUrl;
+            for (var i = templist.Count - 1; i >= 0; i--)
             {
-                if (exists)
+                if (directUrl)
                 {
-                    ImageUploader m = PluginCore.GetUploader(templist[i].Uploader);
-                    var x = new ListViewItem { Text = ((m != null ? (!m.SupportsPages && !ps ? templist[i].URL : templist[i].PageURL) : templist[i].URL)) };
+                    var m = GetUploader(templist[i].Uploader);
+                    var x = new ListViewItem { Text = !m.SupportsPages && !directUrl ? templist[i].URL : templist[i].PageURL };
                     x.SubItems.Add(Utils.FromUnixTime(templist[i].Time).ToString());
                     betterListView1.Items.Add(x);
                 }
                 else
                 {
-                    ListViewItem x = new ListViewItem { Text = (ps ? templist[i].URL : templist[i].PageURL) };
+                    var x = new ListViewItem { Text = (directUrl ? templist[i].URL : templist[i].PageURL) };
                     x.SubItems.Add(Utils.FromUnixTime(templist[i].Time).ToString());
                     betterListView1.Items.Add(x);
                 }
@@ -494,7 +370,7 @@ namespace Shotr.Ui.Forms
                 // Calculate the percentage of space each column should 
                 // occupy in reference to the other columns and then set the 
                 // width of the column to that percentage of the visible space.
-                for (int i = 0; i < listView.Columns.Count; i++)
+                for (var i = 0; i < listView.Columns.Count; i++)
                 {
                     float colPercentage = (Convert.ToInt32(totalColumnWidth / 2));
                     listView.Columns[i].Width = (int)colPercentage;
@@ -504,266 +380,214 @@ namespace Shotr.Ui.Forms
 
         private void UpdateHotKeys()
         {
-            foreach (HotKeyHook f in Core.Utils.Settings.Instance.hotkeys)
+            var activeWindowHotKey = _hotkeyService.GetHotKey(KeyTask.ActiveWindow);
+            if (activeWindowHotKey is { })
             {
-                //region, fullscreen, active
-                HotKeyData p = new HotKeyData(f.Keys);
-                switch (f.Task)
-                {
-                    case KeyTask.ActiveWindow:
-                        hotkeyButton3.Text = p.ToString();
-                        hotkeyButton3.HotKey = p;
-                        break;
-                    case KeyTask.Fullscreen:
-                        hotkeyButton2.Text = p.ToString();
-                        hotkeyButton2.HotKey = p;
-                        break;
-                    case KeyTask.Region:
-                        hotkeyButton1.Text = p.ToString();
-                        hotkeyButton1.HotKey = p;
-                        break;
-                    case KeyTask.RegionNoUpload:
-                        hotkeyButton6.Text = p.ToString();
-                        hotkeyButton6.HotKey = p;
-                        break;
-                    case KeyTask.RecordScreen:
-                        hotkeyButton4.Text = p.ToString();
-                        hotkeyButton4.HotKey = p;
-                        break;
-                    case KeyTask.UploadClipboard:
-                        hotkeyButton5.Text = p.ToString();
-                        hotkeyButton5.HotKey = p;
-                        break;
-                }
+                activeWindowHotKeyButton.Text = activeWindowHotKey.Data.ToString();
+                activeWindowHotKeyButton.HotKey = activeWindowHotKey.Data;
+            }
+            
+            var fullscreenHotKey = _hotkeyService.GetHotKey(KeyTask.Fullscreen);
+            if (fullscreenHotKey is { })
+            {
+                fullScreenHotKeyButton.Text = fullscreenHotKey.Data.ToString();
+                fullScreenHotKeyButton.HotKey = fullscreenHotKey.Data;
+            }
+            
+            var regionHotKey = _hotkeyService.GetHotKey(KeyTask.Region);
+            if (regionHotKey is { })
+            {
+                regionHotKeyButton.Text = regionHotKey.Data.ToString();
+                regionHotKeyButton.HotKey = regionHotKey.Data;
+            }
+            
+            var regionNoUploadHotKey = _hotkeyService.GetHotKey(KeyTask.RegionNoUpload);
+            if (regionNoUploadHotKey is { })
+            {
+                noUploadHotKeyButton.Text = regionNoUploadHotKey.Data.ToString();
+                noUploadHotKeyButton.HotKey = regionNoUploadHotKey.Data;
+            }
+            
+            var recordScreenHotKey = _hotkeyService.GetHotKey(KeyTask.RecordScreen);
+            if (recordScreenHotKey is { })
+            {
+                recordScreenHotKeyButton.Text = recordScreenHotKey.Data.ToString();
+                recordScreenHotKeyButton.HotKey = recordScreenHotKey.Data;
+            }
+            
+            var uploadClipboardHotKey = _hotkeyService.GetHotKey(KeyTask.UploadClipboard);
+            if (uploadClipboardHotKey is { })
+            {
+                uploadClipboardHotKeyButton.Text = uploadClipboardHotKey.Data.ToString();
+                uploadClipboardHotKeyButton.HotKey = uploadClipboardHotKey.Data;
             }
         }
-        SingleInstance Tasks = new SingleInstance();
-        private GifRecorderForm gifrec;
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
             //initialize screenshot shit, aka show form and capture shit.
             //capture screen.
-            if (Tasks.CurrentTask != KeyTask.RecordScreen)
-                if (Tasks.CurrentTask != KeyTask.Empty) return;
-
-            foreach (HotKeyHook p in Core.Utils.Settings.Instance.hotkeys)
-                if (p.ID == e.ID)
+            if (_tasks.CurrentTask != KeyTask.RecordScreen)
+            {
+                if (_tasks.CurrentTask != KeyTask.Empty)
                 {
-                    if (p.Task == KeyTask.Region)
-                    {
-                        Tasks.CurrentTask = p.Task;
-                        Invoke((MethodInvoker)(() =>
-                        {
-                            //Rectangle monitor = Rectangle.Empty;
-                            Bitmap yolo = Utils.CopyScreen();
-                            ScreenshotForm f = new ScreenshotForm(yolo, Tasks);
-                            f.ShowDialog();
-                            var cloneBitmap = f.GetProcessedImage();
-
-                            if (cloneBitmap != null)
-                            {
-                                MusicPlayer.PlayCaptured();
-
-                                if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] ==
-                                    FileExtensions.png && (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2])
-                                {
-                                    Image quantized = Utils.Quantize(cloneBitmap);
-                                    cloneBitmap.Dispose();
-
-                                    Uploader.AddToQueue(new ImageShell(
-                                        Utils.imageToByteArray(quantized, FileExtensions.png, false, 0),
-                                        FileExtensions.png));
-                                }
-                                else if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] ==
-                                         FileExtensions.png)
-                                {
-                                    Uploader.AddToQueue(new ImageShell(
-                                        Utils.imageToByteArray(cloneBitmap, FileExtensions.png, false, 0),
-                                        FileExtensions.png));
-                                }
-                                else
-                                {
-                                    Uploader.AddToQueue(new ImageShell(
-                                        Utils.imageToByteArray(cloneBitmap, FileExtensions.jpg,
-                                            (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2],
-                                            (int)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[1]),
-                                        FileExtensions.jpg));
-                                }
-                            }
-
-                            Tasks.Reset();
-                            f.Dispose();
-                            f.Close();
-                        }));
-                    }
-                    else if (p.Task == KeyTask.RegionNoUpload)
-                    {
-                        Tasks.CurrentTask = p.Task;
-                        Invoke((MethodInvoker)(() =>
-                        {
-                            //Rectangle monitor = Rectangle.Empty;
-                            Bitmap yolo = Utils.CopyScreen();
-                            ScreenshotForm f = new ScreenshotForm(yolo, Tasks);
-                            f.ShowDialog();
-                            var cloneBitmap = f.GetProcessedImage();
-
-                            if (cloneBitmap != null)
-                            {
-                                MusicPlayer.PlayCaptured();
-
-                                if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] == FileExtensions.png && (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2])
-                                {
-                                    Image quantized = Utils.Quantize(cloneBitmap);
-                                    cloneBitmap.Dispose();
-
-                                    Uploader.ProcessWithoutUpload(new ImageShell(Utils.imageToByteArray(quantized, FileExtensions.png, false, 0), FileExtensions.png));
-                                }
-                                else if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] == FileExtensions.png)
-                                {
-                                    Uploader.ProcessWithoutUpload(new ImageShell(Utils.imageToByteArray(cloneBitmap, FileExtensions.png, false, 0), FileExtensions.png));
-                                }
-                                else
-                                {
-                                    Uploader.ProcessWithoutUpload(new ImageShell(Utils.imageToByteArray(cloneBitmap, FileExtensions.jpg, (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2], (int)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[1]), FileExtensions.jpeg));
-                                }
-                            }
-
-                            Tasks.Reset();
-                            f.Dispose();
-                            f.Close();
-                        }));
-                    }
-                    else if (p.Task == KeyTask.Fullscreen)
-                    {
-                        Tasks.CurrentTask = p.Task;
-                        Invoke((MethodInvoker)(() =>
-                        {
-                            //check for shit.
-                            Bitmap yolo = null;
-                            if (Core.Utils.Settings.Instance.GetValue("program_stitch_fullscreen") != null)
-                            {
-                                if ((bool)Core.Utils.Settings.Instance.GetValue("program_stitch_fullscreen")[0])
-                                    yolo = Utils.CopyScreen();
-                                else
-                                    yolo = Utils.BitBltCopy(Screen.FromPoint(Cursor.Position).Bounds);
-                            }
-                            else
-                            {
-                                //copy that shit.
-                                Core.Utils.Settings.Instance.ChangeKey("program_stitch_fullscreen", new object[] { true });
-                                yolo = Utils.CopyScreen();
-                            }
-                            MusicPlayer.PlayCaptured();
-                            if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] == FileExtensions.png && (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2])
-                            {
-                                Image quantized = Utils.Quantize(yolo);
-                                yolo.Dispose();
-
-                                Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(quantized, FileExtensions.png, false, 0), FileExtensions.png));
-                            }
-                            else if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] == FileExtensions.png && (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2] == false)
-                            {
-                                Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(yolo, FileExtensions.png, false, 0), FileExtensions.png));
-                            }
-                            else
-                            {
-                                Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(yolo, FileExtensions.jpg, (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2], (int)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[1]), FileExtensions.jpeg));
-                            }
-                            Tasks.Reset();
-                        }));
-                    }
-                    else if (p.Task == KeyTask.ActiveWindow)
-                    {
-                        Tasks.CurrentTask = p.Task;
-                        Invoke((MethodInvoker)(() =>
-                        {
-                            Rectangle rect = Utils.GetActiveWindowCoords();
-                            Bitmap cloneBitmap = Utils.CopyActiveWindow(rect);
-                            MusicPlayer.PlayCaptured();
-                            if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] == FileExtensions.png && (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2])
-                            {
-                                Image quantized = Utils.Quantize(cloneBitmap);
-                                cloneBitmap.Dispose();
-
-                                Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(quantized, FileExtensions.png, false, 0), FileExtensions.png));
-                            }
-                            else if ((FileExtensions)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[0] == FileExtensions.png)
-                            {
-                                Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(cloneBitmap, FileExtensions.png, false, 0), FileExtensions.png));
-                            }
-                            else
-                            {
-                                Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(cloneBitmap, FileExtensions.jpg, (bool)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[2], (int)Core.Utils.Settings.Instance.GetValue("settings.screenshot")[1]), FileExtensions.jpeg));
-                            }
-                            Tasks.Reset();
-                        }));
-                    }
-                    else if (p.Task == KeyTask.RecordScreen)
-                    {
-                        if (Tasks.CurrentTask == KeyTask.RecordScreen)
-                        {
-                            if (gifrec != null)
-                            {
-                                gifrec.fmp.Close();
-                                gifrec.stopwatch.Stop();
-                                gifrec.Cancel = true;
-                                gifrec.Close();
-                                Tasks.Reset();
-                            }
-                        }
-                        else
-                        {
-                            Tasks.CurrentTask = p.Task;
-                            Invoke((MethodInvoker)(() =>
-                            {
-                                //check settings.
-                                if ((bool)Core.Utils.Settings.Instance.GetValue("settings.show_record_warning")[0])
-                                {
-                                    RecordingNotice rcd = new RecordingNotice();
-                                    rcd.ShowDialog();
-                                }
-                                Bitmap yolo = Utils.CopyScreen();
-                                gifrec = new GifRecorderForm(yolo, metroLabel9.GetThemeFont(), Tasks);
-                                gifrec.Show();
-                            }));
-                        }
-                    }
-                    else if (p.Task == KeyTask.UploadClipboard)
-                    {
-                        Tasks.CurrentTask = p.Task;
-                        //get shit from clipboard.
-                        if (Clipboard.ContainsText())
-                        {
-                            //try to upload via shotr
-                            Uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(Clipboard.GetText()), FileExtensions.txt));
-                        }
-                        else if (Clipboard.ContainsImage())
-                        {
-                            Uploader.AddToQueue(new ImageShell(Utils.imageToByteArray(Clipboard.GetImage(), FileExtensions.png, false, 100L), FileExtensions.png));
-                        }
-                        else if (Clipboard.ContainsFileDropList())
-                        {
-                            StringCollection f = Clipboard.GetFileDropList();
-                            if (f.Count == 1)
-                            {
-                                //upload image, first check extension.
-                                string ext = Path.GetExtension(f[0]);
-                                ext = ext.Replace(".", "");
-                                if (Enum.IsDefined(typeof(FileExtensions), ext.ToLower()))
-                                {
-                                    Uploader.AddToQueue(new ImageShell(File.ReadAllBytes(f[0]), (FileExtensions)Enum.Parse(typeof(FileExtensions), ext)));
-                                }
-                            }
-                        }
-                        Tasks.Reset();
-                    }
+                    return;
                 }
+            }
+
+            var hotkey = _hotkeyService.GetHotKey(e.Id);
+            if (hotkey is null)
+            {
+                return;
+            }
+
+            switch (hotkey.Task)
+            {
+                case KeyTask.Region:
+                    _tasks.CurrentTask = hotkey.Task;
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        var capture = Utils.CopyScreen();
+                        var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks);
+                        screenshotForm.ShowDialog();
+
+                        var cloneBitmap = screenshotForm.GetProcessedImage();
+
+                        Process(cloneBitmap, true);
+
+                        _tasks.Reset();
+                    }));
+                    break;
+                case KeyTask.RegionNoUpload:
+                    _tasks.CurrentTask = hotkey.Task;
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        var capture = Utils.CopyScreen();
+                        var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks);
+                        screenshotForm.ShowDialog();
+
+                        var cloneBitmap = screenshotForm.GetProcessedImage();
+
+                        Process(cloneBitmap, false);
+
+                        _tasks.Reset();
+                    }));
+                    break;
+                case KeyTask.Fullscreen:
+                    _tasks.CurrentTask = hotkey.Task;
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        //check for shit.
+                        var capture = _settings.Capture.StitchFullscreen
+                                          ? Utils.CopyScreen()
+                                          : Utils.BitBltCopy(Screen.FromPoint(Cursor.Position).Bounds);
+
+                        Process(capture, true);
+                        
+                        _tasks.Reset();
+                    }));
+                    break;
+                case KeyTask.ActiveWindow:
+                    _tasks.CurrentTask = hotkey.Task;
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        var rect = Utils.GetActiveWindowCoords();
+                        var cloneBitmap = Utils.CopyActiveWindow(rect);
+                        
+                        Process(cloneBitmap, true);
+
+                        _tasks.Reset();
+                    }));
+                    break;
+                case KeyTask.RecordScreen:
+                    if (_tasks.CurrentTask == KeyTask.RecordScreen)
+                    {
+                        if (_videoRecorderForm != null)
+                        {
+                            _videoRecorderForm.Fmp.Close();
+                            _videoRecorderForm.Stopwatch.Stop();
+                            _videoRecorderForm.Cancel = true;
+                            _tasks.Reset();
+                        }
+                    }
+                    else
+                    {
+                        _tasks.CurrentTask = hotkey.Task;
+                        Invoke((MethodInvoker)(() =>
+                        {
+                            //check settings.
+                            if (_settings.Record.ShowWarning)
+                            {
+                                var recordingNotice = new RecordingNotice(_settings);
+                                recordingNotice.ShowDialog();
+                            }
+
+                            var capture = Utils.CopyScreen();
+                            _videoRecorderForm.SetUpForm(capture, metroLabel9.GetThemeFont(), _tasks);
+                            _videoRecorderForm.Show();
+                        }));
+                    }
+                    break;
+                case KeyTask.UploadClipboard:
+                    _tasks.CurrentTask = hotkey.Task;
+                    if (Clipboard.ContainsText())
+                    {
+                        //try to upload via shotr
+                        _uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(Clipboard.GetText()), FileExtensions.txt));
+                    }
+                    else if (Clipboard.ContainsImage())
+                    {
+                        _uploader.AddToQueue(new ImageShell(Utils.ImageToByteArray(Clipboard.GetImage(), FileExtensions.png, false, 100L), FileExtensions.png));
+                    }
+                    else if (Clipboard.ContainsFileDropList())
+                    {
+                        var file = Clipboard.GetFileDropList();
+                        if (file.Count == 1)
+                        {
+                            //upload image, first check extension.
+                            var ext = Path.GetExtension(file[0]);
+                            ext = ext.Replace(".", "");
+                            if (Enum.IsDefined(typeof(FileExtensions), ext.ToLower()))
+                            {
+                                _uploader.AddToQueue(new ImageShell(File.ReadAllBytes(file[0]), (FileExtensions)Enum.Parse(typeof(FileExtensions), ext)));
+                            }
+                        }
+                    }
+                    _tasks.Reset();
+                    break;
+            }
+
+            void Process(Bitmap bitmap, bool upload)
+            {
+                if (bitmap != null)
+                {
+                    _musicPlayerService.PlayCaptured();
+
+                    var image = _settings.Capture.Extension switch
+                    {
+                        { } p when p == FileExtensions.png && _settings.Capture.CompressionEnabled =>
+                            Utils.ImageToByteArray(Utils.Quantize(bitmap), FileExtensions.png, false, 0),
+                        FileExtensions.png => Utils.ImageToByteArray(bitmap, FileExtensions.png, false, 0),
+                        _ => Utils.ImageToByteArray(bitmap, FileExtensions.jpg,
+                            _settings.Capture.CompressionEnabled, (long) _settings.Capture.CompressionLevel)
+                    };
+                            
+                    bitmap.Dispose();
+
+                    if (upload)
+                    {
+                        _uploader.AddToQueue(new ImageShell(image, _settings.Capture.Extension));
+                        return;
+                    }
+                    
+                    _uploader.ProcessWithoutUpload(new ImageShell(image, _settings.Capture.Extension));
+                }
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Core.Utils.Settings.Instance.SaveSettings();
+            SettingsService.Save(_settings);
             Environment.Exit(0);
         }
 
@@ -789,30 +613,21 @@ namespace Shotr.Ui.Forms
             //see if item is selected.
             if (betterListView1.SelectedItems.Count > 0)
             {
-                Process.Start(Core.Utils.Settings.Instance.GetUploadedImage(betterListView1.SelectedItems[0].SubItems[1].Text).URL);
+                //Process.Start(Core.Utils.Settings.Instance.GetUploadedImage(betterListView1.SelectedItems[0].SubItems[1].Text).URL);
             }
         }
 
         private void clearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //clear history.
-            Core.Utils.Settings.Instance.ImageHistory.Clear();
-            Core.Utils.Settings.Instance.SaveSettings();
             betterListView1.Items.Clear();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //show about form.
-            AboutForm f = new AboutForm();
-            f.ShowDialog();
+            _aboutForm.ShowDialog();
         }
-
-        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (betterListView1.SelectedItems.Count > 0)
@@ -834,128 +649,14 @@ namespace Shotr.Ui.Forms
         private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //save image uploader.
-            Core.Utils.Settings.Instance.ChangeKey("image_uploader", new object[] { (string)metroComboBox1.SelectedItem });
-            UpdateDirectURL();
+            _settings.Capture.Uploader = (string)selectedImageUploader.SelectedItem;
+            UpdateDirectUrl();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void customUploaderButton_Click(object sender, EventArgs e)
         {
-            if (betterListView1.SelectedItems.Count > 0)
-            {
-                if (MessageBox.Show("Are you sure you want to delete these images?", "Confirm Image Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    for (int i = 0; i < betterListView1.SelectedItems.Count; i++)
-                    {
-                        try
-                        {
-                            UploadResult p = Core.Utils.Settings.Instance.ImageHistory[Utils.ToUnixTime(DateTime.Parse(betterListView1.SelectedItems[i].SubItems[1].Text))];
-                            //check deletion url.
-                            WebClient wc = new WebClient { Proxy = null };
-                            new Thread(() =>
-                            {
-                                lock (p)
-                                {
-                                    try
-                                    {
-                                        foreach (ImageUploader up in PluginCore.Uploaders)
-                                        {
-                                            if (up.Title == p.Uploader)
-                                            {
-                                                if (up.DeletionValues == null)
-                                                    wc.UploadValues(p.DelURL, new NameValueCollection { { "confirm", "true" } });
-                                                else
-                                                    wc.UploadValues(p.DelURL, up.DeletionValues);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    catch { }
-                                }
-                            }).Start();
-                        }
-                        catch
-                        {
-                        }
-                        Core.Utils.Settings.Instance.ImageHistory.Remove(Utils.ToUnixTime(DateTime.Parse(betterListView1.SelectedItems[i].SubItems[1].Text)));
-                        Core.Utils.Settings.Instance.SaveSettings();
-                    }
-                    betterListView1.Items.Clear();
-                    UpdateListView();
-                }
-            }
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            if (betterListView1.SelectedItems.Count > 0)
-            {
-                for (int i = 0; i < betterListView1.SelectedItems.Count; i++)
-                    Core.Utils.Settings.Instance.ImageHistory.Remove(Utils.ToUnixTime(DateTime.Parse(betterListView1.SelectedItems[i].SubItems[1].Text)));
-                Core.Utils.Settings.Instance.SaveSettings();
-                betterListView1.Items.Clear();
-                UpdateListView();
-            }
-        }
-
-        ToolStripItem itm;
-
-        private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)
-        {
-            //check if selected has a delete url.
-            if (betterListView1.SelectedItems.Count > 0)
-            {
-                UploadResult x = Core.Utils.Settings.Instance.GetUploadedImage(betterListView1.SelectedItems[0].SubItems[1].Text);
-                if (!string.IsNullOrEmpty(x.DelURL))
-                {
-                    if (!contextMenuStrip2.Items.Contains(itm))
-                        contextMenuStrip2.Items.Insert(1, itm);
-                }
-                else
-                {
-                    contextMenuStrip2.Items.Remove(itm);
-                }
-            }
-        }
-
-        private void metroToggle3_CheckedChanged(object sender, EventArgs e)
-        {
-            Core.Utils.Settings.Instance.ChangeKey("image_uploader_direct_url", new object[] { metroToggle3.Checked });
-            //reload listview.
-            betterListView1.Items.Clear();
-            UpdateListView();
-        }
-
-        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //ask to download image.
-            if (betterListView1.SelectedItems.Count > 0)
-            {
-                string url = Core.Utils.Settings.Instance.GetUploadedImage(betterListView1.SelectedItems[0].SubItems[1].Text).URL;
-                SaveFileDialog d = new SaveFileDialog();
-                d.Title = "Save Image...";
-                d.Filter = "PNG Image Files (*.png)|*.png";
-                d.FileName = betterListView1.SelectedItems[0].Text.Split('/')[3].Split('.')[0] + ".png";
-                if (d.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        new Thread(delegate () { new WebClient { Proxy = null }.DownloadFile(url, d.FileName); }).Start();
-                    }
-                    catch
-                    {
-                        MessageBox.Show(this, "There was an error while saving the image!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-        }
-
-
-
-        private void metroButton2_Click(object sender, EventArgs e)
-        {
-            //custom uploaders window.
-            CustomUploader cu = new CustomUploader();
-            cu.ShowDialog();
+            // TODO: Rework custom uploader functionality
+            MessageBox.Show("This functionality is being reworked.");
         }
 
         private void HotkeyError(string hotkeyName)
@@ -963,58 +664,50 @@ namespace Shotr.Ui.Forms
             MessageBox.Show(this, $"Failed to set hotkey hook for '{hotkeyName}'. Please make sure the combinations you entered aren't being used by another application", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void hotkeyButton1_OnHotKeyChanged(object sender, EventArgs e)
+        private void regionHotkeyButton_OnHotKeyChanged(object sender, EventArgs e)
         {
-            bool hook = Core.Utils.Settings.Instance.SetNewHook(hotkeyButton1.HotKey.ModifiersEnum, hotkeyButton1.HotKey.Hotkey, KeyTask.Region);
+            var hook = _hotkeyService.SetNewHook(regionHotKeyButton.HotKey.ModifiersEnum, regionHotKeyButton.HotKey.Hotkey, KeyTask.Region);
             if (!hook)
             {
                 HotkeyError("Region");
             }
+            
             UpdateHotKeys();
         }
 
-        private void hotkeyButton2_OnHotKeyChanged(object sender, EventArgs e)
+        private void fullScreenHotKeyButton_OnHotKeyChanged(object sender, EventArgs e)
         {
-            bool hook1 = Core.Utils.Settings.Instance.SetNewHook(hotkeyButton2.HotKey.ModifiersEnum, hotkeyButton2.HotKey.Hotkey, KeyTask.Fullscreen);
-            if (!hook1)
+            var hook = _hotkeyService.SetNewHook(fullScreenHotKeyButton.HotKey.ModifiersEnum, fullScreenHotKeyButton.HotKey.Hotkey, KeyTask.Fullscreen);
+            if (!hook)
             {
                 HotkeyError("Fullscreen");
             }
             UpdateHotKeys();
         }
 
-        private void hotkeyButton3_OnHotKeyChanged(object sender, EventArgs e)
+        private void activeWindowHotKeyButton_OnHotKeyChanged(object sender, EventArgs e)
         {
-            bool hook2 = Core.Utils.Settings.Instance.SetNewHook(hotkeyButton3.HotKey.ModifiersEnum, hotkeyButton3.HotKey.Hotkey, KeyTask.ActiveWindow);
-            if (!hook2)
+            var hook = _hotkeyService.SetNewHook(activeWindowHotKeyButton.HotKey.ModifiersEnum, activeWindowHotKeyButton.HotKey.Hotkey, KeyTask.ActiveWindow);
+            if (!hook)
             {
                 HotkeyError("Active Window");
             }
             UpdateHotKeys();
         }
 
-        private void metroButton1_Click_1(object sender, EventArgs e)
+        private void recordScreenHotKeyButton_OnHotKeyChanged(object sender, EventArgs e)
         {
-            if (MessageBox.Show(this, "This will set your settings back to default, continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                Core.Utils.Settings.Instance.CreateNewSettings();
-                UpdateControls();
-            }
-        }
-
-        private void hotkeyButton4_OnHotKeyChanged(object sender, EventArgs e)
-        {
-            bool hook2 = Core.Utils.Settings.Instance.SetNewHook(hotkeyButton4.HotKey.ModifiersEnum, hotkeyButton4.HotKey.Hotkey, KeyTask.RecordScreen);
-            if (!hook2)
+            var hook = _hotkeyService.SetNewHook(recordScreenHotKeyButton.HotKey.ModifiersEnum, recordScreenHotKeyButton.HotKey.Hotkey, KeyTask.RecordScreen);
+            if (!hook)
             {
                 HotkeyError("Record Screen");
             }
             UpdateHotKeys();
         }
 
-        private void hotkeyButton5_OnHotKeyChanged(object sender, EventArgs e)
+        private void uploadClipboardHotKeyButton_OnHotKeyChanged(object sender, EventArgs e)
         {
-            bool hook = Core.Utils.Settings.Instance.SetNewHook(hotkeyButton5.HotKey.ModifiersEnum, hotkeyButton5.HotKey.Hotkey, KeyTask.UploadClipboard);
+            var hook = _hotkeyService.SetNewHook(uploadClipboardHotKeyButton.HotKey.ModifiersEnum, uploadClipboardHotKeyButton.HotKey.Hotkey, KeyTask.UploadClipboard);
             if (!hook)
             {
                 HotkeyError("Upload Clipboard");
@@ -1022,33 +715,41 @@ namespace Shotr.Ui.Forms
             UpdateHotKeys();
         }
 
-        private void hotkeyButton6_OnHotKeyChanged(object sender, EventArgs e)
+        private void noUploadHotKeyButton_OnHotKeyChanged(object sender, EventArgs e)
         {
-            bool hook = Core.Utils.Settings.Instance.SetNewHook(hotkeyButton6.HotKey.ModifiersEnum, hotkeyButton6.HotKey.Hotkey, KeyTask.RegionNoUpload);
+            var hook = _hotkeyService.SetNewHook(noUploadHotKeyButton.HotKey.ModifiersEnum, noUploadHotKeyButton.HotKey.Hotkey, KeyTask.RegionNoUpload);
             if (!hook)
             {
                 HotkeyError("Save Only");
             }
             UpdateHotKeys();
         }
-
-        private void metroButton5_Click(object sender, EventArgs e)
+        
+        private void resetSettingsButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(this, "This will set your settings back to default, continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                // todo: Reset to default settings.
+                UpdateControls();
+            }
+        }
+        
+        private void settingsButton_Click(object sender, EventArgs e)
         {
             //show global settings
-            SettingsForm f = new SettingsForm();
-            f.ShowDialog();
+            _settingsForm.ShowDialog();
         }
 
-        private void metroButton4_Click(object sender, EventArgs e)
+        private void logoutButton_Click(object sender, EventArgs e)
         {
-            Core.Utils.Settings.Instance.ChangeKey("shotr.token", new object[] { "" });
-            Core.Utils.Settings.Instance.token = "";
-            Core.Utils.Settings.Instance.email = "";
+            _settings.Login.Email = null;
+            _settings.Login.Token = null;
+            _settings.Login.Password = null;
             Application.Restart();
             Environment.Exit(0);
         }
 
-        private void metroLabel8_Click(object sender, EventArgs e)
+        private void aboutLabel_Click(object sender, EventArgs e)
         {
             //clicked on shotr version at bottom.
             new AboutForm().ShowDialog();
@@ -1057,57 +758,50 @@ namespace Shotr.Ui.Forms
         private void colorPickerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //show color picker form.
-            Bitmap yolo = Utils.CopyScreen();
-            ColorPickerForm f = new ColorPickerForm(yolo, metroLabel9.GetThemeFont());
-            f.Show();
+            var capture = Utils.CopyScreen();
+            var colorPickerForm = new ColorPickerForm(_settings, capture);
+            colorPickerForm.ShowDialog();
         }
 
         private void regionCaptureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (HotKeyHook m in Core.Utils.Settings.Instance.hotkeys)
+            var hotkey = _hotkeyService.GetHotKey(KeyTask.Region);
+            if (hotkey is { })
             {
-                if (m.Task == KeyTask.Region)
-                {
-                    hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
-                    break;
-                }
+                hook_KeyPressed(this, new KeyPressedEventArgs(hotkey.Id));
             }
         }
 
         private void fullscreenCaptureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (HotKeyHook m in Core.Utils.Settings.Instance.hotkeys)
+            var hotkey = _hotkeyService.GetHotKey(KeyTask.Fullscreen);
+            if (hotkey is { })
             {
-                if (m.Task == KeyTask.Fullscreen)
-                {
-                    hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
-                    break;
-                }
+                hook_KeyPressed(this, new KeyPressedEventArgs(hotkey.Id));
             }
         }
 
         private void recordScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (HotKeyHook m in Core.Utils.Settings.Instance.hotkeys)
+            var hotkey = _hotkeyService.GetHotKey(KeyTask.RecordScreen);
+            if (hotkey is { })
             {
-                if (m.Task == KeyTask.RecordScreen)
-                {
-                    hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
-                    break;
-                }
+                hook_KeyPressed(this, new KeyPressedEventArgs(hotkey.Id));
             }
         }
 
         private void uploadClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (HotKeyHook m in Core.Utils.Settings.Instance.hotkeys)
+            var hotkey = _hotkeyService.GetHotKey(KeyTask.UploadClipboard);
+            if (hotkey is { })
             {
-                if (m.Task == KeyTask.UploadClipboard)
-                {
-                    hook_KeyPressed(this, new KeyPressedEventArgs(m.ID));
-                    break;
-                }
+                hook_KeyPressed(this, new KeyPressedEventArgs(hotkey.Id));
             }
+        }
+
+        private IImageUploader? GetUploader(string name)
+        {
+            return _uploaders.FirstOrDefault(p => p.Title == name);
         }
     }
 }

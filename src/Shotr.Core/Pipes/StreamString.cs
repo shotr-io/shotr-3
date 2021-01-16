@@ -20,7 +20,7 @@ namespace Shotr.Core.Pipes
             int len;
             len = ioStream.ReadByte() * 256;
             len += ioStream.ReadByte();
-            byte[] inBuffer = new byte[len];
+            var inBuffer = new byte[len];
             ioStream.Read(inBuffer, 0, len);
 
             return streamEncoding.GetString(inBuffer);
@@ -28,8 +28,8 @@ namespace Shotr.Core.Pipes
 
         public int WriteString(string outString)
         {
-            byte[] outBuffer = streamEncoding.GetBytes(outString);
-            int len = outBuffer.Length;
+            var outBuffer = streamEncoding.GetBytes(outString);
+            var len = outBuffer.Length;
             if (len > UInt16.MaxValue)
             {
                 len = UInt16.MaxValue;

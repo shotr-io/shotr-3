@@ -4,17 +4,19 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core;
+using Shotr.Core.Controls;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
     public partial class Notification : DpiScaledForm
     {
-        private int time = 5;
-        private FormAnimator animator;
+        private int _time = 5;
+        private FormAnimator _animator;
 
-        private bool animatingout;
+        private bool _animatingout;
         
         protected override bool ShowWithoutActivation
         {
@@ -26,13 +28,13 @@ namespace Shotr.Ui.Forms
         {
             get
             {
-                CreateParams createParams = base.CreateParams;
+                var createParams = base.CreateParams;
                 createParams.ExStyle |= WS_EX_TOPMOST;
                 return createParams;
             }
         } 
         
-        public Notification(string url, Image ico, string mime)
+        public Notification(string url, string mime)
         {
             InitializeComponent();
             ManualDpiScale();
@@ -40,27 +42,28 @@ namespace Shotr.Ui.Forms
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             ShadowType = MetroFormShadowType.None;
             StartPosition = FormStartPosition.Manual;
-            metroLink1.Text = url;
-            metroLabel1.Text = (mime.Contains("text") ? "Text Uploaded!" : (mime.Contains("video") ? "Recording Uploaded!" : "Screenshot Uploaded!"));
+            
             Closing += Notification_Closing;
-            animator = new FormAnimator(this);
-            animator.Direction = FormAnimator.AnimationDirection.Up;
-            animator.Method = FormAnimator.AnimationMethod.Slide;
-            animator.Duration = 500;
+            _animator = new FormAnimator(this);
+            _animator.Direction = FormAnimator.AnimationDirection.Up;
+            _animator.Method = FormAnimator.AnimationMethod.Slide;
+            _animator.Duration = 500;
+            
+            metroLink1.Text = url;
+            metroLabel1.Text = mime.Contains("text") ? "Text Uploaded!" : mime.Contains("video") ? "Recording Uploaded!" : "Screenshot Uploaded!";
         }
 
         void Notification_Closing(object sender, CancelEventArgs e)
         {
-            if (animatingout == false)
+            if (_animatingout == false)
             {
                 e.Cancel = true;
                 ShadowType = MetroFormShadowType.None;
-                animatingout = true;
+                _animatingout = true;
                 Close();
             }
         }
         
-
         private void Notification_Load(object sender, EventArgs e)
         {
             timer1.Interval = 1000;
@@ -72,13 +75,13 @@ namespace Shotr.Ui.Forms
                 {
                     ShadowType = MetroFormShadowType.DropShadow;
                 }));
-                animator.Direction = FormAnimator.AnimationDirection.Down;
+                _animator.Direction = FormAnimator.AnimationDirection.Down;
             }).Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (time-- < 0)
+            if (_time-- < 0)
                 Close();
         }
 
@@ -91,9 +94,9 @@ namespace Shotr.Ui.Forms
         {
             try
             {
-                Process.Start(metroLink1.Text);
+                metroLink1.Text.OpenUrl();
             }
-            catch { }
+            catch(Exception ex) { }
         }
     }
 }

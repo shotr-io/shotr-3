@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Shotr.Core.Model;
 using Shotr.Core.Plugin;
+using Shotr.Core.Services;
+using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
@@ -17,83 +20,90 @@ namespace Shotr.Core.Uploader
         public delegate void UploadFailedEvent(object sender, ImageShell e);
         public delegate void UploadProgressEvent(object sender, double progress);
 
-        public static event UploadCompletedEvent OnUploaded = delegate { };
-        public static event UploadFailedEvent OnError = delegate { };
-        public static event UploadProgressEvent OnProgress = delegate { };
+        public event UploadCompletedEvent OnUploaded = delegate { };
+        public event UploadFailedEvent OnError = delegate { };
+        public event UploadProgressEvent OnProgress = delegate { };
 
-        static Queue<ImageShell> w = new Queue<ImageShell>();
+        private Queue<ImageShell> _uploadQueue = new Queue<ImageShell>();
 
-        public static void StartQueue()
+        private readonly MusicPlayerService _musicPlayerService;
+        private readonly BaseSettings _settings;
+        private readonly IEnumerable<IImageUploader> _imageUploaders;
+
+        public Uploader(MusicPlayerService musicPlayerService, BaseSettings settings, IEnumerable<IImageUploader> imageUploaders)
         {
-            FileUploader.OnUploadProgress += FileUploader_OnUploadProgress;
+            _musicPlayerService = musicPlayerService;
+            _settings = settings;
+            _imageUploaders = imageUploaders;
+        }
+
+        public void StartQueue()
+        {
+            FileUploaderService.OnUploadProgress += FileUploader_OnUploadProgress;
             new Thread(delegate()
                 {
                     while (true)
-                        if (w.Count > 0)
+                        if (_uploadQueue.Count > 0)
                         {
                             //enqueue the next item to be uploaded.
-                            UploadFile(w.Dequeue());
+                            UploadFile(_uploadQueue.Dequeue());
                         }
                         else Thread.Sleep(100);
                 }).Start();
         }
-        static bool sound = true;
-        public static void RemoveHandlers()
+        
+        public void RemoveHandlers()
         {
             OnProgress = delegate { };
             OnUploaded = delegate { };
             OnError = delegate { };
-            sound = false;
         }
 
-        static void FileUploader_OnUploadProgress(object sender, double progress)
+        private void FileUploader_OnUploadProgress(object sender, double progress)
         {
             OnProgress(sender, progress);
         }
 
-        public static void ProcessWithoutUpload(ImageShell f)
+        public void ProcessWithoutUpload(ImageShell f)
         {
             OnUploaded(new object[] { f.ContentType, f.Data, f.Extension }, null);
         }
 
-        public static void AddToQueue(ImageShell f)
+        public void AddToQueue(ImageShell f)
         {
-            w.Enqueue(f);
+            _uploadQueue.Enqueue(f);
         }
         
-        public static void UploadFile(ImageShell f)
+        public void UploadFile(ImageShell f)
         {
-            //grab uploader from settings.
-            ImageUploader x = null;
-            if ((string)Settings.Instance.GetValue("image_uploader")[0] == "Imgur" && !f.ContentType.Contains("image"))
-                x = PluginCore.GetUploader("Shotr");
-            else
-                x = PluginCore.GetUploader((string)Settings.Instance.GetValue("image_uploader")[0]);
-
-            if (x == null) // wot
+            var imageUploader = GetUploader(_settings.Capture.Uploader);
+            if (imageUploader is null)
             {
-                //image uploader is non-existent?
-                MessageBox.Show("The image uploader you have selected is non-existant.");
-                Environment.Exit(0);
+                throw new Exception($"Image uploader '{_settings.Capture.Uploader}' does not exist.");
+            }
+
+            if (imageUploader.Title == "Imgur" && !f.ContentType.Contains("image"))
+            {
+                imageUploader = GetUploader("Shotr");
             }
                   
             UploadResult m = null;
             UploadedItemResult json = null;
 
-            int retries = 0;
+            var retries = 0;
         ok:
-            if (x.UseUploadMethod)
+            if (imageUploader.UseUploadMethod)
             {
-                m = x.UploadImage(f);
+                m = imageUploader.UploadImage(f);
             }
             else
             {
-                var uploadHeaders = x.HeaderValues;
+                var uploadHeaders = imageUploader.HeaderValues;
 
                 try
                 {
-                    string output = FileUploader.UploadFile(x.UploaderURL, f.Data,
-                        Utils.Utils.GetRandomString(6) + "." + f.Extension, x.FileValueName, f.ContentType, new NameValueCollection(), 
+                    var output = FileUploaderService.UploadFile(imageUploader.UploaderURL, f.Data,
+                        Utils.Utils.GetRandomString(6) + "." + f.Extension, imageUploader.FileValueName, f.ContentType, new NameValueCollection(), 
                         uploadHeaders);
                     json = JsonConvert.DeserializeObject<UploadedItemResult>(output);
                     if (json == null) throw new Exception();
@@ -107,26 +117,26 @@ namespace Shotr.Core.Uploader
                             Error = true,
                             ErrorMessage = $"There was an error while contacting Shotr. Error: {mx.InnerException}."
                         };
-                        m = new UploadResult(json.RawUrl, json.Url, null, Utils.Utils.ToUnixTime(DateTime.Now), x.Title,
+                        m = new UploadResult(json.RawUrl, json.Url, null, Utils.Utils.ToUnixTime(DateTime.Now), imageUploader.Title,
                             json.Error);
                     }
                 }
 
                 if (json != null)
                 {
-                    m = new UploadResult(json.RawUrl, json.Url, null, Utils.Utils.ToUnixTime(DateTime.Now), x.Title, json.Error);
+                    m = new UploadResult(json.RawUrl, json.Url, null, Utils.Utils.ToUnixTime(DateTime.Now), imageUploader.Title, json.Error);
                 }
 
                 if(m == null)
                 {
-                    m = new UploadResult("", "", "", 0, x.Title, true);
+                    m = new UploadResult("", "", "", 0, imageUploader.Title, true);
                     goto ok;
                 }               
             }
             if (!m.Error)
             {
-                if(sound)
-                    MusicPlayer.PlayUploaded();
+                _musicPlayerService.PlayUploaded();
+                
                 OnUploaded(new object[] { f.ContentType, f.Data }, m);
                 f.Data = null;
                 GC.Collect();
@@ -140,10 +150,10 @@ namespace Shotr.Core.Uploader
                 if (retries >= 3)
                 {
                     //ok default to shotr.
-                    if (x.Title != "Shotr")
+                    if (imageUploader.Title != "Shotr")
                     {
                         //re-queue with Shotr instead.
-                        x = PluginCore.GetUploader("Shotr");
+                        imageUploader = GetUploader("Shotr");
                         retries = 0;
                     }
                     goto ok;
@@ -151,6 +161,11 @@ namespace Shotr.Core.Uploader
             }
 
             OnError(json, f);
+        }
+
+        private IImageUploader? GetUploader(string name)
+        {
+            return _imageUploaders.FirstOrDefault(p => p.Title == name);
         }
     }
 }

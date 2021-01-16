@@ -53,24 +53,24 @@ namespace MetroFramework5.Controls
         {
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 
-            using (Pen p = new Pen(GetThemeColor("BorderColor")))
+            using (var p = new Pen(GetThemeColor("BorderColor")))
             {
-                Rectangle boxRect = new Rectangle(0, Height / 2 - 6, 12, 12);
+                var boxRect = new Rectangle(0, Height / 2 - 6, 12, 12);
                 e.Graphics.DrawEllipse(p, boxRect);
             }
 
             if (Checked)
             {
-                using (SolidBrush b = new SolidBrush(GetStyleColor()))
+                using (var b = new SolidBrush(GetStyleColor()))
                 {
-                    Rectangle boxRect = new Rectangle(3, Height / 2 - 3, 6, 6);
+                    var boxRect = new Rectangle(3, Height / 2 - 3, 6, 6);
                     e.Graphics.FillEllipse(b, boxRect);
                 }
             }
 
             e.Graphics.SmoothingMode = SmoothingMode.Default;
 
-            Rectangle textRect = new Rectangle(16, 0, Width - 16, Height);
+            var textRect = new Rectangle(16, 0, Width - 16, Height);
             TextRenderer.DrawText(e.Graphics, Text, EffectiveFont, textRect, EffectiveForeColor, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
         }
 
@@ -85,7 +85,7 @@ namespace MetroFramework5.Controls
             using (var g = CreateGraphics())
             {
                 proposedSize = new Size(int.MaxValue, int.MaxValue);
-                Size preferredSize = TextRenderer.MeasureText(g, Text, EffectiveFont, proposedSize, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
+                var preferredSize = TextRenderer.MeasureText(g, Text, EffectiveFont, proposedSize, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
                 preferredSize.Width += 16;
                 return preferredSize;
             }

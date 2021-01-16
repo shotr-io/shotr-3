@@ -65,10 +65,10 @@ namespace Shotr.Core.Quantizer
 
             foreach(var pixelLine in sourceImage.PixelLines)
             {
-                for (int pixelIndex = 0; pixelIndex < pixelLine.Length; pixelIndex++)
+                for (var pixelIndex = 0; pixelIndex < pixelLine.Length; pixelIndex++)
                 {
-                    Pixel pixel = pixelLine[pixelIndex];
-                    byte pixelAlpha = pixel.Alpha;
+                    var pixel = pixelLine[pixelIndex];
+                    var pixelAlpha = pixel.Alpha;
                     if (pixelAlpha > alphaThreshold)
                     {
                         if (pixelAlpha < 255)
@@ -76,9 +76,9 @@ namespace Shotr.Core.Quantizer
                             var alpha = pixel.Alpha + (pixel.Alpha % alphaFader);
                             pixelAlpha = (byte)(alpha > 255 ? 255 : alpha);
                         }
-                        byte pixelRed = pixel.Red;
-                        byte pixelGreen = pixel.Green;
-                        byte pixelBlue = pixel.Blue;
+                        var pixelRed = pixel.Red;
+                        var pixelGreen = pixel.Green;
+                        var pixelBlue = pixel.Blue;
 
                         pixelAlpha = (byte)((pixelAlpha >> 3) + 1);
                         pixelRed = (byte)((pixelRed >> 3) + 1);
@@ -108,7 +108,7 @@ namespace Shotr.Core.Quantizer
                             area[blueIndex].AddFast(ref line);
                             xarea[greenIndex, blueIndex].AddFast(ref area[blueIndex]);
 
-                            ColorMoment moment = moments[alphaIndex - 1, redIndex, greenIndex, blueIndex];
+                            var moment = moments[alphaIndex - 1, redIndex, greenIndex, blueIndex];
                             moment.AddFast(ref xarea[greenIndex, blueIndex]);
                             moments[alphaIndex, redIndex, greenIndex, blueIndex] = moment;
                         }
@@ -312,7 +312,7 @@ namespace Shotr.Core.Quantizer
 
         private static float CalculateVariance(ColorMoment[, , ,] moments, Box cube)
         {
-            ColorMoment volume = Volume(cube, moments);
+            var volume = Volume(cube, moments);
             return volume.Variance();
         }
 
@@ -379,9 +379,9 @@ namespace Shotr.Core.Quantizer
 
         private static Pixel[] BuildLookups(Box[] cubes, ColorMoment[, , ,] moments)
         {
-            Pixel[] lookups = new Pixel[cubes.Length];
+            var lookups = new Pixel[cubes.Length];
 
-            for (int cubeIndex = 0; cubeIndex < cubes.Length; cubeIndex++)
+            for (var cubeIndex = 0; cubeIndex < cubes.Length; cubeIndex++)
             {
                 var volume = Volume(cubes[cubeIndex], moments);
 

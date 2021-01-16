@@ -78,7 +78,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -132,7 +132,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -186,7 +186,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -240,7 +240,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -294,7 +294,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -348,7 +348,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -402,7 +402,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -456,7 +456,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -510,7 +510,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -564,7 +564,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -618,7 +618,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{
@@ -672,7 +672,7 @@ namespace MetroFramework5.Controls
         {
 			try // without ControlStyles.AllPaintingInWmPaint, we need some error handling
 			{
-				Color backColor = EffectiveBackColor;
+				var backColor = EffectiveBackColor;
 
 				if (backColor.A == 255)
 				{

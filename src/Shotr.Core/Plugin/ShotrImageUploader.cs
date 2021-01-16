@@ -1,36 +1,36 @@
 ﻿using System;
 using System.Collections.Specialized;
-using Shotr.Core.Utils;
+using Shotr.Core.Settings;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Plugin
 {
-    class ShotrImageUploader : ImageUploader
+    public class ShotrImageUploader : IImageUploader
     {
-        public override NameValueCollection UploadValues
+        private readonly BaseSettings _settings;
+        public ShotrImageUploader(BaseSettings settings)
         {
-            get { return null;  }
+            _settings = settings;
         }
+        
+        public NameValueCollection UploadValues => null;
 
-        public override NameValueCollection HeaderValues
+        public NameValueCollection HeaderValues
         {
             get
             {
-                if (Settings.Instance.login)
+                if (_settings.Login.Token is {})
                 {
-                    return new NameValueCollection { { "token", Settings.Instance.token } };
+                    return new NameValueCollection { { "token", _settings.Login.Token } };
                 }
 
                 return new NameValueCollection();
             }
         }
 
-        public override string FileValueName
-        {
-            get { return "file"; }
-        }
+        public string FileValueName => "file";
 
-        public override string UploaderURL
+        public string UploaderURL
         {
             get { 
 #if DEBUG
@@ -42,38 +42,24 @@ namespace Shotr.Core.Plugin
             }
         }
 
-        public override string Title
-        {
-            get { return "Shotr"; }
-        }
+        public string Title => "Shotr";
 
-        public override bool UseUploadMethod
-        {
-            get { return false; }
-        }
+        public bool UseUploadMethod => false;
 
-        public override UploadResult UploadImage(ImageShell k)
+        public UploadResult UploadImage(ImageShell k)
         {
             throw new NotImplementedException();
         }
 
-        public override NameValueCollection DeletionValues
-        {
-            get
+        public NameValueCollection DeletionValues =>
+            new NameValueCollection
             {
-                return new NameValueCollection
-                {
-                    {"confirm", "true"}
-                };
-            }
-        }
+                {"confirm", "true"}
+            };
 
-        public override bool SupportsPages
-        {
-            get { return true; }
-        }
+        public bool SupportsPages => true;
 
-        public override string PageURL
+        public string PageURL
         {
             get { 
 #if DEBUG

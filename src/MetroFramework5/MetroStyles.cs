@@ -56,14 +56,14 @@ namespace MetroFramework5
         public static MetroStyles Create()
         {
             const string resID = RESOURCE_NAMESPACE + "." + THEMES_XML;
-            using (Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream(resID))
+            using (var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(resID))
                 return new MetroStyles(s);
         }
 
         public static MetroStyles Create(string configFileName = THEMES_XML)
         {
             if(String.IsNullOrEmpty(configFileName)) throw new ArgumentException();
-            String path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configFileName);
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configFileName);
             using (Stream s = File.OpenRead(path)) 
                 return new MetroStyles( s );
         }
@@ -89,7 +89,7 @@ namespace MetroFramework5
 
         private object GetValue(string value, string type)
         {
-            Type t = GetType(type);
+            var t = GetType(type);
             TypeConverter converter;
             if (! _converters.TryGetValue(t, out converter))
             {

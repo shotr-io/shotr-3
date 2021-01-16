@@ -34,8 +34,8 @@ namespace MetroFramework5.Animation
             base.Start(control, transitionType, duration,
                 delegate 
                 {
-                    int width = DoExpandAnimation(control.Width, targetSize.Width);
-                    int height = DoExpandAnimation(control.Height, targetSize.Height);
+                    var width = DoExpandAnimation(control.Width, targetSize.Width);
+                    var height = DoExpandAnimation(control.Height, targetSize.Height);
 
                     control.Size = new Size(width, height);
                 }, 
@@ -47,10 +47,10 @@ namespace MetroFramework5.Animation
 
         private int DoExpandAnimation(int startSize, int targetSize)
         {
-            float t = (float)counter - startTime;
+            var t = (float)counter - startTime;
             float b = startSize;
-            float c = (float)targetSize - startSize;
-            float d = (float)targetTime - startTime;
+            var c = (float)targetSize - startSize;
+            var d = (float)targetTime - startTime;
 
             return MakeTransition(t, b, d, c);
         }

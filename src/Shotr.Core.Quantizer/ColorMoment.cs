@@ -47,10 +47,10 @@ namespace Shotr.Core.Quantizer
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(Pixel p)
         {
-            byte pAlpha = p.Alpha;
-            byte pRed = p.Red;
-            byte pGreen = p.Green;
-            byte pBlue = p.Blue;
+            var pAlpha = p.Alpha;
+            var pRed = p.Red;
+            var pGreen = p.Green;
+            var pBlue = p.Blue;
             Alpha += pAlpha;
             Red += pRed;
             Green += pGreen;

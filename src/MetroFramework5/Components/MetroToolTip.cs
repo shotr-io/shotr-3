@@ -130,7 +130,7 @@ namespace MetroFramework5.Components
         {
             // only link to the windows internal style-manager if it deosn't expose a style manager component
             // (with a style manager component, the style manager will update us automatically)
-            IMetroContainerControl styledWindow = e.AssociatedWindow as IMetroContainerControl;
+            var styledWindow = e.AssociatedWindow as IMetroContainerControl;
             if (styledWindow != null && styledWindow.StyleManager == null) 
                 ((IMetroStyledComponent)this).InternalStyleManager = styledWindow.InternalStyleManager;
 
@@ -139,11 +139,11 @@ namespace MetroFramework5.Components
 
         private void MetroToolTip_Draw(object sender, DrawToolTipEventArgs e)
         {
-            using (SolidBrush b = new SolidBrush(GetThemeColor("BackColor")))
+            using (var b = new SolidBrush(GetThemeColor("BackColor")))
             {
                 e.Graphics.FillRectangle(b, e.Bounds);
             }
-            using (Pen p = new Pen(GetThemeColor("BorderColor")))
+            using (var p = new Pen(GetThemeColor("BorderColor")))
             {
                 e.Graphics.DrawRectangle(p, new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1));
             }

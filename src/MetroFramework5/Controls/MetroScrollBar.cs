@@ -499,7 +499,7 @@ namespace MetroFramework5.Controls
         {
             base.OnMouseWheel(e);
 
-            int v = e.Delta / 120 * (maximum - minimum) / mouseWheelBarPartitions;
+            var v = e.Delta / 120 * (maximum - minimum) / mouseWheelBarPartitions;
 
             if (Orientation == MetroScrollOrientation.Vertical)
             {
@@ -610,10 +610,10 @@ namespace MetroFramework5.Controls
             {
                 if (thumbClicked)
                 {
-                    int oldScrollValue = curValue;
+                    var oldScrollValue = curValue;
 
-                    int pos = metroOrientation == MetroScrollOrientation.Vertical ? e.Location.Y : e.Location.X;
-                    int thumbSize = metroOrientation == MetroScrollOrientation.Vertical ? (pos / Height) / thumbHeight : (pos / Width) / thumbWidth;
+                    var pos = metroOrientation == MetroScrollOrientation.Vertical ? e.Location.Y : e.Location.X;
+                    var thumbSize = metroOrientation == MetroScrollOrientation.Vertical ? (pos / Height) / thumbHeight : (pos / Width) / thumbWidth;
 
                     if (pos <= (thumbTopLimit + thumbPosition))
                     {
@@ -644,7 +644,7 @@ namespace MetroFramework5.Controls
                             thumbPos = thumbRectangle.X;
                         }
 
-                        float perc = 0f;
+                        var perc = 0f;
 
                         if (pixelRange != 0)
                         {
@@ -882,7 +882,7 @@ namespace MetroFramework5.Controls
                 return 0;
             }
 
-            int thumbSize = metroOrientation == MetroScrollOrientation.Vertical ? (thumbPosition / Height) / thumbHeight : (thumbPosition / Width) / thumbWidth;
+            var thumbSize = metroOrientation == MetroScrollOrientation.Vertical ? (thumbPosition / Height) / thumbHeight : (thumbPosition / Width) / thumbWidth;
 
             if (Orientation == MetroScrollOrientation.Vertical)
             {
@@ -893,8 +893,8 @@ namespace MetroFramework5.Controls
                 pixelRange = Width - thumbSize;
             }
 
-            int realRange = maximum - minimum;
-            float perc = 0f;
+            var realRange = maximum - minimum;
+            var perc = 0f;
 
             if (realRange != 0)
             {
@@ -906,7 +906,7 @@ namespace MetroFramework5.Controls
 
         private int GetThumbSize()
         {
-            int trackSize =
+            var trackSize =
                 metroOrientation == MetroScrollOrientation.Vertical ?
                     Height : Width;
 
@@ -915,7 +915,7 @@ namespace MetroFramework5.Controls
                 return trackSize;
             }
 
-            float newThumbSize = (largeChange * (float) trackSize) / maximum;
+            var newThumbSize = (largeChange * (float) trackSize) / maximum;
 
             return Convert.ToInt32(Math.Min(trackSize, Math.Max(newThumbSize, 10f)));
         }
@@ -952,7 +952,7 @@ namespace MetroFramework5.Controls
 
         private void ProgressThumb(bool enableTimer)
         {
-            int scrollOldValue = curValue;
+            var scrollOldValue = curValue;
             var type = ScrollEventType.First;
             int thumbSize, thumbPos;
 

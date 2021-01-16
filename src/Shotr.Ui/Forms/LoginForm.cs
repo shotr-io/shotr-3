@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using Shotr.Core.DpiScaling;
+using Shotr.Core;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Model;
+using Shotr.Core.Settings;
 
 namespace Shotr.Ui.Forms
 {
@@ -12,8 +14,12 @@ namespace Shotr.Ui.Forms
     {
         private bool _isClosing;
 
-        public LoginForm()
+        private readonly BaseSettings _settings;
+
+        public LoginForm(BaseSettings settings)
         {
+            _settings = settings;
+            
             InitializeComponent();
         }
 
@@ -39,10 +45,8 @@ namespace Shotr.Ui.Forms
                     // Sign in
                     _isClosing = true;
                     DialogResult = DialogResult.OK;
-                    Core.Utils.Settings.Instance.login = true;
-                    Core.Utils.Settings.Instance.token = user.Token;
-                    Core.Utils.Settings.Instance.email = user.Email;
-                    Core.Utils.Settings.Instance.ChangeKey("shotr.token", new object[] {user.Token});
+                    _settings.Login.Token = user.Token;
+                    _settings.Login.Email = user.Email;
                     Close();
                 }
                 else
@@ -60,9 +64,9 @@ namespace Shotr.Ui.Forms
         {
             // Open browser with link to forgot page
 #if DEBUG
-            Process.Start("https://shotr.dev/auth/forgot");
+            "https://shotr.dev/auth/forgot".OpenUrl();
 #else
-            Process.Start("https://shotr.io/auth/forgot");
+            "https://shotr.io/auth/forgot".OpenUrl();
 #endif
         }
 
@@ -70,9 +74,9 @@ namespace Shotr.Ui.Forms
         {
             // Register page
 #if DEBUG
-            Process.Start("https://shotr.dev/auth/register");
+            "https://shotr.dev/auth/register".OpenUrl();
 #else
-            Process.Start("https://shotr.io/auth/forgot");
+            "https://shotr.io/auth/forgot".OpenUrl();
 #endif
         }
 

@@ -3,21 +3,30 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Services;
+using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
     public partial class UpdateForm : DpiScaledForm
     {
+        private readonly BaseSettings _settings;
         private bool _allowClose;
 
-        UpdaterJsonClass upd;
-        public UpdateForm(UpdaterJsonClass p, bool allowClose = false)
+        UpdaterResponse _upd;
+        public UpdateForm(BaseSettings settings)
         {
+            _settings = settings;
+            
             InitializeComponent();
             ManualDpiScale();
             ScaleForm = false;
+        }
+
+        public void SetUpForm(UpdaterResponse p, bool allowClose = false)
+        {
             metroTextBox1.Text = p.changelog;
             TopMost = false;
             if (p.stable)
@@ -28,7 +37,7 @@ namespace Shotr.Ui.Forms
 
                 FormClosing += UpdateForm_FormClosing;
             }
-            upd = p;
+            _upd = p;
             _allowClose = allowClose;
         }
 
@@ -60,7 +69,7 @@ namespace Shotr.Ui.Forms
             Text = "Shotr - Updating";
             Movable = true;
             //update shit.
-            UpdateFromURL(upd.update_url);
+            UpdateFromUrl(_upd.update_url);
         }
 
         private void metroButton2_Click(object sender, EventArgs e)
@@ -75,47 +84,17 @@ namespace Shotr.Ui.Forms
 
         }
 
-        private void UpdateFromURL(string url)
+        private void UpdateFromUrl(string url)
         {
-            /*CSharpCodeProvider c = new CSharpCodeProvider();
-            ICodeCompiler comp = c.CreateCompiler();
-            CompilerParameters param = new CompilerParameters();
-            param.CompilerOptions = "/t:winexe";
-            param.GenerateExecutable = true;
-            param.OutputAssembly = Settings.FolderPath + "shotr-updater.exe";
-            param.ReferencedAssemblies.Add("System.dll");
-            string source = "using System; public class Program{public static void Main(){";
-            source += "new System.Net.WebClient().DownloadFile(\"" + url + "\", @\"" + Application.ExecutablePath + ".tmp\");";
-            source += "foreach(System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName(\"" + Process.GetCurrentProcess().ProcessName + "\")) p.Kill();";
-            source += "System.Threading.Thread.Sleep(1000);";
-            //source += "foreach(System.Diagnostics.Process p in System.Diagnostics.Process.GetProcessesByName(\"WerFault\")) p.Kill();";
-            source += "try { System.IO.File.Delete(@\"" + Application.ExecutablePath + "\"); } catch { } ";
-            source += "try { System.IO.File.Move(@\""+ Application.ExecutablePath + ".tmp\", @\"" + Application.ExecutablePath + "\"); } catch { } ";
-            source += "System.Diagnostics.Process.Start(@\"" + Application.ExecutablePath + "\");";
-            source += "System.Diagnostics.Process.GetCurrentProcess().Kill();";
-            source += "}}";
-            CompilerResults results = comp.CompileAssemblyFromSource(param, source);
-            bool errored = false;
-            foreach (CompilerError a in results.Errors)
-            {
-                try
-                {
-                    Console.WriteLine(a.ToString());
-                }
-                catch { }
-                errored = true;
-            }
-            if (!errored)
-            {*/
             //download file.
-            WebClient m = new WebClient { Proxy = null };
+            var m = new WebClient { Proxy = null };
             try
             {
-                m.DownloadFile("https://shotr.io/latest", Core.Utils.Settings.FolderPath + "Shotr-Installer.exe");
-                Process p = new Process();
+                m.DownloadFile("https://shotr.io/latest", SettingsService.FolderPath + "Shotr-Installer.exe");
+                var p = new Process();
                 p.StartInfo.Verb = "runas";
-                p.StartInfo.FileName = Core.Utils.Settings.FolderPath + "Shotr-Installer.exe";
-                p.StartInfo.Arguments = "--run-installer "+((bool)Core.Utils.Settings.Instance.GetValue("program_subscribe_to_alpha_beta_releases")[0] ? "--install-beta " : "")+"--silent";
+                p.StartInfo.FileName = SettingsService.FolderPath + "Shotr-Installer.exe";
+                p.StartInfo.Arguments = "--run-installer --silent"+(_settings.SubscribeToAlphaBeta ? " --install-beta " : "");
                 p.Start();
                 Environment.Exit(0);
             }

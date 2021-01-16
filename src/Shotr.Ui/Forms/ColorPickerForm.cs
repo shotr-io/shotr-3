@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
@@ -13,89 +14,34 @@ namespace Shotr.Ui.Forms
         {
             get
             {
-                var Params = base.CreateParams;
-                Params.ExStyle |= 0x80;
+                var @params = base.CreateParams;
+                @params.ExStyle |= 0x80;
                 //Params.ExStyle |= 0x20;
-                return Params;
+                return @params;
             }
         }
 
-        private Bitmap screenshot;
+        private Bitmap _screenshot;
 
-        private Pen pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
+        private Brush _brush = new SolidBrush(Color.White);
+        private TextureBrush _textbrush;
 
-        private Pen pen1 = new Pen(Color.White, 1);
-        private Pen blackpen = new Pen(Color.Black, 1);
-        private Brush brush = new SolidBrush(Color.White);
-        private SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
-        private TextureBrush textbrush;
+        private Rectangle _x = Rectangle.Empty;
 
-        private Rectangle x = Rectangle.Empty;
+        private Font _kfont = new Font(DefaultFont, FontStyle.Bold);
+        private bool _drawing = true;
 
-        private Font kfont = new Font(DefaultFont, FontStyle.Bold);
-        private Font metroF;
-        private bool drawing = true;
-
-        private bool information = (Core.Utils.Settings.Instance.GetValue("region_capture_information") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_information")[0]);
-        private bool zoom = (Core.Utils.Settings.Instance.GetValue("region_capture_zoom") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_zoom")[0]);
-        private bool color = (Core.Utils.Settings.Instance.GetValue("region_capture_color") == null || (bool)Core.Utils.Settings.Instance.GetValue("region_capture_color")[0]);
-        public ColorPickerForm(Bitmap yolo, Font metroFont)
+        private readonly BaseSettings _settings;
+        public ColorPickerForm(BaseSettings settings, Bitmap bitmap)
         {
+            _settings = settings;
+            
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
-            
             InitializeComponent();
-
-            
             AutoScaleMode = AutoScaleMode.None;
-
             StartPosition = FormStartPosition.Manual;
-            //this.TopMost = true;
-
-            metroF = metroFont;
-
-            timer1.Interval = 10;
-            timer1.Start();
-
-            Paint += ScreenshotForm_Paint;
-            FormBorderStyle = FormBorderStyle.None;
-
-            int height = 0;
-            int width = 0;
-            int left = 0;
-            int top = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                //take smallest height
-                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
-                width += screen.Bounds.Width;
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
-                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
-            }
-            Size = new Size(width, height);
-            //get point of left-most monitor.
-            Location = new Point(left, top);
-          
-            KeyUp += ScreenshotForm_KeyUp;
-            KeyDown += ScreenshotForm_KeyDown;
-
-            Cursor = Cursors.Cross;
-
-            screenshot = yolo;
-            screenshot = new Bitmap(screenshot, width, height);
-
-            using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
-            {
-                TextureBrush brush = new TextureBrush(image);
-                brush.WrapMode = WrapMode.Clamp;
-                textbrush = brush;
-            }
-          
-            DoubleBuffered = true;
-            ShowInTaskbar = false;
-            timer2.Interval = 1000;
-            timer2.Start();
+            
+            _screenshot = bitmap;
         }
 
         void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
@@ -128,25 +74,20 @@ namespace Shotr.Ui.Forms
             }
             else if (e.KeyCode == Keys.Z)
             {
-                //disable the zoom feature.
-                zoom = !zoom;
-                Core.Utils.Settings.Instance.ChangeKey("region_capture_zoom", new object[] { zoom });
+                _settings.Capture.ShowZoom = !_settings.Capture.ShowZoom;
             }
             else if (e.KeyCode == Keys.I)
             {
-                //disable information.
-                information = !information;
-                Core.Utils.Settings.Instance.ChangeKey("region_capture_information", new object[] { information });
+                _settings.Capture.ShowInformation = !_settings.Capture.ShowInformation;
             }
             else if (e.KeyCode == Keys.C)
             {
-                color = !color;
-                Core.Utils.Settings.Instance.ChangeKey("region_capture_color", new object[] { color });
+                _settings.Capture.ShowColor = !_settings.Capture.ShowColor;
             }
         }    
         private void CloseWindow()
         {
-            screenshot.Dispose();
+            _screenshot.Dispose();
             Dispose();
             Close();
         }
@@ -174,22 +115,22 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
-            int width = horizontalPixelCount * pixelSize;
-            int height = verticalPixelCount * pixelSize;
-            Bitmap image = new Bitmap(width - 1, height - 1);
-            using (Graphics graphics = Graphics.FromImage(image))
+            var width = horizontalPixelCount * pixelSize;
+            var height = verticalPixelCount * pixelSize;
+            var image = new Bitmap(width - 1, height - 1);
+            using (var graphics = Graphics.FromImage(image))
             {
                 graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 graphics.PixelOffsetMode = PixelOffsetMode.Half;
                 graphics.DrawImage(img, new Rectangle(0, 0, width, height), new Rectangle(position.X - (horizontalPixelCount / 2), position.Y - (verticalPixelCount / 2), horizontalPixelCount, verticalPixelCount), GraphicsUnit.Pixel);
                 graphics.PixelOffsetMode = PixelOffsetMode.None;
-                using (Pen pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
+                using (var pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
                 {
-                    for (int i = 1; i < horizontalPixelCount; i++)
+                    for (var i = 1; i < horizontalPixelCount; i++)
                     {
                         graphics.DrawLine(pen, new Point((i * pixelSize) - 1, 0), new Point((i * pixelSize) - 1, height - 1));
                     }
-                    for (int j = 1; j < verticalPixelCount; j++)
+                    for (var j = 1; j < verticalPixelCount; j++)
                     {
                         graphics.DrawLine(pen, new Point(0, (j * pixelSize) - 1), new Point(width - 1, (j * pixelSize) - 1));
                     }
@@ -204,21 +145,20 @@ namespace Shotr.Ui.Forms
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
-            if (drawing)
+            if (_drawing)
             {
-                e.Graphics.FillRectangle(textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));
-                if (zoom)
+                e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));
+                if (_settings.Capture.ShowZoom)
                 {
-                    //PIXEL MASTER SHIT.
                     //check if screen isn't big enough to fit on right side, if so then fit on left side.
-                    Point location = new Point(0, 0);
-                    Point cursorloc = PointToClient(Cursor.Position);
-                    using (Bitmap magnifier = (Magnifier(screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
+                    var location = new Point(0, 0);
+                    var cursorloc = PointToClient(Cursor.Position);
+                    using (var magnifier = (Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                     {
-                        if ((x.Width > 80 || x.Height > kfont.Height * 2) && (cursorloc.X - 1 < x.X && cursorloc.Y - 1 < x.Y || new Rectangle(new Point(x.X, x.Y), new Size(80, (kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (kfont.Height * 2))))))
+                        if ((_x.Width > 80 || _x.Height > _kfont.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (_kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (_kfont.Height * 2))))))
                         {
                             //draw it below the text.
-                            location = new Point(cursorloc.X + 5, cursorloc.Y + (kfont.Height * 2) + 5);
+                            location = new Point(cursorloc.X + 5, cursorloc.Y + (_kfont.Height * 2) + 5);
                         }
                         else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
                         {
@@ -242,7 +182,8 @@ namespace Shotr.Ui.Forms
                         }
                         //draw magnifier.
                         e.Graphics.DrawImage(magnifier, location);
-                        e.Graphics.DrawString(string.Format("{0}", (color ? GetHexCode(screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), kfont, brush, location);
+                        e.Graphics.DrawString(
+                            $"{(_settings.Capture.ShowColor ? GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")}", _kfont, _brush, location);
                     }
                 }
             }
@@ -258,23 +199,66 @@ namespace Shotr.Ui.Forms
 
         private void ScreenshotForm_Load(object sender, EventArgs e)
         {
+            timer1.Interval = 10;
+            timer1.Start();
+
+            Paint += ScreenshotForm_Paint;
+            FormBorderStyle = FormBorderStyle.None;
+
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
+            foreach (var screen in Screen.AllScreens)
+            {
+                //take smallest height
+                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
+                width += screen.Bounds.Width;
+                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
+                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
+                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
+                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
+            }
+            Size = new Size(width, height);
+            //get point of left-most monitor.
+            Location = new Point(left, top);
+          
+            KeyUp += ScreenshotForm_KeyUp;
+            KeyDown += ScreenshotForm_KeyDown;
+
+            Cursor = Cursors.Cross;
+
+            _screenshot = new Bitmap(_screenshot, width, height);
+
+            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
+            {
+                var brush = new TextureBrush(image);
+                brush.WrapMode = WrapMode.Clamp;
+                _textbrush = brush;
+            }
+          
+            DoubleBuffered = true;
+            ShowInTaskbar = false;
+            timer2.Interval = 1000;
+            timer2.Start();
+            
             MouseDown += ScreenshotForm_MouseDown;
             MouseUp += ScreenshotForm_MouseUp;
             // force window to have focus
-            uint foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
-            uint appThread = GetCurrentThreadId();
-            const uint SW_SHOW = 5;
+            var foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
+            var appThread = GetCurrentThreadId();
+            const uint swShow = 5;
             if (foreThread != appThread)
             {
                 AttachThreadInput(foreThread, appThread, true);
                 BringWindowToTop(Handle);
-                ShowWindow(Handle, SW_SHOW);
+                ShowWindow(Handle, swShow);
                 AttachThreadInput(foreThread, appThread, false);
             }
             else
             {
                 BringWindowToTop(Handle);
-                ShowWindow(Handle, SW_SHOW);
+                ShowWindow(Handle, swShow);
             }
             Activate();
         }
@@ -290,7 +274,7 @@ namespace Shotr.Ui.Forms
                 //capture color.
                 try
                 {
-                    Clipboard.SetText(GetHexCode(screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)));
+                    Clipboard.SetText(GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)));
                     CloseWindow();
                 }
                 catch { }
@@ -320,12 +304,10 @@ namespace Shotr.Ui.Forms
             BringToFront();
             Activate();
         }
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         // When you don't want the ProcessId, use this overload and pass IntPtr.Zero for the second parameter
         [DllImport("user32.dll")]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
 
         [DllImport("kernel32.dll")]
         static extern uint GetCurrentThreadId();
@@ -339,9 +321,6 @@ namespace Shotr.Ui.Forms
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool BringWindowToTop(IntPtr hWnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool BringWindowToTop(HandleRef hWnd);
 
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, uint nCmdShow);

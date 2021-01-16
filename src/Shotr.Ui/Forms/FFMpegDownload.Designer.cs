@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using MetroFramework5.Controls;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls.DpiScaling;
 
 namespace Shotr.Ui.Forms
 {
-    partial class FFMpegDownload
+    partial class FfMpegDownload
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@ namespace Shotr.Ui.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FFMpegDownload));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FfMpegDownload));
             this.metroLabel1 = new DpiScaledLabel();
             this.metroProgressBar1 = new MetroFramework5.Controls.MetroProgressBar();
             this.metroButton1 = new DpiScaledButton();
@@ -80,7 +80,7 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.metroProgressBar1);
             this.Controls.Add(this.metroLabel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FFMpegDownload";
+            this.Name = "FfMpegDownload";
             this.Resizable = false;
             this.ShadowType = MetroFramework5.Forms.MetroForm.MetroFormShadowType.DropShadow;
             this.ShowFormIcon = true;

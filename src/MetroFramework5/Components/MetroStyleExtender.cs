@@ -105,7 +105,7 @@ namespace MetroFramework5.Components
         private void UpdateTheme()
         {
             if (_extendedControls.Count == 0) return;
-            Control c = _extendedControls[0];
+            var c = _extendedControls[0];
             if (c.InvokeRequired)
             {
                 // assume all contros are on the same form / same UI thread
@@ -113,11 +113,11 @@ namespace MetroFramework5.Components
                 return;
             }
 
-            Color backColor = _styleManager.GetThemeColor("*.BackColor.*");
-            Color foreColorNormal = _styleManager.GetThemeColor("*.ForeColor.Normal");
-            Color foreColorDisabled = _styleManager.GetThemeColor("*.ForeColor.Disabled");
+            var backColor = _styleManager.GetThemeColor("*.BackColor.*");
+            var foreColorNormal = _styleManager.GetThemeColor("*.ForeColor.Normal");
+            var foreColorDisabled = _styleManager.GetThemeColor("*.ForeColor.Disabled");
 
-            foreach (Control ctrl in _extendedControls)
+            foreach (var ctrl in _extendedControls)
             {
                 try
                 {
@@ -126,7 +126,7 @@ namespace MetroFramework5.Components
                 catch { }
                 try
                 {
-                    Color col = ctrl.Enabled ? foreColorNormal : foreColorDisabled;
+                    var col = ctrl.Enabled ? foreColorNormal : foreColorDisabled;
                     if( ctrl.ForeColor != col) ctrl.ForeColor = col;
                 }
                 catch { }
@@ -136,9 +136,9 @@ namespace MetroFramework5.Components
         // This must only be called from the control's UI thread
         private void UpdateTheme(Control ctrl)
         {
-            Color backColor = _styleManager.GetThemeColor("*.BackColor.*");
-            Color foreColorNormal = _styleManager.GetThemeColor("*.ForeColor.*");
-            Color foreColorDisabled = _styleManager.GetThemeColor("*.ForeColor.Disabled");
+            var backColor = _styleManager.GetThemeColor("*.BackColor.*");
+            var foreColorNormal = _styleManager.GetThemeColor("*.ForeColor.*");
+            var foreColorDisabled = _styleManager.GetThemeColor("*.ForeColor.Disabled");
 
             try
             {
@@ -147,7 +147,7 @@ namespace MetroFramework5.Components
             catch { }
             try
             {
-                Color col = ctrl.Enabled ? foreColorNormal : foreColorDisabled;
+                var col = ctrl.Enabled ? foreColorNormal : foreColorDisabled;
                 if (ctrl.ForeColor != col) ctrl.ForeColor = col;
                 // TODO: Hook to the EnabledChanged event??
             }

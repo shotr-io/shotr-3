@@ -3,7 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Core.DpiScaling;
+using Shotr.Core.Controls;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
@@ -12,27 +13,25 @@ namespace Shotr.Ui.Forms
 {
     public partial class ErrorNotification : DpiScaledForm
     {
-        private int time = 5;
-        private FormAnimator animator;
+        private readonly Uploader _uploader;
+        private int _time = 5;
+        private FormAnimator _animator;
 
-        private bool animatingout;
+        private bool _animatingout;
         
-        protected override bool ShowWithoutActivation
-        {
-            get { return true; }
-        }
+        protected override bool ShowWithoutActivation => true;
 
         protected override CreateParams CreateParams
         {
             get
             {
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle |= 0x00000008; //WS_EX_TOPMOST 
                 return cp;
             }
         }
-        private ImageShell failed;
-        public ErrorNotification(Image ico, ImageShell failedImg, UploadedImageJsonResult result)
+        private ImageShell _failed;
+        public ErrorNotification(ImageShell failedImg, UploadedImageJsonResult result)
         {
             InitializeComponent();
             ManualDpiScale();
@@ -41,13 +40,13 @@ namespace Shotr.Ui.Forms
             StartPosition = FormStartPosition.Manual;           
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             Closing += ErrorNotification_Closing;
-            animator = new FormAnimator(this);
-            animator.Direction = FormAnimator.AnimationDirection.Up;
-            animator.Method = FormAnimator.AnimationMethod.Slide;
-            animator.Duration = 500;
-            if (failed != null)
+            _animator = new FormAnimator(this);
+            _animator.Direction = FormAnimator.AnimationDirection.Up;
+            _animator.Method = FormAnimator.AnimationMethod.Slide;
+            _animator.Duration = 500;
+            if (_failed != null)
             {
-                failed = failedImg;
+                _failed = failedImg;
                 if (result != null)
                 {
                     if (!string.IsNullOrEmpty(result.ErrorMessage))
@@ -58,15 +57,15 @@ namespace Shotr.Ui.Forms
                         }
                         catch
                         {
-                            metroLabel2.Text = (failed.Extension == FileExtensions.mp4
-                                ? "There was an error while uploading your recording."
-                                : "There was an error while uploading your screenshot.");
+                            metroLabel2.Text = (_failed.Extension == FileExtensions.mp4
+                                                    ? "There was an error while uploading your recording."
+                                                    : "There was an error while uploading your screenshot.");
                         }
                     }
                     else
-                        metroLabel2.Text = (failed.Extension == FileExtensions.mp4
-                            ? "There was an error while uploading your recording."
-                            : "There was an error while uploading your screenshot.");
+                        metroLabel2.Text = (_failed.Extension == FileExtensions.mp4
+                                                ? "There was an error while uploading your recording."
+                                                : "There was an error while uploading your screenshot.");
                 }
                 else
                 {
@@ -82,11 +81,11 @@ namespace Shotr.Ui.Forms
 
         void ErrorNotification_Closing(object sender, CancelEventArgs e)
         {
-            if (animatingout == false)
+            if (_animatingout == false)
             {
                 e.Cancel = true;
                 ShadowType = MetroFormShadowType.None;
-                animatingout = true;
+                _animatingout = true;
                 Close();
             }
         }
@@ -104,13 +103,13 @@ namespace Shotr.Ui.Forms
                     ShadowType = MetroFormShadowType.DropShadow;
                     
                 }));
-                animator.Direction = FormAnimator.AnimationDirection.Down;
+                _animator.Direction = FormAnimator.AnimationDirection.Down;
             }).Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (time-- < 0)
+            if (_time-- < 0)
                 Close();
         }
 
@@ -121,7 +120,7 @@ namespace Shotr.Ui.Forms
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
-            Uploader.AddToQueue(failed);
+            _uploader.AddToQueue(_failed);
             Close();
         }
     }

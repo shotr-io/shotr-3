@@ -54,7 +54,7 @@ namespace MetroFramework5.Components
 
 	// I wish we had mix-ins...
 
-	string[] components = new string[] 
+	var components = new string[] 
 		{ 
 			"Component", 
 			"ToolTip"

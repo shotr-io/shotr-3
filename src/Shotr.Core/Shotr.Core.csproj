@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CustomEnvironmentConfig" Version="1.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
   </ItemGroup>
@@ -17,45 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="DpiScaling\DpiScaledButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledCheckbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledCombobox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledLinkLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledTabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledTextbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DpiScaling\DpiScaledToggle.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Hotkey\HotkeyButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Update="Plugin\CorePlugins\CorePluginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +26,48 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledCheckbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledCombobox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledHotkeyButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledLinkLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledTextbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DpiScaling\DpiScaledToggle.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\Hotkey\HotkeyButton.cs">
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
 

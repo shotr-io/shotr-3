@@ -239,7 +239,7 @@ namespace MetroFramework5.Controls
                 return;
             }
 
-            int margin = BorderStyle == MetroBorderStyle.FixedSingle ? 1 : 0;
+            var margin = BorderStyle == MetroBorderStyle.FixedSingle ? 1 : 0;
 
             verticalScrollbar.Location = new Point(ClientRectangle.Width - verticalScrollbar.Width - margin, ClientRectangle.Y + margin);
             verticalScrollbar.Height = ClientRectangle.Height - horizontalScrollbar.Height - 2 * margin;

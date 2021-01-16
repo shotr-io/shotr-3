@@ -102,7 +102,7 @@ namespace MetroFramework5.Forms
             {
                 if (value != displayHeader)
                 {
-                    Padding p = base.Padding;
+                    var p = base.Padding;
                     p.Top += value ? 30 : -30;
                     base.Padding = p;
                 }
@@ -235,7 +235,7 @@ namespace MetroFramework5.Forms
             //causes unpleasant re-draws in Terminal Server
             SetStyle(ControlStyles.AllPaintingInWmPaint, !SystemInformation.TerminalServerSession);
 
-            bool oldVal = IsRemoteSession;
+            var oldVal = IsRemoteSession;
             IsRemoteSession = !IsDropShadowSupported() || !IsAeroThemeEnabled() || SystemInformation.TerminalServerSession;
             if (oldVal != IsRemoteSession)
             {
@@ -295,7 +295,7 @@ namespace MetroFramework5.Forms
         protected override void OnPaintForeground(PaintEventArgs e)
         {
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            using (SolidBrush b = new SolidBrush(GetStyleColor()))
+            using (var b = new SolidBrush(GetStyleColor()))
                 e.Graphics.FillRectangle(b, 0, 0, Width, BORDER_WIDTH);
 
             if (displayHeader)
@@ -307,20 +307,20 @@ namespace MetroFramework5.Forms
                         e.Graphics.DrawImage(Icon.ToBitmap(), new Rectangle(15, 16, 30, 30));
                 }
                 catch { }
-                Rectangle bounds = new Rectangle((_showicon ? 15+30 : 20), 20, ClientRectangle.Width - 2 * 20, 40);
+                var bounds = new Rectangle((_showicon ? 15+30 : 20), 20, ClientRectangle.Width - 2 * 20, 40);
                 
                 TextRenderer.DrawText(e.Graphics, Text, GetThemeFont("Form.Title"), bounds, EffectiveForeColor, TextAlign.AsTextFormatFlags() | TextFormatFlags.EndEllipsis);
                 
                 //e.Graphics.DrawString(Text, GetThemeFont("Form.Title"), new SolidBrush(EffectiveForeColor), bounds);
             }
 
-            MetroBorderStyle bs = BorderStyle;
+            var bs = BorderStyle;
             if (bs == MetroBorderStyle.Default && !TryGetThemeProperty("BorderStyle", out bs))
                 bs = MetroBorderStyle.None;
 
             if (bs == MetroBorderStyle.FixedSingle)
             {
-                using (Pen pen = new Pen(GetThemeColor("BorderColor"))) // TODO: Use style color for active window?
+                using (var pen = new Pen(GetThemeColor("BorderColor"))) // TODO: Use style color for active window?
                 {
                     e.Graphics.DrawLines(pen, new[]
                                 {
@@ -334,9 +334,9 @@ namespace MetroFramework5.Forms
 
             if (Resizable && (SizeGripStyle == SizeGripStyle.Auto || SizeGripStyle == SizeGripStyle.Show))
             {
-                using (SolidBrush b = new SolidBrush(GetThemeColor("Button.ForeColor.Disabled")) )
+                using (var b = new SolidBrush(GetThemeColor("Button.ForeColor.Disabled")) )
                 {
-                    Size resizeHandleSize = new Size(2, 2);
+                    var resizeHandleSize = new Size(2, 2);
                     e.Graphics.FillRectangles(b, new[] {
                         new Rectangle(new Point(ClientRectangle.Width-14,ClientRectangle.Height-6), resizeHandleSize),
                         new Rectangle(new Point(ClientRectangle.Width-10,ClientRectangle.Height-6), resizeHandleSize),
@@ -426,7 +426,7 @@ namespace MetroFramework5.Forms
             switch (m.Msg)
             {
                 case WinApi.Messages.WM_NCHITTEST:
-                    WinApi.HitTest ht = HitTestNCA(m.HWnd, m.WParam, m.LParam);
+                    var ht = HitTestNCA(m.HWnd, m.WParam, m.LParam);
                     if (ht != WinApi.HitTest.HTCLIENT)
                     {
                         m.Result = (IntPtr)ht;
@@ -435,7 +435,7 @@ namespace MetroFramework5.Forms
                     break;
 
                 case WinApi.Messages.WM_SYSCOMMAND:
-                    int sc = m.WParam.ToInt32() & 0xFFF0;
+                    var sc = m.WParam.ToInt32() & 0xFFF0;
                     switch (sc)
                     {
                         case WinApi.Messages.SC_MOVE: 
@@ -485,12 +485,12 @@ namespace MetroFramework5.Forms
         [SecuritySafeCritical]
         private unsafe void OnGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
-            WinApi.MINMAXINFO* pmmi = (WinApi.MINMAXINFO*)lParam;
+            var pmmi = (WinApi.MINMAXINFO*)lParam;
 
             //  NOTE: MaxPosition is always relative to the origin of the window's current screen
             // e.g. usually (0, 0) unless the taskbar is on the left or top.
 
-            Screen s = Screen.FromHandle(hwnd);
+            var s = Screen.FromHandle(hwnd);
             pmmi->MaxSize = s.WorkingArea.Size;
             pmmi->MaxPosition.X = Math.Abs(s.WorkingArea.Left - s.Bounds.Left);
             pmmi->MaxPosition.Y = Math.Abs(s.WorkingArea.Top - s.Bounds.Top);
@@ -513,14 +513,14 @@ namespace MetroFramework5.Forms
         [SecuritySafeCritical]
         private unsafe void OnWmSizing(IntPtr wParam, IntPtr lParam)
         {
-            RECT* rc = (RECT*)lParam;
+            var rc = (RECT*)lParam;
             rc->Width = Math.Max(rc->Width, _minTrackSize.Width);
             rc->Height = Math.Max(rc->Height, _minTrackSize.Height);
         }
 
         private WinApi.HitTest HitTestNCA(IntPtr hwnd, IntPtr wparam, IntPtr lparam)
         {
-            Point pc = PointToClient(new Point((int)lparam));
+            var pc = PointToClient(new Point((int)lparam));
             if (Resizable && SizeGripRectangle.Contains(pc)) 
                 return WinApi.HitTest.HTBOTTOMRIGHT;
             if ( CaptionRectangle.Contains(pc))
@@ -538,7 +538,7 @@ namespace MetroFramework5.Forms
         {
             get
             {
-                int padMax = Math.Max(Padding.Right, Padding.Bottom);
+                var padMax = Math.Max(Padding.Right, Padding.Bottom);
                 var cs = ClientSize;
                 return new Rectangle(cs.Width - padMax, cs.Height - padMax, padMax, padMax);
             }
@@ -581,7 +581,7 @@ namespace MetroFramework5.Forms
         {
             if (_windowButtons[(int)button] != null ) throw new InvalidOperationException();
 
-            MetroFormButton newButton = new MetroFormButton
+            var newButton = new MetroFormButton
                 {
                     Text = GetButtonText(button),
                     Tag = button,
@@ -634,7 +634,7 @@ namespace MetroFramework5.Forms
         {
             if (!ControlBox) return;
 
-            Point location = new Point(ClientRectangle.Width - BORDER_WIDTH - 25, BORDER_WIDTH);
+            var location = new Point(ClientRectangle.Width - BORDER_WIDTH - 25, BORDER_WIDTH);
             foreach (var metroFormButton in _windowButtons.Where(metroFormButton => metroFormButton != null))
             {
                 metroFormButton.Location = location;
@@ -691,7 +691,7 @@ namespace MetroFramework5.Forms
 
             protected override void OnPaintForeground(PaintEventArgs e)
             {
-                Font buttonFont = new Font("Webdings", 9.25f);
+                var buttonFont = new Font("Webdings", 9.25f);
                 TextRenderer.DrawText(e.Graphics, Text, buttonFont, ClientRectangle, EffectiveForeColor, EffectiveBackColor, 
                     TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
             }
@@ -827,7 +827,7 @@ namespace MetroFramework5.Forms
 
             if (!IsDropShadowSupported())
                 return;
-            int classStyle = WinApi.GetClassLongPtr(Handle, GCL_STYLE).ToInt32();
+            var classStyle = WinApi.GetClassLongPtr(Handle, GCL_STYLE).ToInt32();
             if (hasShadow)
                 classStyle |= CS_DROPSHADOW;
             else
@@ -918,7 +918,7 @@ namespace MetroFramework5.Forms
             {
                 get
                 {
-                    CreateParams cp = base.CreateParams;
+                    var cp = base.CreateParams;
                     cp.ExStyle |= _wsExStyle;
                     return cp;
                 }
@@ -926,7 +926,7 @@ namespace MetroFramework5.Forms
 
             private Rectangle GetShadowBounds()
             {
-                Rectangle r = TargetForm.Bounds;
+                var r = TargetForm.Bounds;
                 r.Inflate(_shadowSize, _shadowSize);
                 return r;
             }
@@ -943,20 +943,20 @@ namespace MetroFramework5.Forms
                 if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
                     throw new ApplicationException("The bitmap must be 32ppp with alpha-channel.");
 
-                IntPtr screenDc = WinApi.GetDC(IntPtr.Zero);
-                IntPtr memDc = WinApi.CreateCompatibleDC(screenDc);
-                IntPtr hBitmap = IntPtr.Zero;
-                IntPtr oldBitmap = IntPtr.Zero;
+                var screenDc = WinApi.GetDC(IntPtr.Zero);
+                var memDc = WinApi.CreateCompatibleDC(screenDc);
+                var hBitmap = IntPtr.Zero;
+                var oldBitmap = IntPtr.Zero;
 
                 try
                 {
                     hBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
                     oldBitmap = WinApi.SelectObject(memDc, hBitmap);
 
-                    Size size = new Size(bitmap.Width, bitmap.Height);
-                    Point pointSource = new Point(0, 0);
-                    Point topPos = new Point(Left, Top);
-                    WinApi.BLENDFUNCTION blend = new WinApi.BLENDFUNCTION
+                    var size = new Size(bitmap.Width, bitmap.Height);
+                    var pointSource = new Point(0, 0);
+                    var topPos = new Point(Left, Top);
+                    var blend = new WinApi.BLENDFUNCTION
                     {
                         BlendOp = WinApi.AC_SRC_OVER,
                         BlendFlags = 0,
@@ -1140,15 +1140,15 @@ namespace MetroFramework5.Forms
             protected override void PaintShadow()
             {
                 Visible = true;
-                using (Bitmap getShadow = DrawBorder())
+                using (var getShadow = DrawBorder())
                     SetBitmap(getShadow, 255);
             }
 
             protected override void ClearShadow()
             {
                 // This flickers when running on console, no matter if we clear the shadow nor not
-                using (Bitmap img = new Bitmap(Width, Height, PixelFormat.Format32bppArgb))
-                using (Graphics g = Graphics.FromImage(img))
+                using (var img = new Bitmap(Width, Height, PixelFormat.Format32bppArgb))
+                using (var g = Graphics.FromImage(img))
                 {
                     g.Clear(Color.Transparent);
                     SetBitmap(img, 255);
@@ -1177,11 +1177,11 @@ namespace MetroFramework5.Forms
 
             private Bitmap DrawBorder(Color color, Rectangle canvas)
             {
-                Bitmap img = new Bitmap(canvas.Width, canvas.Height, PixelFormat.Format32bppArgb);
-                using( Graphics g = Graphics.FromImage(img))
-                using( Region clip = g.Clip )
+                var img = new Bitmap(canvas.Width, canvas.Height, PixelFormat.Format32bppArgb);
+                using( var g = Graphics.FromImage(img))
+                using( var clip = g.Clip )
                 {
-                    Rectangle r = canvas;
+                    var r = canvas;
                     r.Inflate(-DISTANCE, -DISTANCE);
                     clip.Exclude(r);
                     g.Clip = clip;
@@ -1232,12 +1232,12 @@ namespace MetroFramework5.Forms
 
             private Bitmap DrawBorder(int hShadow, int vShadow, int blur, Color color, Rectangle canvas)
             {
-                Bitmap img = new Bitmap(canvas.Width, canvas.Height, PixelFormat.Format32bppArgb);
-                using (Graphics g = Graphics.FromImage(img))
-                using (Region clip = g.Clip)
+                var img = new Bitmap(canvas.Width, canvas.Height, PixelFormat.Format32bppArgb);
+                using (var g = Graphics.FromImage(img))
+                using (var clip = g.Clip)
                 {
                     // avoid flickering by re-painting the target form's client area
-                    Rectangle r = canvas;
+                    var r = canvas;
                     r.Inflate(-DISTANCE, -DISTANCE);
                     clip.Exclude(r);
                     g.Clip = clip;
@@ -1253,9 +1253,9 @@ namespace MetroFramework5.Forms
 #endif
                     do
                     {
-                        double scale = (canvas.Height - r.Height) / (double)(DISTANCE + DISTANCE - 1);
+                        var scale = (canvas.Height - r.Height) / (double)(DISTANCE + DISTANCE - 1);
                         var shadowColor = Color.FromArgb((int)(TRANSPARENCY * scale * scale), color);
-                        int cornerRadius = (blur - DISTANCE) + (int)(DISTANCE * (1 - (scale * scale)));
+                        var cornerRadius = (blur - DISTANCE) + (int)(DISTANCE * (1 - (scale * scale)));
 
                         var rOutput = r;
                         rOutput.Offset(hShadow, vShadow);
@@ -1269,8 +1269,8 @@ namespace MetroFramework5.Forms
 
             private void DrawRoundedRectangleL(Graphics g, Rectangle r, int cornerRadius, Color fillColor)
             {
-                using (GraphicsPath gfxPath = new GraphicsPath())
-                using (Pen p = new Pen(fillColor))
+                using (var gfxPath = new GraphicsPath())
+                using (var p = new Pen(fillColor))
                 {
                     gfxPath.AddArc(r.X, r.Y, cornerRadius, cornerRadius, 180, 90);
                     gfxPath.AddArc(r.X + r.Width - cornerRadius, r.Y, cornerRadius, cornerRadius, 270, 90);
@@ -1293,10 +1293,10 @@ namespace MetroFramework5.Forms
         [SecuritySafeCritical]
         private void RemoveCloseButton()
         {
-            IntPtr hMenu = WinApi.GetSystemMenu(Handle, false);
+            var hMenu = WinApi.GetSystemMenu(Handle, false);
             if (hMenu == IntPtr.Zero) return;
 
-            int n = WinApi.GetMenuItemCount(hMenu);
+            var n = WinApi.GetMenuItemCount(hMenu);
             if (n <= 0) return;
 
             WinApi.RemoveMenu(hMenu, (uint)(n - 1), WinApi.MfByposition | WinApi.MfRemove);

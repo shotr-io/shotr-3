@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Shotr.Core.Hotkey;
+using Shotr.Core.Entities;
+using Shotr.Core.Entities.Hotkeys;
+using Shotr.Core.Settings;
+using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
@@ -17,61 +20,65 @@ namespace Shotr.Ui.Forms
         {
             get
             {
-                var Params = base.CreateParams;
-                Params.ExStyle |= 0x80;
-                return Params;
+                var @params = base.CreateParams;
+                @params.ExStyle |= 0x80;
+                return @params;
             }
         }
 
-        private Bitmap screenshot;
-        private Bitmap origscreenshot;
+        private Bitmap _screenshot;
+        private Bitmap _origscreenshot;
 
-        private Point orig;
-        private Pen pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
+        private Point _orig;
+        private Pen _pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
 
-        private Pen pen1 = new Pen(Color.White, 1);
-        private Pen blackpen = new Pen(Color.Black, 1);
-        private Brush brush = new SolidBrush(Color.White);
-        private SolidBrush semiTransBrush = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
-        private TextureBrush textbrush;
-        private TextureBrush textbrushorig;
+        private Brush _brush = new SolidBrush(Color.White);
+        private TextureBrush _textbrush;
 
-        private Rectangle x = Rectangle.Empty;
+        private Rectangle _x = Rectangle.Empty;
 
-        private Font kfont = new Font(DefaultFont, FontStyle.Bold);
+        private Font _kfont = new Font(DefaultFont, FontStyle.Bold);
 
-        private bool activated;
-        private bool editing;
-        private bool drawing;
+        private bool _activated;
+        private bool _editing;
+        private bool _drawing;
+        
+        private Stopwatch _stopwatch = Stopwatch.StartNew();
 
-        private bool information = (Core.Utils.Settings.Instance.GetValue("region_capture_information") != null ? (bool)Core.Utils.Settings.Instance.GetValue("region_capture_information")[0] : true);
-        private bool zoom = (Core.Utils.Settings.Instance.GetValue("region_capture_zoom") != null ? (bool)Core.Utils.Settings.Instance.GetValue("region_capture_zoom")[0] : true);
-        private bool color = (Core.Utils.Settings.Instance.GetValue("region_capture_color") != null ? (bool)Core.Utils.Settings.Instance.GetValue("region_capture_color")[0] : true);
+        private SingleInstance _tasks;
 
-        private Stopwatch stopwatch = Stopwatch.StartNew();
+        private readonly BaseSettings _settings;
+        private readonly Uploader _uploader;
 
-        private SingleInstance Tasks;
-
-        public ScreenshotForm(Bitmap yolo, SingleInstance tasks)
+        public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks)
         {
+            _settings = settings;
+            _uploader = uploader;
+
+            _availableColors = new List<Color>();
+            var colorsType = typeof(Color);
+            var properties = colorsType.GetProperties(BindingFlags.Static | BindingFlags.Public);
+            foreach (var prop in properties)
+            {
+                _availableColors.Add(Color.FromName(prop.Name));
+            }
+
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 
             InitializeComponent();
-            //
-            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-
             StartPosition = FormStartPosition.Manual;
-            //this.TopMost = true;
-
-            timer1.Interval = 10;
-            timer1.Start();
+            _screenshot = bitmap;
+            _tasks = tasks;
+            
+            _timer.Interval = 10;
+            _timer.Start();
 
             Paint += ScreenshotForm_Paint;
             FormBorderStyle = FormBorderStyle.None;
-            int height = 0;
-            int width = 0;
-            int left = 0;
-            int top = 0;
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
             var i = 0;
             foreach (var screen in Screen.AllScreens)
             {
@@ -98,28 +105,29 @@ namespace Shotr.Ui.Forms
 
             Cursor = Cursors.Cross;
 
-            screenshot = yolo;
-            origscreenshot = (Bitmap)screenshot.Clone();
-            screenshot = new Bitmap(screenshot, width, height);
+            _origscreenshot = (Bitmap)_screenshot.Clone();
+            _screenshot = new Bitmap(_screenshot, width, height);
             
-            using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
+            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {
-                TextureBrush brush = new TextureBrush(image);
+                var brush = new TextureBrush(image);
                 brush.WrapMode = WrapMode.Clamp;
-                textbrush = brush;
+                _textbrush = brush;
             }
 
-            TextureBrush brush1 = new TextureBrush(screenshot);
+            var brush1 = new TextureBrush(_screenshot);
             brush1.WrapMode = WrapMode.Clamp;
-            textbrushorig = brush1;
 
             DoubleBuffered = true;
-            ShowInTaskbar = false;
             
-            edit = Graphics.FromImage(screenshot);
-            Tasks = tasks;
+            _edit = Graphics.FromImage(_screenshot);
+            
+            MouseMove += ScreenshotForm_MouseMove;
+            MouseDown += ScreenshotForm_MouseDown;
+            MouseUp += ScreenshotForm_MouseUp;
+            MouseWheel += ScreenshotForm_MouseWheel;
         }
-
+        
         void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
@@ -146,10 +154,10 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                if (resizing)
+                if (_resizing)
                 {
-                    resizing = false;
-                    oldresizepos = Point.Empty;
+                    _resizing = false;
+                    _oldResizePosition = Point.Empty;
                     Cursor = Cursors.Cross;
                     return;
                 }
@@ -157,51 +165,46 @@ namespace Shotr.Ui.Forms
             }
             else if (e.KeyCode == Keys.Z)
             {
-                //disable the zoom feature.
-                zoom = !zoom;
-                Core.Utils.Settings.Instance.ChangeKey("region_capture_zoom", new object[] { zoom });
+                _settings.Capture.ShowZoom = !_settings.Capture.ShowZoom;
             }
             else if (e.KeyCode == Keys.I)
             {
-                //disable information.
-                information = !information;
-                Core.Utils.Settings.Instance.ChangeKey("region_capture_information", new object[] { information });
+                _settings.Capture.ShowInformation = !_settings.Capture.ShowInformation;
             }
             else if (e.KeyCode == Keys.C)
             {
-                color = !color;
-                Core.Utils.Settings.Instance.ChangeKey("region_capture_color", new object[] { color });
+                _settings.Capture.ShowColor = !_settings.Capture.ShowColor;
             }
             else if (e.KeyCode == Keys.E)
             {
-                if (!editing)
+                if (!_editing)
                 {
-                    editing = true;
-                    activated = false;
+                    _editing = true;
+                    _activated = false;
                     //remember resizing & activated.
-                    resizing = false;
+                    _resizing = false;
                 }
                 else
                 {
                     //save current image and get ready to output it on the form.
-                    textbrush.Dispose();
-                    using (Image image = Utils.Apply(Utils.Contrast(0.7f), screenshot))
+                    _textbrush.Dispose();
+                    using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
                     {
-                        TextureBrush brush = new TextureBrush(image);
+                        var brush = new TextureBrush(image);
                         brush.WrapMode = WrapMode.Clamp;
-                        textbrush = brush;
+                        _textbrush = brush;
                     }
                     //this.textbrush.ScaleTransform((this.Size.Width / (this.Size.Width * Utils.getScalingFactor())), (this.Size.Height / (this.Size.Height * Utils.getScalingFactor())));
-                    editing = false;
+                    _editing = false;
                 }
                 //turn on editing mode.
                 
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                if (!editing)
+                if (!_editing)
                 {
-                    activated = false;
+                    _activated = false;
                     UploadImage();
                 }
             }
@@ -209,118 +212,115 @@ namespace Shotr.Ui.Forms
 
         public Bitmap GetProcessedImage()
         {
-            return clonedBitmap;
+            return _clonedBitmap;
         }
-        private Bitmap clonedBitmap;
+        private Bitmap _clonedBitmap;
         private void UploadImage()
         {
             //save screenshot at x.
-            PixelFormat format = screenshot.PixelFormat;
+            var format = _screenshot.PixelFormat;
             try
             {
-                clonedBitmap = screenshot.Clone(new Rectangle(new Point(x.X, x.Y), new Size(x.Width, x.Height)), format);
+                _clonedBitmap = _screenshot.Clone(new Rectangle(new Point(_x.X, _x.Y), new Size(_x.Width, _x.Height)), format);
             }
             catch
             {
                 //attempt to fix and re-clone.
 
                 //check positions relative to the image, make sure they don't overlap.
-                if (x.X + x.Width > screenshot.Width)
+                if (_x.X + _x.Width > _screenshot.Width)
                 {
-                    x.Width = screenshot.Width - x.X;
+                    _x.Width = _screenshot.Width - _x.X;
                 }
-                if (x.Y + x.Height > screenshot.Height)
+                if (_x.Y + _x.Height > _screenshot.Height)
                 {
-                    x.Height = screenshot.Height - x.Y;
+                    _x.Height = _screenshot.Height - _x.Y;
                 }
-                if (x.X < 0)
+                if (_x.X < 0)
                 {
-                    int l = 0 - x.X;
-                    x.Width -= l;
-                    x.X = 0;
+                    var l = 0 - _x.X;
+                    _x.Width -= l;
+                    _x.X = 0;
                 }
-                if (x.Y < 0)
+                if (_x.Y < 0)
                 {
-                    int l = 0 - x.Y;
-                    x.Height -= l;
-                    x.Y = 0;
+                    var l = 0 - _x.Y;
+                    _x.Height -= l;
+                    _x.Y = 0;
                 }
 
                 //reclone.
                 try
                 {
-                    clonedBitmap = screenshot.Clone(x, format);
+                    _clonedBitmap = _screenshot.Clone(_x, format);
                 }
                 catch
                 {
                     //wot.
-                    screenshot.Dispose();
+                    _screenshot.Dispose();
                     Dispose();
                     Close();
                     //play error msg.
                     return;
                 }
             }
-            screenshot.Dispose();
+            _screenshot.Dispose();
 
             Hide();
         }
-        Graphics edit;
-        private int prex;
-        private int prey;
-        private Color chosenColor = Color.Red;
-        private int colorIndex;
-        private List<Color> availableColors = new List<Color>
-        {
-            Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Blue, Color.Purple, Color.Black
-        };
-        private Pen chosenPen;
+        Graphics _edit;
+        private int _prex;
+        private int _prey;
+        private Color _chosenColor = Color.Red;
+        private int _colorIndex;
+        private List<Color> _availableColors;
+        private Pen _chosenPen;
 
-        private ResizeLocation resizelocation;
-        private Point oldresizepos = Point.Empty;
+        private ResizeLocation _resizeLocation;
+        private Point _oldResizePosition = Point.Empty;
         void ScreenshotForm_MouseMove(object sender, MouseEventArgs e)
         {
             //change cursor to scalable stuff if we're out of activated.
-            Point mouse = PointToClient(Cursor.Position);
-            if (!activated && resizing && !resizemove)
+            var mouse = PointToClient(Cursor.Position);
+            if (!_activated && _resizing && !_resizemove)
             {
                 //left side.
-                if ((mouse.X >= x.X - 4 && mouse.X <= x.X + 4) && (mouse.Y >= x.Y && mouse.Y <= x.Y + x.Height))
+                if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeWE;                  
                 }
                 //right side.
-                else if ((mouse.X >= x.X + x.Width - 4 && mouse.X <= x.X + x.Width + 4) && (mouse.Y >= x.Y && mouse.Y <= x.Y + x.Height))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeWE;
                 }
                 //top
-                else if((mouse.X >= x.X + 4 && mouse.X <= x.X + x.Width - 4) && (mouse.Y >= x.Y - 4 && mouse.Y <= x.Y + 4))
+                else if((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     Cursor = Cursors.SizeNS;
                 }
                 //bottom 
-                else if((mouse.X >= x.X + 4 && mouse.X <= x.X + x.Width - 4) && (mouse.Y >= x.Y + x.Height - 4 && mouse.Y <= x.Y + x.Height + 4))
+                else if((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     Cursor = Cursors.SizeNS;
                 }
-                else if ((mouse.X >= x.X - 4 && mouse.X <= x.X + 4) && (mouse.Y >= x.Y - 4 && mouse.Y <= x.Y + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     Cursor = Cursors.SizeNWSE;
                 }
-                else if ((mouse.X >= x.X + x.Width - 4 && mouse.X <= x.X + x.Width + 4) && (mouse.Y >= x.Y - 4 && mouse.Y <= x.Y + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     Cursor = Cursors.SizeNESW;
                 }
-                else if ((mouse.X >= x.X + x.Width - 4 && mouse.X <= x.X + x.Width + 4) && (mouse.Y >= x.Y + x.Height - 4 && mouse.Y <= x.Y + x.Height + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     Cursor = Cursors.SizeNWSE;
                 }
-                else if ((mouse.X >= x.X - 4 && mouse.X <= x.X + 4) && (mouse.Y >= x.Y + x.Height - 4 && mouse.Y <= x.Y + x.Height + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     Cursor = Cursors.SizeNESW;
                 }
-                else if((mouse.X >= x.X && mouse.X <= x.X + x.Width && mouse.Y >= x.Y && mouse.Y <= x.Y + x.Height))
+                else if((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeAll;
                 }
@@ -329,245 +329,245 @@ namespace Shotr.Ui.Forms
                     Cursor = Cursors.Cross;
                 }
             }
-            else if (resizemove)
+            else if (_resizemove)
             {
-                if (resizelocation == ResizeLocation.Left)
+                if (_resizeLocation == ResizeLocation.Left)
                 {
                     //should work fine hopefully.
-                    if (mouse.X > x.X)
+                    if (mouse.X > _x.X)
                     {
-                        if (x.Width >= 50)
+                        if (_x.Width >= 50)
                         {
                             //move inwards.
-                            int output = (mouse.X - x.X);
-                            x.X += output;
-                            x.Width -= output;
+                            var output = (mouse.X - _x.X);
+                            _x.X += output;
+                            _x.Width -= output;
                         }
                     }
                     else
                     {
                         
                         //move inwards.
-                        int output = (x.X - mouse.X);
-                        if (x.Width + output <= 50) { return; }
-                        x.X -= output;
-                        x.Width += output;
+                        var output = (_x.X - mouse.X);
+                        if (_x.Width + output <= 50) { return; }
+                        _x.X -= output;
+                        _x.Width += output;
                        
                     }
                 }
-                else if (resizelocation == ResizeLocation.Right)
+                else if (_resizeLocation == ResizeLocation.Right)
                 {
                     //should work fine hopefully.
-                    if (mouse.X > x.X + x.Width)
+                    if (mouse.X > _x.X + _x.Width)
                     {
                         //move inwards.
-                        int output = (mouse.X - x.X);
+                        var output = (mouse.X - _x.X);
                         //x.X += output;
-                        x.Width = output;
+                        _x.Width = output;
                     }
                     else
                     {
-                        if (x.Width >= 50)
+                        if (_x.Width >= 50)
                         {
                             //move inwards.
-                            int output = (x.X + x.Width - mouse.X);
-                            x.Width -= output;
+                            var output = (_x.X + _x.Width - mouse.X);
+                            _x.Width -= output;
                         }
                     }
                 }
-                else if (resizelocation == ResizeLocation.Top)
+                else if (_resizeLocation == ResizeLocation.Top)
                 {
                     //should work fine hopefully.
-                    if (mouse.Y > x.Y)
+                    if (mouse.Y > _x.Y)
                     {
                         //move inwards.
-                        if (x.Height >= 50)
+                        if (_x.Height >= 50)
                         {
-                        int output = (mouse.Y - x.Y);
-                        x.Y += output;
-                        x.Height -= output;
+                        var output = (mouse.Y - _x.Y);
+                        _x.Y += output;
+                        _x.Height -= output;
                         }
                     }
                     else
                     {                  
-                        int output = (x.Y - mouse.Y);
-                        x.Y -= output;
-                        x.Height += output;
+                        var output = (_x.Y - mouse.Y);
+                        _x.Y -= output;
+                        _x.Height += output;
                     }
                 }
-                else if (resizelocation == ResizeLocation.Bottom)
+                else if (_resizeLocation == ResizeLocation.Bottom)
                 {
                     //should work fine hopefully.
-                    if (mouse.Y > x.Y + x.Height)
+                    if (mouse.Y > _x.Y + _x.Height)
                     {
                         //move inwards.
-                        int output = (mouse.Y - x.Y);
-                        x.Height = output;
+                        var output = (mouse.Y - _x.Y);
+                        _x.Height = output;
                     }
                     else
                     {
-                        if (x.Height >= 50)
+                        if (_x.Height >= 50)
                         {
                             //move inwards.
-                            int output = (x.Y + x.Height - mouse.Y);
-                            x.Height -= output;
+                            var output = (_x.Y + _x.Height - mouse.Y);
+                            _x.Height -= output;
                         }
                     }
                 }
-                else if (resizelocation == ResizeLocation.TopLeft)
+                else if (_resizeLocation == ResizeLocation.TopLeft)
                 {
-                    if (mouse.X > x.X)
+                    if (mouse.X > _x.X)
                     {
-                        if (x.Width >= 50)
+                        if (_x.Width >= 50)
                         {
-                            int output = (mouse.X - x.X);
-                            x.X += output;
-                            x.Width -= output;
+                            var output = (mouse.X - _x.X);
+                            _x.X += output;
+                            _x.Width -= output;
                         }
                     }
-                    if (mouse.Y > x.Y)
+                    if (mouse.Y > _x.Y)
                     {
-                        if (x.Height >= 50)
+                        if (_x.Height >= 50)
                         {
                             //move downwards.
-                            int output = (mouse.Y - x.Y);
-                            x.Y += output;
-                            x.Height -= output;
+                            var output = (mouse.Y - _x.Y);
+                            _x.Y += output;
+                            _x.Height -= output;
                         }
                     }
-                    if (mouse.X < x.X)
+                    if (mouse.X < _x.X)
                     {
                         //move inwards.
-                        int output = (x.X - mouse.X);
-                        x.X -= output;
-                        x.Width += output;
+                        var output = (_x.X - mouse.X);
+                        _x.X -= output;
+                        _x.Width += output;
                     }
-                    if (mouse.Y < x.Y)
+                    if (mouse.Y < _x.Y)
                     {
                         //move inwards.
-                        int output = (x.Y - mouse.Y);
-                        x.Y -= output;
-                        x.Height += output;
+                        var output = (_x.Y - mouse.Y);
+                        _x.Y -= output;
+                        _x.Height += output;
                     }
                 }
-                else if (resizelocation == ResizeLocation.TopRight)
+                else if (_resizeLocation == ResizeLocation.TopRight)
                 {
-                    if (mouse.X > x.X + x.Width)
+                    if (mouse.X > _x.X + _x.Width)
                     {
-                        int output = (mouse.X - x.X);
-                        x.Width = output;
+                        var output = (mouse.X - _x.X);
+                        _x.Width = output;
                     }
-                    if (mouse.Y > x.Y)
+                    if (mouse.Y > _x.Y)
                     {
-                        if (x.Height >= 50)
+                        if (_x.Height >= 50)
                         {
                             //move downwards.
-                            int output = (mouse.Y - x.Y);
-                            x.Y += output;
-                            x.Height -= output;
+                            var output = (mouse.Y - _x.Y);
+                            _x.Y += output;
+                            _x.Height -= output;
                         }
                     }
-                    if (mouse.X < x.X + x.Width)
+                    if (mouse.X < _x.X + _x.Width)
                     {
-                        if (x.Width >= 50)
+                        if (_x.Width >= 50)
                         {
                             //move inwards.
-                            int output = (x.X + x.Width - mouse.X);
-                            x.Width -= output;
+                            var output = (_x.X + _x.Width - mouse.X);
+                            _x.Width -= output;
                         }
                     }
-                    if (mouse.Y < x.Y)
+                    if (mouse.Y < _x.Y)
                     {
                         //move inwards.
-                        int output = (x.Y - mouse.Y);
-                        x.Y -= output;
-                        x.Height += output;
+                        var output = (_x.Y - mouse.Y);
+                        _x.Y -= output;
+                        _x.Height += output;
                     }
                 }
-                else if (resizelocation == ResizeLocation.BottomRight)
+                else if (_resizeLocation == ResizeLocation.BottomRight)
                 {
-                    if (mouse.X > x.X + x.Width)
+                    if (mouse.X > _x.X + _x.Width)
                     {
-                        int output = (mouse.X - x.X);
-                        x.Width = output;
+                        var output = (mouse.X - _x.X);
+                        _x.Width = output;
                     }
-                    if (mouse.Y > x.Y + x.Height)
+                    if (mouse.Y > _x.Y + _x.Height)
                     {
                         //move inwards.
-                        int output = (mouse.Y - x.Y);
-                        x.Height = output;
+                        var output = (mouse.Y - _x.Y);
+                        _x.Height = output;
                     }
-                    if (mouse.X < x.X + x.Width)
+                    if (mouse.X < _x.X + _x.Width)
                     {
-                        if (x.Width >= 50)
+                        if (_x.Width >= 50)
                         {
                             //move inwards.
-                            int output = (x.X + x.Width - mouse.X);
-                            x.Width -= output;
+                            var output = (_x.X + _x.Width - mouse.X);
+                            _x.Width -= output;
                         }
                     }
-                    if (mouse.Y < x.Y + x.Height)
+                    if (mouse.Y < _x.Y + _x.Height)
                     {
-                        if (x.Height >= 50)
+                        if (_x.Height >= 50)
                         {
                             //move inwards.
-                            int output = (x.Y + x.Height - mouse.Y);
-                            x.Height -= output;
+                            var output = (_x.Y + _x.Height - mouse.Y);
+                            _x.Height -= output;
                         }
                     }
                 }
-                else if (resizelocation == ResizeLocation.BottomLeft)
+                else if (_resizeLocation == ResizeLocation.BottomLeft)
                 {
-                    if (mouse.X > x.X)
+                    if (mouse.X > _x.X)
                     {
-                        if (x.Width >= 50)
+                        if (_x.Width >= 50)
                         {
-                            int output = (mouse.X - x.X);
-                            x.X += output;
-                            x.Width -= output;
+                            var output = (mouse.X - _x.X);
+                            _x.X += output;
+                            _x.Width -= output;
                         }
                     }
-                    if (mouse.Y > x.Y + x.Height)
+                    if (mouse.Y > _x.Y + _x.Height)
                     {
                         //move inwards.
-                        int output = (mouse.Y - x.Y);
-                        x.Height += output;
+                        var output = (mouse.Y - _x.Y);
+                        _x.Height += output;
                     }
-                    if (mouse.X < x.X)
+                    if (mouse.X < _x.X)
                     {                      
                         //move inwards.
-                        int output = (x.X - mouse.X);
-                        x.X -= output;
-                        x.Width += output;
+                        var output = (_x.X - mouse.X);
+                        _x.X -= output;
+                        _x.Width += output;
                     }
-                    if (mouse.Y < x.Y + x.Height)
+                    if (mouse.Y < _x.Y + _x.Height)
                     {
-                        if (x.Height >= 50)
+                        if (_x.Height >= 50)
                         {
                             //move inwards.
-                            int output = (x.Y + x.Height - mouse.Y);
-                            x.Height -= output;
+                            var output = (_x.Y + _x.Height - mouse.Y);
+                            _x.Height -= output;
                         }
                     }
                 }
-                else if (resizelocation == ResizeLocation.Any)
+                else if (_resizeLocation == ResizeLocation.Any)
                 {
-                    if(oldresizepos == Point.Empty) {
-                        oldresizepos = mouse;
+                    if(_oldResizePosition == Point.Empty) {
+                        _oldResizePosition = mouse;
                         return;
                     }
                     //move relative to mouse.
-                    x.X += (mouse.X - oldresizepos.X);
-                    x.Y += (mouse.Y - oldresizepos.Y);
-                    oldresizepos = mouse;
+                    _x.X += (mouse.X - _oldResizePosition.X);
+                    _x.Y += (mouse.Y - _oldResizePosition.Y);
+                    _oldResizePosition = mouse;
                 }
             }
         }
 
         private void CloseWindow()
         {
-            Tasks.Reset();
-            screenshot.Dispose();
+            _tasks.Reset();
+            _screenshot.Dispose();
             Dispose();
             Close();
         }
@@ -579,8 +579,8 @@ namespace Shotr.Ui.Forms
 
         private Bitmap ShowSolidColor(Image img, Point position, int width, int height, Color color)
         {
-            Bitmap image = new Bitmap(width - 1, height - 1);
-            using (Graphics graphics = Graphics.FromImage(image))
+            var image = new Bitmap(width - 1, height - 1);
+            using (var graphics = Graphics.FromImage(image))
             {
                 graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 graphics.FillRectangle(new SolidBrush(color), new Rectangle(0, 0, width, height));
@@ -599,22 +599,22 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
-            int width = horizontalPixelCount * pixelSize;
-            int height = verticalPixelCount * pixelSize;
-            Bitmap image = new Bitmap(width - 1, height - 1);
-            using (Graphics graphics = Graphics.FromImage(image))
+            var width = horizontalPixelCount * pixelSize;
+            var height = verticalPixelCount * pixelSize;
+            var image = new Bitmap(width - 1, height - 1);
+            using (var graphics = Graphics.FromImage(image))
             {
                 graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 graphics.PixelOffsetMode = PixelOffsetMode.Half;
                 graphics.DrawImage(img, new Rectangle(0, 0, width, height), new Rectangle(position.X - (horizontalPixelCount / 2), position.Y - (verticalPixelCount / 2), horizontalPixelCount, verticalPixelCount), GraphicsUnit.Pixel);
                 graphics.PixelOffsetMode = PixelOffsetMode.None;
-                using (Pen pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
+                using (var pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
                 {
-                    for (int i = 1; i < horizontalPixelCount; i++)
+                    for (var i = 1; i < horizontalPixelCount; i++)
                     {
                         graphics.DrawLine(pen, new Point((i * pixelSize) - 1, 0), new Point((i * pixelSize) - 1, height - 1));
                     }
-                    for (int j = 1; j < verticalPixelCount; j++)
+                    for (var j = 1; j < verticalPixelCount; j++)
                     {
                         graphics.DrawLine(pen, new Point(0, (j * pixelSize) - 1), new Point(width - 1, (j * pixelSize) - 1));
                     }
@@ -626,66 +626,66 @@ namespace Shotr.Ui.Forms
         }
         void ScreenshotForm_Paint(object sender, PaintEventArgs e)
         {
-            if (!editing)
-                e.Graphics.FillRectangle(textbrush, new Rectangle(0, 0, Size.Width, Size.Height));//this.Bounds);
+            if (!_editing)
+                e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Size.Width, Size.Height));//this.Bounds);
             else
-                e.Graphics.DrawImageUnscaled(screenshot, 0, 0);
+                e.Graphics.DrawImageUnscaled(_screenshot, 0, 0);
 
-            if (activated && x.Height > 1 && x.Width > 1)
+            if (_activated && _x.Height > 1 && _x.Width > 1)
             {
                 try
                 {
-                    e.Graphics.DrawImage(screenshot, x, x, GraphicsUnit.Pixel);
+                    e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
 
-                    pen.DashOffset = ((int)(stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                    e.Graphics.DrawRectangle(pen, x);
-                    if ((x.Width > 250 && x.Height > kfont.Height * 2.2) && information)
+                    _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
+                    e.Graphics.DrawRectangle(_pen, _x);
+                    if ((_x.Width > 250 && _x.Height > _kfont.Height * 2.2) && _settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", x.X, x.Y, (color ? " - " + GetHexCode(screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), kfont, brush, new PointF(x.X, x.Y));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", x.Width, x.Height), kfont, brush, new PointF(x.X, x.Y + kfont.Height));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), _kfont, _brush, new PointF(_x.X, _x.Y));
+                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), _kfont, _brush, new PointF(_x.X, _x.Y + _kfont.Height));
                     }
                 }
                 catch { }
             }
-            else if(resizing)
+            else if(_resizing)
             {
                 try
                 {
-                    e.Graphics.DrawImage(screenshot, x, x, GraphicsUnit.Pixel);
+                    e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
 
-                    pen.DashOffset = ((int)(stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                    e.Graphics.DrawRectangle(pen, x);
-                    if ((x.Width > 250 && x.Height > kfont.Height * 2.2) && information)
+                    _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
+                    e.Graphics.DrawRectangle(_pen, _x);
+                    if ((_x.Width > 250 && _x.Height > _kfont.Height * 2.2) && _settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", x.X, x.Y, (color ? " - " + GetHexCode(screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), kfont, brush, new PointF(x.X, x.Y));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", x.Width, x.Height), kfont, brush, new PointF(x.X, x.Y + kfont.Height));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), _kfont, _brush, new PointF(_x.X, _x.Y));
+                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), _kfont, _brush, new PointF(_x.X, _x.Y + _kfont.Height));
                     }
                 }
                 catch { }
             }
             //draw shit on form graphics.            
-            if (editing && drawing)
+            if (_editing && _drawing)
             {
-                Point cursorloc = PointToClient(Cursor.Position);
+                var cursorloc = PointToClient(Cursor.Position);
                 //edit.DrawImage(screenshot, new Rectangle(0, 0, this.Bounds.Width, this.Bounds.Height));
-                edit.SmoothingMode = SmoothingMode.HighQuality;
-                edit.DrawLine(chosenPen, prex, prey, cursorloc.X, cursorloc.Y);
+                _edit.SmoothingMode = SmoothingMode.HighQuality;
+                _edit.DrawLine(_chosenPen, _prex, _prey, cursorloc.X, cursorloc.Y);
                 //edit.FillEllipse(Brushes.Red, new Rectangle(e.X, e.Y, 4, 4));
-                prex = cursorloc.X;
-                prey = cursorloc.Y;
+                _prex = cursorloc.X;
+                _prey = cursorloc.Y;
             }
 
-            if (zoom)
+            if (_settings.Capture.ShowZoom)
             {
                 //check if screen isn't big enough to fit on right side, if so then fit on left side.
-                Point location = new Point(0, 0);
-                Point cursorloc = PointToClient(Cursor.Position);
-                using (Bitmap magnifier = (editing ? ShowSolidColor(screenshot, new Point(cursorloc.X, cursorloc.Y), 50, 50, chosenColor) :  Magnifier(screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
+                var location = new Point(0, 0);
+                var cursorloc = PointToClient(Cursor.Position);
+                using (var magnifier = (_editing ? ShowSolidColor(_screenshot, new Point(cursorloc.X, cursorloc.Y), 50, 50, _chosenColor) :  Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                 {
-                    if ((x.Width > 80 || x.Height > kfont.Height * 2) && (cursorloc.X - 1 < x.X && cursorloc.Y - 1 < x.Y || new Rectangle(new Point(x.X, x.Y), new Size(80, (kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (kfont.Height * 2))))))
+                    if ((_x.Width > 80 || _x.Height > _kfont.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (_kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (_kfont.Height * 2))))))
                     {
                         //draw it below the text.
-                        location = new Point(cursorloc.X + 5, cursorloc.Y + (kfont.Height * 2) + 5);
+                        location = new Point(cursorloc.X + 5, cursorloc.Y + (_kfont.Height * 2) + 5);
                     }
                     else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
                     {
@@ -727,135 +727,131 @@ namespace Shotr.Ui.Forms
 
         private void ScreenshotForm_Load(object sender, EventArgs e)
         {
-            MouseMove += ScreenshotForm_MouseMove;
-            MouseDown += ScreenshotForm_MouseDown;
-            MouseUp += ScreenshotForm_MouseUp;
-            MouseWheel += ScreenshotForm_MouseWheel;
             // force window to have focus
-            uint foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
-            uint appThread = GetCurrentThreadId();
-            const uint SW_SHOW = 5;
+            var foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
+            var appThread = GetCurrentThreadId();
+            const uint swShow = 5;
             if (foreThread != appThread)
             {
                 AttachThreadInput(foreThread, appThread, true);
                 BringWindowToTop(Handle);
-                ShowWindow(Handle, SW_SHOW);
+                ShowWindow(Handle, swShow);
                 AttachThreadInput(foreThread, appThread, false);
             }
             else
             {
                 BringWindowToTop(Handle);
-                ShowWindow(Handle, SW_SHOW);
+                ShowWindow(Handle, swShow);
             }
             Activate();
         }
 
         void ScreenshotForm_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (editing)
+            if (_editing)
             {
                 if (e.Delta > 0)
                 {
-                    colorIndex++;
-                    if (colorIndex >= availableColors.Count) colorIndex = 0;
-                    chosenColor = availableColors[colorIndex];
+                    _colorIndex++;
+                    if (_colorIndex >= _availableColors.Count) _colorIndex = 0;
+                    _chosenColor = _availableColors[_colorIndex];
                 }
                 else
                 {
-                    colorIndex--;
-                    if (colorIndex < 0) colorIndex = availableColors.Count - 1;
-                    chosenColor = availableColors[colorIndex];
+                    _colorIndex--;
+                    if (_colorIndex < 0) _colorIndex = _availableColors.Count - 1;
+                    _chosenColor = _availableColors[_colorIndex];
                 }
             }
         }
-        private bool resizing;
-        private bool resizemove;
+        private bool _resizing;
+        private bool _resizemove;
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
-            if (resizing)
+            if (_resizing)
             {
-                resizemove = false;
-                oldresizepos = Point.Empty;
-                resizelocation = ResizeLocation.None;
+                _resizemove = false;
+                _oldResizePosition = Point.Empty;
+                _resizeLocation = ResizeLocation.None;
                 return;
             }
 
-            if (!editing)
+            if (!_editing)
             {
-                if (((bool)Core.Utils.Settings.Instance.GetValue("screenshot.use_resizable_canvas")[0]) == false)
+                if (!_settings.Capture.UseResizableCanvas)
                 {
                     UploadImage();
                     return;
                 }
-                activated = false;
-                resizing = true;
+                _activated = false;
+                _resizing = true;
             }
             else 
             {
-                drawing = false;
+                _drawing = false;
                 if (e.Button == MouseButtons.Right)
                 {
                     //clear drawings.
-                    screenshot.Dispose();
-                    screenshot = (Bitmap)origscreenshot.Clone();
-                    edit = Graphics.FromImage(screenshot);
+                    _screenshot.Dispose();
+                    _screenshot = (Bitmap)_origscreenshot.Clone();
+                    _edit = Graphics.FromImage(_screenshot);
                 }
             }
         }
 
         void ScreenshotForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (resizing)
+            if (_resizing)
             {
-                Point mouse = PointToClient(Cursor.Position);
-                if ((mouse.X >= x.X - 4 && mouse.X <= x.X + 4) && (mouse.Y >= x.Y + 4 && mouse.Y <= x.Y + x.Height - 4))
+                var mouse = PointToClient(Cursor.Position);
+                if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y + 4 && mouse.Y <= _x.Y + _x.Height - 4))
                 {
-                    resizelocation = ResizeLocation.Left;
+                    _resizeLocation = ResizeLocation.Left;
                 }
-                else if ((mouse.X >= x.X + x.Width - 4 && mouse.X <= x.X + x.Width + 4) && (mouse.Y >= x.Y + 4 && mouse.Y <= x.Y + x.Height - 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y + 4 && mouse.Y <= _x.Y + _x.Height - 4))
                 {
-                    resizelocation = ResizeLocation.Right;
+                    _resizeLocation = ResizeLocation.Right;
                 }
-                else if ((mouse.X >= x.X + 4 && mouse.X <= x.X + x.Width - 4) && (mouse.Y >= x.Y - 4 && mouse.Y <= x.Y + 4))
+                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
-                    resizelocation = ResizeLocation.Top;
+                    _resizeLocation = ResizeLocation.Top;
                 }
-                else if ((mouse.X >= x.X + 4 && mouse.X <= x.X + x.Width - 4) && (mouse.Y >= x.Y + x.Height - 4 && mouse.Y <= x.Y + x.Height + 4))
+                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
-                    resizelocation = ResizeLocation.Bottom;
+                    _resizeLocation = ResizeLocation.Bottom;
                 }
-                else if ((mouse.X >= x.X - 4 && mouse.X <= x.X + 4) && (mouse.Y >= x.Y - 4 && mouse.Y <= x.Y + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
-                    resizelocation = ResizeLocation.TopLeft;
+                    _resizeLocation = ResizeLocation.TopLeft;
                 }
-                else if ((mouse.X >= x.X + x.Width - 4 && mouse.X <= x.X + x.Width + 4) && (mouse.Y >= x.Y - 4 && mouse.Y <= x.Y + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
-                    resizelocation = ResizeLocation.TopRight;                   
+                    _resizeLocation = ResizeLocation.TopRight;                   
                 }
-                else if ((mouse.X >= x.X + x.Width - 4 && mouse.X <= x.X + x.Width + 4) && (mouse.Y >= x.Y + x.Height - 4 && mouse.Y <= x.Y + x.Height + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
-                    resizelocation = ResizeLocation.BottomRight;
+                    _resizeLocation = ResizeLocation.BottomRight;
                 }
-                else if ((mouse.X >= x.X - 4 && mouse.X <= x.X + 4) && (mouse.Y >= x.Y + x.Height - 4 && mouse.Y <= x.Y + x.Height + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
-                    resizelocation = ResizeLocation.BottomLeft;
+                    _resizeLocation = ResizeLocation.BottomLeft;
                 }
-                else if((mouse.X >= x.X && mouse.X <= x.X + x.Width && mouse.Y >= x.Y && mouse.Y <= x.Y + x.Height))
+                else if((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
-                    resizelocation = ResizeLocation.Any;
+                    _resizeLocation = ResizeLocation.Any;
                 }
-                resizemove = true;
+                _resizemove = true;
                 return;
             }
 
-            if (!editing)
+            if (!_editing)
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (!activated)
+                    if (!_activated)
                     {
-                        activated = true;
-                        orig = e.Location;
+                        _activated = true;
+                        _orig = e.Location;
                     }
                 }
                 else if (e.Button == MouseButtons.Right)
@@ -867,11 +863,11 @@ namespace Shotr.Ui.Forms
             else
             {
                 //choose pen.
-                chosenPen = new Pen(chosenColor, 3);
+                _chosenPen = new Pen(_chosenColor, 3);
                 //draw shit on theform.
-                prex = e.X;
-                prey = e.Y;
-                drawing = true;
+                _prex = e.X;
+                _prey = e.Y;
+                _drawing = true;
             }
         }
 
@@ -902,10 +898,10 @@ namespace Shotr.Ui.Forms
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (activated)
+            if (_activated)
             {
-                Point mouselocation = PointToClient(Cursor.Position);
-                x = CreateRectangle(orig.X, orig.Y, mouselocation.X, mouselocation.Y);
+                var mouselocation = PointToClient(Cursor.Position);
+                _x = CreateRectangle(_orig.X, _orig.Y, mouselocation.X, mouselocation.Y);
             }
             Refresh();
         }
@@ -928,7 +924,7 @@ namespace Shotr.Ui.Forms
 
         // When you don't want the ProcessId, use this overload and pass IntPtr.Zero for the second parameter
         [DllImport("user32.dll")]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr processId);
 
         [DllImport("kernel32.dll")]
         static extern uint GetCurrentThreadId();
