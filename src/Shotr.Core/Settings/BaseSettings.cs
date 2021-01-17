@@ -1,4 +1,8 @@
-﻿using CustomEnvironmentConfig;
+﻿using System.Collections.Generic;
+using CustomEnvironmentConfig;
+using Shotr.Core.Entities.Web;
+using Shotr.Core.Uploader;
+using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Settings
 {
@@ -29,5 +33,11 @@ namespace Shotr.Core.Settings
         
         [ConfigurationItem(Required = false, Default = false)]
         public bool SubscribeToAlphaBeta { get; set; }
+
+        [ConfigurationItem(Ignore = true)]
+        public Dictionary<long, UploadResult>? LegacyHistory { get; set; }
+
+        [ConfigurationItem(Ignore = true)]
+        public List<UploadItem>? Uploads { get; set; }
     }
 }

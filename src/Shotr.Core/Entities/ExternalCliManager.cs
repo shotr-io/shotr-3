@@ -10,7 +10,7 @@ namespace Shotr.Core.Entities
         public event DataReceivedEventHandler OutputDataReceived;
         public event DataReceivedEventHandler ErrorDataReceived;
 
-        private Process process = new Process();
+        private Process process;
 
         public virtual int Open(string path, string args = null)
         {
@@ -27,6 +27,7 @@ namespace Shotr.Core.Entities
                 psi.StandardOutputEncoding = Encoding.UTF8;
                 psi.StandardErrorEncoding = Encoding.UTF8;
 
+                process = new Process();
                 process.EnableRaisingEvents = true;
                 if (psi.RedirectStandardOutput) process.OutputDataReceived += cli_OutputDataReceived;
                 if (psi.RedirectStandardError) process.ErrorDataReceived += cli_ErrorDataReceived;
@@ -56,6 +57,7 @@ namespace Shotr.Core.Entities
                 //psi.StandardOutputEncoding = Encoding.UTF8;
                 //psi.StandardErrorEncoding = Encoding.UTF8;
 
+                process = new Process();
                 process.EnableRaisingEvents = true;
                 //if (psi.RedirectStandardOutput) process.OutputDataReceived += cli_OutputDataReceived;
                 //if (psi.RedirectStandardError) process.ErrorDataReceived += cli_ErrorDataReceived;

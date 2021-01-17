@@ -8,6 +8,8 @@ namespace Shotr.Core.Controls.Hotkey
     public class HotkeyButton : MetroButton
     {
         public event EventHandler OnHotKeyChanged = delegate { };
+        public event EventHandler OnHotKeyClicked = delegate { };
+        public event EventHandler OnHotKeyCanceled = delegate { };
         public bool Editing { get; private set; }
         public Keys Key = Keys.None;
 
@@ -32,16 +34,35 @@ namespace Shotr.Core.Controls.Hotkey
             Text = HotKey.ToString();
         }
 
-        protected override void OnClick(EventArgs e)
+        protected override void OnMouseUp(MouseEventArgs e)
         {
-            //here we turn on/off editing mode.
-            Editing = !Editing;
-            Highlight = Editing;
-            if (Editing)
+            if (e.Button == MouseButtons.Left)
             {
-                PreHk = HotKey;
+                //here we turn on/off editing mode.
+                Editing = !Editing;
+                Highlight = Editing;
+                if (Editing)
+                {
+                    PreHk = HotKey;
+                    OnHotKeyClicked(this, EventArgs.Empty);
+                }
+                else
+                {
+                    OnHotKeyCanceled(this, EventArgs.Empty);
+                }
             }
-            base.OnClick(e);
+            else if (e.Button == MouseButtons.Right)
+            {
+                Editing = false;
+                Highlight = false;
+                Key = Keys.None;
+                HotKey = new HotKeyData(Keys.None);
+                SetHkText();
+                OnHotKeyChanged(this, EventArgs.Empty);
+            }
+            
+
+            base.OnMouseUp(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs kevent)
@@ -55,6 +76,7 @@ namespace Shotr.Core.Controls.Hotkey
                     Editing = false;
                     HotKey = PreHk;
                     SetHkText();
+                    OnHotKeyCanceled(this, EventArgs.Empty);
                     return;
                 }
                 Key = kevent.KeyData;

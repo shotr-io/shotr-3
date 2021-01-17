@@ -109,7 +109,7 @@ namespace Shotr.Core.Entities.Hotkeys
             if (!RegisterHotKey(_window.Handle, id, (uint)key.ModifiersEnum, (uint)key.KeyCode))
                 throw new InvalidOperationException("Couldn’t register the hotkey.");
             //
-            return new HotKeyHook(id, key.ModifiersEnum, key.Hotkey);
+            return new HotKeyHook(id, key.ModifiersEnum, key.HotKey);
         }
 
         public void UnregisterHotKey(int id)

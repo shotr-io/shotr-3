@@ -24,7 +24,7 @@ namespace Shotr.Core.Controls.DpiScaling
                 EventHandler handler = (sender, args) =>
                 {
                     (_nsize, _nlocation) = DpiScaler.ScaleControl(this, _nsize, _nlocation);
-                    Console.WriteLine("DPI Scaled Hotkey: {0} - {1}x{2} ({3}x{4})", Text, Size.Width, Size.Height, _nsize.Width, _nsize.Height);
+                    Console.WriteLine("DPI Scaled HotKey: {0} - {1}x{2} ({3}x{4})", Text, Size.Width, Size.Height, _nsize.Width, _nsize.Height);
                 };
 
                 VisibleChanged += handler;

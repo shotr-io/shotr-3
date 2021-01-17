@@ -13,30 +13,6 @@ namespace Shotr.Ui.Forms.Settings
     public partial class SettingsForm : DpiScaledForm
     {
         private readonly BaseSettings _settings;
-
-        /*
-         { "region_hotkey", new object[] { Keys.Control | Keys.Shift | Keys.D4 } },
-         { "region_fullscreen", new object[] { Keys.Control | Keys.Shift | Keys.D3 } },
-         { "region_activewindow", new object[] { Keys.Control | Keys.Shift | Keys.D2 } },
-         { "region_record_screen", new object[] {Keys.Control | Keys.Shift | Keys.D1} },
-         { "region_clipboard", new object[] { Keys.Control | Keys.Shift | Keys.D5 } },
-         { "start_with_windows", new object[] { true } },
-         { "start_minimized", new object[] { false } },
-         { "image_history", new object[] { } },
-         { "image_uploader", new object[] { "Shotr" } },
-         { "image_uploader_direct_url", new object[] { false } },
-         { "program_subscribe_to_alpha_beta_releases", new object[] { false } },
-         { "program_stitch_fullscreen", new object[] { true } },
-         { "program_custom_uploaders", new object[] { new List<CustomUploaderInstance>() } },
-         { "region_capture_information", new object[] { true } },
-         { "region_capture_zoom", new object[] { true } },
-         { "region_capture_color", new object[] { true } },
-         { "play_sounds", new object[] { true } },
-         { "program_show_notifications", new object[] { true } },
-         this.ChangeKey("settings.screen_recording", new object[] { 60, 4, true, false, "" });
-         this.ChangeKey("settings.screenshot", new object[] { FileExtensions.png, CompressionLevel.High, true });
-         this.ChangeKey("region_clipboard", new object[] { Keys.Control | Keys.Shift | Keys.D5 });
-        */
         public SettingsForm(BaseSettings settings)
         {
             _settings = settings;

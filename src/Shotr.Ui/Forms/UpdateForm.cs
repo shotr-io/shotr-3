@@ -25,7 +25,7 @@ namespace Shotr.Ui.Forms
             ScaleForm = false;
         }
 
-        public void SetUpForm(UpdaterResponse p, bool allowClose = false)
+        public void SetUpForm(UpdaterResponse p)
         {
             metroTextBox1.Text = p.changelog;
             TopMost = false;
@@ -34,21 +34,10 @@ namespace Shotr.Ui.Forms
                 metroButton2.Visible = false;
                 metroButton1.Location = metroButton2.Location;
                 metroLabel2.Text = " An update is ready for download.";
-
-                FormClosing += UpdateForm_FormClosing;
             }
             _upd = p;
-            _allowClose = allowClose;
         }
-
-        void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (!_allowClose)
-            {
-                e.Cancel = true;
-            }
-        }
-
+        
         private void UpdateForm_Load(object sender, EventArgs e)
         {
 
@@ -65,7 +54,6 @@ namespace Shotr.Ui.Forms
             metroButton1.Visible = false;
             metroButton2.Visible = false;
             metroProgressSpinner1.Visible = true;
-            FormClosing += UpdateForm_FormClosing;
             Text = "Shotr - Updating";
             Movable = true;
             //update shit.
@@ -77,11 +65,6 @@ namespace Shotr.Ui.Forms
             _allowClose = true;
             DialogResult = DialogResult.Cancel;
             Close();
-        }
-
-        private void metroProgressSpinner1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void UpdateFromUrl(string url)

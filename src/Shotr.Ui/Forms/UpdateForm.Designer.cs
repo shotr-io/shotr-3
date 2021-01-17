@@ -116,7 +116,6 @@ namespace Shotr.Ui.Forms
             this.metroProgressSpinner1.TabStop = false;
             this.metroProgressSpinner1.Theme = "NewTheme";
             this.metroProgressSpinner1.Visible = false;
-            this.metroProgressSpinner1.Click += new System.EventHandler(this.metroProgressSpinner1_Click);
             // 
             // UpdateForm
             // 

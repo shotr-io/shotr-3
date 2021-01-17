@@ -37,6 +37,7 @@ namespace ShotrUploaderPlugin
         public bool Error { get { return _error; } }
         public long Time { get { return _time; } }
         public string PageURL { get { return _pageurl; } }
+        public bool NewSite { get; set; }
     }
 
     public class ImageShell
