@@ -1,2 +1,2 @@
 # Shotr
-The new and improved screenshot client, now with more butter.
+Shotr is a simple screenshot application for the masses.
