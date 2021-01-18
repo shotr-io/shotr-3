@@ -2,7 +2,7 @@
 name: "\U0001F6E0️ Bug report"
 about: Let us know if something isn't working as intended
 title: ''
-labels: feature request
+labels: bug
 assignees: ''
 
 ---
