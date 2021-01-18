@@ -2,7 +2,7 @@
 name: "✨ Feature request"
 about: Want something added to Shotr? Let us know!
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---
