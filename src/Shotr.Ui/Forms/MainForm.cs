@@ -268,7 +268,7 @@ namespace Shotr.Ui.Forms
                 }
 
                 var extension = e != null ? Path.GetExtension(e.URL) : ((FileExtensions) ((object[]) sender)[2]).ToString();
-                var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_hh-mm-ss-tt}.{extension}";
+                var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{extension}";
 
                 File.WriteAllBytes(filename, (byte[])((object[])sender)[1]);
             }
