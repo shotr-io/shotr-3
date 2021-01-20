@@ -1,6 +1,6 @@
 ---
 name: "\U0001F6E0️ Bug report"
-about: Let us know if something isn't working as intended
+about: Let us know if something isn't working as intended.
 title: ''
 labels: bug
 assignees: ''
