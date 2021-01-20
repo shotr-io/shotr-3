@@ -42,6 +42,52 @@ namespace Shotr.Ui.Forms
             StartPosition = FormStartPosition.Manual;
             
             _screenshot = bitmap;
+            timer1.Interval = 10;
+            timer1.Start();
+
+            Paint += ScreenshotForm_Paint;
+            FormBorderStyle = FormBorderStyle.None;
+
+            var height = 0;
+            var width = 0;
+            var left = 0;
+            var top = 0;
+            foreach (var screen in Screen.AllScreens)
+            {
+                //take smallest height
+                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
+                width += screen.Bounds.Width;
+                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
+                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
+                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
+                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
+            }
+            Size = new Size(width, height);
+            //get point of left-most monitor.
+            Location = new Point(left, top);
+
+            KeyUp += ScreenshotForm_KeyUp;
+            KeyDown += ScreenshotForm_KeyDown;
+
+            Cursor = Cursors.Cross;
+
+            _screenshot = new Bitmap(_screenshot, width, height);
+
+            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
+            {
+                var brush = new TextureBrush(image);
+                brush.WrapMode = WrapMode.Clamp;
+                _textbrush = brush;
+            }
+
+            DoubleBuffered = true;
+
+            ShowInTaskbar = false;
+
+            timer2.Interval = 1000;
+            timer2.Start();
+
+            MouseDown += ScreenshotForm_MouseDown;
         }
 
         void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
@@ -199,51 +245,6 @@ namespace Shotr.Ui.Forms
 
         private void ScreenshotForm_Load(object sender, EventArgs e)
         {
-            timer1.Interval = 10;
-            timer1.Start();
-
-            Paint += ScreenshotForm_Paint;
-            FormBorderStyle = FormBorderStyle.None;
-
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                //take smallest height
-                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
-                width += screen.Bounds.Width;
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
-                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
-            }
-            Size = new Size(width, height);
-            //get point of left-most monitor.
-            Location = new Point(left, top);
-          
-            KeyUp += ScreenshotForm_KeyUp;
-            KeyDown += ScreenshotForm_KeyDown;
-
-            Cursor = Cursors.Cross;
-
-            _screenshot = new Bitmap(_screenshot, width, height);
-
-            using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
-            {
-                var brush = new TextureBrush(image);
-                brush.WrapMode = WrapMode.Clamp;
-                _textbrush = brush;
-            }
-          
-            DoubleBuffered = true;
-            ShowInTaskbar = false;
-            timer2.Interval = 1000;
-            timer2.Start();
-            
-            MouseDown += ScreenshotForm_MouseDown;
-            MouseUp += ScreenshotForm_MouseUp;
             // force window to have focus
             var foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
             var appThread = GetCurrentThreadId();
@@ -263,10 +264,6 @@ namespace Shotr.Ui.Forms
             Activate();
         }
        
-        void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
-        {
-        }
-
         void ScreenshotForm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

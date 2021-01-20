@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Net;
+using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Services;
@@ -27,20 +29,15 @@ namespace Shotr.Ui.Forms
 
         public void SetUpForm(UpdaterResponse p)
         {
-            metroTextBox1.Text = p.changelog;
+            metroTextBox1.Text = p.Changelog;
             TopMost = false;
-            if (p.stable)
+            if (p.Stable)
             {
                 metroButton2.Visible = false;
                 metroButton1.Location = metroButton2.Location;
                 metroLabel2.Text = " An update is ready for download.";
             }
             _upd = p;
-        }
-        
-        private void UpdateForm_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void metroButton1_Click(object sender, EventArgs e)
@@ -57,7 +54,7 @@ namespace Shotr.Ui.Forms
             Text = "Shotr - Updating";
             Movable = true;
             //update shit.
-            UpdateFromUrl(_upd.update_url);
+            UpdateFromUrl(_upd.UpdateUrl);
         }
 
         private void metroButton2_Click(object sender, EventArgs e)
@@ -69,25 +66,32 @@ namespace Shotr.Ui.Forms
 
         private void UpdateFromUrl(string url)
         {
-            //download file.
-            var m = new WebClient { Proxy = null };
-            try
+            new Thread(delegate()
             {
-                m.DownloadFile("https://shotr.io/latest", SettingsService.FolderPath + "Shotr-Installer.exe");
-                var p = new Process();
-                p.StartInfo.Verb = "runas";
-                p.StartInfo.FileName = SettingsService.FolderPath + "Shotr-Installer.exe";
-                p.StartInfo.Arguments = "--run-installer --silent"+(_settings.SubscribeToAlphaBeta ? " --install-beta " : "");
-                p.Start();
-                Environment.Exit(0);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("There was an error while updating. Error message: " + ex);
-                _allowClose = true;
-                Close();
-            }
-            //}
+                //download file.
+                var m = new WebClient { Proxy = null };
+                try
+                {
+                    m.DownloadFile("https://shotr.io/latest", Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe"));
+                    var p = new Process();
+                    p.StartInfo.Verb = "runas";
+                    p.StartInfo.UseShellExecute = true;
+                    p.StartInfo.FileName = Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe");
+                    p.StartInfo.Arguments = "--run-installer --silent" + (_settings.SubscribeToAlphaBeta ? " --install-beta " : "");
+                    p.Start();
+                    Environment.Exit(0);
+                }
+                catch (Exception ex)
+                {
+                    Invoke((MethodInvoker)delegate () 
+                    {
+                        MessageBox.Show("There was an error while updating. Error message: " + ex);
+                        _allowClose = true;
+                        Close();
+                    });
+                }
+                //}
+            });
         }
     }
 }

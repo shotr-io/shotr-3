@@ -21,19 +21,17 @@ namespace Shotr.Core.UpdateFramework
                     try
                     {
                         var updateData = p.DownloadString((settings.SubscribeToAlphaBeta ? "https://shotr.io/beta" : "https://shotr.io/update"));
-                        var j = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
-                        if (j.error)
+                        var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
+                        if (deserializedUpdateData.Error)
                         {
                             return;
                         }
                         
-                        OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(j, settings));
+                        OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, settings));
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine("EXCEPTION {0}", ex);
-                        //error while checking for updates.
-                        OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(true));
+                        Console.WriteLine($"Updater Exception: {ex}");
                     }
                     Thread.Sleep(60 * 60 * 1000); //check for updates every hour.
                 }

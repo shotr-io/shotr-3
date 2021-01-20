@@ -137,7 +137,6 @@ namespace Shotr.Ui.Forms
             this.Style = "NewTheme";
             this.Text = "Shotr Updater";
             this.Theme = "NewTheme";
-            this.Load += new System.EventHandler(this.UpdateForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

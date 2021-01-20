@@ -23,38 +23,48 @@ namespace Shotr.Ui.Forms.Settings
         {
             var k = new ScreencastOptions();
             var fmp = new FFmpegHelperService(k);
-            fmp.Options.FFmpeg.CLIPath = Path.Combine(SettingsService.FolderPath, "ffmpeg.exe");
-            var p = fmp.GetDirectShowDevices();
-            if (p.AudioDevices.Count < 0)
+
+            if (File.Exists(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")))
             {
-                recordAudioToggle.Checked = false;
-                recordAudioToggle.Enabled = false;
-                audioDeviceCombo.Enabled = false;
-            }
-            else
-            {
-                //add to combobox
-                for (var i = 0; i < p.AudioDevices.Count; i++)
+                fmp.Options.FFmpeg.CLIPath = Path.Combine(SettingsService.FolderPath, "ffmpeg.exe");
+                var p = fmp.GetDirectShowDevices();
+                if (p.AudioDevices.Count < 0)
                 {
-                    audioDeviceCombo.Items.Add(p.AudioDevices[i]);
-                }
-                //check settings first.
-                if (_settings.Record.AudioDevice is null || string.IsNullOrEmpty(_settings.Record.AudioDevice))
-                {
-                    audioDeviceCombo.Text = p.AudioDevices[0];
+                    recordAudioToggle.Checked = false;
+                    recordAudioToggle.Enabled = false;
+                    audioDeviceCombo.Enabled = false;
                 }
                 else
                 {
-                    if (p.AudioDevices.Contains(_settings.Record.AudioDevice))
+                    //add to combobox
+                    for (var i = 0; i < p.AudioDevices.Count; i++)
                     {
-                        audioDeviceCombo.Text = _settings.Record.AudioDevice;
+                        audioDeviceCombo.Items.Add(p.AudioDevices[i]);
                     }
-                    else
+
+                    //check settings first.
+                    if (_settings.Record.AudioDevice is null || string.IsNullOrEmpty(_settings.Record.AudioDevice))
                     {
                         audioDeviceCombo.Text = p.AudioDevices[0];
                     }
+                    else
+                    {
+                        if (p.AudioDevices.Contains(_settings.Record.AudioDevice))
+                        {
+                            audioDeviceCombo.Text = _settings.Record.AudioDevice;
+                        }
+                        else
+                        {
+                            audioDeviceCombo.Text = p.AudioDevices[0];
+                        }
+                    }
                 }
             }
+            else
+            {
+                audioDeviceCombo.Enabled = false;
+            }
+
             //load all settings here.
             if (_settings.Capture.SaveToDirectory)
             {

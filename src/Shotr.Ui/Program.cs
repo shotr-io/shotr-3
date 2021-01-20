@@ -35,7 +35,7 @@ namespace Shotr.Ui
 #if DEBUG
         private static bool _debug = true;
 #else
-        private static bool DEBUG = false;
+        private static bool _debug = false;
 #endif
         
         /// <summary>
@@ -175,7 +175,7 @@ namespace Shotr.Ui
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    File.WriteAllText(SettingsService.FolderPath + "error.log", ex.ToString());
+                    File.WriteAllText(Path.Combine(SettingsService.FolderPath, "error.log"), ex.ToString());
                 }
             }
             
@@ -242,17 +242,21 @@ namespace Shotr.Ui
 
         static void Updater_OnUpdateCheck(object sender, UpdaterInfoArgs e)
         {
-            if (e.UpdateInfo == null || e.Error)
+            var serverVersion = new Version(e.UpdateInfo.Version);
+            var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            var displayVersion = $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
+
+            var alphaBetaTag = e.UpdateInfo switch
             {
-                return;
-            }
-            //check version.
-            var m = new Version(e.UpdateInfo.version);
-            var curr = Assembly.GetExecutingAssembly().GetName().Version;
-            if (m > curr)
+                { Alpha: true } => "a",
+                { Beta: true } => "b",
+                _ => string.Empty
+            };
+
+            if (serverVersion > assemblyVersion)
             {
                 //check if it's an alpha or beta update.
-                if (e.UpdateInfo.alpha || e.UpdateInfo.beta)
+                if (e.UpdateInfo.Alpha || e.UpdateInfo.Beta)
                 {
                     //check if the user has subscribed to them or not.
                     if (!e.Settings.SubscribeToAlphaBeta)
@@ -261,34 +265,13 @@ namespace Shotr.Ui
                     }
                 }
                 //show update form.
-                Console.WriteLine("There is an update available to Shotr - v{0}{1}.", m, e.UpdateInfo.alpha ? "a" : e.UpdateInfo.beta ? "b" : "");
-
-                while (Utils.GetForegroundProcess() != null)
-                {
-                    Thread.Sleep(5000);
-                }
-                
-                var updateForm = _serviceProvider.GetService<UpdateForm>();
-                updateForm.SetUpForm(e.UpdateInfo);
-                updateForm.ShowDialog();
-                
-                Updater.Check = false;
+                Console.WriteLine($"There is an update available to Shotr - v{displayVersion}{alphaBetaTag}.");
             }
-            else if (m == curr)
+            else if (serverVersion == assemblyVersion)
             {
-                //current version.
-                if (e.UpdateInfo.alpha)
-                {
-                    Console.WriteLine("You are running Shotr - v{0}a.", curr);
-                }
-                else if(e.UpdateInfo.beta)
-                {
-                    Console.WriteLine("You are running Shotr - v{0}b.", curr);
-                }
-                else
-                {
-                    Console.WriteLine("You are running Shotr - v{0}.", curr);
-                }
+                Console.WriteLine($"You are running Shotr - v{displayVersion}{alphaBetaTag}.");
+
+                return;
             }
             else
             {
@@ -296,19 +279,20 @@ namespace Shotr.Ui
                 {
                     return;
                 }
-                // Downgrade?
-                Console.WriteLine("There is an update (downgrade) available to Shotr - v{0}{1}.", m, (e.UpdateInfo.alpha ? "a" : e.UpdateInfo.beta ? "b" : ""));
-                while (Utils.GetForegroundProcess() != null)
-                {
-                    Thread.Sleep(5000);
-                }
                 
-                var updateForm = _serviceProvider.GetService<UpdateForm>();
-                updateForm.SetUpForm(e.UpdateInfo);
-                updateForm.ShowDialog();
-                
-                Updater.Check = false;
+                Console.WriteLine($"There is an update (downgrade) available to Shotr - v{displayVersion}{alphaBetaTag}.");
             }
+
+            while (Utils.GetForegroundProcess() != null)
+            {
+                Thread.Sleep(5000);
+            }
+
+            var updateForm = _serviceProvider.GetService<UpdateForm>();
+            updateForm.SetUpForm(e.UpdateInfo);
+            updateForm.ShowDialog();
+
+            Updater.Check = false;
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

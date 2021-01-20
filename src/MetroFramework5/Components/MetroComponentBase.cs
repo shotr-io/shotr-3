@@ -36,7 +36,6 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
-using MetroFramework5.Components;
 using MetroFramework5.Drawing;
 using MetroFramework5.Interfaces;
 

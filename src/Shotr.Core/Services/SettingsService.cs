@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Windows.Forms;
 using CustomEnvironmentConfig;
 using Shotr.Core.Entities;
-using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Settings;
-using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Services

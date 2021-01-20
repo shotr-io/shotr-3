@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 using Newtonsoft.Json;
 using Shotr.Core.Model;
-using Shotr.Core.Plugin;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
-using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Uploader

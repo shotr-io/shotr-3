@@ -3,7 +3,6 @@ using System.Media;
 using Shotr.Core.Entities;
 using Shotr.Core.Properties;
 using Shotr.Core.Settings;
-using Shotr.Core.Utils;
 
 namespace Shotr.Core.Services
 {
