@@ -32,7 +32,7 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoRecorderForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorPickerForm));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
@@ -41,9 +41,8 @@ namespace Shotr.Ui.Forms
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // ColorPickerFor
+            // ColorPickerForm
             // 
-            
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(400, 298);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

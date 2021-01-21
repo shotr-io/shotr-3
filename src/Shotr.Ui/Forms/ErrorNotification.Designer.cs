@@ -33,10 +33,11 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorNotification));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.metroLabel1 = new DpiScaledLabel();
-            this.metroLabel2 = new DpiScaledLabel();
-            this.metroButton1 = new DpiScaledButton();
+            this.metroLabel1 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
+            this.metroLabel2 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
+            this.metroButton1 = new Shotr.Core.Controls.DpiScaling.DpiScaledButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -57,6 +58,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.Text = "Error!";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel1.Theme = "NewTheme";
+            this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // metroLabel2
             // 
@@ -71,9 +73,12 @@ namespace Shotr.Ui.Forms
             this.metroLabel2.Text = "There was an error while uploading your screenshot.";
             this.metroLabel2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.metroLabel2.Theme = "NewTheme";
+            this.metroLabel2.UseCompatibleTextRendering = true;
             // 
             // metroButton1
             // 
+            this.metroButton1.FontSize = MetroFramework5.Drawing.MetroFontSize.Default;
+            this.metroButton1.FontWeight = MetroFramework5.Drawing.MetroFontWeight.Default;
             this.metroButton1.Location = new System.Drawing.Point(133, 57);
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Scaled = true;
@@ -87,8 +92,8 @@ namespace Shotr.Ui.Forms
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::Shotr.Ui.Properties.Resources.shotr_icon;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 10);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(5, 5);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.TabIndex = 5;
@@ -109,6 +114,7 @@ namespace Shotr.Ui.Forms
             this.Name = "ErrorNotification";
             this.Resizable = false;
             this.ShadowType = MetroFramework5.Forms.MetroForm.MetroFormShadowType.DropShadow;
+            this.ShowFormTopBorder = false;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Style = "NewTheme";

@@ -36,7 +36,7 @@ namespace Shotr.Ui.Forms
             this._timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // timer1
+            // _timer
             // 
             this._timer.Tick += new System.EventHandler(this.timer1_Tick);
             // 
@@ -44,6 +44,7 @@ namespace Shotr.Ui.Forms
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(400, 298);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ScreenshotForm";
             this.Text = "RegionCaptureForm";

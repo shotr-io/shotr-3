@@ -33,10 +33,11 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Notification));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.metroLabel1 = new DpiScaledLabel();
-            this.metroLabel2 = new DpiScaledLabel();
-            this.metroLink1 = new DpiScaledLinkLabel();
+            this.metroLabel1 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
+            this.metroLabel2 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
+            this.metroLink1 = new Shotr.Core.Controls.DpiScaling.DpiScaledLinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -57,6 +58,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.Text = "Screenshot Uploaded!";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel1.Theme = "NewTheme";
+            this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // metroLabel2
             // 
@@ -71,6 +73,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel2.Text = "The link has been copied to your clipboard.";
             this.metroLabel2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.metroLabel2.Theme = "NewTheme";
+            this.metroLabel2.UseCompatibleTextRendering = true;
             // 
             // metroLink1
             // 
@@ -84,13 +87,14 @@ namespace Shotr.Ui.Forms
             this.metroLink1.TabIndex = 2;
             this.metroLink1.Text = "link";
             this.metroLink1.Theme = "NewTheme";
+            this.metroLink1.UseVisualStyleBackColor = false;
             this.metroLink1.Click += new System.EventHandler(this.metroLink1_Click);
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::Shotr.Ui.Properties.Resources.shotr_icon;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 10);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(5, 5);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.TabIndex = 3;
@@ -110,7 +114,7 @@ namespace Shotr.Ui.Forms
             this.Movable = false;
             this.Name = "Notification";
             this.Resizable = false;
-            this.ShadowType = MetroFramework5.Forms.MetroForm.MetroFormShadowType.DropShadow;
+            this.ShowFormTopBorder = false;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

@@ -13,12 +13,18 @@ namespace Shotr.Core.Controls.DpiScaling
     {
         public virtual bool ScaleForm { get; set; } = true;
 
+        public virtual bool ShowFormTitle { get; set; } = true;
+
+        public virtual bool ShowFormTopBorder { get; set; } = true;
+
+        public virtual bool ShowCustomWindowButtons { get; set; } = true;
+
         private Size _nsize { get; set; }
         private Point _nlocation { get; set; }
 
         public DpiScaledForm()
         {
-            if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
+            if (DesignMode || LicenseManager.UsageMode != LicenseUsageMode.Designtime)
             {
                 if (DpiScaler.NotDpiScaling(this))
                 {
@@ -62,17 +68,15 @@ namespace Shotr.Core.Controls.DpiScaling
 
         protected override void OnPaintForeground(PaintEventArgs e)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {
-                base.OnPaintForeground(e);
-                return;
-            }
-
             var dpiScalingFactor = DpiScaler.GetScalingFactor(this);
             var BORDER_WIDTH = (int)(5 * dpiScalingFactor);
             e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            using (var b = new SolidBrush(GetStyleColor()))
-                e.Graphics.FillRectangle(b, 0, 0, Width, BORDER_WIDTH);
+
+            if (ShowFormTopBorder)
+            {
+                using (var b = new SolidBrush(GetStyleColor()))
+                    e.Graphics.FillRectangle(b, 0, 0, Width, BORDER_WIDTH);
+            }
 
             if (DisplayHeader)
             {
@@ -80,13 +84,21 @@ namespace Shotr.Core.Controls.DpiScaling
                 try
                 {
                     if (ShowIcon)
-                        e.Graphics.DrawImage(Icon.ToBitmap(), new Rectangle((int)(dpiScalingFactor * 15), (int)(dpiScalingFactor * 22), (int)(dpiScalingFactor * 30), (int)(dpiScalingFactor * 30)));
+                    {
+                        e.Graphics.DrawImage(Icon.ToBitmap(),
+                            new Rectangle((int) (dpiScalingFactor * 15), (int) (dpiScalingFactor * 22),
+                                (int) (dpiScalingFactor * 30), (int) (dpiScalingFactor * 30)));
+                    }
                 }
                 catch { }
-                var bounds = new Rectangle((ShowIcon ? (int)(dpiScalingFactor * (15+30)) : (int)(dpiScalingFactor * 20)), (int)(dpiScalingFactor * 20), (int)(dpiScalingFactor * ((ClientRectangle.Width - 2) * 20)), (int)(dpiScalingFactor * 40));
                 
-                TextRenderer.DrawText(e.Graphics, Text, GetThemeFont("Form.Title"), bounds, EffectiveForeColor, AsTextFormatFlags(TextAlign) | TextFormatFlags.EndEllipsis);
-                
+                if (ShowFormTitle)
+                {
+                    var bounds = new Rectangle((ShowIcon ? (int)(dpiScalingFactor * (15 + 30)) : (int)(dpiScalingFactor * 20)), (int)(dpiScalingFactor * 20), (int)(dpiScalingFactor * ((ClientRectangle.Width - 2) * 20)), (int)(dpiScalingFactor * 40));
+                    TextRenderer.DrawText(e.Graphics, Text, GetThemeFont("Form.Title"), bounds, EffectiveForeColor,
+                        AsTextFormatFlags(TextAlign) | TextFormatFlags.EndEllipsis);
+                }
+
                 //e.Graphics.DrawString(Text, GetThemeFont("Form.Title"), new SolidBrush(EffectiveForeColor), bounds);
             }
 
@@ -148,32 +160,38 @@ namespace Shotr.Core.Controls.DpiScaling
 
         public override void AddWindowButton(WindowButtons button)
         {
-            if (_windowButtons[(int)button] != null ) throw new InvalidOperationException();
-            var dpiScalingFactor = DpiScaler.GetScalingFactor(this);
-            
-            var newButton = new MetroFormButton
+            if (ShowCustomWindowButtons)
             {
-                Text = GetButtonText(button),
-                Tag = button,
-                Size = new Size((int)(dpiScalingFactor * 25), (int)(dpiScalingFactor * 20)),
-                //Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Location = new Point(Size.Width - (int)(dpiScalingFactor * 25) * (_windowButtons.Select(p => p != null).Count()+1), Size.Height - (int)(dpiScalingFactor * 20)),
-            };
+                if (_windowButtons[(int) button] != null) throw new InvalidOperationException();
+                var dpiScalingFactor = DpiScaler.GetScalingFactor(this);
 
-            var notNull = _windowButtons.Where(p => p != null);
-            var p = new Point(
-                Size.Width - (int) (dpiScalingFactor * 25) * notNull.Count() + 1,
-                Size.Height - (int) (dpiScalingFactor * 20));
-            newButton.ForeColor = Theme switch
-            {
-                "NewTheme" => MetroColors.FontColor,
-                "Dark"     => MetroColors.White,
-                "Light"    => MetroColors.Black
-            };
-            
-            newButton.Click += WindowButton_Click;
-            Controls.Add(newButton);
-            _windowButtons[(int)button] = newButton;
+                var newButton = new MetroFormButton
+                {
+                    Text = GetButtonText(button),
+                    Tag = button,
+                    Size = new Size((int) (dpiScalingFactor * 25), (int) (dpiScalingFactor * 20)),
+                    //Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    Location = new Point(
+                        Size.Width - (int) (dpiScalingFactor * 25) *
+                        (_windowButtons.Select(p => p != null).Count() + 1),
+                        Size.Height - (int) (dpiScalingFactor * (ShowFormTopBorder ? 20 : 15))),
+                };
+
+                var notNull = _windowButtons.Where(p => p != null);
+                var p = new Point(
+                    Size.Width - (int) (dpiScalingFactor * 25) * notNull.Count() + 1,
+                    Size.Height - (int) (dpiScalingFactor * 20));
+                newButton.ForeColor = Theme switch
+                {
+                    "NewTheme" => MetroColors.FontColor,
+                    "Dark" => MetroColors.White,
+                    "Light" => MetroColors.Black
+                };
+
+                newButton.Click += WindowButton_Click;
+                Controls.Add(newButton);
+                _windowButtons[(int) button] = newButton;
+            }
         }
 
         internal static TextFormatFlags AsTextFormatFlags(HorizontalAlignment alignment)

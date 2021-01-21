@@ -61,6 +61,16 @@ namespace Shotr.Ui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _16x16_icon {
+            get {
+                object obj = ResourceManager.GetObject("16x16_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] a {
@@ -85,7 +95,17 @@ namespace Shotr.Ui.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap shotr_icon {
             get {
-                object obj = ResourceManager.GetObject("shotr_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("shotr-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shotr_logo_banner {
+            get {
+                object obj = ResourceManager.GetObject("shotr_logo_banner", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
