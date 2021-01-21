@@ -91,7 +91,7 @@ namespace Shotr.Ui.Forms
                     });
                 }
                 //}
-            });
+            }).Start();
         }
     }
 }
