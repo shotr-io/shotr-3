@@ -152,6 +152,7 @@ namespace Shotr.Ui.Forms
             // 
             // regionCaptureToolStripMenuItem
             // 
+            this.regionCaptureToolStripMenuItem.Enabled = false;
             this.regionCaptureToolStripMenuItem.Name = "regionCaptureToolStripMenuItem";
             this.regionCaptureToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.regionCaptureToolStripMenuItem.Text = "Region Capture";
@@ -159,6 +160,7 @@ namespace Shotr.Ui.Forms
             // 
             // fullscreenCaptureToolStripMenuItem
             // 
+            this.fullscreenCaptureToolStripMenuItem.Enabled = false;
             this.fullscreenCaptureToolStripMenuItem.Name = "fullscreenCaptureToolStripMenuItem";
             this.fullscreenCaptureToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.fullscreenCaptureToolStripMenuItem.Text = "Fullscreen Capture";
@@ -171,6 +173,7 @@ namespace Shotr.Ui.Forms
             // 
             // recordScreenToolStripMenuItem
             // 
+            this.recordScreenToolStripMenuItem.Enabled = false;
             this.recordScreenToolStripMenuItem.Name = "recordScreenToolStripMenuItem";
             this.recordScreenToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.recordScreenToolStripMenuItem.Text = "Record Screen";
@@ -183,6 +186,7 @@ namespace Shotr.Ui.Forms
             // 
             // uploadClipboardToolStripMenuItem
             // 
+            this.uploadClipboardToolStripMenuItem.Enabled = false;
             this.uploadClipboardToolStripMenuItem.Name = "uploadClipboardToolStripMenuItem";
             this.uploadClipboardToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.uploadClipboardToolStripMenuItem.Text = "Upload Clipboard";
@@ -307,7 +311,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(192, 71);
+            this.metroTabPage2.Size = new System.Drawing.Size(587, 282);
             this.metroTabPage2.Style = "NewTheme";
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";
@@ -349,7 +353,7 @@ namespace Shotr.Ui.Forms
             // noUploadHotKeyButton
             // 
             this.noUploadHotKeyButton.HotKey = null;
-            this.noUploadHotKeyButton.Location = new System.Drawing.Point(121, 28);
+            this.noUploadHotKeyButton.Location = new System.Drawing.Point(121, 26);
             this.noUploadHotKeyButton.Name = "noUploadHotKeyButton";
             this.noUploadHotKeyButton.Size = new System.Drawing.Size(142, 21);
             this.noUploadHotKeyButton.Style = "HotKey";
@@ -359,9 +363,8 @@ namespace Shotr.Ui.Forms
             // 
             // saveOnlyLabel
             // 
-            this.saveOnlyLabel.AutoSize = true;
             this.saveOnlyLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.saveOnlyLabel.Location = new System.Drawing.Point(16, 30);
+            this.saveOnlyLabel.Location = new System.Drawing.Point(16, 28);
             this.saveOnlyLabel.Name = "saveOnlyLabel";
             this.saveOnlyLabel.Scaled = true;
             this.saveOnlyLabel.Size = new System.Drawing.Size(103, 22);
@@ -374,7 +377,7 @@ namespace Shotr.Ui.Forms
             // uploadClipboardHotKeyButton
             // 
             this.uploadClipboardHotKeyButton.HotKey = null;
-            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 162);
+            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 160);
             this.uploadClipboardHotKeyButton.Name = "uploadClipboardHotKeyButton";
             this.uploadClipboardHotKeyButton.Size = new System.Drawing.Size(142, 21);
             this.uploadClipboardHotKeyButton.Style = "HotKey";
@@ -384,9 +387,8 @@ namespace Shotr.Ui.Forms
             // 
             // clipboardLabel
             // 
-            this.clipboardLabel.AutoSize = true;
             this.clipboardLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.clipboardLabel.Location = new System.Drawing.Point(16, 165);
+            this.clipboardLabel.Location = new System.Drawing.Point(16, 163);
             this.clipboardLabel.Name = "clipboardLabel";
             this.clipboardLabel.Scaled = true;
             this.clipboardLabel.Size = new System.Drawing.Size(81, 22);
@@ -399,7 +401,7 @@ namespace Shotr.Ui.Forms
             // recordScreenHotKeyButton
             // 
             this.recordScreenHotKeyButton.HotKey = null;
-            this.recordScreenHotKeyButton.Location = new System.Drawing.Point(121, 136);
+            this.recordScreenHotKeyButton.Location = new System.Drawing.Point(121, 134);
             this.recordScreenHotKeyButton.Name = "recordScreenHotKeyButton";
             this.recordScreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
             this.recordScreenHotKeyButton.Style = "HotKey";
@@ -409,9 +411,8 @@ namespace Shotr.Ui.Forms
             // 
             // recordScreenLabel
             // 
-            this.recordScreenLabel.AutoSize = true;
             this.recordScreenLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.recordScreenLabel.Location = new System.Drawing.Point(16, 139);
+            this.recordScreenLabel.Location = new System.Drawing.Point(16, 137);
             this.recordScreenLabel.Name = "recordScreenLabel";
             this.recordScreenLabel.Scaled = true;
             this.recordScreenLabel.Size = new System.Drawing.Size(96, 22);
@@ -424,7 +425,7 @@ namespace Shotr.Ui.Forms
             // activeWindowHotKeyButton
             // 
             this.activeWindowHotKeyButton.HotKey = null;
-            this.activeWindowHotKeyButton.Location = new System.Drawing.Point(121, 109);
+            this.activeWindowHotKeyButton.Location = new System.Drawing.Point(121, 107);
             this.activeWindowHotKeyButton.Name = "activeWindowHotKeyButton";
             this.activeWindowHotKeyButton.Size = new System.Drawing.Size(142, 21);
             this.activeWindowHotKeyButton.Style = "HotKey";
@@ -435,7 +436,7 @@ namespace Shotr.Ui.Forms
             // fullScreenHotKeyButton
             // 
             this.fullScreenHotKeyButton.HotKey = null;
-            this.fullScreenHotKeyButton.Location = new System.Drawing.Point(121, 82);
+            this.fullScreenHotKeyButton.Location = new System.Drawing.Point(121, 80);
             this.fullScreenHotKeyButton.Name = "fullScreenHotKeyButton";
             this.fullScreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
             this.fullScreenHotKeyButton.Style = "HotKey";
@@ -446,7 +447,7 @@ namespace Shotr.Ui.Forms
             // regionHotKeyButton
             // 
             this.regionHotKeyButton.HotKey = null;
-            this.regionHotKeyButton.Location = new System.Drawing.Point(121, 55);
+            this.regionHotKeyButton.Location = new System.Drawing.Point(121, 53);
             this.regionHotKeyButton.Name = "regionHotKeyButton";
             this.regionHotKeyButton.Size = new System.Drawing.Size(142, 21);
             this.regionHotKeyButton.Style = "HotKey";
@@ -461,18 +462,17 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.Location = new System.Drawing.Point(3, 3);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Scaled = true;
-            this.metroLabel1.Size = new System.Drawing.Size(276, 21);
+            this.metroLabel1.Size = new System.Drawing.Size(276, 20);
             this.metroLabel1.Style = "NewTheme";
             this.metroLabel1.TabIndex = 6;
-            this.metroLabel1.Text = "HotKey Settings";
+            this.metroLabel1.Text = "Action Settings";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.metroLabel1.Theme = "NewTheme";
             this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // directUrlToggle
             // 
-            this.directUrlToggle.AutoSize = true;
-            this.directUrlToggle.Location = new System.Drawing.Point(183, 250);
+            this.directUrlToggle.Location = new System.Drawing.Point(183, 247);
             this.directUrlToggle.Name = "directUrlToggle";
             this.directUrlToggle.Size = new System.Drawing.Size(80, 19);
             this.directUrlToggle.Style = "NewTheme";
@@ -484,12 +484,11 @@ namespace Shotr.Ui.Forms
             // 
             // metroLabel11
             // 
-            this.metroLabel11.AutoSize = true;
             this.metroLabel11.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel11.Location = new System.Drawing.Point(14, 249);
+            this.metroLabel11.Location = new System.Drawing.Point(14, 246);
             this.metroLabel11.Name = "metroLabel11";
             this.metroLabel11.Scaled = true;
-            this.metroLabel11.Size = new System.Drawing.Size(116, 22);
+            this.metroLabel11.Size = new System.Drawing.Size(116, 20);
             this.metroLabel11.Style = "NewTheme";
             this.metroLabel11.TabIndex = 17;
             this.metroLabel11.Text = "Direct Image URLs:";
@@ -501,7 +500,7 @@ namespace Shotr.Ui.Forms
             // 
             this.metroLabel9.FontSize = MetroFramework5.Drawing.MetroFontSize.Medium;
             this.metroLabel9.FontWeight = MetroFramework5.Drawing.MetroFontWeight.Light;
-            this.metroLabel9.Location = new System.Drawing.Point(3, 187);
+            this.metroLabel9.Location = new System.Drawing.Point(3, 186);
             this.metroLabel9.Name = "metroLabel9";
             this.metroLabel9.Scaled = true;
             this.metroLabel9.Size = new System.Drawing.Size(276, 21);
@@ -514,9 +513,8 @@ namespace Shotr.Ui.Forms
             // 
             // regionLabel
             // 
-            this.regionLabel.AutoSize = true;
             this.regionLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.regionLabel.Location = new System.Drawing.Point(16, 57);
+            this.regionLabel.Location = new System.Drawing.Point(16, 55);
             this.regionLabel.Name = "regionLabel";
             this.regionLabel.Scaled = true;
             this.regionLabel.Size = new System.Drawing.Size(53, 22);
@@ -530,7 +528,7 @@ namespace Shotr.Ui.Forms
             // 
             this.selectedImageUploader.FormattingEnabled = true;
             this.selectedImageUploader.ItemHeight = 29;
-            this.selectedImageUploader.Location = new System.Drawing.Point(18, 211);
+            this.selectedImageUploader.Location = new System.Drawing.Point(18, 208);
             this.selectedImageUploader.Name = "selectedImageUploader";
             this.selectedImageUploader.Size = new System.Drawing.Size(245, 35);
             this.selectedImageUploader.Style = "NewTheme";
@@ -540,9 +538,8 @@ namespace Shotr.Ui.Forms
             // 
             // fullscreenLabel
             // 
-            this.fullscreenLabel.AutoSize = true;
             this.fullscreenLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.fullscreenLabel.Location = new System.Drawing.Point(16, 84);
+            this.fullscreenLabel.Location = new System.Drawing.Point(16, 82);
             this.fullscreenLabel.Name = "fullscreenLabel";
             this.fullscreenLabel.Scaled = true;
             this.fullscreenLabel.Size = new System.Drawing.Size(70, 22);
@@ -554,9 +551,8 @@ namespace Shotr.Ui.Forms
             // 
             // activeWindowLabel
             // 
-            this.activeWindowLabel.AutoSize = true;
             this.activeWindowLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.activeWindowLabel.Location = new System.Drawing.Point(16, 111);
+            this.activeWindowLabel.Location = new System.Drawing.Point(16, 109);
             this.activeWindowLabel.Name = "activeWindowLabel";
             this.activeWindowLabel.Scaled = true;
             this.activeWindowLabel.Size = new System.Drawing.Size(99, 22);
@@ -589,7 +585,7 @@ namespace Shotr.Ui.Forms
             // 
             this.metroButton5.FontSize = MetroFramework5.Drawing.MetroFontSize.Default;
             this.metroButton5.FontWeight = MetroFramework5.Drawing.MetroFontWeight.Default;
-            this.metroButton5.Location = new System.Drawing.Point(16, 28);
+            this.metroButton5.Location = new System.Drawing.Point(16, 26);
             this.metroButton5.Name = "metroButton5";
             this.metroButton5.Scaled = true;
             this.metroButton5.Size = new System.Drawing.Size(251, 23);
@@ -603,7 +599,7 @@ namespace Shotr.Ui.Forms
             // 
             this.metroButton1.FontSize = MetroFramework5.Drawing.MetroFontSize.Default;
             this.metroButton1.FontWeight = MetroFramework5.Drawing.MetroFontWeight.Default;
-            this.metroButton1.Location = new System.Drawing.Point(16, 86);
+            this.metroButton1.Location = new System.Drawing.Point(16, 84);
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Scaled = true;
             this.metroButton1.Size = new System.Drawing.Size(251, 23);
@@ -620,7 +616,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel5.Location = new System.Drawing.Point(3, 3);
             this.metroLabel5.Name = "metroLabel5";
             this.metroLabel5.Scaled = true;
-            this.metroLabel5.Size = new System.Drawing.Size(277, 22);
+            this.metroLabel5.Size = new System.Drawing.Size(277, 20);
             this.metroLabel5.Style = "NewTheme";
             this.metroLabel5.TabIndex = 10;
             this.metroLabel5.Text = "Program Settings";
@@ -632,7 +628,7 @@ namespace Shotr.Ui.Forms
             // 
             this.metroButton2.FontSize = MetroFramework5.Drawing.MetroFontSize.Default;
             this.metroButton2.FontWeight = MetroFramework5.Drawing.MetroFontWeight.Default;
-            this.metroButton2.Location = new System.Drawing.Point(16, 57);
+            this.metroButton2.Location = new System.Drawing.Point(16, 55);
             this.metroButton2.Name = "metroButton2";
             this.metroButton2.Scaled = true;
             this.metroButton2.Size = new System.Drawing.Size(251, 23);
@@ -663,15 +659,15 @@ namespace Shotr.Ui.Forms
             // 
             // loginToShotrDescriptionLabel
             // 
-            this.loginToShotrDescriptionLabel.AutoSize = true;
             this.loginToShotrDescriptionLabel.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.loginToShotrDescriptionLabel.Location = new System.Drawing.Point(39, 34);
+            this.loginToShotrDescriptionLabel.Location = new System.Drawing.Point(16, 34);
             this.loginToShotrDescriptionLabel.Name = "loginToShotrDescriptionLabel";
             this.loginToShotrDescriptionLabel.Scaled = true;
-            this.loginToShotrDescriptionLabel.Size = new System.Drawing.Size(207, 22);
+            this.loginToShotrDescriptionLabel.Size = new System.Drawing.Size(250, 22);
             this.loginToShotrDescriptionLabel.Style = "NewTheme";
             this.loginToShotrDescriptionLabel.TabIndex = 33;
             this.loginToShotrDescriptionLabel.Text = "Log In to Shotr to enable uploads!";
+            this.loginToShotrDescriptionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.loginToShotrDescriptionLabel.Theme = "NewTheme";
             this.loginToShotrDescriptionLabel.UseCompatibleTextRendering = true;
             // 
@@ -773,10 +769,10 @@ namespace Shotr.Ui.Forms
             this.totalImagesUploadedLabel.Location = new System.Drawing.Point(13, 28);
             this.totalImagesUploadedLabel.Name = "totalImagesUploadedLabel";
             this.totalImagesUploadedLabel.Scaled = true;
-            this.totalImagesUploadedLabel.Size = new System.Drawing.Size(149, 22);
+            this.totalImagesUploadedLabel.Size = new System.Drawing.Size(93, 22);
             this.totalImagesUploadedLabel.Style = "NewTheme";
             this.totalImagesUploadedLabel.TabIndex = 11;
-            this.totalImagesUploadedLabel.Text = "Total Images Uploaded:";
+            this.totalImagesUploadedLabel.Text = "Total Uploads:";
             this.totalImagesUploadedLabel.Theme = "NewTheme";
             this.totalImagesUploadedLabel.UseCompatibleTextRendering = true;
             // 
@@ -854,10 +850,10 @@ namespace Shotr.Ui.Forms
             // metroLabel8
             // 
             this.metroLabel8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.metroLabel8.Location = new System.Drawing.Point(315, 346);
+            this.metroLabel8.Location = new System.Drawing.Point(315, 349);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Scaled = true;
-            this.metroLabel8.Size = new System.Drawing.Size(289, 22);
+            this.metroLabel8.Size = new System.Drawing.Size(289, 19);
             this.metroLabel8.Style = "NewTheme";
             this.metroLabel8.TabIndex = 2;
             this.metroLabel8.Text = "v{0}";
@@ -874,7 +870,6 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.metroLabel8);
             this.Controls.Add(this.metroTabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 61, 20, 21);
@@ -892,10 +887,8 @@ namespace Shotr.Ui.Forms
             this.metroTabPage4.ResumeLayout(false);
             this.metroTabPage2.ResumeLayout(false);
             this.metroPanel2.ResumeLayout(false);
-            this.metroPanel2.PerformLayout();
             this.metroPanel1.ResumeLayout(false);
             this.loginToShotrPanel.ResumeLayout(false);
-            this.loginToShotrPanel.PerformLayout();
             this.myAccountPanel.ResumeLayout(false);
             this.myAccountPanel.PerformLayout();
             this.contextMenuStrip2.ResumeLayout(false);

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Settings;
 

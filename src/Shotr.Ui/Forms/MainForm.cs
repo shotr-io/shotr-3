@@ -222,7 +222,7 @@ namespace Shotr.Ui.Forms
                     var s = ImageManipulation.ImageStatus(Convert.ToInt32(progress));
                     notifyIcon1.Icon.Dispose();
                     notifyIcon1.Icon = s;
-                    notifyIcon1.Text = string.Format("Upload Progress: {0}%", Convert.ToInt32(progress));
+                    notifyIcon1.Text = $"Upload Progress: {Convert.ToInt32(progress)}%";
                     s.Dispose();
                 }));
             }
@@ -232,29 +232,14 @@ namespace Shotr.Ui.Forms
         void Uploader_OnError(object sender, ImageShell e)
         {
             var f = (UploadedImageJsonResult)sender;
-            if (f != null && f.ErrorCode == -7)
+            try
             {
-                Invoke((MethodInvoker)(() =>
-                {
-                    //shotr_update.
-                    MessageBox.Show(this,
-                        "Shotr has an important update available! Shotr will now restart to download the update. This update is required to further upload images.",
-                        "Shotr Important Update Available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Application.Restart();
-                    Environment.Exit(0);
-                }));
+                var errorNotification = new ErrorNotification(e, f);
+                Invoke((MethodInvoker)(() => { errorNotification.Show(); }));
             }
-            else
+            catch
             {
-                try
-                {
-                    var errorNotification = new ErrorNotification(e, f);
-                    Invoke((MethodInvoker) (() => { errorNotification.Show(); }));
-                }
-                catch
-                {
-                    Console.WriteLine("Error while showing error.");
-                }
+                Console.WriteLine("Error while showing error.");
             }
         }
 
@@ -282,6 +267,7 @@ namespace Shotr.Ui.Forms
                 {
                     Text = url
                 };
+
                 listViewItem.SubItems.Add(Utils.FromUnixTime(e.Time).ToString());
 
                 var parsedUrl = new Uri(e.URL);
@@ -295,11 +281,7 @@ namespace Shotr.Ui.Forms
                     Time = Utils.FromUnixTime(e.Time)
                 };
 
-                if (_settings.Uploads is null)
-                {
-                    _settings.Uploads = new List<UploadItem>();
-                }
-
+                _settings.Uploads ??= new List<UploadItem>();
                 _settings.Uploads.Add(uploadItem);
 
                 Invoke((MethodInvoker) (() => betterListView1.Items.Insert(0, listViewItem)));
@@ -311,17 +293,21 @@ namespace Shotr.Ui.Forms
                 {
                     Image jpg;
                     Bitmap b;
+
                     using (var k = new MemoryStream((byte[]) ((object[]) sender)[1]))
                     {
                         jpg = Image.FromStream(k);
                         b = new Bitmap(jpg);
                     }
 
-                    var dataobj = new DataObject();
+                    var dataObj = new DataObject();
                     if (e != null)
-                        dataobj.SetText(url);
-                    dataobj.SetImage(b);
-                    Clipboard.SetDataObject(dataobj);
+                    {
+                        dataObj.SetText(url);
+                    }
+
+                    dataObj.SetImage(b);
+                    Clipboard.SetDataObject(dataObj);
                     jpg.Dispose();
                     //b.Dispose();
                 }
@@ -329,7 +315,9 @@ namespace Shotr.Ui.Forms
                 {
                     Console.WriteLine("Cannot set image and text in clipboard at same time, error: {0}", ex);
                     if (e != null)
+                    {
                         Clipboard.SetText(url);
+                    }
                 }
 
                 try
@@ -363,7 +351,8 @@ namespace Shotr.Ui.Forms
             {
                 betterListView1.Font = regionLabel.GetThemeFont();
                 betterListView1.DoubleClick += betterListView1_MouseDoubleClick;
-                metroLabel8.Text = string.Format(metroLabel8.Text, Assembly.GetExecutingAssembly().GetName().Version);
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                metroLabel8.Text = $"v{version.Major}.{version.Minor}.{version.Build}";
             }
             
             UpdateHotKeys();
@@ -385,6 +374,10 @@ namespace Shotr.Ui.Forms
             {
                 loginToShotrPanel.Visible = false;
                 emailLabel.Text = _settings.Login.Email;
+                if (_settings.Uploads is { })
+                {
+                    uploadCountLabel.Text = _settings.Uploads.Count.ToString();
+                }
                 myAccountPanel.BringToFront();
 
                 regionLabel.Enabled = true;
@@ -400,7 +393,7 @@ namespace Shotr.Ui.Forms
                 uploadClipboardHotKeyButton.Enabled = true;
 
                 // Show History tab
-                if (_settings.LegacyHistory is null)
+                if (_settings.LegacyHistory is null && !metroTabControl1.TabPages.Contains(metroTabPage4))
                 {
                     metroTabControl1.TabPages.Insert(0, metroTabPage4);
                 }
@@ -645,7 +638,7 @@ namespace Shotr.Ui.Forms
                     }));
                     break;
                 case KeyTask.RecordScreen:
-                    if (!File.Exists(SettingsService.FolderPath + "\\ffmpeg.exe") || Utils.MD5File(SettingsService.FolderPath + "\\ffmpeg.exe") != "76b4131c0464beef626eb445587e69fe")
+                    if (!File.Exists(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) || Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) != "76b4131c0464beef626eb445587e69fe")
                     {
                         var mpg = new FfMpegDownload();
                         if (mpg.ShowDialog() == DialogResult.Cancel)

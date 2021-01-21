@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using Shotr.Core.Entities;
-using Shotr.Core.Utils;
 
 namespace Shotr.Core.Controls.DpiScaling
 {

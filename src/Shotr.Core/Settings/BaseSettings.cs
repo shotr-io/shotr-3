@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using CustomEnvironmentConfig;
 using Shotr.Core.Entities.Web;
-using Shotr.Core.Uploader;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Settings
@@ -31,7 +30,7 @@ namespace Shotr.Core.Settings
         [ConfigurationItem(Required = false, Default = 0)]
         public int UpdatedTo { get; set; }
         
-        [ConfigurationItem(Required = false, Default = false)]
+        [ConfigurationItem(Required = false, Default = true)]
         public bool SubscribeToAlphaBeta { get; set; }
 
         [ConfigurationItem(Ignore = true)]

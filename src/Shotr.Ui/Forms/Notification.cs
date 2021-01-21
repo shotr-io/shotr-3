@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.DpiScaling;
-using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {

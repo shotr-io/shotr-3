@@ -65,6 +65,8 @@ namespace Shotr.Ui.Forms
             InitializeComponent();
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
+            TopMost = true;
+            ShowInTaskbar = false;
 
             _screenshot = bitmap;
             _metroF = metroFont;

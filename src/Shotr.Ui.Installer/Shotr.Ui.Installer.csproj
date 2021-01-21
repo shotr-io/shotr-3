@@ -1,38 +1,50 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ApplicationIcon>shotr-icon.ico</ApplicationIcon>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyName>Shotr</AssemblyName>
-    <Platforms>AnyCPU;x64</Platforms>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <StartupObject>Shotr.Ui.Program</StartupObject>
+    <AssemblyName>ShotrInstaller</AssemblyName>
+    <ApplicationIcon>shotr-icon.ico</ApplicationIcon>
+    <Version>3.0.0</Version>
+    <Company>Shotr</Company>
+    <Product>Shotr</Product>
+    <Authors>Shotr</Authors>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
     <ProjectReference Include="..\Shotr.Core\Shotr.Core.csproj" />
-    <ProjectReference Include="..\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Update="CancelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CancelForm.Designer.cs">
+      <DependentUpon>CancelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Update="InstallerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="InstallerForm.Designer.cs">
+      <DependentUpon>InstallerForm.cs</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="UninstallerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UninstallerForm.Designer.cs">
+      <DependentUpon>UninstallerForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -42,5 +54,4 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>

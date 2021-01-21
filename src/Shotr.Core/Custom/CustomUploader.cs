@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Shotr.Core.Services;
-using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Custom

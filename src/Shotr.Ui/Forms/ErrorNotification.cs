@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Uploader;
-using Shotr.Core.Utils;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms

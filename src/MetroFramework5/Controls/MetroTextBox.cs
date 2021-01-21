@@ -122,6 +122,7 @@ namespace MetroFramework5.Controls
             set { baseTextBox.Multiline = value; }
         }
 
+        [Localizable(false)]
         public override string Text
         {
             get { return baseTextBox.Text; }

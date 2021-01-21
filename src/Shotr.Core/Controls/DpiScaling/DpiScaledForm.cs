@@ -157,13 +157,13 @@ namespace Shotr.Core.Controls.DpiScaling
                 Tag = button,
                 Size = new Size((int)(dpiScalingFactor * 25), (int)(dpiScalingFactor * 20)),
                 //Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Location = new Point(Width - (int)(dpiScalingFactor * 25) * (_windowButtons.Select(p => p != null).Count()+1), Height - (int)(dpiScalingFactor * 20)),
+                Location = new Point(Size.Width - (int)(dpiScalingFactor * 25) * (_windowButtons.Select(p => p != null).Count()+1), Size.Height - (int)(dpiScalingFactor * 20)),
             };
 
             var notNull = _windowButtons.Where(p => p != null);
             var p = new Point(
-                Width - (int) (dpiScalingFactor * 25) * notNull.Count() + 1,
-                Height - (int) (dpiScalingFactor * 20));
+                Size.Width - (int) (dpiScalingFactor * 25) * notNull.Count() + 1,
+                Size.Height - (int) (dpiScalingFactor * 20));
             newButton.ForeColor = Theme switch
             {
                 "NewTheme" => MetroColors.FontColor,
