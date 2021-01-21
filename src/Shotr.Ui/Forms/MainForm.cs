@@ -27,7 +27,6 @@ namespace Shotr.Ui.Forms
         private readonly BaseSettings _settings;
         private readonly Uploader _uploader;
         private readonly PipeServer _pipeServer;
-        private readonly SettingsForm _settingsForm;
 
         private readonly SingleInstance _tasks;
 
@@ -44,7 +43,6 @@ namespace Shotr.Ui.Forms
                         Uploader uploader,
                         PipeServer pipeServer,
                         SingleInstance tasks, 
-                        SettingsForm settingsForm,
                         HotKeyService hotkeyService, 
                         SettingsService settingsService, 
                         IEnumerable<IImageUploader> uploaders, 
@@ -58,7 +56,6 @@ namespace Shotr.Ui.Forms
             _settingsService = settingsService;
             _uploaders = uploaders;
             _musicPlayerService = musicPlayerService;
-            _settingsForm = settingsForm;
 
             InitializeComponent();
             
@@ -851,8 +848,8 @@ namespace Shotr.Ui.Forms
         
         private void settingsButton_Click(object sender, EventArgs e)
         {
-            //show global settings
-            _settingsForm.ShowDialog();
+            // Show global settings view
+            new SettingsForm(_settings).ShowDialog();
         }
 
         private void logoutButton_Click(object sender, EventArgs e)

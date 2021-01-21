@@ -35,7 +35,7 @@ namespace Shotr.Ui.Forms
             {
                 metroButton2.Visible = false;
                 metroButton1.Location = metroButton2.Location;
-                metroLabel2.Text = " An update is ready for download.";
+                metroLabel2.Text = " A new update is available.";
             }
             _upd = p;
         }
