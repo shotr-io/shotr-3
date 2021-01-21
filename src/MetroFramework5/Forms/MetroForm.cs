@@ -201,7 +201,7 @@ namespace MetroFramework5.Forms
                     break;
             }
 
-            RemoveCloseButton();
+            //RemoveCloseButton();
 
             if (ControlBox)
             {

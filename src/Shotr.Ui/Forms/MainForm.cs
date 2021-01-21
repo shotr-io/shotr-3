@@ -59,14 +59,11 @@ namespace Shotr.Ui.Forms
 
             InitializeComponent();
             
-            FormBorderStyle = FormBorderStyle.None;
-            
             Shown += MainFormShown;
             _pipeServer.PipeServerReceivedClient += _pipeserver_PipeServerReceivedClient;
             _pipeServer.StartServer();
 
             _shotrIcon = Icon;
-            _shotrIcon.ToBitmap();
         }
 
         public void SetUpForm(bool showInTaskBar, bool visible)
@@ -110,6 +107,8 @@ namespace Shotr.Ui.Forms
 
         private void MainFormShown(object sender, EventArgs e)
         {
+            if (DesignMode) return;
+
             if (_settings.StartMinimized)
             {
                 ShowInTaskbar = false;
@@ -117,7 +116,7 @@ namespace Shotr.Ui.Forms
             }
             else
             {
-                ShadowType = MetroFormShadowType.DropShadow;
+                //ShadowType = MetroFormShadowType.DropShadow;
                 ShowInTaskbar = true;
                 Visible = true;
             }
@@ -174,10 +173,9 @@ namespace Shotr.Ui.Forms
                 };
                 notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
             };
-            
-            notifyIcon1.Text = "Shotr";
-            notifyIcon1.Icon = (Icon)_shotrIcon.Clone();
 
+            notifyIcon1.Icon = (Icon)_shotrIcon.Clone();
+            
             void SetNewHotKey(string name, HotKeyModifiers modifiers, Keys hotkeys, KeyTask task)
             {
                 var hook = _hotkeyService.SetNewHook(modifiers, hotkeys, task);

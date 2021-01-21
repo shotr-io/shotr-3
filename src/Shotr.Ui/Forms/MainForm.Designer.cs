@@ -102,6 +102,7 @@ namespace Shotr.Ui.Forms
             this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroLabel8 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
             this.metroStyleExtender1 = new MetroFramework5.Components.MetroStyleExtender(this.components);
+            this.logoPictureBox = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
             this.contextMenuStrip1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
@@ -112,12 +113,14 @@ namespace Shotr.Ui.Forms
             this.myAccountPanel.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleExtender1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Shotr";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
@@ -252,10 +255,10 @@ namespace Shotr.Ui.Forms
             // 
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
-            this.metroTabControl1.Location = new System.Drawing.Point(13, 57);
+            this.metroTabControl1.Location = new System.Drawing.Point(10, 57);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 1;
-            this.metroTabControl1.Size = new System.Drawing.Size(595, 311);
+            this.metroTabControl1.Size = new System.Drawing.Size(601, 311);
             this.metroTabControl1.Style = "NewTheme";
             this.metroTabControl1.TabIndex = 5;
             this.metroTabControl1.Theme = "NewTheme";
@@ -266,7 +269,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage4.HorizontalScrollbarBarColor = true;
             this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage4.Name = "metroTabPage4";
-            this.metroTabPage4.Size = new System.Drawing.Size(587, 282);
+            this.metroTabPage4.Size = new System.Drawing.Size(593, 282);
             this.metroTabPage4.Style = "NewTheme";
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "History";
@@ -285,7 +288,7 @@ namespace Shotr.Ui.Forms
             this.betterListView1.HideSelection = false;
             this.betterListView1.Location = new System.Drawing.Point(6, 6);
             this.betterListView1.Name = "betterListView1";
-            this.betterListView1.Size = new System.Drawing.Size(575, 253);
+            this.betterListView1.Size = new System.Drawing.Size(581, 253);
             this.betterListView1.TabIndex = 2;
             this.betterListView1.UseCompatibleStateImageBehavior = false;
             this.betterListView1.View = System.Windows.Forms.View.Details;
@@ -311,7 +314,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(192, 71);
+            this.metroTabPage2.Size = new System.Drawing.Size(593, 282);
             this.metroTabPage2.Style = "NewTheme";
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";
@@ -572,7 +575,7 @@ namespace Shotr.Ui.Forms
             this.metroPanel1.HorizontalScrollbarBarColor = true;
             this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel1.HorizontalScrollbarSize = 10;
-            this.metroPanel1.Location = new System.Drawing.Point(298, 7);
+            this.metroPanel1.Location = new System.Drawing.Point(304, 7);
             this.metroPanel1.Name = "metroPanel1";
             this.metroPanel1.Size = new System.Drawing.Size(283, 125);
             this.metroPanel1.TabIndex = 24;
@@ -647,7 +650,7 @@ namespace Shotr.Ui.Forms
             this.loginToShotrPanel.HorizontalScrollbarBarColor = true;
             this.loginToShotrPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.loginToShotrPanel.HorizontalScrollbarSize = 10;
-            this.loginToShotrPanel.Location = new System.Drawing.Point(298, 139);
+            this.loginToShotrPanel.Location = new System.Drawing.Point(304, 139);
             this.loginToShotrPanel.Name = "loginToShotrPanel";
             this.loginToShotrPanel.Size = new System.Drawing.Size(283, 122);
             this.loginToShotrPanel.Style = "NewTheme";
@@ -711,7 +714,7 @@ namespace Shotr.Ui.Forms
             this.myAccountPanel.HorizontalScrollbarBarColor = true;
             this.myAccountPanel.HorizontalScrollbarHighlightOnWheel = false;
             this.myAccountPanel.HorizontalScrollbarSize = 10;
-            this.myAccountPanel.Location = new System.Drawing.Point(298, 139);
+            this.myAccountPanel.Location = new System.Drawing.Point(304, 139);
             this.myAccountPanel.Name = "myAccountPanel";
             this.myAccountPanel.Size = new System.Drawing.Size(283, 122);
             this.myAccountPanel.Style = "NewTheme";
@@ -850,7 +853,7 @@ namespace Shotr.Ui.Forms
             // metroLabel8
             // 
             this.metroLabel8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.metroLabel8.Location = new System.Drawing.Point(315, 349);
+            this.metroLabel8.Location = new System.Drawing.Point(321, 349);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Scaled = true;
             this.metroLabel8.Size = new System.Drawing.Size(289, 19);
@@ -862,20 +865,35 @@ namespace Shotr.Ui.Forms
             this.metroLabel8.UseCompatibleTextRendering = true;
             this.metroLabel8.Click += new System.EventHandler(this.aboutLabel_Click);
             // 
+            // logoPictureBox
+            // 
+            this.logoPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
+            this.logoPictureBox.Location = new System.Drawing.Point(5, 11);
+            this.logoPictureBox.Name = "logoPictureBox";
+            this.logoPictureBox.Scaled = true;
+            this.logoPictureBox.Size = new System.Drawing.Size(143, 53);
+            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logoPictureBox.TabIndex = 6;
+            this.logoPictureBox.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(621, 373);
+            this.Controls.Add(this.logoPictureBox);
             this.Controls.Add(this.metroLabel8);
             this.Controls.Add(this.metroTabControl1);
+            this.DisplayHeader = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Padding = new System.Windows.Forms.Padding(20, 61, 20, 21);
+            this.Padding = new System.Windows.Forms.Padding(20, 31, 20, 21);
             this.Resizable = false;
-            this.ShadowType = MetroFramework5.Forms.MetroForm.MetroFormShadowType.None;
-            this.ShowFormIcon = true;
+            this.ShowCustomWindowButtons = false;
+            this.ShowFormTitle = false;
+            this.ShowFormTopBorder = false;
             this.ShowInTaskbar = false;
             this.Style = "NewTheme";
             this.Text = "Shotr";
@@ -893,6 +911,7 @@ namespace Shotr.Ui.Forms
             this.myAccountPanel.PerformLayout();
             this.contextMenuStrip2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleExtender1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -966,6 +985,7 @@ namespace Shotr.Ui.Forms
         private DpiScaledButton loginToShotrButton;
         private DpiScaledLabel loginToShotrLabel;
         private DpiScaledLabel loginToShotrDescriptionLabel;
+        private DpiScaledPictureBox logoPictureBox;
     }
 }
 

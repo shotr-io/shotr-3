@@ -11,8 +11,6 @@ namespace Shotr.Ui.Forms
 {
     public partial class LoginForm : DpiScaledForm
     {
-        private bool _isClosing;
-
         private readonly BaseSettings _settings;
 
         public LoginForm(BaseSettings settings)
@@ -42,7 +40,6 @@ namespace Shotr.Ui.Forms
                     var content = response.Content.ReadAsStringAsync().Result;
                     var user = JsonConvert.DeserializeObject<LoginResponse>(content);
                     // Sign in
-                    _isClosing = true;
                     DialogResult = DialogResult.OK;
                     _settings.Login.Token = user.Token;
                     _settings.Login.Email = user.Email;

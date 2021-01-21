@@ -45,9 +45,8 @@ namespace Shotr.Ui.Forms
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // GifRecorderForm
+            // VideoRecorderForm
             // 
-            
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(400, 298);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
