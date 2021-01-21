@@ -311,7 +311,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(587, 282);
+            this.metroTabPage2.Size = new System.Drawing.Size(192, 71);
             this.metroTabPage2.Style = "NewTheme";
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";

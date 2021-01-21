@@ -46,10 +46,8 @@ namespace Shotr.Ui
         {
             // Forms
             services.AddSingleton<MainForm>();
-            services.AddSingleton<AboutForm>();
             services.AddSingleton<FfMpegDownload>();
             services.AddSingleton<UpdateForm>();
-            services.AddSingleton<SettingsForm>();
             
             //services.AddSingleton<CustomUploader>();
             //services.AddTransient<CustomUploaderPrompt>();
