@@ -18,14 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
     <ProjectReference Include="..\Shotr.Core\Shotr.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CancelForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="CancelForm.cs" />
     <Compile Update="CancelForm.Designer.cs">
       <DependentUpon>CancelForm.cs</DependentUpon>
     </Compile>
@@ -40,9 +37,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="UninstallerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="UninstallerForm.cs" />
     <Compile Update="UninstallerForm.Designer.cs">
       <DependentUpon>UninstallerForm.cs</DependentUpon>
     </Compile>

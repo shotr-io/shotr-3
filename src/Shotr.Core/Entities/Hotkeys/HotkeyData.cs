@@ -81,7 +81,7 @@ namespace Shotr.Core.Entities.Hotkeys
                 Keys.Capital                                               => "Caps Lock",
                 Keys.Next                                                  => "Page Down",
                 Keys.Scroll                                                => "Scroll Lock",
-                Keys.Oemtilde                                              => "Tilde",
+                Keys.Oemtilde                                              => "~",
                 {} when KeyCode >= Keys.D0 && KeyCode <= Keys.D9           => (KeyCode - Keys.D0).ToString(),
                 {} when KeyCode >= Keys.NumPad0 && KeyCode <= Keys.NumPad9 => (KeyCode - Keys.NumPad0).ToString(),
                 _                                                          => ToStringWithSpaces(KeyCode)

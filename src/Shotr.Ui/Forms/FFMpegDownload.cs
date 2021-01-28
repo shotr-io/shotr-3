@@ -7,12 +7,13 @@ using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class FfMpegDownload : DpiScaledForm
+    public partial class FfMpegDownload : ThemedForm
     {
         public FfMpegDownload()
         {
@@ -24,7 +25,7 @@ namespace Shotr.Ui.Forms
             //ok
             metroButton1.Visible = false;
             metroProgressBar1.Visible = true;
-            metroProgressBar1.Maximum = 100;
+            metroProgressBar1.MaxValue = 100;
             var f = new WebClient();
             f.Proxy = null;
             f.DownloadFileCompleted += f_DownloadFileCompleted;

@@ -5,10 +5,11 @@ using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class NoUploadNotification : DpiScaledForm
+    public partial class NoUploadNotification : ThemedForm
     {
         private int _time = 5;
         private FormAnimator _animator;
@@ -30,15 +31,17 @@ namespace Shotr.Ui.Forms
             }
         }
 
+        protected override void OnControlScaled(float scalingFactor)
+        {
+            Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
+        }
+
         public NoUploadNotification(string mime)
         {
             InitializeComponent();
-            ManualDpiScale();
-            ScaleForm = false;
-            ShadowType = MetroFormShadowType.None;
             StartPosition = FormStartPosition.Manual;
-            Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             Closing += Notification_Closing;
+            Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             _animator = new FormAnimator(this);
             _animator.Direction = FormAnimator.AnimationDirection.Up;
             _animator.Method = FormAnimator.AnimationMethod.Slide;
@@ -52,7 +55,6 @@ namespace Shotr.Ui.Forms
             if (_animatingout == false)
             {
                 e.Cancel = true;
-                ShadowType = MetroFormShadowType.None;
                 _animatingout = true;
                 Close();
             }
@@ -67,11 +69,6 @@ namespace Shotr.Ui.Forms
             new Thread(delegate()
             {
                 Thread.Sleep(500);
-                Invoke((MethodInvoker)(() =>
-                {
-                    ShadowType = MetroFormShadowType.DropShadow;
-                    
-                }));
                 _animator.Direction = FormAnimator.AnimationDirection.Down;
             }).Start();
         }

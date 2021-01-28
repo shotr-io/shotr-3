@@ -5,14 +5,14 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class UpdateForm : DpiScaledForm
+    public partial class UpdateForm : ThemedForm
     {
         private readonly BaseSettings _settings;
         private bool _allowClose;
@@ -23,8 +23,6 @@ namespace Shotr.Ui.Forms
             _settings = settings;
             
             InitializeComponent();
-            ManualDpiScale();
-            ScaleForm = false;
         }
 
         public void SetUpForm(UpdaterResponse p)
@@ -52,7 +50,6 @@ namespace Shotr.Ui.Forms
             metroButton2.Visible = false;
             metroProgressSpinner1.Visible = true;
             Text = "Shotr - Updating";
-            Movable = true;
             //update shit.
             UpdateFromUrl(_upd.UpdateUrl);
         }

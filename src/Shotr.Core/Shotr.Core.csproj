@@ -5,7 +5,16 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
+    <Configurations>Debug;Release;ThemeDebugger</Configurations>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Controls\DpiScaling\DpiScaledControlBase.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DpiScaledControlBase.tt</DependentUpon>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CustomEnvironmentConfig" Version="1.6.0" />
@@ -14,12 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
     <ProjectReference Include="..\Shotr.Core.Quantizer\Shotr.Core.Quantizer.csproj" />
     <ProjectReference Include="..\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\DpiScaling\DpiScaledControlBase.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DpiScaledControlBase.tt</DependentUpon>
+    </Compile>
     <Compile Update="Plugin\CorePlugins\CorePluginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -28,48 +41,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledCheckbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledCombobox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledHotkeyButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledLinkLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledTabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledTextbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DpiScaling\DpiScaledToggle.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\Hotkey\HotkeyButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="Controls\Hotkey\HotKeyButton.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,6 +49,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Controls\DpiScaling\DpiScaledControlBase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DpiScaledControlBase.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

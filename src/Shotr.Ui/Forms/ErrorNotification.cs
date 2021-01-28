@@ -5,12 +5,13 @@ using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Uploader;
 using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class ErrorNotification : DpiScaledForm
+    public partial class ErrorNotification : ThemedForm
     {
         private readonly Uploader _uploader;
         private int _time = 5;
@@ -30,12 +31,15 @@ namespace Shotr.Ui.Forms
             }
         }
         private ImageShell _failed;
+
+        protected override void OnControlScaled(float scalingFactor)
+        {
+            Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
+        }
+
         public ErrorNotification(ImageShell failedImg, UploadedImageJsonResult result)
         {
             InitializeComponent();
-            ManualDpiScale();
-            ScaleForm = false;
-            ShadowType = MetroFormShadowType.None;
             StartPosition = FormStartPosition.Manual;           
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             Closing += ErrorNotification_Closing;
@@ -83,7 +87,6 @@ namespace Shotr.Ui.Forms
             if (_animatingout == false)
             {
                 e.Cancel = true;
-                ShadowType = MetroFormShadowType.None;
                 _animatingout = true;
                 Close();
             }
@@ -97,11 +100,6 @@ namespace Shotr.Ui.Forms
             new Thread(delegate()
             {
                 Thread.Sleep(500);
-                Invoke((MethodInvoker)(() =>
-                {
-                    ShadowType = MetroFormShadowType.DropShadow;
-                    
-                }));
                 _animator.Direction = FormAnimator.AnimationDirection.Down;
             }).Start();
         }

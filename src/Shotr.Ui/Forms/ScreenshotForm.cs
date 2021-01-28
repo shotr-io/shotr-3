@@ -6,6 +6,8 @@ using System.Drawing.Drawing2D;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Settings;
@@ -37,8 +39,6 @@ namespace Shotr.Ui.Forms
 
         private Rectangle _x = Rectangle.Empty;
 
-        private Font _kfont = new Font(DefaultFont, FontStyle.Bold);
-
         private bool _activated;
         private bool _editing;
         private bool _drawing;
@@ -66,6 +66,8 @@ namespace Shotr.Ui.Forms
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 
             InitializeComponent();
+            var dpiScale = DpiScaler.GetScalingFactor(this);
+            Font = Theme.Font((int)(Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
             TopMost = true;
             ShowInTaskbar = false;
@@ -602,6 +604,8 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
+            var scalingFactor = Shotr.Core.Controls.DpiScaling.DpiScaler.GetScalingFactor(this);
+            pixelSize = (int)(pixelSize * scalingFactor);
             var width = horizontalPixelCount * pixelSize;
             var height = verticalPixelCount * pixelSize;
             var image = new Bitmap(width - 1, height - 1);
@@ -642,10 +646,10 @@ namespace Shotr.Ui.Forms
 
                     _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                     e.Graphics.DrawRectangle(_pen, _x);
-                    if ((_x.Width > 250 && _x.Height > _kfont.Height * 2.2) && _settings.Capture.ShowInformation)
+                    if ((_x.Width > 250 && _x.Height > Font.Height * 2.2) && _settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), _kfont, _brush, new PointF(_x.X, _x.Y));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), _kfont, _brush, new PointF(_x.X, _x.Y + _kfont.Height));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), Font, _brush, new PointF(_x.X, _x.Y));
+                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
                     }
                 }
                 catch { }
@@ -658,10 +662,10 @@ namespace Shotr.Ui.Forms
 
                     _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                     e.Graphics.DrawRectangle(_pen, _x);
-                    if ((_x.Width > 250 && _x.Height > _kfont.Height * 2.2) && _settings.Capture.ShowInformation)
+                    if ((_x.Width > 250 && _x.Height > Font.Height * 2.2) && _settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), _kfont, _brush, new PointF(_x.X, _x.Y));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), _kfont, _brush, new PointF(_x.X, _x.Y + _kfont.Height));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), Font, _brush, new PointF(_x.X, _x.Y));
+                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
                     }
                 }
                 catch { }
@@ -685,10 +689,10 @@ namespace Shotr.Ui.Forms
                 var cursorloc = PointToClient(Cursor.Position);
                 using (var magnifier = (_editing ? ShowSolidColor(_screenshot, new Point(cursorloc.X, cursorloc.Y), 50, 50, _chosenColor) :  Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                 {
-                    if ((_x.Width > 80 || _x.Height > _kfont.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (_kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (_kfont.Height * 2))))))
+                    if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
                     {
                         //draw it below the text.
-                        location = new Point(cursorloc.X + 5, cursorloc.Y + (_kfont.Height * 2) + 5);
+                        location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
                     }
                     else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
                     {

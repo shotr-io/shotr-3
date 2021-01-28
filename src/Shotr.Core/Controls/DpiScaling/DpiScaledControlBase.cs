@@ -1,0 +1,722 @@
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
+using Microsoft.Win32;
+
+namespace Shotr.Core.Controls.DpiScaling {
+	#region Control
+	public class DpiScaledControl : Control
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled Control: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region Button
+	public class DpiScaledButton : Button
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled Button: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region CheckBox
+	public class DpiScaledCheckBox : CheckBox
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled CheckBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region ListView
+	public class DpiScaledListView : ListView
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled ListView: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region PictureBox
+	public class DpiScaledPictureBox : PictureBox
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled PictureBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region ComboBox
+	public class DpiScaledComboBox : ComboBox
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled ComboBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region Form
+	public class DpiScaledForm : Form
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, false);
+                Console.WriteLine($"DPI Scaled Form: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region Label
+	public class DpiScaledLabel : Label
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled Label: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region LinkLabel
+	public class DpiScaledLinkLabel : LinkLabel
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled LinkLabel: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region Panel
+	public class DpiScaledPanel : Panel
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled Panel: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region ProgressBar
+	public class DpiScaledProgressBar : ProgressBar
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled ProgressBar: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region TabControl
+	public class DpiScaledTabControl : TabControl
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled TabControl: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region TabPage
+	public class DpiScaledTabPage : TabPage
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled TabPage: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	#region TextBox
+	public class DpiScaledTextBox : TextBox
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                Console.WriteLine($"DPI Scaled TextBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	}

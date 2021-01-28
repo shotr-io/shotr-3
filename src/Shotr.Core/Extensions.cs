@@ -1,5 +1,8 @@
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Shotr.Core
 {
@@ -20,6 +23,23 @@ namespace Shotr.Core
             {
                 Process.Start("open", url);
             }
+        }
+
+        public static TextFormatFlags AsTextFormatFlags(this ContentAlignment alignment)
+        {
+            return alignment switch
+            {
+                ContentAlignment.BottomLeft => TextFormatFlags.Bottom | TextFormatFlags.Left,
+                ContentAlignment.BottomCenter => TextFormatFlags.Bottom | TextFormatFlags.HorizontalCenter,
+                ContentAlignment.BottomRight => TextFormatFlags.Bottom | TextFormatFlags.Right,
+                ContentAlignment.MiddleLeft => TextFormatFlags.VerticalCenter | TextFormatFlags.Left,
+                ContentAlignment.MiddleCenter => TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter,
+                ContentAlignment.MiddleRight => TextFormatFlags.VerticalCenter | TextFormatFlags.Right,
+                ContentAlignment.TopLeft => TextFormatFlags.Top | TextFormatFlags.Left,
+                ContentAlignment.TopCenter => TextFormatFlags.Top | TextFormatFlags.HorizontalCenter,
+                ContentAlignment.TopRight => TextFormatFlags.Top | TextFormatFlags.Right,
+                _ => throw new InvalidEnumArgumentException()
+            };
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
@@ -10,7 +10,7 @@ using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms.Settings
 {
-    public partial class SettingsForm : DpiScaledForm
+    public partial class SettingsForm : ThemedForm
     {
         private readonly BaseSettings _settings;
         public SettingsForm(BaseSettings settings)

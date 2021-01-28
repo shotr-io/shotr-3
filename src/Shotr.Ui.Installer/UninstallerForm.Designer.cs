@@ -71,10 +71,10 @@ namespace Shotr.Ui.Installer
             this.step1CancelButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step1CancelButton.Name = "step1CancelButton";
             this.step1CancelButton.Size = new System.Drawing.Size(85, 27);
-            this.step1CancelButton.Style = "NewTheme";
+
             this.step1CancelButton.TabIndex = 0;
             this.step1CancelButton.Text = "Cancel";
-            this.step1CancelButton.Theme = "NewTheme";
+
             this.step1CancelButton.Click += new System.EventHandler(this.step1CancelButton_Click);
             // 
             // step1NextButton
@@ -83,10 +83,10 @@ namespace Shotr.Ui.Installer
             this.step1NextButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step1NextButton.Name = "step1NextButton";
             this.step1NextButton.Size = new System.Drawing.Size(85, 27);
-            this.step1NextButton.Style = "NewTheme";
+
             this.step1NextButton.TabIndex = 1;
             this.step1NextButton.Text = "Next";
-            this.step1NextButton.Theme = "NewTheme";
+
             this.step1NextButton.Click += new System.EventHandler(this.step1NextButton_Click);
             // 
             // metroPanel1
@@ -103,9 +103,9 @@ namespace Shotr.Ui.Installer
             this.metroPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.metroPanel1.Name = "metroPanel1";
             this.metroPanel1.Size = new System.Drawing.Size(604, 74);
-            this.metroPanel1.Style = "NewTheme";
+
             this.metroPanel1.TabIndex = 2;
-            this.metroPanel1.Theme = "NewTheme";
+
             this.metroPanel1.VerticalScrollbarBarColor = true;
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel1.VerticalScrollbarSize = 12;
@@ -116,10 +116,10 @@ namespace Shotr.Ui.Installer
             this.metroTile1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.metroTile1.Name = "metroTile1";
             this.metroTile1.Size = new System.Drawing.Size(1, 362);
-            this.metroTile1.Style = "NewTheme";
+
             this.metroTile1.TabIndex = 3;
             this.metroTile1.Text = "metroTile1";
-            this.metroTile1.Theme = "NewTheme";
+
             this.metroTile1.UseVisualStyleBackColor = false;
             // 
             // metroLabel1
@@ -129,10 +129,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(345, 42);
-            this.metroLabel1.Style = "NewTheme";
+
             this.metroLabel1.TabIndex = 4;
             this.metroLabel1.Text = "Welcome to the Shotr Uninstall";
-            this.metroLabel1.Theme = "NewTheme";
+
             this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // metroLabel2
@@ -142,10 +142,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(154, 36);
-            this.metroLabel2.Style = "NewTheme";
+
             this.metroLabel2.TabIndex = 5;
             this.metroLabel2.Text = "Wizard";
-            this.metroLabel2.Theme = "NewTheme";
+
             this.metroLabel2.UseCompatibleTextRendering = true;
             // 
             // metroLabel3
@@ -156,10 +156,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(331, 25);
-            this.metroLabel3.Style = "NewTheme";
+
             this.metroLabel3.TabIndex = 6;
             this.metroLabel3.Text = "This wizard will guide you through the removal";
-            this.metroLabel3.Theme = "NewTheme";
+
             this.metroLabel3.UseCompatibleTextRendering = true;
             // 
             // metroLabel4
@@ -169,10 +169,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Size = new System.Drawing.Size(325, 25);
-            this.metroLabel4.Style = "NewTheme";
+
             this.metroLabel4.TabIndex = 7;
             this.metroLabel4.Text = "of Shotr. It is recommended that you close all";
-            this.metroLabel4.Theme = "NewTheme";
+
             this.metroLabel4.UseCompatibleTextRendering = true;
             // 
             // metroLabel5
@@ -182,10 +182,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel5.Name = "metroLabel5";
             this.metroLabel5.Size = new System.Drawing.Size(245, 25);
-            this.metroLabel5.Style = "NewTheme";
+
             this.metroLabel5.TabIndex = 8;
             this.metroLabel5.Text = "other applications before starting.";
-            this.metroLabel5.Theme = "NewTheme";
+
             this.metroLabel5.UseCompatibleTextRendering = true;
             // 
             // step1GroupPanel
@@ -225,9 +225,9 @@ namespace Shotr.Ui.Installer
             this.step3GroupPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step3GroupPanel.Name = "step3GroupPanel";
             this.step3GroupPanel.Size = new System.Drawing.Size(583, 381);
-            this.step3GroupPanel.Style = "NewTheme";
+
             this.step3GroupPanel.TabIndex = 14;
-            this.step3GroupPanel.Theme = "NewTheme";
+
             this.step3GroupPanel.VerticalScrollbarBarColor = true;
             this.step3GroupPanel.VerticalScrollbarHighlightOnWheel = false;
             this.step3GroupPanel.VerticalScrollbarSize = 12;
@@ -240,10 +240,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel17.Name = "metroLabel17";
             this.metroLabel17.Size = new System.Drawing.Size(50, 25);
-            this.metroLabel17.Style = "NewTheme";
+
             this.metroLabel17.TabIndex = 18;
             this.metroLabel17.Text = "Shotr.";
-            this.metroLabel17.Theme = "NewTheme";
+
             this.metroLabel17.UseCompatibleTextRendering = true;
             // 
             // metroLabel16
@@ -254,10 +254,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel16.Name = "metroLabel16";
             this.metroLabel16.Size = new System.Drawing.Size(344, 25);
-            this.metroLabel16.Style = "NewTheme";
+
             this.metroLabel16.TabIndex = 17;
             this.metroLabel16.Text = "This wizard has successfully finished uninstalling";
-            this.metroLabel16.Theme = "NewTheme";
+
             this.metroLabel16.UseCompatibleTextRendering = true;
             // 
             // metroTile2
@@ -266,10 +266,10 @@ namespace Shotr.Ui.Installer
             this.metroTile2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.metroTile2.Name = "metroTile2";
             this.metroTile2.Size = new System.Drawing.Size(1, 362);
-            this.metroTile2.Style = "NewTheme";
+
             this.metroTile2.TabIndex = 15;
             this.metroTile2.Text = "metroTile2";
-            this.metroTile2.Theme = "NewTheme";
+
             this.metroTile2.UseVisualStyleBackColor = false;
             // 
             // metroPanel10
@@ -285,9 +285,9 @@ namespace Shotr.Ui.Installer
             this.metroPanel10.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.metroPanel10.Name = "metroPanel10";
             this.metroPanel10.Size = new System.Drawing.Size(604, 74);
-            this.metroPanel10.Style = "NewTheme";
+
             this.metroPanel10.TabIndex = 14;
-            this.metroPanel10.Theme = "NewTheme";
+
             this.metroPanel10.VerticalScrollbarBarColor = true;
             this.metroPanel10.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel10.VerticalScrollbarSize = 12;
@@ -298,10 +298,10 @@ namespace Shotr.Ui.Installer
             this.step5FinishButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step5FinishButton.Name = "step5FinishButton";
             this.step5FinishButton.Size = new System.Drawing.Size(85, 27);
-            this.step5FinishButton.Style = "NewTheme";
+
             this.step5FinishButton.TabIndex = 0;
             this.step5FinishButton.Text = "Finish";
-            this.step5FinishButton.Theme = "NewTheme";
+
             this.step5FinishButton.Click += new System.EventHandler(this.step5FinishButton_Click);
             // 
             // metroLabel14
@@ -312,10 +312,10 @@ namespace Shotr.Ui.Installer
             this.metroLabel14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel14.Name = "metroLabel14";
             this.metroLabel14.Size = new System.Drawing.Size(223, 31);
-            this.metroLabel14.Style = "NewTheme";
+
             this.metroLabel14.TabIndex = 13;
             this.metroLabel14.Text = "Successfully Uninstalled";
-            this.metroLabel14.Theme = "NewTheme";
+
             this.metroLabel14.UseCompatibleTextRendering = true;
             // 
             // step4ExtractLabel
@@ -324,10 +324,10 @@ namespace Shotr.Ui.Installer
             this.step4ExtractLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.step4ExtractLabel.Name = "step4ExtractLabel";
             this.step4ExtractLabel.Size = new System.Drawing.Size(528, 27);
-            this.step4ExtractLabel.Style = "NewTheme";
+
             this.step4ExtractLabel.TabIndex = 17;
             this.step4ExtractLabel.Text = "Downloading...";
-            this.step4ExtractLabel.Theme = "NewTheme";
+
             this.step4ExtractLabel.UseCompatibleTextRendering = true;
             // 
             // metroPanel9
@@ -352,11 +352,11 @@ namespace Shotr.Ui.Installer
             this.metroLabel15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel15.Name = "metroLabel15";
             this.metroLabel15.Size = new System.Drawing.Size(134, 36);
-            this.metroLabel15.Style = "NewTheme";
+
             this.metroLabel15.TabIndex = 11;
             this.metroLabel15.Text = "Uninstalling";
             this.metroLabel15.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.metroLabel15.Theme = "NewTheme";
+
             this.metroLabel15.UseCompatibleTextRendering = true;
             // 
             // metroPanel4
@@ -373,9 +373,9 @@ namespace Shotr.Ui.Installer
             this.metroPanel4.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.metroPanel4.Name = "metroPanel4";
             this.metroPanel4.Size = new System.Drawing.Size(604, 74);
-            this.metroPanel4.Style = "NewTheme";
+
             this.metroPanel4.TabIndex = 12;
-            this.metroPanel4.Theme = "NewTheme";
+
             this.metroPanel4.VerticalScrollbarBarColor = true;
             this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel4.VerticalScrollbarSize = 12;
@@ -386,10 +386,10 @@ namespace Shotr.Ui.Installer
             this.finalNextButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.finalNextButton.Name = "finalNextButton";
             this.finalNextButton.Size = new System.Drawing.Size(85, 27);
-            this.finalNextButton.Style = "NewTheme";
+
             this.finalNextButton.TabIndex = 2;
             this.finalNextButton.Text = "Next";
-            this.finalNextButton.Theme = "NewTheme";
+
             this.finalNextButton.Visible = false;
             this.finalNextButton.Click += new System.EventHandler(this.finalNextButton_Click);
             // 
@@ -399,10 +399,10 @@ namespace Shotr.Ui.Installer
             this.step4CancelButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step4CancelButton.Name = "step4CancelButton";
             this.step4CancelButton.Size = new System.Drawing.Size(85, 27);
-            this.step4CancelButton.Style = "NewTheme";
+
             this.step4CancelButton.TabIndex = 0;
             this.step4CancelButton.Text = "Cancel";
-            this.step4CancelButton.Theme = "NewTheme";
+
             this.step4CancelButton.Click += new System.EventHandler(this.step4CancelButton_Click);
             // 
             // step4ProgressBar
@@ -413,9 +413,9 @@ namespace Shotr.Ui.Installer
             this.step4ProgressBar.Name = "step4ProgressBar";
             this.step4ProgressBar.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.step4ProgressBar.Size = new System.Drawing.Size(530, 27);
-            this.step4ProgressBar.Style = "NewTheme";
+
             this.step4ProgressBar.TabIndex = 14;
-            this.step4ProgressBar.Theme = "NewTheme";
+
             // 
             // step2GroupPanel
             // 
@@ -432,9 +432,9 @@ namespace Shotr.Ui.Installer
             this.step2GroupPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step2GroupPanel.Name = "step2GroupPanel";
             this.step2GroupPanel.Size = new System.Drawing.Size(583, 381);
-            this.step2GroupPanel.Style = "NewTheme";
+
             this.step2GroupPanel.TabIndex = 13;
-            this.step2GroupPanel.Theme = "NewTheme";
+
             this.step2GroupPanel.VerticalScrollbarBarColor = true;
             this.step2GroupPanel.VerticalScrollbarHighlightOnWheel = false;
             this.step2GroupPanel.VerticalScrollbarSize = 12;
@@ -452,11 +452,11 @@ namespace Shotr.Ui.Installer
             this.MaximizeBox = false;
             this.Name = "UninstallerForm";
             this.Padding = new System.Windows.Forms.Padding(23, 69, 23, 23);
-            this.Resizable = false;
-            this.ShowFormIcon = true;
-            this.Style = "NewTheme";
+
+
+
             this.Text = "Shotr";
-            this.Theme = "NewTheme";
+
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.metroPanel1.ResumeLayout(false);

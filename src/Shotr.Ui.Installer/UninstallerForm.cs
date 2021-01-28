@@ -3,12 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Forms;
 using Microsoft.Win32;
 
 namespace Shotr.Ui.Installer
 {
-    public partial class UninstallerForm : MetroForm
+    public partial class UninstallerForm : Form
     {
         public UninstallerForm()
         {

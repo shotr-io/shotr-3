@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class AboutForm : DpiScaledForm
+    public partial class AboutForm : ThemedForm
     {
         public AboutForm()
         {

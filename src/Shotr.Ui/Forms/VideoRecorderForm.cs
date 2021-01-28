@@ -7,7 +7,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Controls;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
@@ -371,22 +370,22 @@ namespace Shotr.Ui.Forms
                 Controls.Add(f);
                 //add a stop button.
                 //TODO: check to make sure that the shit isn't offscreen, if so then like idk
-                var m = new MetroButton();
+                var m = new Button();
                 m.Text = "Stop";
                 m.Size = new Size(75, 23);
                 m.Location = new Point(60, Height - 28);
                 m.Click += m_Click;
-                m.Theme = "Dark";
-                m.Style = "Blue";
+
+
                 Controls.Add(m);
 
-                var mb = new MetroButton();
+                var mb = new Button();
                 mb.Text = "Cancel";
                 mb.Size = new Size(75, 23);
                 mb.Location = new Point(140, Height - 28);
                 mb.Click += mb_Click;
-                mb.Theme = "Dark";
-                mb.Style = "Blue";
+
+
                 Controls.Add(mb);
 
                 TopMost = true;

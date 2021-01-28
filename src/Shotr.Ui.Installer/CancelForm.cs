@@ -1,9 +1,9 @@
 ﻿using System;
-using MetroFramework5.Forms;
+using System.Windows.Forms;
 
 namespace Shotr.Ui.Installer
 {
-    public partial class CancelForm : MetroForm
+    public partial class CancelForm : Form
     {
         public CancelForm()
         {

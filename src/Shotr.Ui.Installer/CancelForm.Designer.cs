@@ -43,11 +43,11 @@ namespace Shotr.Ui.Installer
             this.metroLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(403, 29);
-            this.metroLabel1.Style = "NewTheme";
+
             this.metroLabel1.TabIndex = 0;
             this.metroLabel1.Text = "Are you sure you want to exit Shotr Setup?";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel1.Theme = "NewTheme";
+
             this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // noButton
@@ -56,10 +56,10 @@ namespace Shotr.Ui.Installer
             this.noButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.noButton.Name = "noButton";
             this.noButton.Size = new System.Drawing.Size(88, 27);
-            this.noButton.Style = "NewTheme";
+
             this.noButton.TabIndex = 1;
             this.noButton.Text = "No";
-            this.noButton.Theme = "NewTheme";
+
             this.noButton.Click += new System.EventHandler(this.metroButton1_Click);
             // 
             // yesButton
@@ -68,10 +68,10 @@ namespace Shotr.Ui.Installer
             this.yesButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.yesButton.Name = "yesButton";
             this.yesButton.Size = new System.Drawing.Size(88, 27);
-            this.yesButton.Style = "NewTheme";
+
             this.yesButton.TabIndex = 2;
             this.yesButton.Text = "Yes";
-            this.yesButton.Theme = "NewTheme";
+
             this.yesButton.Click += new System.EventHandler(this.yesButton_Click);
             // 
             // CancelForm
@@ -88,10 +88,10 @@ namespace Shotr.Ui.Installer
             this.MinimizeBox = false;
             this.Name = "CancelForm";
             this.Padding = new System.Windows.Forms.Padding(23, 69, 23, 23);
-            this.Resizable = false;
-            this.ShowFormIcon = true;
-            this.Style = "NewTheme";
-            this.Theme = "NewTheme";
+
+
+
+
             this.ResumeLayout(false);
 
         }

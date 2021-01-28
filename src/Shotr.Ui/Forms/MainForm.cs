@@ -7,8 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using Shotr.Core;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Hotkey;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Entities.Web;
 using Shotr.Core.Image;
@@ -22,7 +22,7 @@ using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class MainForm : DpiScaledForm
+    public partial class MainForm : ThemedForm
     {
         private readonly BaseSettings _settings;
         private readonly Uploader _uploader;
@@ -138,12 +138,12 @@ namespace Shotr.Ui.Forms
             noUploadHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.RegionNoUpload);
             recordScreenHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.RecordScreen);
 
-            activeWindowHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotkeyButton).HotKey.HotKey, KeyTask.ActiveWindow);
-            fullScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotkeyButton).HotKey.HotKey, KeyTask.Fullscreen);
-            regionHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotkeyButton).HotKey.HotKey, KeyTask.Region);
-            uploadClipboardHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotkeyButton).HotKey.HotKey, KeyTask.UploadClipboard);
-            noUploadHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotkeyButton).HotKey.HotKey, KeyTask.RegionNoUpload);
-            recordScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotkeyButton).HotKey.HotKey, KeyTask.RecordScreen);
+            activeWindowHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ActiveWindow);
+            fullScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.Fullscreen);
+            regionHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.Region);
+            uploadClipboardHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.UploadClipboard);
+            noUploadHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.RegionNoUpload);
+            recordScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.RecordScreen);
 
             activeWindowHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Active Window",
                 activeWindowHotKeyButton.HotKey.ModifiersEnum, activeWindowHotKeyButton.HotKey.HotKey,
@@ -279,7 +279,7 @@ namespace Shotr.Ui.Forms
                 _settings.Uploads ??= new List<UploadItem>();
                 _settings.Uploads.Add(uploadItem);
 
-                Invoke((MethodInvoker) (() => betterListView1.Items.Insert(0, listViewItem)));
+                Invoke((MethodInvoker) (() => themedListView1.Items.Insert(0, listViewItem)));
             }
 
             Invoke((MethodInvoker)(() =>
@@ -344,8 +344,7 @@ namespace Shotr.Ui.Forms
         {
             if (firstLoad)
             {
-                betterListView1.Font = regionLabel.GetThemeFont();
-                betterListView1.DoubleClick += betterListView1_MouseDoubleClick;
+                themedListView1.DoubleClick += betterListView1_MouseDoubleClick;
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 metroLabel8.Text = $"v{version.Major}.{version.Minor}.{version.Build}";
             }
@@ -451,7 +450,7 @@ namespace Shotr.Ui.Forms
                     };
                     listViewItem.SubItems.Add(item.Time.ToString());
 
-                    betterListView1.Items.Add(listViewItem);
+                    themedListView1.Items.Add(listViewItem);
                 }
             }
 
@@ -472,13 +471,13 @@ namespace Shotr.Ui.Forms
                         var m = GetUploader(templist[i].Uploader);
                         var x = new ListViewItem { Text = !m.SupportsPages && !directUrl ? templist[i].URL : templist[i].PageURL };
                         x.SubItems.Add(Utils.FromUnixTime(templist[i].Time).ToString());
-                        betterListView1.Items.Add(x);
+                        themedListView1.Items.Add(x);
                     }
                     else
                     {
                         var x = new ListViewItem { Text = (directUrl ? templist[i].URL : templist[i].PageURL) };
                         x.SubItems.Add(Utils.FromUnixTime(templist[i].Time).ToString());
-                        betterListView1.Items.Add(x);
+                        themedListView1.Items.Add(x);
                     }
                 }
             }
@@ -486,11 +485,11 @@ namespace Shotr.Ui.Forms
 
         private void UpdateListViewColumnSize()
         {
-            if (betterListView1 is ListView listView)
+            if (themedListView1 is ListView listView)
             {
 
                 // Get the sum of all column tags
-                var totalColumnWidth = betterListView1.Size.Width;
+                var totalColumnWidth = themedListView1.Size.Width;
 
                 // Calculate the percentage of space each column should 
                 // occupy in reference to the other columns and then set the 
@@ -666,7 +665,7 @@ namespace Shotr.Ui.Forms
                             }
 
                             var capture = Utils.CopyScreen();
-                            _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader, capture, metroLabel9.GetThemeFont(), _tasks);
+                            _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader, capture, metroLabel9.Font, _tasks);
                             _videoRecorderForm.Show();
                         }));
                     }
@@ -754,13 +753,13 @@ namespace Shotr.Ui.Forms
         private void betterListView1_MouseDoubleClick(object sender, EventArgs e)
         {
             //see if item is selected.
-            if (betterListView1.SelectedItems.Count > 0)
+            if (themedListView1.SelectedItems.Count > 0)
             {
 
                 if (_settings.LegacyHistory is { })
                 {
                     if (_settings.LegacyHistory.TryGetValue(
-                        Utils.ToUnixTime(DateTime.Parse(betterListView1.SelectedItems[0].SubItems[1].Text)),
+                        Utils.ToUnixTime(DateTime.Parse(themedListView1.SelectedItems[0].SubItems[1].Text)),
                         out var uploadResult))
                     {
                         uploadResult.URL.OpenUrl();
@@ -772,7 +771,7 @@ namespace Shotr.Ui.Forms
                 if (_settings.Uploads is { })
                 {
                     var upload = _settings.Uploads.FirstOrDefault(p =>
-                        p.Time == DateTime.Parse(betterListView1.SelectedItems[0].SubItems[1].Text));
+                        p.Time == DateTime.Parse(themedListView1.SelectedItems[0].SubItems[1].Text));
 
                     if (upload is null)
                     {
@@ -795,7 +794,7 @@ namespace Shotr.Ui.Forms
         private void clearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //clear history.
-            betterListView1.Items.Clear();
+            themedListView1.Items.Clear();
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -805,9 +804,9 @@ namespace Shotr.Ui.Forms
         
         private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (betterListView1.SelectedItems.Count > 0)
+            if (themedListView1.SelectedItems.Count > 0)
             {
-                Clipboard.SetText(betterListView1.SelectedItems[0].Text);
+                Clipboard.SetText(themedListView1.SelectedItems[0].Text);
             }
         }
 

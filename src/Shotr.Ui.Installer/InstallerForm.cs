@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -7,10 +6,8 @@ using System.Net;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Forms;
 using Microsoft.Win32;
 using Shotr.Core.Controls.DpiScaling;
-using Shotr.Core.Entities;
 using Shotr.Ui.Installer.Utils;
 
 namespace Shotr.Ui.Installer
