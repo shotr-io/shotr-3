@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms
@@ -16,10 +15,7 @@ namespace Shotr.Ui.Forms
         
         private bool _animatingout;
         
-        protected override bool ShowWithoutActivation
-        {
-            get { return true; }
-        }
+        protected override bool ShowWithoutActivation => true;
 
         protected override CreateParams CreateParams
         {
@@ -82,6 +78,11 @@ namespace Shotr.Ui.Forms
         public new void Show()
         {
             base.Show();
+        }
+
+        private void themedButton1_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -632,9 +632,16 @@ namespace Shotr.Ui.Forms
         void ScreenshotForm_Paint(object sender, PaintEventArgs e)
         {
             if (!_editing)
-                e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Size.Width, Size.Height));//this.Bounds);
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
+                e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Size.Width, Size.Height));
+            }
             else
+            {
                 e.Graphics.DrawImageUnscaled(_screenshot, 0, 0);
+            }
+
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
 
             if (_activated && _x.Height > 1 && _x.Width > 1)
             {
@@ -685,7 +692,7 @@ namespace Shotr.Ui.Forms
                 //check if screen isn't big enough to fit on right side, if so then fit on left side.
                 var location = new Point(0, 0);
                 var cursorloc = PointToClient(Cursor.Position);
-                using (var magnifier = (_editing ? ShowSolidColor(_screenshot, new Point(cursorloc.X, cursorloc.Y), 50, 50, _chosenColor) :  Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
+                using (var magnifier = (_editing ? ShowSolidColor(_screenshot, new Point(cursorloc.X, cursorloc.Y), (int)(50 * scalingFactor), (int)(50 * scalingFactor), _chosenColor) :  Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                 {
                     if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
                     {

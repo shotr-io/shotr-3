@@ -249,6 +249,7 @@ namespace Shotr.Ui.Forms
         //GraphicsUnit.Pixel);
             if (_drawing)
             {
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
                 e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));//this.Bounds);
 
                 if (_activated && _x.Height > 1 && _x.Width > 1)
@@ -368,32 +369,41 @@ namespace Shotr.Ui.Forms
                 _activated = false;
                 TransparencyKey = Color.LimeGreen;
                 //make a minimum size required.
-                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + 30);
                 Location = new Point(_x.X, _x.Y);
-                var f = new Panel();
-                f.Size = new Size(_x.Width - 2, _x.Height);
-                f.Location = new Point(1, 1);
-                f.BackColor = Color.LimeGreen;
-                Controls.Add(f);
+                var themedPanel = new Panel()
+                {
+                    Size = new Size(_x.Width - 2, _x.Height),
+                    Location = new Point(1, 1),
+                    BackColor = Color.LimeGreen,
+                };
+                    
+                Controls.Add(themedPanel);
                 //add a stop button.
                 //TODO: check to make sure that the shit isn't offscreen, if so then like idk
-                var m = new Button();
-                m.Text = "Stop";
-                m.Size = new Size(75, 23);
-                m.Location = new Point(60, Height - 28);
-                m.Click += m_Click;
+                var stopButton = new ThemedButton()
+                {
+                    Text = "Stop",
+                    Size = new Size(75, 23),
+                    Location = new Point(60, Height - 28)
+                };
+                stopButton.Click += m_Click;
 
 
-                Controls.Add(m);
+                Controls.Add(stopButton);
 
-                var mb = new Button();
-                mb.Text = "Cancel";
-                mb.Size = new Size(75, 23);
-                mb.Location = new Point(140, Height - 28);
-                mb.Click += mb_Click;
+                var cancelButton = new ThemedButton()
+                {
+                    Text = "Cancel",
+                    Size = new Size(75, 23),
+                    Location = new Point(140, Height - 28),
+                };
+
+                cancelButton.Click += mb_Click;
 
 
-                Controls.Add(mb);
+                Controls.Add(cancelButton);
+
+                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + 30);
 
                 TopMost = true;
                 BackColor = Color.LimeGreen;

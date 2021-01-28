@@ -120,5 +120,10 @@ namespace Shotr.Ui.Forms
             _uploader.AddToQueue(_failed);
             Close();
         }
+
+        private void themedButton1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

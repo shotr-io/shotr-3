@@ -136,7 +136,7 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(121, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(121, 126);
             // 
             // toolsToolStripMenuItem
             // 
@@ -150,14 +150,14 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator7,
             this.colorPickerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.toolsToolStripMenuItem.Text = "Capture";
             // 
             // regionCaptureToolStripMenuItem
             // 
             this.regionCaptureToolStripMenuItem.Enabled = false;
             this.regionCaptureToolStripMenuItem.Name = "regionCaptureToolStripMenuItem";
-            this.regionCaptureToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.regionCaptureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.regionCaptureToolStripMenuItem.Text = "Region Capture";
             this.regionCaptureToolStripMenuItem.Click += new System.EventHandler(this.regionCaptureToolStripMenuItem_Click);
             // 
@@ -165,58 +165,58 @@ namespace Shotr.Ui.Forms
             // 
             this.fullscreenCaptureToolStripMenuItem.Enabled = false;
             this.fullscreenCaptureToolStripMenuItem.Name = "fullscreenCaptureToolStripMenuItem";
-            this.fullscreenCaptureToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.fullscreenCaptureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fullscreenCaptureToolStripMenuItem.Text = "Fullscreen Capture";
             this.fullscreenCaptureToolStripMenuItem.Click += new System.EventHandler(this.fullscreenCaptureToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // recordScreenToolStripMenuItem
             // 
             this.recordScreenToolStripMenuItem.Enabled = false;
             this.recordScreenToolStripMenuItem.Name = "recordScreenToolStripMenuItem";
-            this.recordScreenToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.recordScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recordScreenToolStripMenuItem.Text = "Record Screen";
             this.recordScreenToolStripMenuItem.Click += new System.EventHandler(this.recordScreenToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
             // 
             // uploadClipboardToolStripMenuItem
             // 
             this.uploadClipboardToolStripMenuItem.Enabled = false;
             this.uploadClipboardToolStripMenuItem.Name = "uploadClipboardToolStripMenuItem";
-            this.uploadClipboardToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.uploadClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.uploadClipboardToolStripMenuItem.Text = "Upload Clipboard";
             this.uploadClipboardToolStripMenuItem.Click += new System.EventHandler(this.uploadClipboardToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // colorPickerToolStripMenuItem
             // 
             this.colorPickerToolStripMenuItem.Name = "colorPickerToolStripMenuItem";
-            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.colorPickerToolStripMenuItem.Text = "Color Picker";
             this.colorPickerToolStripMenuItem.Click += new System.EventHandler(this.colorPickerToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.historyToolStripMenuItem.Text = "History";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -228,7 +228,7 @@ namespace Shotr.Ui.Forms
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(120, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
             this.toolStripMenuItem1.Text = "About";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -240,7 +240,7 @@ namespace Shotr.Ui.Forms
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -276,11 +276,11 @@ namespace Shotr.Ui.Forms
             // 
             this.metroTabPage4.BasePaint = false;
             this.metroTabPage4.Controls.Add(this.themedListView1);
-            this.metroTabPage4.Location = new System.Drawing.Point(4, 29);
+            this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage4.Name = "metroTabPage4";
             this.metroTabPage4.Padding = new System.Windows.Forms.Padding(10);
             this.metroTabPage4.Scaled = true;
-            this.metroTabPage4.Size = new System.Drawing.Size(593, 278);
+            this.metroTabPage4.Size = new System.Drawing.Size(593, 282);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "History";
             // 
@@ -322,10 +322,10 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.Controls.Add(this.metroPanel1);
             this.metroTabPage2.Controls.Add(this.loginToShotrPanel);
             this.metroTabPage2.Controls.Add(this.myAccountPanel);
-            this.metroTabPage2.Location = new System.Drawing.Point(4, 29);
+            this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
             this.metroTabPage2.Scaled = true;
-            this.metroTabPage2.Size = new System.Drawing.Size(593, 278);
+            this.metroTabPage2.Size = new System.Drawing.Size(593, 282);
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";
             // 
@@ -379,7 +379,6 @@ namespace Shotr.Ui.Forms
             this.saveOnlyLabel.Size = new System.Drawing.Size(103, 22);
             this.saveOnlyLabel.TabIndex = 31;
             this.saveOnlyLabel.Text = "Clipboard Save:";
-            this.saveOnlyLabel.UseCompatibleTextRendering = true;
             // 
             // uploadClipboardHotKeyButton
             // 
@@ -404,7 +403,6 @@ namespace Shotr.Ui.Forms
             this.clipboardLabel.Size = new System.Drawing.Size(81, 22);
             this.clipboardLabel.TabIndex = 29;
             this.clipboardLabel.Text = "Text Upload:";
-            this.clipboardLabel.UseCompatibleTextRendering = true;
             // 
             // recordScreenHotKeyButton
             // 
@@ -429,7 +427,6 @@ namespace Shotr.Ui.Forms
             this.recordScreenLabel.Size = new System.Drawing.Size(96, 22);
             this.recordScreenLabel.TabIndex = 27;
             this.recordScreenLabel.Text = "Record Screen:";
-            this.recordScreenLabel.UseCompatibleTextRendering = true;
             // 
             // activeWindowHotKeyButton
             // 
@@ -480,7 +477,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.TabIndex = 6;
             this.metroLabel1.Text = "Action Settings";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // directUrlToggle
             // 
@@ -505,7 +501,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel11.Size = new System.Drawing.Size(116, 20);
             this.metroLabel11.TabIndex = 17;
             this.metroLabel11.Text = "Direct Image URLs:";
-            this.metroLabel11.UseCompatibleTextRendering = true;
             this.metroLabel11.Visible = false;
             // 
             // metroLabel9
@@ -519,7 +514,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel9.TabIndex = 16;
             this.metroLabel9.Text = "Image Uploader";
             this.metroLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel9.UseCompatibleTextRendering = true;
             // 
             // regionLabel
             // 
@@ -531,7 +525,6 @@ namespace Shotr.Ui.Forms
             this.regionLabel.Size = new System.Drawing.Size(53, 22);
             this.regionLabel.TabIndex = 7;
             this.regionLabel.Text = "Region:";
-            this.regionLabel.UseCompatibleTextRendering = true;
             // 
             // selectedImageUploader
             // 
@@ -558,7 +551,6 @@ namespace Shotr.Ui.Forms
             this.fullscreenLabel.Size = new System.Drawing.Size(70, 22);
             this.fullscreenLabel.TabIndex = 8;
             this.fullscreenLabel.Text = "Fullscreen:";
-            this.fullscreenLabel.UseCompatibleTextRendering = true;
             // 
             // activeWindowLabel
             // 
@@ -570,7 +562,6 @@ namespace Shotr.Ui.Forms
             this.activeWindowLabel.Size = new System.Drawing.Size(99, 22);
             this.activeWindowLabel.TabIndex = 9;
             this.activeWindowLabel.Text = "Active Window:";
-            this.activeWindowLabel.UseCompatibleTextRendering = true;
             // 
             // metroPanel1
             // 
@@ -597,7 +588,6 @@ namespace Shotr.Ui.Forms
             this.metroButton5.Size = new System.Drawing.Size(251, 23);
             this.metroButton5.TabIndex = 30;
             this.metroButton5.Text = "Global Settings";
-            this.metroButton5.UseCompatibleTextRendering = true;
             this.metroButton5.Click += new System.EventHandler(this.settingsButton_Click);
             // 
             // metroButton1
@@ -624,7 +614,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel5.TabIndex = 10;
             this.metroLabel5.Text = "Program Settings";
             this.metroLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel5.UseCompatibleTextRendering = true;
             // 
             // metroButton2
             // 
@@ -663,7 +652,6 @@ namespace Shotr.Ui.Forms
             this.loginToShotrDescriptionLabel.TabIndex = 33;
             this.loginToShotrDescriptionLabel.Text = "Log In to Shotr to enable uploads!";
             this.loginToShotrDescriptionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.loginToShotrDescriptionLabel.UseCompatibleTextRendering = true;
             // 
             // loginToShotrButton
             // 
@@ -689,7 +677,6 @@ namespace Shotr.Ui.Forms
             this.loginToShotrLabel.TabIndex = 10;
             this.loginToShotrLabel.Text = "My Account";
             this.loginToShotrLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.loginToShotrLabel.UseCompatibleTextRendering = true;
             // 
             // myAccountPanel
             // 
@@ -738,7 +725,6 @@ namespace Shotr.Ui.Forms
             this.uploadCountLabel.TabIndex = 12;
             this.uploadCountLabel.Text = "0";
             this.uploadCountLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.uploadCountLabel.UseCompatibleTextRendering = true;
             // 
             // totalImagesUploadedLabel
             // 
@@ -750,7 +736,6 @@ namespace Shotr.Ui.Forms
             this.totalImagesUploadedLabel.Size = new System.Drawing.Size(87, 15);
             this.totalImagesUploadedLabel.TabIndex = 11;
             this.totalImagesUploadedLabel.Text = "Total Uploads:";
-            this.totalImagesUploadedLabel.UseCompatibleTextRendering = true;
             // 
             // emailLabel
             // 
@@ -762,7 +747,6 @@ namespace Shotr.Ui.Forms
             this.emailLabel.TabIndex = 10;
             this.emailLabel.Text = "<email>";
             this.emailLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.emailLabel.UseCompatibleTextRendering = true;
             // 
             // contextMenuStrip2
             // 
@@ -777,12 +761,12 @@ namespace Shotr.Ui.Forms
             this.toolStripMenuItem2,
             this.clearHistoryToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 136);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 126);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveImageToolStripMenuItem.Text = "Save Image";
             // 
             // toolStripSeparator4
@@ -793,14 +777,14 @@ namespace Shotr.Ui.Forms
             // copyURLToolStripMenuItem
             // 
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
-            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyURLToolStripMenuItem.Text = "Copy URL";
             this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // toolStripSeparator3
@@ -811,13 +795,13 @@ namespace Shotr.Ui.Forms
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 24);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem2.Text = "Remove Entry";
             // 
             // clearHistoryToolStripMenuItem
             // 
             this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
-            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clearHistoryToolStripMenuItem.Text = "Clear History";
             this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.clearHistoryToolStripMenuItem_Click);
             // 
@@ -832,7 +816,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel8.TabIndex = 2;
             this.metroLabel8.Text = "v{0}";
             this.metroLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.metroLabel8.UseCompatibleTextRendering = true;
             this.metroLabel8.Click += new System.EventHandler(this.aboutLabel_Click);
             // 
             // logoPictureBox

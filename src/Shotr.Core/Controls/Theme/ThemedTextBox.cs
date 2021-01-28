@@ -64,6 +64,8 @@ namespace Shotr.Core.Controls.Theme
             set => _baseTextBox.ScrollBars = value;
         }
 
+        public void DeselectAll() => _baseTextBox.DeselectAll();
+
         public override void Refresh()
         {
             base.Refresh();

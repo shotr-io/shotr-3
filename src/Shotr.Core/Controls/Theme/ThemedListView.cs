@@ -15,7 +15,7 @@ namespace Shotr.Core.Controls.Theme
 
         protected override void OnControlScaled(float scalingFactor)
         {
-            var totalColumnWidth = Width - 8;
+            var totalColumnWidth = Width - 4;
             for (int i = 0; i < Columns.Count; i++)
             {
                 float colPercentage = (Convert.ToInt32(totalColumnWidth / Columns.Count));

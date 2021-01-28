@@ -49,6 +49,7 @@ namespace Shotr.Ui.Forms
             // 
             // ThemedButton1
             // 
+            this.ThemedButton1.BasePaint = false;
             this.ThemedButton1.Highlight = false;
             this.ThemedButton1.Location = new System.Drawing.Point(14, 259);
             this.ThemedButton1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -61,6 +62,7 @@ namespace Shotr.Ui.Forms
             // 
             // ThemedLabel1
             // 
+            this.ThemedLabel1.BasePaint = false;
             this.ThemedLabel1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ThemedLabel1.Location = new System.Drawing.Point(27, 86);
             this.ThemedLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -70,10 +72,11 @@ namespace Shotr.Ui.Forms
             this.ThemedLabel1.TabIndex = 1;
             this.ThemedLabel1.Text = "Sign in to your account";
             this.ThemedLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ThemedLabel1.UseCompatibleTextRendering = true;
+            this.ThemedLabel1.UseCompatibleTextRendering = false;
             // 
             // ThemedTextBox1
             // 
+            this.ThemedTextBox1.BasePaint = false;
             this.ThemedTextBox1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ThemedTextBox1.Location = new System.Drawing.Point(14, 144);
             this.ThemedTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -89,6 +92,7 @@ namespace Shotr.Ui.Forms
             // 
             // ThemedTextBox2
             // 
+            this.ThemedTextBox2.BasePaint = false;
             this.ThemedTextBox2.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ThemedTextBox2.Location = new System.Drawing.Point(14, 196);
             this.ThemedTextBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -105,6 +109,7 @@ namespace Shotr.Ui.Forms
             // ThemedLabel2
             // 
             this.ThemedLabel2.AutoSize = true;
+            this.ThemedLabel2.BasePaint = false;
             this.ThemedLabel2.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ThemedLabel2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ThemedLabel2.Location = new System.Drawing.Point(10, 126);
@@ -115,11 +120,12 @@ namespace Shotr.Ui.Forms
             this.ThemedLabel2.TabIndex = 4;
             this.ThemedLabel2.Text = "Email Address:";
             this.ThemedLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ThemedLabel2.UseCompatibleTextRendering = true;
+            this.ThemedLabel2.UseCompatibleTextRendering = false;
             // 
             // ThemedLabel3
             // 
             this.ThemedLabel3.AutoSize = true;
+            this.ThemedLabel3.BasePaint = false;
             this.ThemedLabel3.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.ThemedLabel3.Location = new System.Drawing.Point(10, 178);
             this.ThemedLabel3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -129,10 +135,11 @@ namespace Shotr.Ui.Forms
             this.ThemedLabel3.TabIndex = 5;
             this.ThemedLabel3.Text = "Password:";
             this.ThemedLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ThemedLabel3.UseCompatibleTextRendering = true;
+            this.ThemedLabel3.UseCompatibleTextRendering = false;
             // 
             // ThemedToggle1
             // 
+            this.ThemedToggle1.BasePaint = false;
             this.ThemedToggle1.Location = new System.Drawing.Point(14, 229);
             this.ThemedToggle1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ThemedToggle1.Name = "ThemedToggle1";
@@ -145,6 +152,7 @@ namespace Shotr.Ui.Forms
             // ThemedLinkLabel1
             // 
             this.ThemedLinkLabel1.AutoSize = true;
+            this.ThemedLinkLabel1.BasePaint = false;
             this.ThemedLinkLabel1.Location = new System.Drawing.Point(324, 231);
             this.ThemedLinkLabel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ThemedLinkLabel1.Name = "ThemedLinkLabel1";
@@ -158,6 +166,7 @@ namespace Shotr.Ui.Forms
             // 
             // ThemedLinkLabel2
             // 
+            this.ThemedLinkLabel2.BasePaint = false;
             this.ThemedLinkLabel2.Location = new System.Drawing.Point(14, 302);
             this.ThemedLinkLabel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ThemedLinkLabel2.Name = "ThemedLinkLabel2";
@@ -174,6 +183,7 @@ namespace Shotr.Ui.Forms
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dpiScaledPictureBox1.BasePaint = false;
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(124, 13);
             this.dpiScaledPictureBox1.Name = "dpiScaledPictureBox1";
             this.dpiScaledPictureBox1.Scaled = true;
@@ -185,13 +195,14 @@ namespace Shotr.Ui.Forms
             // themedLabel4
             // 
             this.themedLabel4.AutoSize = true;
+            this.themedLabel4.BasePaint = false;
             this.themedLabel4.Location = new System.Drawing.Point(76, 232);
             this.themedLabel4.Name = "themedLabel4";
             this.themedLabel4.Scaled = true;
             this.themedLabel4.Size = new System.Drawing.Size(88, 15);
             this.themedLabel4.TabIndex = 11;
             this.themedLabel4.Text = "Remember Me";
-            this.themedLabel4.UseCompatibleTextRendering = true;
+            this.themedLabel4.UseCompatibleTextRendering = false;
             // 
             // LoginForm
             // 

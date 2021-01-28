@@ -200,7 +200,7 @@
 //             this.metroLabel6.TabIndex = 16;
 //             this.metroLabel6.Text = "Page Support:";
 
-//             this.metroLabel6.UseCompatibleTextRendering = true;
+//             this.metroLabel6.UseCompatibleTextRendering = false;
 //             // 
 //             // metroLabel5
 //             // 
@@ -214,7 +214,7 @@
 //             this.metroLabel5.TabIndex = 15;
 //             this.metroLabel5.Text = "Uploader URL:";
 
-//             this.metroLabel5.UseCompatibleTextRendering = true;
+//             this.metroLabel5.UseCompatibleTextRendering = false;
 //             // 
 //             // metroTextBox5
 //             // 
@@ -239,7 +239,7 @@
 //             this.metroLabel4.TabIndex = 13;
 //             this.metroLabel4.Text = "File Form Name:";
 
-//             this.metroLabel4.UseCompatibleTextRendering = true;
+//             this.metroLabel4.UseCompatibleTextRendering = false;
 //             // 
 //             // metroTextBox4
 //             // 
@@ -331,7 +331,7 @@
 //             this.metroLabel3.TabIndex = 6;
 //             this.metroLabel3.Text = "Request Type:";
 
-//             this.metroLabel3.UseCompatibleTextRendering = true;
+//             this.metroLabel3.UseCompatibleTextRendering = false;
 //             // 
 //             // metroLabel1
 //             // 
@@ -345,7 +345,7 @@
 //             this.metroLabel1.TabIndex = 5;
 //             this.metroLabel1.Text = "Upload Values:";
 
-//             this.metroLabel1.UseCompatibleTextRendering = true;
+//             this.metroLabel1.UseCompatibleTextRendering = false;
 //             // 
 //             // betterListView2
 //             // 
@@ -386,7 +386,7 @@
 //             this.metroLabel2.TabIndex = 4;
 //             this.metroLabel2.Text = "Uploader Name:";
 
-//             this.metroLabel2.UseCompatibleTextRendering = true;
+//             this.metroLabel2.UseCompatibleTextRendering = false;
 //             // 
 //             // metroTextBox1
 //             // 

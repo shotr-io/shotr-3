@@ -27,6 +27,7 @@ namespace Shotr.Ui.Forms
                 metroTextBox1.Text = "Unable to get changelog. Please try again later.";
             }
             Focus();
+            metroTextBox1.DeselectAll();
         }
     }
 }

@@ -92,6 +92,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             // metroTabControl1
             // 
+            this.metroTabControl1.BasePaint = false;
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
@@ -101,21 +102,24 @@ namespace Shotr.Ui.Forms.Settings
             this.metroTabControl1.Scaled = true;
             this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(568, 299);
+            this.metroTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.metroTabControl1.TabIndex = 0;
             // 
             // metroTabPage1
             // 
+            this.metroTabPage1.BasePaint = false;
             this.metroTabPage1.Controls.Add(this.metroPanel2);
             this.metroTabPage1.Controls.Add(this.metroPanel1);
-            this.metroTabPage1.Location = new System.Drawing.Point(4, 29);
+            this.metroTabPage1.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage1.Name = "metroTabPage1";
             this.metroTabPage1.Scaled = true;
-            this.metroTabPage1.Size = new System.Drawing.Size(560, 266);
+            this.metroTabPage1.Size = new System.Drawing.Size(560, 270);
             this.metroTabPage1.TabIndex = 0;
             this.metroTabPage1.Text = "General";
             // 
             // metroPanel2
             // 
+            this.metroPanel2.BasePaint = false;
             this.metroPanel2.Controls.Add(this.metroLabel13);
             this.metroPanel2.Controls.Add(this.soundToggle);
             this.metroPanel2.Controls.Add(this.startupToggle);
@@ -136,21 +140,23 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel13
             // 
             this.metroLabel13.AutoSize = true;
-            this.metroLabel13.Location = new System.Drawing.Point(17, 129);
+            this.metroLabel13.BasePaint = false;
+            this.metroLabel13.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel13.Location = new System.Drawing.Point(63, 132);
             this.metroLabel13.Name = "metroLabel13";
             this.metroLabel13.Scaled = true;
-            this.metroLabel13.Size = new System.Drawing.Size(80, 15);
+            this.metroLabel13.Size = new System.Drawing.Size(77, 15);
             this.metroLabel13.TabIndex = 56;
-            this.metroLabel13.Text = "Play Sounds:";
-            this.metroLabel13.UseCompatibleTextRendering = true;
+            this.metroLabel13.Text = "Play Sounds";
             // 
             // soundToggle
             // 
             this.soundToggle.AutoSize = true;
-            this.soundToggle.Location = new System.Drawing.Point(484, 128);
+            this.soundToggle.BasePaint = false;
+            this.soundToggle.Location = new System.Drawing.Point(17, 130);
             this.soundToggle.Name = "soundToggle";
             this.soundToggle.Scaled = true;
-            this.soundToggle.Size = new System.Drawing.Size(56, 27);
+            this.soundToggle.Size = new System.Drawing.Size(43, 19);
             this.soundToggle.TabIndex = 55;
             this.soundToggle.Text = "Off";
             this.soundToggle.UseVisualStyleBackColor = false;
@@ -158,10 +164,11 @@ namespace Shotr.Ui.Forms.Settings
             // startupToggle
             // 
             this.startupToggle.AutoSize = true;
-            this.startupToggle.Location = new System.Drawing.Point(484, 50);
+            this.startupToggle.BasePaint = false;
+            this.startupToggle.Location = new System.Drawing.Point(17, 52);
             this.startupToggle.Name = "startupToggle";
             this.startupToggle.Scaled = true;
-            this.startupToggle.Size = new System.Drawing.Size(56, 27);
+            this.startupToggle.Size = new System.Drawing.Size(43, 19);
             this.startupToggle.TabIndex = 49;
             this.startupToggle.Text = "Off";
             this.startupToggle.UseVisualStyleBackColor = false;
@@ -169,32 +176,35 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel15
             // 
             this.metroLabel15.AutoSize = true;
-            this.metroLabel15.Location = new System.Drawing.Point(17, 51);
+            this.metroLabel15.BasePaint = false;
+            this.metroLabel15.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel15.Location = new System.Drawing.Point(63, 54);
             this.metroLabel15.Name = "metroLabel15";
             this.metroLabel15.Scaled = true;
-            this.metroLabel15.Size = new System.Drawing.Size(51, 15);
+            this.metroLabel15.Size = new System.Drawing.Size(82, 15);
             this.metroLabel15.TabIndex = 50;
-            this.metroLabel15.Text = "Startup:";
-            this.metroLabel15.UseCompatibleTextRendering = true;
+            this.metroLabel15.Text = "Start With OS";
             // 
             // metroLabel16
             // 
             this.metroLabel16.AutoSize = true;
-            this.metroLabel16.Location = new System.Drawing.Point(17, 77);
+            this.metroLabel16.BasePaint = false;
+            this.metroLabel16.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel16.Location = new System.Drawing.Point(63, 80);
             this.metroLabel16.Name = "metroLabel16";
             this.metroLabel16.Scaled = true;
-            this.metroLabel16.Size = new System.Drawing.Size(98, 15);
+            this.metroLabel16.Size = new System.Drawing.Size(95, 15);
             this.metroLabel16.TabIndex = 51;
-            this.metroLabel16.Text = "Start Minimized:";
-            this.metroLabel16.UseCompatibleTextRendering = true;
+            this.metroLabel16.Text = "Start Minimized";
             // 
             // minimizedToggle
             // 
             this.minimizedToggle.AutoSize = true;
-            this.minimizedToggle.Location = new System.Drawing.Point(484, 76);
+            this.minimizedToggle.BasePaint = false;
+            this.minimizedToggle.Location = new System.Drawing.Point(17, 78);
             this.minimizedToggle.Name = "minimizedToggle";
             this.minimizedToggle.Scaled = true;
-            this.minimizedToggle.Size = new System.Drawing.Size(56, 27);
+            this.minimizedToggle.Size = new System.Drawing.Size(43, 19);
             this.minimizedToggle.TabIndex = 52;
             this.minimizedToggle.Text = "Off";
             this.minimizedToggle.UseVisualStyleBackColor = false;
@@ -202,27 +212,30 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel17
             // 
             this.metroLabel17.AutoSize = true;
-            this.metroLabel17.Location = new System.Drawing.Point(17, 103);
+            this.metroLabel17.BasePaint = false;
+            this.metroLabel17.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel17.Location = new System.Drawing.Point(63, 106);
             this.metroLabel17.Name = "metroLabel17";
             this.metroLabel17.Scaled = true;
-            this.metroLabel17.Size = new System.Drawing.Size(157, 15);
+            this.metroLabel17.Size = new System.Drawing.Size(80, 15);
             this.metroLabel17.TabIndex = 54;
-            this.metroLabel17.Text = "Show Alpha/Beta Updates:";
-            this.metroLabel17.UseCompatibleTextRendering = true;
+            this.metroLabel17.Text = "Enable Alpha";
             // 
             // alphaToggle
             // 
             this.alphaToggle.AutoSize = true;
-            this.alphaToggle.Location = new System.Drawing.Point(484, 102);
+            this.alphaToggle.BasePaint = false;
+            this.alphaToggle.Location = new System.Drawing.Point(17, 104);
             this.alphaToggle.Name = "alphaToggle";
             this.alphaToggle.Scaled = true;
-            this.alphaToggle.Size = new System.Drawing.Size(56, 27);
+            this.alphaToggle.Size = new System.Drawing.Size(43, 19);
             this.alphaToggle.TabIndex = 53;
             this.alphaToggle.Text = "Off";
             this.alphaToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel14
             // 
+            this.metroLabel14.BasePaint = false;
             this.metroLabel14.Location = new System.Drawing.Point(134, 3);
             this.metroLabel14.Name = "metroLabel14";
             this.metroLabel14.Scaled = true;
@@ -230,32 +243,34 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel14.TabIndex = 7;
             this.metroLabel14.Text = "General Options";
             this.metroLabel14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel14.UseCompatibleTextRendering = true;
             // 
             // metroLabel11
             // 
             this.metroLabel11.AutoSize = true;
-            this.metroLabel11.Location = new System.Drawing.Point(17, 25);
+            this.metroLabel11.BasePaint = false;
+            this.metroLabel11.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel11.Location = new System.Drawing.Point(63, 28);
             this.metroLabel11.Name = "metroLabel11";
             this.metroLabel11.Scaled = true;
             this.metroLabel11.Size = new System.Drawing.Size(113, 15);
             this.metroLabel11.TabIndex = 48;
             this.metroLabel11.Text = "Show Notifications";
-            this.metroLabel11.UseCompatibleTextRendering = true;
             // 
             // showNotificationsToggle
             // 
             this.showNotificationsToggle.AutoSize = true;
-            this.showNotificationsToggle.Location = new System.Drawing.Point(484, 24);
+            this.showNotificationsToggle.BasePaint = false;
+            this.showNotificationsToggle.Location = new System.Drawing.Point(17, 26);
             this.showNotificationsToggle.Name = "showNotificationsToggle";
             this.showNotificationsToggle.Scaled = true;
-            this.showNotificationsToggle.Size = new System.Drawing.Size(56, 27);
+            this.showNotificationsToggle.Size = new System.Drawing.Size(43, 19);
             this.showNotificationsToggle.TabIndex = 47;
             this.showNotificationsToggle.Text = "Off";
             this.showNotificationsToggle.UseVisualStyleBackColor = false;
             // 
             // metroPanel1
             // 
+            this.metroPanel1.BasePaint = false;
             this.metroPanel1.Controls.Add(this.metroTextBox1);
             this.metroPanel1.Controls.Add(this.metroLabel10);
             this.metroPanel1.Controls.Add(this.saveToDirectoryToggle);
@@ -268,6 +283,8 @@ namespace Shotr.Ui.Forms.Settings
             // 
             // metroTextBox1
             // 
+            this.metroTextBox1.BasePaint = false;
+            this.metroTextBox1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroTextBox1.Location = new System.Drawing.Point(17, 43);
             this.metroTextBox1.Multiline = false;
             this.metroTextBox1.Name = "metroTextBox1";
@@ -282,27 +299,31 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel10
             // 
             this.metroLabel10.AutoSize = true;
+            this.metroLabel10.BasePaint = false;
+            this.metroLabel10.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroLabel10.Location = new System.Drawing.Point(14, 21);
             this.metroLabel10.Name = "metroLabel10";
             this.metroLabel10.Scaled = true;
             this.metroLabel10.Size = new System.Drawing.Size(105, 15);
             this.metroLabel10.TabIndex = 53;
             this.metroLabel10.Text = "Save to Directory";
-            this.metroLabel10.UseCompatibleTextRendering = true;
             // 
             // saveToDirectoryToggle
             // 
             this.saveToDirectoryToggle.AutoSize = true;
+            this.saveToDirectoryToggle.BasePaint = false;
             this.saveToDirectoryToggle.Location = new System.Drawing.Point(484, 20);
             this.saveToDirectoryToggle.Name = "saveToDirectoryToggle";
             this.saveToDirectoryToggle.Scaled = true;
-            this.saveToDirectoryToggle.Size = new System.Drawing.Size(56, 27);
+            this.saveToDirectoryToggle.Size = new System.Drawing.Size(43, 19);
             this.saveToDirectoryToggle.TabIndex = 52;
             this.saveToDirectoryToggle.Text = "Off";
             this.saveToDirectoryToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel9
             // 
+            this.metroLabel9.BasePaint = false;
+            this.metroLabel9.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroLabel9.Location = new System.Drawing.Point(134, 3);
             this.metroLabel9.Name = "metroLabel9";
             this.metroLabel9.Scaled = true;
@@ -310,20 +331,21 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel9.TabIndex = 7;
             this.metroLabel9.Text = "Save to Directory";
             this.metroLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel9.UseCompatibleTextRendering = true;
             // 
             // metroTabPage3
             // 
+            this.metroTabPage3.BasePaint = false;
             this.metroTabPage3.Controls.Add(this.metroPanel3);
-            this.metroTabPage3.Location = new System.Drawing.Point(4, 29);
+            this.metroTabPage3.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage3.Name = "metroTabPage3";
             this.metroTabPage3.Scaled = true;
-            this.metroTabPage3.Size = new System.Drawing.Size(560, 266);
+            this.metroTabPage3.Size = new System.Drawing.Size(560, 270);
             this.metroTabPage3.TabIndex = 2;
             this.metroTabPage3.Text = "Capture";
             // 
             // metroPanel3
             // 
+            this.metroPanel3.BasePaint = false;
             this.metroPanel3.Controls.Add(this.metroLabel18);
             this.metroPanel3.Controls.Add(this.useresizablecanvas);
             this.metroPanel3.Controls.Add(this.metroLabel19);
@@ -344,27 +366,29 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel18
             // 
             this.metroLabel18.AutoSize = true;
+            this.metroLabel18.BasePaint = false;
             this.metroLabel18.Location = new System.Drawing.Point(17, 173);
             this.metroLabel18.Name = "metroLabel18";
             this.metroLabel18.Scaled = true;
             this.metroLabel18.Size = new System.Drawing.Size(233, 15);
             this.metroLabel18.TabIndex = 40;
             this.metroLabel18.Text = "Use Resizable Canvas (Enter to Upload):";
-            this.metroLabel18.UseCompatibleTextRendering = true;
             // 
             // useresizablecanvas
             // 
             this.useresizablecanvas.AutoSize = true;
+            this.useresizablecanvas.BasePaint = false;
             this.useresizablecanvas.Location = new System.Drawing.Point(484, 172);
             this.useresizablecanvas.Name = "useresizablecanvas";
             this.useresizablecanvas.Scaled = true;
-            this.useresizablecanvas.Size = new System.Drawing.Size(56, 27);
+            this.useresizablecanvas.Size = new System.Drawing.Size(43, 19);
             this.useresizablecanvas.TabIndex = 39;
             this.useresizablecanvas.Text = "Off";
             this.useresizablecanvas.UseVisualStyleBackColor = false;
             // 
             // metroLabel19
             // 
+            this.metroLabel19.BasePaint = false;
             this.metroLabel19.Location = new System.Drawing.Point(134, 3);
             this.metroLabel19.Name = "metroLabel19";
             this.metroLabel19.Scaled = true;
@@ -372,43 +396,44 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel19.TabIndex = 7;
             this.metroLabel19.Text = "Screenshot Capture Options";
             this.metroLabel19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel19.UseCompatibleTextRendering = true;
             // 
             // metroLabel12
             // 
             this.metroLabel12.AutoSize = true;
+            this.metroLabel12.BasePaint = false;
             this.metroLabel12.Location = new System.Drawing.Point(17, 139);
             this.metroLabel12.Name = "metroLabel12";
             this.metroLabel12.Scaled = true;
             this.metroLabel12.Size = new System.Drawing.Size(158, 15);
             this.metroLabel12.TabIndex = 38;
             this.metroLabel12.Text = "Stitch Fullscreen Captures:";
-            this.metroLabel12.UseCompatibleTextRendering = true;
             // 
             // metroLabel6
             // 
             this.metroLabel6.AutoSize = true;
+            this.metroLabel6.BasePaint = false;
             this.metroLabel6.Location = new System.Drawing.Point(17, 30);
             this.metroLabel6.Name = "metroLabel6";
             this.metroLabel6.Scaled = true;
             this.metroLabel6.Size = new System.Drawing.Size(84, 15);
             this.metroLabel6.TabIndex = 36;
             this.metroLabel6.Text = "Image Codec:";
-            this.metroLabel6.UseCompatibleTextRendering = true;
             // 
             // stitchFullscreenToggle
             // 
             this.stitchFullscreenToggle.AutoSize = true;
+            this.stitchFullscreenToggle.BasePaint = false;
             this.stitchFullscreenToggle.Location = new System.Drawing.Point(484, 138);
             this.stitchFullscreenToggle.Name = "stitchFullscreenToggle";
             this.stitchFullscreenToggle.Scaled = true;
-            this.stitchFullscreenToggle.Size = new System.Drawing.Size(56, 27);
+            this.stitchFullscreenToggle.Size = new System.Drawing.Size(43, 19);
             this.stitchFullscreenToggle.TabIndex = 37;
             this.stitchFullscreenToggle.Text = "Off";
             this.stitchFullscreenToggle.UseVisualStyleBackColor = false;
             // 
             // imageCodecCombo
             // 
+            this.imageCodecCombo.BasePaint = false;
             this.imageCodecCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.imageCodecCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.imageCodecCombo.FormattingEnabled = true;
@@ -425,10 +450,11 @@ namespace Shotr.Ui.Forms.Settings
             // imageCompressionToggle
             // 
             this.imageCompressionToggle.AutoSize = true;
+            this.imageCompressionToggle.BasePaint = false;
             this.imageCompressionToggle.Location = new System.Drawing.Point(484, 106);
             this.imageCompressionToggle.Name = "imageCompressionToggle";
             this.imageCompressionToggle.Scaled = true;
-            this.imageCompressionToggle.Size = new System.Drawing.Size(56, 27);
+            this.imageCompressionToggle.Size = new System.Drawing.Size(43, 19);
             this.imageCompressionToggle.TabIndex = 32;
             this.imageCompressionToggle.Text = "Off";
             this.imageCompressionToggle.UseVisualStyleBackColor = false;
@@ -436,27 +462,28 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel7
             // 
             this.metroLabel7.AutoSize = true;
+            this.metroLabel7.BasePaint = false;
             this.metroLabel7.Location = new System.Drawing.Point(17, 69);
             this.metroLabel7.Name = "metroLabel7";
             this.metroLabel7.Scaled = true;
             this.metroLabel7.Size = new System.Drawing.Size(87, 15);
             this.metroLabel7.TabIndex = 35;
             this.metroLabel7.Text = "Image Quality:";
-            this.metroLabel7.UseCompatibleTextRendering = true;
             // 
             // metroLabel8
             // 
             this.metroLabel8.AutoSize = true;
+            this.metroLabel8.BasePaint = false;
             this.metroLabel8.Location = new System.Drawing.Point(17, 107);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Scaled = true;
             this.metroLabel8.Size = new System.Drawing.Size(120, 15);
             this.metroLabel8.TabIndex = 33;
             this.metroLabel8.Text = "Image Compression:";
-            this.metroLabel8.UseCompatibleTextRendering = true;
             // 
             // imageQualityCombo
             // 
+            this.imageQualityCombo.BasePaint = false;
             this.imageQualityCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.imageQualityCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.imageQualityCombo.FormattingEnabled = true;
@@ -475,16 +502,18 @@ namespace Shotr.Ui.Forms.Settings
             // 
             // metroTabPage4
             // 
+            this.metroTabPage4.BasePaint = false;
             this.metroTabPage4.Controls.Add(this.metroPanel4);
-            this.metroTabPage4.Location = new System.Drawing.Point(4, 29);
+            this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage4.Name = "metroTabPage4";
             this.metroTabPage4.Scaled = true;
-            this.metroTabPage4.Size = new System.Drawing.Size(560, 266);
+            this.metroTabPage4.Size = new System.Drawing.Size(560, 270);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "Recorder";
             // 
             // metroPanel4
             // 
+            this.metroPanel4.BasePaint = false;
             this.metroPanel4.Controls.Add(this.metroLabel5);
             this.metroPanel4.Controls.Add(this.audioDeviceCombo);
             this.metroPanel4.Controls.Add(this.metroLabel4);
@@ -505,16 +534,17 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel5
             // 
             this.metroLabel5.AutoSize = true;
+            this.metroLabel5.BasePaint = false;
             this.metroLabel5.Location = new System.Drawing.Point(17, 171);
             this.metroLabel5.Name = "metroLabel5";
             this.metroLabel5.Scaled = true;
             this.metroLabel5.Size = new System.Drawing.Size(85, 15);
             this.metroLabel5.TabIndex = 48;
             this.metroLabel5.Text = "Audio Device:";
-            this.metroLabel5.UseCompatibleTextRendering = true;
             // 
             // audioDeviceCombo
             // 
+            this.audioDeviceCombo.BasePaint = false;
             this.audioDeviceCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.audioDeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.audioDeviceCombo.FormattingEnabled = true;
@@ -528,16 +558,17 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
+            this.metroLabel4.BasePaint = false;
             this.metroLabel4.Location = new System.Drawing.Point(17, 139);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Scaled = true;
             this.metroLabel4.Size = new System.Drawing.Size(85, 15);
             this.metroLabel4.TabIndex = 46;
             this.metroLabel4.Text = "Record Audio:";
-            this.metroLabel4.UseCompatibleTextRendering = true;
             // 
             // metroLabel20
             // 
+            this.metroLabel20.BasePaint = false;
             this.metroLabel20.Location = new System.Drawing.Point(134, 3);
             this.metroLabel20.Name = "metroLabel20";
             this.metroLabel20.Scaled = true;
@@ -545,15 +576,15 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel20.TabIndex = 7;
             this.metroLabel20.Text = "Save to Directory";
             this.metroLabel20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel20.UseCompatibleTextRendering = true;
             // 
             // recordAudioToggle
             // 
             this.recordAudioToggle.AutoSize = true;
+            this.recordAudioToggle.BasePaint = false;
             this.recordAudioToggle.Location = new System.Drawing.Point(484, 138);
             this.recordAudioToggle.Name = "recordAudioToggle";
             this.recordAudioToggle.Scaled = true;
-            this.recordAudioToggle.Size = new System.Drawing.Size(56, 27);
+            this.recordAudioToggle.Size = new System.Drawing.Size(43, 19);
             this.recordAudioToggle.TabIndex = 45;
             this.recordAudioToggle.Text = "Off";
             this.recordAudioToggle.UseVisualStyleBackColor = false;
@@ -561,16 +592,17 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel3
             // 
             this.metroLabel3.AutoSize = true;
+            this.metroLabel3.BasePaint = false;
             this.metroLabel3.Location = new System.Drawing.Point(17, 30);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Scaled = true;
             this.metroLabel3.Size = new System.Drawing.Size(67, 15);
             this.metroLabel3.TabIndex = 44;
             this.metroLabel3.Text = "Framerate:";
-            this.metroLabel3.UseCompatibleTextRendering = true;
             // 
             // framerateCombo
             // 
+            this.framerateCombo.BasePaint = false;
             this.framerateCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.framerateCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.framerateCombo.FormattingEnabled = true;
@@ -592,27 +624,29 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
+            this.metroLabel1.BasePaint = false;
             this.metroLabel1.Location = new System.Drawing.Point(17, 69);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Scaled = true;
             this.metroLabel1.Size = new System.Drawing.Size(111, 15);
             this.metroLabel1.TabIndex = 43;
             this.metroLabel1.Text = "Encoding Threads:";
-            this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // recordCursorToggle
             // 
             this.recordCursorToggle.AutoSize = true;
+            this.recordCursorToggle.BasePaint = false;
             this.recordCursorToggle.Location = new System.Drawing.Point(484, 107);
             this.recordCursorToggle.Name = "recordCursorToggle";
             this.recordCursorToggle.Scaled = true;
-            this.recordCursorToggle.Size = new System.Drawing.Size(56, 27);
+            this.recordCursorToggle.Size = new System.Drawing.Size(43, 19);
             this.recordCursorToggle.TabIndex = 40;
             this.recordCursorToggle.Text = "Off";
             this.recordCursorToggle.UseVisualStyleBackColor = false;
             // 
             // encodingCombo
             // 
+            this.encodingCombo.BasePaint = false;
             this.encodingCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.encodingCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.encodingCombo.FormattingEnabled = true;
@@ -635,19 +669,20 @@ namespace Shotr.Ui.Forms.Settings
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
+            this.metroLabel2.BasePaint = false;
             this.metroLabel2.Location = new System.Drawing.Point(17, 108);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Scaled = true;
             this.metroLabel2.Size = new System.Drawing.Size(90, 15);
             this.metroLabel2.TabIndex = 41;
             this.metroLabel2.Text = "Record Cursor:";
-            this.metroLabel2.UseCompatibleTextRendering = true;
             // 
             // dpiScaledPictureBox1
             // 
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dpiScaledPictureBox1.BasePaint = false;
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(5, 11);
             this.dpiScaledPictureBox1.Name = "dpiScaledPictureBox1";
             this.dpiScaledPictureBox1.Scaled = true;

@@ -4,17 +4,19 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <AssemblyName>ShotrInstaller</AssemblyName>
+    <AssemblyName>Shotr-Installer</AssemblyName>
     <ApplicationIcon>shotr-icon.ico</ApplicationIcon>
     <Version>3.0.0</Version>
     <Company>Shotr</Company>
     <Product>Shotr</Product>
     <Authors>Shotr</Authors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>Shotr.Ui.Installer.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

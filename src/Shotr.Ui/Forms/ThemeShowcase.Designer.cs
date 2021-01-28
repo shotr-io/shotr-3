@@ -75,7 +75,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel1.TabIndex = 1;
             this.themedLabel1.Text = "Themed Label Center";
             this.themedLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.themedLabel1.UseCompatibleTextRendering = true;
+            this.themedLabel1.UseCompatibleTextRendering = false;
             // 
             // themedLabel2
             // 
@@ -86,7 +86,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel2.TabIndex = 2;
             this.themedLabel2.Text = "Themed Label Left";
             this.themedLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.themedLabel2.UseCompatibleTextRendering = true;
+            this.themedLabel2.UseCompatibleTextRendering = false;
             // 
             // themedLabel3
             // 
@@ -97,7 +97,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel3.TabIndex = 3;
             this.themedLabel3.Text = "Themed Label Right";
             this.themedLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.themedLabel3.UseCompatibleTextRendering = true;
+            this.themedLabel3.UseCompatibleTextRendering = false;
             // 
             // themedToggle1
             // 
@@ -133,7 +133,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel5.TabIndex = 7;
             this.themedLabel5.Text = "Themed Label Right";
             this.themedLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.themedLabel5.UseCompatibleTextRendering = true;
+            this.themedLabel5.UseCompatibleTextRendering = false;
             // 
             // themedLabel6
             // 
@@ -145,7 +145,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel6.TabIndex = 8;
             this.themedLabel6.Text = "Themed Label Left";
             this.themedLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.themedLabel6.UseCompatibleTextRendering = true;
+            this.themedLabel6.UseCompatibleTextRendering = false;
             // 
             // themedLabel7
             // 
@@ -157,7 +157,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel7.TabIndex = 9;
             this.themedLabel7.Text = "Themed Label Center";
             this.themedLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.themedLabel7.UseCompatibleTextRendering = true;
+            this.themedLabel7.UseCompatibleTextRendering = false;
             // 
             // themedProgressBar1
             // 
@@ -213,7 +213,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel8.TabIndex = 1;
             this.themedLabel8.Text = "Panel Test";
             this.themedLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.themedLabel8.UseCompatibleTextRendering = true;
+            this.themedLabel8.UseCompatibleTextRendering = false;
             // 
             // themedLabel4
             // 
@@ -223,7 +223,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel4.Size = new System.Drawing.Size(68, 17);
             this.themedLabel4.TabIndex = 0;
             this.themedLabel4.Text = "Panel Test";
-            this.themedLabel4.UseCompatibleTextRendering = true;
+            this.themedLabel4.UseCompatibleTextRendering = false;
             // 
             // themedTextBox1
             // 

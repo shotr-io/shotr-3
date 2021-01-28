@@ -120,6 +120,8 @@ namespace Shotr.Ui.Forms
                 ShowInTaskbar = true;
                 Visible = true;
             }
+
+            UpdateControls();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -248,6 +250,7 @@ namespace Shotr.Ui.Forms
                 }
 
                 var extension = e != null ? Path.GetExtension(e.URL) : ((FileExtensions) ((object[]) sender)[2]).ToString();
+                extension = extension.Replace(".", "");
                 var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{extension}";
 
                 File.WriteAllBytes(filename, (byte[])((object[])sender)[1]);
@@ -279,7 +282,11 @@ namespace Shotr.Ui.Forms
                 _settings.Uploads ??= new List<UploadItem>();
                 _settings.Uploads.Add(uploadItem);
 
-                Invoke((MethodInvoker) (() => themedListView1.Items.Insert(0, listViewItem)));
+                Invoke((MethodInvoker) (() =>
+                {
+                    themedListView1.Items.Insert(0, listViewItem);
+                    uploadCountLabel.Text = _settings.Uploads.Count.ToString();
+                }));
             }
 
             Invoke((MethodInvoker)(() =>

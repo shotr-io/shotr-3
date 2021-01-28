@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 
@@ -32,6 +31,11 @@ namespace Shotr.Core.Controls.Theme
         private readonly SolidBrush _backColorBrush = new SolidBrush(Theme.ProgressBarBackColor);
         private readonly SolidBrush _activeColorBrush = new SolidBrush(Theme.ProgressBarColor);
         private readonly Pen _borderPen = new Pen(Theme.ProgressBarBorderColor);
+
+        public ThemedProgressBar()
+        {
+            base.DoubleBuffered = true;
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {

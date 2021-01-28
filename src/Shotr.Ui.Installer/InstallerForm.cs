@@ -7,12 +7,12 @@ using System.Security.AccessControl;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Ui.Installer.Utils;
 
 namespace Shotr.Ui.Installer
 {
-    public partial class InstallerForm : DpiScaledForm
+    public partial class InstallerForm : ThemedForm
     {
         public InstallerForm()
         {

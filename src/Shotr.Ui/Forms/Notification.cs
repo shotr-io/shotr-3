@@ -42,7 +42,7 @@ namespace Shotr.Ui.Forms
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
-            
+            Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
             Closing += Notification_Closing;
             _animator = new FormAnimator(this);
             _animator.Direction = FormAnimator.AnimationDirection.Up;

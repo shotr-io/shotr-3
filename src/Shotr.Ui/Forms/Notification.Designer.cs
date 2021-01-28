@@ -34,12 +34,12 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Notification));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.metroLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.metroLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.metroLink1 = new Shotr.Core.Controls.Theme.ThemedLinkLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
+            this.themedButton1 = new Shotr.Core.Controls.Theme.ThemedButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,6 +49,7 @@ namespace Shotr.Ui.Forms
             // 
             // metroLabel1
             // 
+            this.metroLabel1.BasePaint = false;
             this.metroLabel1.Location = new System.Drawing.Point(40, 14);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Scaled = true;
@@ -56,10 +57,11 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.TabIndex = 0;
             this.metroLabel1.Text = "Screenshot Uploaded!";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel1.UseCompatibleTextRendering = true;
+            this.metroLabel1.UseCompatibleTextRendering = false;
             // 
             // metroLabel2
             // 
+            this.metroLabel2.BasePaint = false;
             this.metroLabel2.Location = new System.Drawing.Point(23, 37);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Scaled = true;
@@ -67,10 +69,11 @@ namespace Shotr.Ui.Forms
             this.metroLabel2.TabIndex = 1;
             this.metroLabel2.Text = "The link has been copied to your clipboard.";
             this.metroLabel2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.metroLabel2.UseCompatibleTextRendering = true;
+            this.metroLabel2.UseCompatibleTextRendering = false;
             // 
             // metroLink1
             // 
+            this.metroLink1.BasePaint = false;
             this.metroLink1.Location = new System.Drawing.Point(40, 61);
             this.metroLink1.Name = "metroLink1";
             this.metroLink1.Scaled = true;
@@ -84,22 +87,38 @@ namespace Shotr.Ui.Forms
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_icon;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.BasePaint = false;
             this.pictureBox1.Location = new System.Drawing.Point(5, 5);
             this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Scaled = true;
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
+            // 
+            // themedButton1
+            // 
+            this.themedButton1.BasePaint = false;
+            this.themedButton1.Highlight = false;
+            this.themedButton1.Location = new System.Drawing.Point(316, 5);
+            this.themedButton1.Name = "themedButton1";
+            this.themedButton1.Scaled = true;
+            this.themedButton1.Size = new System.Drawing.Size(21, 16);
+            this.themedButton1.TabIndex = 4;
+            this.themedButton1.Text = "X";
+            this.themedButton1.UseVisualStyleBackColor = true;
             // 
             // Notification
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(342, 88);
+            this.Controls.Add(this.themedButton1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.metroLink1);
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.metroLabel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Notification";
@@ -118,6 +137,7 @@ namespace Shotr.Ui.Forms
         private ThemedLabel metroLabel1;
         private ThemedLabel metroLabel2;
         private ThemedLinkLabel metroLink1;
-        private PictureBox pictureBox1;
+        private DpiScaledPictureBox pictureBox1;
+        private ThemedButton themedButton1;
     }
 }

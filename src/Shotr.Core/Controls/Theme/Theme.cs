@@ -24,6 +24,7 @@ namespace Shotr.Core.Controls.Theme
 
         public static Color FormBackColor = Color.FromArgb(19, 19, 48);
         public static Color FormHighlightColor = Color.FromArgb(79, 72, 165);
+        public static Color FormBorderColor = Color.FromArgb(51, 45, 68);
 
         public static Color TabPageBackColor = Color.FromArgb(19, 19, 48);
 
@@ -68,5 +69,7 @@ namespace Shotr.Core.Controls.Theme
         public static Color TabControlForeColor = Color.FromArgb(255, 255, 255);
         public static Color TabControlBorderColor = Color.FromArgb(51, 45, 68);
         public static Color TabControlHighlightColor = Color.FromArgb(79, 72, 165);
+
+        public static Color BarBackColor = Color.FromArgb(79, 72, 165); 
     }
 }

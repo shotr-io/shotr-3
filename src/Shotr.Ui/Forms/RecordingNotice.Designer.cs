@@ -51,7 +51,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel2.Text = "You can press the hotkey for a video recording to \r\nstop recording in the case yo" +
     "u are recording your\r\nwhole screen or the bottom area.";
             this.metroLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel2.UseCompatibleTextRendering = true;
+            this.metroLabel2.UseCompatibleTextRendering = false;
             // 
             // metroButton3
             // 
@@ -97,7 +97,7 @@ namespace Shotr.Ui.Forms
             this.themedLabel1.Size = new System.Drawing.Size(130, 15);
             this.themedLabel1.TabIndex = 35;
             this.themedLabel1.Text = "Don\'t show this again.";
-            this.themedLabel1.UseCompatibleTextRendering = true;
+            this.themedLabel1.UseCompatibleTextRendering = false;
             // 
             // RecordingNotice
             // 

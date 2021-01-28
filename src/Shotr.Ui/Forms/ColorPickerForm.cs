@@ -196,6 +196,7 @@ namespace Shotr.Ui.Forms
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
             if (_drawing)
             {
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width+1, Bounds.Height+1));
                 e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));
                 if (_settings.Capture.ShowZoom)
                 {

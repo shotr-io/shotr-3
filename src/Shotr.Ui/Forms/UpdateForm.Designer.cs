@@ -40,6 +40,7 @@ namespace Shotr.Ui.Forms
             this.metroButton2 = new Shotr.Core.Controls.Theme.ThemedButton();
             this.metroLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.dpiScaledPictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
+            this.themedProgressBar1 = new Shotr.Core.Controls.Theme.ThemedProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dpiScaledPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,7 +55,7 @@ namespace Shotr.Ui.Forms
             this.metroTextBox1.Scaled = true;
             this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.metroTextBox1.Size = new System.Drawing.Size(420, 154);
-            this.metroTextBox1.TabIndex = 1;
+            this.metroTextBox1.TabIndex = 2;
             this.metroTextBox1.TabStop = false;
             this.metroTextBox1.Text = "New Stuff has been Added.";
             this.metroTextBox1.UseSystemPasswordChar = false;
@@ -63,13 +64,13 @@ namespace Shotr.Ui.Forms
             // 
             this.metroLabel1.AutoSize = true;
             this.metroLabel1.BasePaint = false;
-            this.metroLabel1.Location = new System.Drawing.Point(11, 66);
+            this.metroLabel1.Location = new System.Drawing.Point(13, 69);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Scaled = true;
             this.metroLabel1.Size = new System.Drawing.Size(91, 15);
             this.metroLabel1.TabIndex = 1;
             this.metroLabel1.Text = "Release Notes:";
-            this.metroLabel1.UseCompatibleTextRendering = true;
+            this.metroLabel1.UseCompatibleTextRendering = false;
             // 
             // metroButton1
             // 
@@ -97,15 +98,15 @@ namespace Shotr.Ui.Forms
             // 
             // metroLabel2
             // 
-            this.metroLabel2.AutoSize = true;
             this.metroLabel2.BasePaint = false;
-            this.metroLabel2.Location = new System.Drawing.Point(229, 44);
+            this.metroLabel2.Location = new System.Drawing.Point(191, 44);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Scaled = true;
-            this.metroLabel2.Size = new System.Drawing.Size(197, 15);
+            this.metroLabel2.Size = new System.Drawing.Size(250, 15);
             this.metroLabel2.TabIndex = 4;
-            this.metroLabel2.Text = "An update is available, download?";
-            this.metroLabel2.UseCompatibleTextRendering = true;
+            this.metroLabel2.Text = "A new update is available.";
+            this.metroLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.metroLabel2.UseCompatibleTextRendering = false;
             // 
             // dpiScaledPictureBox1
             // 
@@ -121,10 +122,24 @@ namespace Shotr.Ui.Forms
             this.dpiScaledPictureBox1.TabIndex = 6;
             this.dpiScaledPictureBox1.TabStop = false;
             // 
+            // themedProgressBar1
+            // 
+            this.themedProgressBar1.BasePaint = false;
+            this.themedProgressBar1.Location = new System.Drawing.Point(157, 27);
+            this.themedProgressBar1.MaxValue = 100;
+            this.themedProgressBar1.Name = "themedProgressBar1";
+            this.themedProgressBar1.Scaled = true;
+            this.themedProgressBar1.Size = new System.Drawing.Size(198, 23);
+            this.themedProgressBar1.TabIndex = 7;
+            this.themedProgressBar1.Text = "themedProgressBar1";
+            this.themedProgressBar1.Value = 0;
+            this.themedProgressBar1.Visible = false;
+            // 
             // UpdateForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(451, 260);
+            this.Controls.Add(this.themedProgressBar1);
             this.Controls.Add(this.dpiScaledPictureBox1);
             this.Controls.Add(this.metroButton2);
             this.Controls.Add(this.metroButton1);
@@ -135,7 +150,9 @@ namespace Shotr.Ui.Forms
             this.MaximizeBox = false;
             this.Name = "UpdateForm";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Shotr Updater";
+            this.Load += new System.EventHandler(this.UpdateForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dpiScaledPictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -150,5 +167,6 @@ namespace Shotr.Ui.Forms
         private ThemedButton metroButton2;
         private ThemedLabel metroLabel2;
         private DpiScaledPictureBox dpiScaledPictureBox1;
+        private ThemedProgressBar themedProgressBar1;
     }
 }

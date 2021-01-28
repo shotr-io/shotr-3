@@ -43,6 +43,7 @@ namespace Shotr.Ui.Forms
             // 
             // metroLabel1
             // 
+            this.metroLabel1.BasePaint = false;
             this.metroLabel1.Location = new System.Drawing.Point(9, 60);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Scaled = true;
@@ -50,10 +51,11 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.TabIndex = 0;
             this.metroLabel1.Text = "Shotr needs to download FFMPEG in order for screen recording to function.";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel1.UseCompatibleTextRendering = true;
+            this.metroLabel1.UseCompatibleTextRendering = false;
             // 
             // metroProgressBar1
             // 
+            this.metroProgressBar1.BasePaint = false;
             this.metroProgressBar1.Location = new System.Drawing.Point(14, 87);
             this.metroProgressBar1.MaxValue = 100;
             this.metroProgressBar1.Name = "metroProgressBar1";
@@ -64,6 +66,7 @@ namespace Shotr.Ui.Forms
             // 
             // metroButton1
             // 
+            this.metroButton1.BasePaint = false;
             this.metroButton1.Highlight = false;
             this.metroButton1.Location = new System.Drawing.Point(470, 116);
             this.metroButton1.Name = "metroButton1";
@@ -78,6 +81,7 @@ namespace Shotr.Ui.Forms
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dpiScaledPictureBox1.BasePaint = false;
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(5, 11);
             this.dpiScaledPictureBox1.Name = "dpiScaledPictureBox1";
             this.dpiScaledPictureBox1.Scaled = true;
