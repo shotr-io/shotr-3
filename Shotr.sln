@@ -17,6 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shotr.Ui.Installer", "src\S
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		BetaTest|Any CPU = BetaTest|Any CPU
+		BetaTest|x64 = BetaTest|x64
+		BetaTest|x86 = BetaTest|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -28,6 +31,12 @@ Global
 		ThemeDebugger|x86 = ThemeDebugger|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|x64.ActiveCfg = BetaTest|x64
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|x64.Build.0 = BetaTest|x64
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|x86.ActiveCfg = BetaTest|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|x86.Build.0 = BetaTest|Any CPU
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.Debug|x64.ActiveCfg = Debug|x64
@@ -46,6 +55,12 @@ Global
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|x64.ActiveCfg = BetaTest|x64
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|x64.Build.0 = BetaTest|x64
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|x86.ActiveCfg = BetaTest|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|x86.Build.0 = BetaTest|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.Debug|x64.ActiveCfg = Debug|x64
@@ -64,6 +79,12 @@ Global
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|x64.ActiveCfg = BetaTest|x64
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|x64.Build.0 = BetaTest|x64
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|x86.ActiveCfg = BetaTest|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|x86.Build.0 = BetaTest|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.Debug|x64.ActiveCfg = Debug|x64
@@ -82,6 +103,12 @@ Global
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|x64.ActiveCfg = BetaTest|x64
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|x64.Build.0 = BetaTest|x64
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|x86.ActiveCfg = BetaTest|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|x86.Build.0 = BetaTest|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.Debug|x64.ActiveCfg = Debug|x64
@@ -100,6 +127,12 @@ Global
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|x64.ActiveCfg = BetaTest|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|x64.Build.0 = BetaTest|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|x86.ActiveCfg = BetaTest|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|x86.Build.0 = BetaTest|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.Debug|x64.ActiveCfg = Debug|Any CPU

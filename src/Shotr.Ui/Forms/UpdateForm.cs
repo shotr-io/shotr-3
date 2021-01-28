@@ -27,7 +27,7 @@ namespace Shotr.Ui.Forms
 
         public void SetUpForm(UpdaterResponse p)
         {
-            metroTextBox1.Text = p.Changelog;
+            metroTextBox1.Text = p.Changes;
             TopMost = false;
             metroLabel2.Text = " A new update is available.";
             _upd = p;
@@ -49,7 +49,7 @@ namespace Shotr.Ui.Forms
             Text = "Shotr - Updating";
             FormBorderStyle = FormBorderStyle.FixedSingle;
             //update shit.
-            UpdateFromUrl(_upd.UpdateUrl);
+            UpdateFromUrl();
         }
 
         private void metroButton2_Click(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace Shotr.Ui.Forms
             Close();
         }
 
-        private void UpdateFromUrl(string url)
+        private void UpdateFromUrl()
         {
             new Thread(delegate()
             {
@@ -83,7 +83,7 @@ namespace Shotr.Ui.Forms
                         Environment.Exit(0);
                     };
 
-                    m.DownloadFileAsync(new Uri("https://shotr.io/latest"), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe"));
+                    m.DownloadFileAsync(new Uri("https://shotr.dev/downloads/Shotr-Installer.exe"), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe"));
                     
                 }
                 catch (Exception ex)

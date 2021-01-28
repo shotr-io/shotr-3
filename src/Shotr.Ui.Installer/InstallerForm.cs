@@ -90,7 +90,7 @@ namespace Shotr.Ui.Installer
                     var output = 2.0f;
                     try
                     {
-                        var url = Program.Alpha ? "https://shotr.io/latest_alpha.zip" : "http://shotr.io/latest.zip";
+                        var url = "https://shotr.dev/downloads/latest_beta.zip";
                         var r = (HttpWebRequest)WebRequest.Create(url);
 						r.Proxy = null;
                         r.Method = "HEAD";
@@ -197,7 +197,7 @@ namespace Shotr.Ui.Installer
                 new Thread(delegate() {
                     try
                     {
-                        var url = Program.Alpha ? "https://shotr.io/latest_alpha.zip" : "http://shotr.io/latest.zip";
+                        var url = "https://shotr.dev/downloads/latest_beta.zip";
                         p.DownloadFile(new Uri(url), tempFile);
                         DownloadCompleted.Invoke(false);
                     }

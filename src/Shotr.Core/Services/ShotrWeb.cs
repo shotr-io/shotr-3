@@ -21,7 +21,7 @@ namespace Shotr.Core.Services
     {
         private string? _email;
         private string? _password;
-#if DEBUG
+#if DEBUG || BETATEST
         private string shotr_web = "https://shotr.dev/api/login";
         //private string shotr_web = "http://localhost/api/login";
 #else

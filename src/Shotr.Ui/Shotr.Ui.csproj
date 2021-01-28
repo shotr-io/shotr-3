@@ -16,7 +16,7 @@
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <StartupObject>Shotr.Ui.Program</StartupObject>
-    <Configurations>Debug;Release;ThemeDebugger</Configurations>
+    <Configurations>Debug;Release;ThemeDebugger;BetaTest</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,7 @@ using Shotr.Core.Controls.DpiScaling;
 
 namespace Shotr.Core.Controls.Theme
 {
-    public partial class ThemedForm : DpiScaledForm
+    public class ThemedForm : DpiScaledForm
     {
         private Pen _borderPen = new Pen(Theme.FormBorderColor);
         public override Color BackColor => Theme.FormBackColor;

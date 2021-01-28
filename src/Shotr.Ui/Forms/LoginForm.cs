@@ -61,7 +61,7 @@ namespace Shotr.Ui.Forms
         private void ThemedLinkLabel1_Click(object sender, EventArgs e)
         {
             // Open browser with link to forgot page
-#if DEBUG
+#if DEBUG || BETATEST
             "https://shotr.dev/auth/forgot".OpenUrl();
 #else
             "https://shotr.io/auth/forgot".OpenUrl();
@@ -71,7 +71,7 @@ namespace Shotr.Ui.Forms
         private void ThemedLinkLabel2_Click(object sender, EventArgs e)
         {
             // Register page
-#if DEBUG
+#if DEBUG || BETATEST
             "https://shotr.dev/auth/register".OpenUrl();
 #else
             "https://shotr.io/auth/forgot".OpenUrl();

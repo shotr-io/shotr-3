@@ -258,15 +258,15 @@ namespace Shotr.Ui
 
             var alphaBetaTag = e.UpdateInfo switch
             {
-                { Alpha: true } => "a",
-                { Beta: true } => "b",
+                { ChannelTypeId: 20 } => "a",
+                { ChannelTypeId: 30 } => "b",
                 _ => string.Empty
             };
 
             if (serverVersion > assemblyVersion)
             {
                 //check if it's an alpha or beta update.
-                if (e.UpdateInfo.Alpha || e.UpdateInfo.Beta)
+                if (e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)
                 {
                     //check if the user has subscribed to them or not.
                     if (!e.Settings.SubscribeToAlphaBeta)
@@ -281,7 +281,7 @@ namespace Shotr.Ui
             {
                 Console.WriteLine($"You are running Shotr - v{displayVersion}{alphaBetaTag}.");
 
-                //return;
+                return;
             }
 
             while (Utils.GetForegroundProcess() != null)

@@ -17,6 +17,7 @@
     <Authors>Shotr</Authors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>Shotr.Ui.Installer.Program</StartupObject>
+    <Configurations>Debug;Release;BetaTest</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
