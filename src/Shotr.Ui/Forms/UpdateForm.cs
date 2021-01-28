@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
@@ -40,18 +41,18 @@ namespace Shotr.Ui.Forms
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
             //start the updating.
-            Size = new Size(265, 70);
+            Size = new Size((int)(265 * scalingFactor), (int)(70 * scalingFactor));
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Width / 2 - (Size.Width / 2), Screen.PrimaryScreen.WorkingArea.Height / 2 - (Size.Height / 2));
             metroTextBox1.Visible = false;
             metroLabel1.Visible = false;
             metroLabel2.Visible = false;
             metroButton1.Visible = false;
             metroButton2.Visible = false;
-            metroProgressSpinner1.Visible = true;
             Text = "Shotr - Updating";
             //update shit.
-            UpdateFromUrl(_upd.UpdateUrl);
+            //UpdateFromUrl(_upd.UpdateUrl);
         }
 
         private void metroButton2_Click(object sender, EventArgs e)

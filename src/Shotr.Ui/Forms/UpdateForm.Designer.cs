@@ -39,7 +39,6 @@ namespace Shotr.Ui.Forms
             this.metroButton1 = new Shotr.Core.Controls.Theme.ThemedButton();
             this.metroButton2 = new Shotr.Core.Controls.Theme.ThemedButton();
             this.metroLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.metroProgressSpinner1 = new System.Windows.Forms.ProgressBar();
             this.dpiScaledPictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dpiScaledPictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -108,21 +107,12 @@ namespace Shotr.Ui.Forms
             this.metroLabel2.Text = "An update is available, download?";
             this.metroLabel2.UseCompatibleTextRendering = true;
             // 
-            // metroProgressSpinner1
-            // 
-            this.metroProgressSpinner1.Location = new System.Drawing.Point(157, 26);
-            this.metroProgressSpinner1.Name = "metroProgressSpinner1";
-            this.metroProgressSpinner1.Size = new System.Drawing.Size(119, 25);
-            this.metroProgressSpinner1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.metroProgressSpinner1.TabIndex = 5;
-            this.metroProgressSpinner1.TabStop = false;
-            this.metroProgressSpinner1.Visible = false;
-            // 
             // dpiScaledPictureBox1
             // 
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
+            this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dpiScaledPictureBox1.BasePaint = false;
-            this.dpiScaledPictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("dpiScaledPictureBox1.Image")));
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(8, 11);
             this.dpiScaledPictureBox1.Name = "dpiScaledPictureBox1";
             this.dpiScaledPictureBox1.Scaled = true;
@@ -136,7 +126,6 @@ namespace Shotr.Ui.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(451, 260);
             this.Controls.Add(this.dpiScaledPictureBox1);
-            this.Controls.Add(this.metroProgressSpinner1);
             this.Controls.Add(this.metroButton2);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.metroTextBox1);
@@ -160,7 +149,6 @@ namespace Shotr.Ui.Forms
         private ThemedButton metroButton1;
         private ThemedButton metroButton2;
         private ThemedLabel metroLabel2;
-        private ProgressBar metroProgressSpinner1;
         private DpiScaledPictureBox dpiScaledPictureBox1;
     }
 }

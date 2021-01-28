@@ -277,20 +277,11 @@ namespace Shotr.Ui
                 //show update form.
                 Console.WriteLine($"There is an update available to Shotr - v{displayVersion}{alphaBetaTag}.");
             }
-            else if (serverVersion == assemblyVersion)
+            else
             {
                 Console.WriteLine($"You are running Shotr - v{displayVersion}{alphaBetaTag}.");
 
-                return;
-            }
-            else
-            {
-                if (e.Settings.SubscribeToAlphaBeta)
-                {
-                    return;
-                }
-                
-                Console.WriteLine($"There is an update (downgrade) available to Shotr - v{displayVersion}{alphaBetaTag}.");
+                //return;
             }
 
             while (Utils.GetForegroundProcess() != null)

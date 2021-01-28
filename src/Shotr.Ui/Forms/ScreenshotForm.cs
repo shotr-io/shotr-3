@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -58,7 +59,7 @@ namespace Shotr.Ui.Forms
             _availableColors = new List<Color>();
             var colorsType = typeof(Color);
             var properties = colorsType.GetProperties(BindingFlags.Static | BindingFlags.Public);
-            foreach (var prop in properties)
+            foreach (var prop in properties.OrderByDescending(p => p.Name))
             {
                 _availableColors.Add(Color.FromName(prop.Name));
             }
@@ -66,6 +67,7 @@ namespace Shotr.Ui.Forms
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
 
             InitializeComponent();
+
             var dpiScale = DpiScaler.GetScalingFactor(this);
             Font = Theme.Font((int)(Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
@@ -80,11 +82,7 @@ namespace Shotr.Ui.Forms
 
             Paint += ScreenshotForm_Paint;
             FormBorderStyle = FormBorderStyle.None;
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            var i = 0;
+            int height = 0, width = 0, left = 0, top = 0, i = 0;
             foreach (var screen in Screen.AllScreens)
             {
                 screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
