@@ -208,8 +208,8 @@ namespace Shotr.Ui
                 }
             }
             
-            DesktopNotificationManagerCompat.RegisterAumidAndComServer<Notification>("Shotr");
-            DesktopNotificationManagerCompat.RegisterActivator<Notification>();
+            DesktopNotificationManagerCompat.RegisterAumidAndComServer<Toast>("Shotr");
+            DesktopNotificationManagerCompat.RegisterActivator<Toast>();
 
             Application.Run(form);
             GC.KeepAlive(_mutex);
@@ -320,11 +320,10 @@ namespace Shotr.Ui
                 Thread.Sleep(5000);
             }
 
-            var updateForm = _serviceProvider.GetService<UpdateForm>();
-            updateForm.SetUpForm(e.UpdateInfo);
-            updateForm.ShowDialog();
+            Toast.Send(null, $"An update to v{displayVersion}{alphaBetaTag} is available!", "View Update", "viewUpdate", 
+                $"changes={e.UpdateInfo.Changes}&subscribeAlphaBeta={(e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)}");
 
-            Updater.Check = false;
+            Updater.TimeToCheck = 60 * 60 * 1000 * 12; // Wait 12 hours till next notification
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

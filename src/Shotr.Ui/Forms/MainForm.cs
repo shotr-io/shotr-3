@@ -341,7 +341,7 @@ namespace Shotr.Ui.Forms
                         {
                             if (!WineDetectionService.IsWine())
                             {
-                                SendNotification(fileName,
+                                Toast.Send(fileName,
                                     mime.Contains("text") ? "Text uploaded and link copied to clipboard!" :
                                     mime.Contains("video") ? "Recording uploaded and link copied to clipboard!" :
                                     "Screenshot uploaded and link copied to clipboard!", "View Upload", "viewUrl",
@@ -360,10 +360,10 @@ namespace Shotr.Ui.Forms
                         {
                             if (!WineDetectionService.IsWine())
                             {
-                                SendNotification(fileName,
+                                Toast.Send(fileName,
                                     mime.Contains("video") 
                                         ? "Recording saved!"
-                                        : "Screenshot saved and copied to clipboard!");
+                                        : $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and" : "")} copied to clipboard!");
                             }
                             else
                             {
@@ -378,7 +378,7 @@ namespace Shotr.Ui.Forms
                 }
 
                 jpg?.Dispose();
-                b?.Dispose();
+                //b?.Dispose();
             }));
         }
 
@@ -980,32 +980,6 @@ namespace Shotr.Ui.Forms
 
                 UpdateControls();
             }
-        }
-
-        private void SendNotification(string? imagePath, string text, string? buttonText = null, string? action = null, string? query = null)
-        {
-            var toastBuilder = new ToastContentBuilder()
-                .AddAppLogoOverride(new Uri(Path.Combine(SettingsService.CachePath, "shotr.png")), ToastGenericAppLogoCrop.Default)
-                .AddText("Shotr")
-                .AddText(text);
-
-            if (imagePath is { })
-            {
-                toastBuilder.AddHeroImage(new Uri(imagePath));
-            }
-
-            if (buttonText is {} && action is {} && query is {})
-            {
-                toastBuilder.AddButton(buttonText, ToastActivationType.Foreground, $"action={action}&{query}");
-            }
-            
-            XmlDocument x = new XmlDocument();
-            var content = toastBuilder.GetToastContent().GetContent();
-            x.LoadXml(content);
-
-            ToastNotification toast = new ToastNotification(x);
-
-            ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
         }
     }
 }
