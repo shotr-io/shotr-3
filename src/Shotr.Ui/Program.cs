@@ -306,7 +306,7 @@ namespace Shotr.Ui
                     }
                 }
                 //show update form.
-                Console.WriteLine($"There is an update available to Shotr - v{displayVersion}{alphaBetaTag}.");
+                Console.WriteLine($"There is an update available to Shotr - v{serverVersion}{alphaBetaTag}.");
             }
             else
             {
@@ -320,8 +320,16 @@ namespace Shotr.Ui
                 Thread.Sleep(5000);
             }
 
-            Toast.Send(null, $"An update to v{displayVersion}{alphaBetaTag} is available!", "View Update", "viewUpdate", 
-                $"changes={e.UpdateInfo.Changes}&subscribeAlphaBeta={(e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)}");
+            if (!WineDetectionService.IsWine())
+            {
+                Toast.Send(null, $"An update to v{serverVersion}{alphaBetaTag} is available!", "View Update", "viewUpdate",
+                    $"changes={e.UpdateInfo.Changes}&subscribeAlphaBeta={(e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)}");
+            }
+            else
+            {
+                var updateForm = new UpdateForm(e.UpdateInfo.Changes, e.Settings.SubscribeToAlphaBeta, false);
+                updateForm.ShowDialog();
+            }
 
             Updater.TimeToCheck = 60 * 60 * 1000 * 12; // Wait 12 hours till next notification
         }

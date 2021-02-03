@@ -15,7 +15,7 @@ namespace Shotr.Ui.Forms
     public partial class UpdateForm : ThemedForm
     {
         private bool _subscribeToAlphaBeta;
-        public UpdateForm(string changes, bool subscribeToAlphaBeta)
+        public UpdateForm(string changes, bool subscribeToAlphaBeta, bool topMost = true)
         {
             InitializeComponent();
 
@@ -23,7 +23,7 @@ namespace Shotr.Ui.Forms
             metroTextBox1.Text = changes;
             _subscribeToAlphaBeta = subscribeToAlphaBeta;
 
-            TopMost = true;
+            TopMost = topMost;
             metroTextBox1.DeselectAll();
         }
 
