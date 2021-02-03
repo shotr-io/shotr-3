@@ -312,8 +312,6 @@ namespace Shotr.Ui.Forms
 
                     dataObj.SetImage(b);
                     Clipboard.SetDataObject(dataObj);
-                    //jpg.Dispose();
-                    //b.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -363,7 +361,7 @@ namespace Shotr.Ui.Forms
                                 Toast.Send(fileName,
                                     mime.Contains("video") 
                                         ? "Recording saved!"
-                                        : $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and" : "")} copied to clipboard!");
+                                        : $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!");
                             }
                             else
                             {
@@ -378,7 +376,6 @@ namespace Shotr.Ui.Forms
                 }
 
                 jpg?.Dispose();
-                //b?.Dispose();
             }));
         }
 
