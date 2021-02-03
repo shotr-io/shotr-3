@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using Shotr.Core.Controls.Theme;
 using Shotr.Ui.Installer.Utils;
+using Toasty;
 
 namespace Shotr.Ui.Installer
 {
@@ -295,7 +296,14 @@ namespace Shotr.Ui.Installer
                             shortcut.DisplayMode = ShellLink.LinkDisplayMode.edmNormal;
                             shortcut.Save(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Shotr.lnk");
                         }
-                      
+
+                        ShortcutManager.RegisterAppForNotifications(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Shotr.lnk",
+                            installedLocation + "\\Shotr.exe",
+                            "",
+                            "Shotr",
+                    @"F690F4C2-040B-41DC-BE39-08477E082DFC"
+                        );
+
                         //Utils.Utils.PinUnpinTaskBar(this.installPath + "Shotr.exe", true);
 
                         //add to registry.

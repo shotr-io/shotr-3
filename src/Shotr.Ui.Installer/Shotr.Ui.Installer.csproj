@@ -17,8 +17,12 @@
     <Authors>Shotr</Authors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>Shotr.Ui.Installer.Program</StartupObject>
-    <Configurations>Debug;Release;BetaTest</Configurations>
+    <Configurations>Debug;Release;BetaTest;WindowsNotification</Configurations>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Shotr.Core\Shotr.Core.csproj" />

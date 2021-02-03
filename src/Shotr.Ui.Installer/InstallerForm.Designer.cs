@@ -601,6 +601,7 @@ namespace Shotr.Ui.Installer
             // step4TextBox
             // 
             this.step4TextBox.BasePaint = false;
+            this.step4TextBox.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.step4TextBox.Location = new System.Drawing.Point(27, 88);
             this.step4TextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step4TextBox.Multiline = true;
