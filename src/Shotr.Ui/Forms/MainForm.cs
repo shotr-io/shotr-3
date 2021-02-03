@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using Shotr.Core;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Hotkey;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities.Hotkeys;
@@ -358,17 +359,21 @@ namespace Shotr.Ui.Forms
             
             UpdateHotKeys();
             UpdateListView(firstLoad);
-            
-            foreach (var uploader in _uploaders)
+
+            if (firstLoad)
             {
-                selectedImageUploader.Items.Add(uploader.Title);
+                foreach (var uploader in _uploaders)
+                {
+                    selectedImageUploader.Items.Add(uploader.Title);
+                }
+
+                selectedImageUploader.Text = _settings.Capture.Uploader;
+                if (selectedImageUploader.Text == "" && selectedImageUploader.Items.Count > 0)
+                {
+                    selectedImageUploader.Text = (string) selectedImageUploader.Items[0];
+                }
             }
 
-            selectedImageUploader.Text = _settings.Capture.Uploader;
-            if (selectedImageUploader.Text == "" && selectedImageUploader.Items.Count > 0)
-            {
-                selectedImageUploader.Text = (string)selectedImageUploader.Items[0];
-            }
             UpdateDirectUrl();
 
             if (_settings.Login.Enabled == true)
@@ -639,7 +644,7 @@ namespace Shotr.Ui.Forms
                     }));
                     break;
                 case KeyTask.RecordScreen:
-                    if (!File.Exists(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) || Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) != "76b4131c0464beef626eb445587e69fe")
+                    if (!File.Exists(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) || Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) != "05a894305c9bd146dad4cc3ff0e21e83")
                     {
                         var mpg = new FfMpegDownload();
                         if (mpg.ShowDialog() == DialogResult.Cancel)
@@ -824,7 +829,14 @@ namespace Shotr.Ui.Forms
             WindowState = FormWindowState.Normal;
             ShowInTaskbar = true;
             //show settings.
-            metroTabControl1.SelectTab(1);
+            if (metroTabControl1.TabPages.Count > 1)
+            {
+                metroTabControl1.SelectTab(1);
+            }
+            else
+            {
+                metroTabControl1.SelectTab(0);
+            }
         }
 
         private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)

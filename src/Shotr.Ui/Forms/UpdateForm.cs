@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
@@ -72,6 +73,20 @@ namespace Shotr.Ui.Forms
                     };
                     m.DownloadFileCompleted += (sender, args) =>
                     {
+                        using (var fs = File.OpenRead(Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip")))
+                        {
+                            using (var zip = new ZipArchive(fs))
+                            {
+                                foreach (var zipEntry in zip.Entries)
+                                {
+                                    var fileName = Path.Combine(SettingsService.FolderPath, zipEntry.Name);
+                                    zipEntry.ExtractToFile(fileName, true);
+                                }
+                            }
+                        }
+
+                        File.Delete(Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip"));
+
                         var p = new Process();
                         p.StartInfo.Verb = "runas";
                         p.StartInfo.UseShellExecute = true;
@@ -79,11 +94,10 @@ namespace Shotr.Ui.Forms
                         p.StartInfo.Arguments = "--run-installer" + (_settings.SubscribeToAlphaBeta ? " --install-beta " : ""); // temp remove silent to show progress
                         p.Start();
 
-                        // TODO: Could decompress this to make the download smaller?
                         Environment.Exit(0);
                     };
 
-                    m.DownloadFileAsync(new Uri("https://shotr.dev/downloads/Shotr-Installer.exe"), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe"));
+                    m.DownloadFileAsync(new Uri("https://shotr.dev/downloads/Shotr-Installer.zip"), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip"));
                     
                 }
                 catch (Exception ex)

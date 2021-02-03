@@ -18,6 +18,7 @@ namespace Shotr.Ui.Forms
         public FfMpegDownload()
         {
             InitializeComponent();
+            DpiScaler.ScaleLocation(this, Size, Location);
         }
 
         private void metroButton1_Click(object sender, EventArgs e)
@@ -30,7 +31,7 @@ namespace Shotr.Ui.Forms
             f.Proxy = null;
             f.DownloadFileCompleted += f_DownloadFileCompleted;
             f.DownloadProgressChanged += f_DownloadProgressChanged;
-            f.DownloadFileAsync(new Uri("http://shotr.io/ffmpeg.compr"), Path.Combine(SettingsService.FolderPath, "ffmpeg.compressed"));
+            f.DownloadFileAsync(new Uri("https://shotr.dev/downloads/ffmpeg.gz"), Path.Combine(SettingsService.FolderPath, "ffmpeg.compressed"));
         }
 
         void f_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -47,7 +48,7 @@ namespace Shotr.Ui.Forms
                     Utils.Decompress(Path.Combine(SettingsService.FolderPath, "ffmpeg.compressed"), Path.Combine(SettingsService.FolderPath, "ffmpeg.exe"));
                     File.Delete(Path.Combine(SettingsService.FolderPath, "ffmpeg.compressed"));
                     //d76946e2b54773afd1c0e202dd14e73e
-                    if (Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) != "76b4131c0464beef626eb445587e69fe")
+                    if (Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) != "05a894305c9bd146dad4cc3ff0e21e83")
                     {
                         throw new Exception();
                     }
@@ -60,7 +61,7 @@ namespace Shotr.Ui.Forms
                 catch
                 {
                     //download was corrupted.
-                    "http://shotr.io/ffmpeg.exe".OpenUrl();
+                    "http://shotr.dev/downloads/ffmpeg.exe".OpenUrl();
                     Process.Start("explorer.exe", SettingsService.FolderPath);
                     MessageBox.Show("The download was corrupted. The program is now opening a link in your web browser and a folder on your computer. Please place the downloaded file in the folder that pops up, then press OK.");
                     Invoke((MethodInvoker)(() =>

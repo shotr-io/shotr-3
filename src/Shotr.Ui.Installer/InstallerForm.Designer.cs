@@ -69,7 +69,6 @@ namespace Shotr.Ui.Installer
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.step4GroupPanel = new Shotr.Core.Controls.Theme.ThemedPanel();
             this.step4TextBox = new Shotr.Core.Controls.Theme.ThemedTextBox();
-            this.step4ShowDetailButton = new Shotr.Core.Controls.Theme.ThemedButton();
             this.step4ProgressBar = new Shotr.Core.Controls.Theme.ThemedProgressBar();
             this.metroPanel4 = new Shotr.Core.Controls.Theme.ThemedPanel();
             this.finalNextButton = new Shotr.Core.Controls.Theme.ThemedButton();
@@ -292,6 +291,7 @@ namespace Shotr.Ui.Installer
             // metroTextBox1
             // 
             this.metroTextBox1.BasePaint = false;
+            this.metroTextBox1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroTextBox1.Location = new System.Drawing.Point(26, 95);
             this.metroTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.metroTextBox1.Multiline = true;
@@ -588,7 +588,6 @@ namespace Shotr.Ui.Installer
             this.step4GroupPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(19)))), ((int)(((byte)(48)))));
             this.step4GroupPanel.BasePaint = false;
             this.step4GroupPanel.Controls.Add(this.step4TextBox);
-            this.step4GroupPanel.Controls.Add(this.step4ShowDetailButton);
             this.step4GroupPanel.Controls.Add(this.step4ProgressBar);
             this.step4GroupPanel.Controls.Add(this.metroPanel4);
             this.step4GroupPanel.Controls.Add(this.step4ExtractLabel);
@@ -602,32 +601,17 @@ namespace Shotr.Ui.Installer
             // step4TextBox
             // 
             this.step4TextBox.BasePaint = false;
-            this.step4TextBox.Location = new System.Drawing.Point(27, 121);
+            this.step4TextBox.Location = new System.Drawing.Point(27, 88);
             this.step4TextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.step4TextBox.Multiline = true;
             this.step4TextBox.Name = "step4TextBox";
             this.step4TextBox.ReadOnly = true;
             this.step4TextBox.Scaled = true;
             this.step4TextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.step4TextBox.Size = new System.Drawing.Size(530, 203);
+            this.step4TextBox.Size = new System.Drawing.Size(530, 236);
             this.step4TextBox.TabIndex = 16;
             this.step4TextBox.TabStop = false;
             this.step4TextBox.UseSystemPasswordChar = false;
-            this.step4TextBox.Visible = false;
-            // 
-            // step4ShowDetailButton
-            // 
-            this.step4ShowDetailButton.BasePaint = false;
-            this.step4ShowDetailButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.step4ShowDetailButton.Highlight = false;
-            this.step4ShowDetailButton.Location = new System.Drawing.Point(27, 88);
-            this.step4ShowDetailButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.step4ShowDetailButton.Name = "step4ShowDetailButton";
-            this.step4ShowDetailButton.Scaled = true;
-            this.step4ShowDetailButton.Size = new System.Drawing.Size(88, 27);
-            this.step4ShowDetailButton.TabIndex = 15;
-            this.step4ShowDetailButton.Text = "Show Details";
-            this.step4ShowDetailButton.Click += new System.EventHandler(this.step4ShowDetailButton_Click);
             // 
             // step4ProgressBar
             // 
@@ -948,12 +932,12 @@ namespace Shotr.Ui.Installer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(583, 415);
+            this.Controls.Add(this.step4GroupPanel);
             this.Controls.Add(this.step3GroupPanel);
             this.Controls.Add(this.step2GroupPanel);
             this.Controls.Add(this.step6FailedPanel);
             this.Controls.Add(this.step1GroupPanel);
             this.Controls.Add(this.step5GroupPanel);
-            this.Controls.Add(this.step4GroupPanel);
             this.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -1024,7 +1008,6 @@ namespace Shotr.Ui.Installer
         private Shotr.Core.Controls.Theme.ThemedLabel metroLabel13;
         private Shotr.Core.Controls.Theme.ThemedLabel metroLabel12;
         private Shotr.Core.Controls.Theme.ThemedPanel step4GroupPanel;
-        private Shotr.Core.Controls.Theme.ThemedButton step4ShowDetailButton;
         private Shotr.Core.Controls.Theme.ThemedProgressBar step4ProgressBar;
         private Shotr.Core.Controls.Theme.ThemedPanel metroPanel4;
         private Shotr.Core.Controls.Theme.ThemedButton step4CancelButton;

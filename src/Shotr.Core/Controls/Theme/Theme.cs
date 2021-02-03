@@ -19,7 +19,7 @@ namespace Shotr.Core.Controls.Theme
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Font Font(float emSize) => new Font(_privateFontCollection.Families.FirstOrDefault(p => p.Name == "Inter") ?? new FontFamily("Inter"), emSize, FontStyle.Regular, GraphicsUnit.Pixel);
+        public static Font Font(float emSize) => new Font(_privateFontCollection.Families.FirstOrDefault(p => p.Name == "Inter") ?? new FontFamily("Inter"), emSize == 9f ? 12f : emSize, FontStyle.Regular, GraphicsUnit.Pixel);
         public static Font Font(Font font, Control control) => DpiScaler.ScaleFont(font, control);
 
         public static Color FormBackColor = Color.FromArgb(19, 19, 48);

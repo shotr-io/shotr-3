@@ -76,7 +76,7 @@ namespace Shotr.Ui.Installer.Properties {
         ///Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms of Service&quot;) carefully before using the &quot;Service&quot; operated by  (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;).
         ///
         ///Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.
-        ///By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you m [rest of string was truncated]&quot;;.
+        ///By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TermsOfService {
             get {

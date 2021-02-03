@@ -48,7 +48,7 @@ namespace Shotr.Ui.Forms
             this.metroTextBox1.Scaled = true;
             this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.metroTextBox1.Size = new System.Drawing.Size(447, 331);
-            this.metroTextBox1.TabIndex = 3;
+            this.metroTextBox1.TabIndex = 2;
             this.metroTextBox1.TabStop = false;
             this.metroTextBox1.UseSystemPasswordChar = false;
             // 

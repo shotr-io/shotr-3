@@ -1,4 +1,5 @@
 ﻿using System;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;

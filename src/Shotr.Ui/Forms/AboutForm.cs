@@ -10,10 +10,13 @@ namespace Shotr.Ui.Forms
         public AboutForm()
         {
             InitializeComponent();
+            metroTextBox1.DeselectAll();
         }
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
+            metroTextBox1.DeselectAll();
+
             //load changelog.
             try
             {
@@ -27,6 +30,7 @@ namespace Shotr.Ui.Forms
                 metroTextBox1.Text = "Unable to get changelog. Please try again later.";
             }
             Focus();
+
             metroTextBox1.DeselectAll();
         }
     }

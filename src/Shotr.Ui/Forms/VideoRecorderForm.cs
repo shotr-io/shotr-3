@@ -382,6 +382,7 @@ namespace Shotr.Ui.Forms
                 //TODO: check to make sure that the shit isn't offscreen, if so then like idk
                 var stopButton = new ThemedButton()
                 {
+                    Scaled = false,
                     Text = "Stop",
                     Size = new Size(75, 23),
                     Location = new Point(60, Height - 28)
@@ -393,6 +394,7 @@ namespace Shotr.Ui.Forms
 
                 var cancelButton = new ThemedButton()
                 {
+                    Scaled = false,
                     Text = "Cancel",
                     Size = new Size(75, 23),
                     Location = new Point(140, Height - 28),
