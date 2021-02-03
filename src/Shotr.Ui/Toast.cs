@@ -104,11 +104,20 @@ namespace Shotr.Ui
                     .AddButton("View Update", ToastActivationType.Background,
                         $"action=viewUpdate&changes={changes}&subscribeAlphaBeta={subscribeAlphaBeta}");
 
-                XmlDocument x = new XmlDocument();
+                var x = new XmlDocument();
                 var content = toastBuilder.GetToastContent().GetContent();
                 x.LoadXml(content);
 
-                ToastNotification toast = new ToastNotification(x);
+                var toast = new ToastNotification(x);
+                toast.ExpiresOnReboot = true;
+                toast.Dismissed += (sender, args) =>
+                {
+                    if (args.Reason == ToastDismissalReason.TimedOut ||
+                        args.Reason == ToastDismissalReason.UserCanceled)
+                    {
+                        Updater.CheckForUpdates();
+                    }
+                };
 
                 ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
             }
@@ -121,31 +130,38 @@ namespace Shotr.Ui
         public static void Send(string? imagePath, string text, string? buttonText = null, string? action = null,
             string? query = null)
         {
-            var toastBuilder = new ToastContentBuilder()
-                .AddAppLogoOverride(new Uri(Path.Combine(SettingsService.CachePath, "shotr.png")),
-                    ToastGenericAppLogoCrop.Default)
-                .AddText("Shotr")
-                .AddText(text);
-
-            if (imagePath is { })
+            try
             {
-                toastBuilder.AddHeroImage(new Uri(imagePath));
+                var toastBuilder = new ToastContentBuilder()
+                    .AddAppLogoOverride(new Uri(Path.Combine(SettingsService.CachePath, "shotr.png")),
+                        ToastGenericAppLogoCrop.Default)
+                    .AddText("Shotr")
+                    .AddText(text);
+
+                if (imagePath is { })
+                {
+                    toastBuilder.AddHeroImage(new Uri(imagePath));
+                }
+
+                if (buttonText is { } && action is { } && query is { })
+                {
+                    toastBuilder.AddButton(buttonText, ToastActivationType.Background, $"action={action}&{query}");
+                }
+
+                var x = new XmlDocument();
+                var content = toastBuilder.GetToastContent().GetContent();
+                x.LoadXml(content);
+
+                var toast = new ToastNotification(x);
+                toast.ExpiresOnReboot = true;
+                toast.ExpirationTime = DateTimeOffset.Now.AddSeconds(10);
+
+                ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
             }
-
-
-            if (buttonText is { } && action is { } && query is { })
+            catch (Exception ex)
             {
-                toastBuilder.AddButton(buttonText, ToastActivationType.Background, $"action={action}&{query}");
+                Console.WriteLine(ex);
             }
-
-
-            XmlDocument x = new XmlDocument();
-            var content = toastBuilder.GetToastContent().GetContent();
-            x.LoadXml(content);
-
-            ToastNotification toast = new ToastNotification(x);
-
-            ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
         }
     }
 }

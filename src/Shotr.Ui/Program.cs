@@ -31,7 +31,7 @@ namespace Shotr.Ui
 {
     static class Program
     {
-        private static ServiceProvider _serviceProvider;
+        public static ServiceProvider ServiceProvider;
         private static Mutex _mutex;
         
 #if DEBUG
@@ -147,15 +147,15 @@ namespace Shotr.Ui
             var services = new ServiceCollection();
 
             ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
+            ServiceProvider = services.BuildServiceProvider();
 
             ConfigureApplication();
 
             TryEnableDpiAware();
 
-            var form = _serviceProvider.GetService<MainForm>();
-            var settings = _serviceProvider.GetService<BaseSettings>();
-            var hotkeys = _serviceProvider.GetService<HotKeyService>();
+            var form = ServiceProvider.GetService<MainForm>();
+            var settings = ServiceProvider.GetService<BaseSettings>();
+            var hotkeys = ServiceProvider.GetService<HotKeyService>();
             
             hotkeys.LoadHotKeys();
             
@@ -228,12 +228,6 @@ namespace Shotr.Ui
             {
                 Directory.CreateDirectory(SettingsService.CachePath);
             }
-
-            // Copy notification image to cache folder.
-            if (!File.Exists(Path.Combine(SettingsService.CachePath, "shotr.png")))
-            {
-                Resources.shotr.Save(Path.Combine(SettingsService.CachePath, "shotr.png"));
-            }
         }
 
         static void ConfigureApplication()
@@ -243,7 +237,7 @@ namespace Shotr.Ui
             if (!File.Exists(audioSnifferPath))
             {
                 //decrypt it and output it
-                var dcrypt = _serviceProvider.GetService<dcrypt>();
+                var dcrypt = ServiceProvider.GetService<dcrypt>();
                 File.WriteAllBytes(audioSnifferPath, dcrypt.Decrypt(Resources.audio_sniffer));
                 //register it
                 var ps = new ProcessStartInfo
@@ -274,6 +268,12 @@ namespace Shotr.Ui
                     File.Delete(file);
                 }
                 catch { }
+            }
+
+            // Copy notification image to cache folder.
+            if (!File.Exists(Path.Combine(SettingsService.CachePath, "shotr.png")))
+            {
+                Resources.shotr.Save(Path.Combine(SettingsService.CachePath, "shotr.png"));
             }
 
             ServicePointManager.DefaultConnectionLimit = 100;
@@ -336,7 +336,7 @@ namespace Shotr.Ui
         {
             File.WriteAllText(SettingsService.ErrorPath, e.ExceptionObject.ToString());
 
-            var uploader = _serviceProvider.GetService<Uploader>();
+            var uploader = ServiceProvider.GetService<Uploader>();
             uploader.RemoveHandlers();
             uploader.OnUploaded += (_, e) =>
             {

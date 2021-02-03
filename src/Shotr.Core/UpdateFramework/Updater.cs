@@ -21,6 +21,12 @@ namespace Shotr.Core.UpdateFramework
                 {
                     Thread.Sleep(TimeToCheck);
                 }
+                else
+                {
+                    // Wait 15 seconds to get the update, as to not just spam the user.
+                    Thread.Sleep(15 * 1000);
+                }
+
                 //download shotr update url.
                 var p = new WebClient { Proxy = null };
                 try
