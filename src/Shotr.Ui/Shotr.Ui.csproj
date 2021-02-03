@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.Toolkit.Uwp.Notifications">
-      <HintPath>..\..\..\..\.nuget\packages\microsoft.toolkit.uwp.notifications\7.0.0-preview4\lib\netcoreapp3.1\Microsoft.Toolkit.Uwp.Notifications.dll</HintPath>
+      <HintPath>Microsoft.Toolkit.Uwp.Notifications.dll</HintPath>
     </Reference>
   </ItemGroup>
 
