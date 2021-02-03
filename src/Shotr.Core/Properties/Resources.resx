@@ -133,7 +133,4 @@
   <data name="sounds_1046_et_voila" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sounds-1046-et-voila;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sounds_917_communication_channel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sounds-917-communication-channel;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
 </root>
