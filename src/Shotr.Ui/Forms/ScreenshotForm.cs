@@ -29,6 +29,8 @@ namespace Shotr.Ui.Forms
             }
         }
 
+        public ScreenshotActionEnum ScreenshotAction { get; set; } = ScreenshotActionEnum.SaveToClipboard;
+
         private Bitmap _screenshot;
         private Bitmap _origscreenshot;
 
@@ -51,6 +53,25 @@ namespace Shotr.Ui.Forms
         private readonly BaseSettings _settings;
         private readonly Uploader _uploader;
 
+        Graphics _edit;
+        private int _prex;
+        private int _prey;
+        private Color _chosenColor = Color.Red;
+        private int _colorIndex;
+        private List<Color> _availableColors;
+        private Pen _chosenPen;
+
+        private ResizeLocation _resizeLocation;
+        private Point _oldResizePosition = Point.Empty;
+
+        private Bitmap _clonedBitmap;
+
+        private bool _resizing;
+        private bool _resizemove;
+        private ThemedButton _uploadButton;
+        private ThemedButton _saveButton;
+        private ThemedButton _clipboardButton;
+
         public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks)
         {
             _settings = settings;
@@ -69,7 +90,7 @@ namespace Shotr.Ui.Forms
             InitializeComponent();
 
             var dpiScale = DpiScaler.GetScalingFactor(this);
-            Font = Theme.Font((int)(Font.Size * dpiScale));
+            base.Font = Theme.Font((int)(base.Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
             TopMost = true;
             ShowInTaskbar = false;
@@ -106,7 +127,7 @@ namespace Shotr.Ui.Forms
             KeyUp += ScreenshotForm_KeyUp;
             KeyDown += ScreenshotForm_KeyDown;
 
-            Cursor = Cursors.Cross;
+            base.Cursor = Cursors.Cross;
 
             _origscreenshot = (Bitmap)_screenshot.Clone();
             _screenshot = new Bitmap(_screenshot, width, height);
@@ -166,6 +187,17 @@ namespace Shotr.Ui.Forms
                     {
                         _uploadButton.Visible = false;
                     }
+
+                    if (_saveButton is { })
+                    {
+                        _saveButton.Visible = false;
+                    }
+
+                    if (_clipboardButton is { })
+                    {
+                        _clipboardButton.Visible = false;
+                    }
+
                     return;
                 }
                 CloseWindow();
@@ -212,7 +244,7 @@ namespace Shotr.Ui.Forms
                 if (!_editing)
                 {
                     _activated = false;
-                    UploadImage();
+                    ProcessImage();
                 }
             }
         }
@@ -221,8 +253,7 @@ namespace Shotr.Ui.Forms
         {
             return _clonedBitmap;
         }
-        private Bitmap _clonedBitmap;
-        private void UploadImage()
+        private void ProcessImage()
         {
             //save screenshot at x.
             var format = _screenshot.PixelFormat;
@@ -233,7 +264,6 @@ namespace Shotr.Ui.Forms
             catch
             {
                 //attempt to fix and re-clone.
-
                 //check positions relative to the image, make sure they don't overlap.
                 if (_x.X + _x.Width > _screenshot.Width)
                 {
@@ -275,16 +305,7 @@ namespace Shotr.Ui.Forms
 
             Hide();
         }
-        Graphics _edit;
-        private int _prex;
-        private int _prey;
-        private Color _chosenColor = Color.Red;
-        private int _colorIndex;
-        private List<Color> _availableColors;
-        private Pen _chosenPen;
 
-        private ResizeLocation _resizeLocation;
-        private Point _oldResizePosition = Point.Empty;
         void ScreenshotForm_MouseMove(object sender, MouseEventArgs e)
         {
             //change cursor to scalable stuff if we're out of activated.
@@ -624,7 +645,7 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
-            var scalingFactor = Shotr.Core.Controls.DpiScaling.DpiScaler.GetScalingFactor(this);
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
             pixelSize = (int)(pixelSize * scalingFactor);
             var width = horizontalPixelCount * pixelSize;
             var height = verticalPixelCount * pixelSize;
@@ -675,15 +696,14 @@ namespace Shotr.Ui.Forms
                     e.Graphics.DrawRectangle(_pen, _x);
                     if (_settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), Font, _brush, new PointF(_x.X, _x.Y - Font.Height * 2));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush, new PointF(_x.X, _x.Y - Font.Height * 2));
                         e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y - Font.Height));
                     }
                     // Draw buttons.
                 }
                 catch { }
             }
-
-            //draw shit on form graphics.
+            
             if (_editing && _drawing)
             {
                 var cursorloc = PointToClient(Cursor.Position);
@@ -731,18 +751,6 @@ namespace Shotr.Ui.Forms
             }
         }
 
-        private string GetHexCode(Color color)
-        {
-            return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2} / RGB: {4},{5},{6}",
-                     color.A,
-                     color.R,
-                     color.G,
-                     color.B,
-                     color.R,
-                     color.G,
-                     color.B);
-        }
-
         private void ScreenshotForm_Load(object sender, EventArgs e)
         {
             // force window to have focus
@@ -782,9 +790,7 @@ namespace Shotr.Ui.Forms
                 }
             }
         }
-        private bool _resizing;
-        private bool _resizemove;
-        private ThemedButton _uploadButton;
+
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             if (_resizing)
@@ -798,38 +804,102 @@ namespace Shotr.Ui.Forms
             {
                 if (!_settings.Capture.UseResizableCanvas)
                 {
-                    UploadImage();
+                    ProcessImage();
                     return;
                 }
                 _activated = false;
                 _resizing = true;
 
+                var startX = 0;
+                var xStart = 0;
+
+                var scale = DpiScaler.GetScalingFactor(this);
+
                 if (_uploadButton is null)
                 {
-                    _uploadButton = new ThemedButton()
+                    if (_settings.Login.Enabled is { } && _settings.Login.Enabled == true)
                     {
-                        Scaled = false,
-                        Text = "Upload",
-                        Size = new Size(75, 23),
-                        Location = new Point(_x.X, _x.Y + _x.Height + 2)
-                    };
+                        _uploadButton = new ThemedButton()
+                        {
+                            Scaled = false,
+                            Text = "Upload",
+                            Size = new Size((int) (scale * 75), (int) (scale * 23)),
+                            Location = new Point(_x.X, _x.Y + _x.Height + 2),
+                            Cursor = Cursors.Default
+                        };
 
-                    _uploadButton.MouseClick += (o, args) =>
-                    {
-                        _activated = false;
-                        UploadImage();
-                    };
+                        _uploadButton.MouseClick += (o, args) =>
+                        {
+                            _activated = false;
+                            ScreenshotAction = ScreenshotActionEnum.Upload;
+                            ProcessImage();
+                        };
 
-                    _uploadButton.Cursor = Cursors.Default;
+                        Controls.Add(_uploadButton);
 
-                    //_uploadButton.ManualDpiScale();
-
-                    Controls.Add(_uploadButton);
+                        startX = _x.X + _uploadButton.Width + 6;
+                    }
                 }
                 else
                 {
-                    _uploadButton.Visible = true;
-                    _uploadButton.Location = new Point(_x.X, _x.Y + _x.Height + 2);
+                    if (_settings.Login.Enabled is { } && _settings.Login.Enabled == true)
+                    {
+                        _uploadButton.Visible = true;
+                        _uploadButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                        xStart = _uploadButton.Width + 6;
+                    }
+                }
+
+                if (_saveButton is null)
+                {
+                    _saveButton = new ThemedButton()
+                    {
+                        Scaled = false,
+                        Text = "Save to File",
+                        Size = new Size((int) (scale * 75), (int) (scale * 23)),
+                        Location = new Point(startX, _x.Y + _x.Height + 2),
+                        Cursor = Cursors.Default
+                    };
+                    _saveButton.MouseClick += (_, _) =>
+                    {
+                        _activated = false;
+                        ScreenshotAction = ScreenshotActionEnum.SaveToFile;
+                        ProcessImage();
+                    };
+
+                    Controls.Add(_saveButton);
+                }
+                else
+                {
+                    _saveButton.Visible = true;
+                    _saveButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                }
+
+                if (_clipboardButton is null) 
+                { 
+                    var measurement = TextRenderer.MeasureText("Save to Clipboard", Font);
+
+                    _clipboardButton = new ThemedButton()
+                    {
+                        Scaled = false,
+                        Text = "Save to Clipboard",
+                        Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                        Location = new Point(_saveButton.Location.X + _saveButton.Width + 6, _x.Y + _x.Height + 2),
+                        Cursor = Cursors.Default
+                    };
+                    _clipboardButton.MouseClick += (_, _) =>
+                    {
+                        _activated = false;
+                        ScreenshotAction = ScreenshotActionEnum.SaveToClipboard;
+                        ProcessImage();
+                    };
+
+                    Controls.Add(_clipboardButton);
+                }
+                else
+                {
+                    _clipboardButton.Visible = true;
+                    _clipboardButton.Location = new Point(_saveButton.Location.X + _saveButton.Width + 6, _x.Y + _x.Height + 2);
                 }
             }
             else 
@@ -902,7 +972,6 @@ namespace Shotr.Ui.Forms
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
-                    //cancel this shit.
                     CloseWindow();
                 }
             }
@@ -952,16 +1021,28 @@ namespace Shotr.Ui.Forms
 
             if (_resizing)
             {
+                var startX = _x.X;
+                var y = _x.Y + _x.Height + 2;
+                if (y > Size.Height - (_uploadButton?.Height ?? _clipboardButton.Height))
+                {
+                    y = y - (_uploadButton?.Height ?? _clipboardButton.Height) - 2;
+                    startX += 2;
+                }
                 if (_uploadButton is { })
                 {
-                    var y = _x.Y + _x.Height + 2;
-                    var x = _x.X;
-                    if (y > Size.Height - _uploadButton.Height)
-                    {
-                        y = y - _uploadButton.Height - 2;
-                        x += 2;
-                    }
-                    _uploadButton.Location = new Point(x, y);
+                    _uploadButton.Location = new Point(startX, y);
+                    startX += _uploadButton.Width + 6;
+                }
+
+                if (_saveButton is { })
+                {
+                    _saveButton.Location = new Point(startX, y);
+                    startX += _saveButton.Width + 6;
+                }
+
+                if (_clipboardButton is { })
+                {
+                    _clipboardButton.Location = new Point(startX, y);
                 }
             }
             Refresh();
@@ -980,8 +1061,6 @@ namespace Shotr.Ui.Forms
             BringToFront();
             Activate();
         }
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         // When you don't want the ProcessId, use this overload and pass IntPtr.Zero for the second parameter
         [DllImport("user32.dll")]
@@ -1000,16 +1079,8 @@ namespace Shotr.Ui.Forms
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool BringWindowToTop(IntPtr hWnd);
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool BringWindowToTop(HandleRef hWnd);
-
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, uint nCmdShow);
-
-        private void ScreenshotForm_MouseHover(object sender, EventArgs e)
-        {
-
-        }
     }
 
     enum ResizeLocation

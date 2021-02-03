@@ -391,8 +391,7 @@ namespace Shotr.Ui.Forms
                 var scale = DpiScaler.GetScalingFactor(this);
 
                 Controls.Add(themedPanel);
-                //add a stop button.
-                //TODO: check to make sure that the shit isn't offscreen, if so then like idk
+                
                 _stopButton = new ThemedButton()
                 {
                     Scaled = false,
@@ -485,7 +484,6 @@ namespace Shotr.Ui.Forms
                             _uploader.AddToQueue(new ImageShell(File.ReadAllBytes(sc.OutputPath), FileExtensions.mp4));
                         }
                     }
-                    //lel die ked
                     try
                     {
                         File.Delete(sc.OutputPath);
