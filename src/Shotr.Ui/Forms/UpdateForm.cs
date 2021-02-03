@@ -9,29 +9,20 @@ using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
-using Shotr.Core.Settings;
-using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
     public partial class UpdateForm : ThemedForm
     {
-        private readonly BaseSettings _settings;
-
-        UpdaterResponse _upd;
-        public UpdateForm(BaseSettings settings)
+        private bool _subscribeToAlphaBeta;
+        public UpdateForm(string changes, bool subscribeToAlphaBeta)
         {
-            _settings = settings;
-            
             InitializeComponent();
-        }
 
-        public void SetUpForm(UpdaterResponse p)
-        {
-            metroTextBox1.Text = p.Changes;
+            metroTextBox1.Text = changes;
+            _subscribeToAlphaBeta = subscribeToAlphaBeta;
+
             TopMost = false;
-            metroLabel2.Text = " A new update is available.";
-            _upd = p;
             metroTextBox1.DeselectAll();
         }
 
@@ -91,7 +82,7 @@ namespace Shotr.Ui.Forms
                         p.StartInfo.Verb = "runas";
                         p.StartInfo.UseShellExecute = true;
                         p.StartInfo.FileName = Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe");
-                        p.StartInfo.Arguments = "--run-installer" + (_settings.SubscribeToAlphaBeta ? " --install-beta " : ""); // temp remove silent to show progress
+                        p.StartInfo.Arguments = "--run-installer" + (_subscribeToAlphaBeta ? " --install-beta " : ""); // temp remove silent to show progress
                         p.Start();
 
                         Environment.Exit(0);

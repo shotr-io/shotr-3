@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.UI.Notifications;
 using Newtonsoft.Json;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
@@ -69,7 +71,7 @@ namespace Shotr.Ui
             services.AddSingleton<SingleInstance>();
             services.AddSingleton<KeyboardHook>();
         }
-        
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -85,6 +87,26 @@ namespace Shotr.Ui
 #if THEMEDEBUGGER
             TryEnableDpiAware();
             Application.Run(new ThemeShowcase());
+            return;
+#endif
+
+#if WINDOWSNOTIFICATION
+            var stuff = new ToastContentBuilder()
+                .AddText("Shotr")
+                .AddText("Image Saved to Clipboard!")
+                .AddAppLogoOverride(new Uri(@"C:\Users\zac\Desktop\New Color Logos\Shotr App Icon - full square new color.png"), ToastGenericAppLogoCrop.Circle)
+                .AddHeroImage(new Uri(@"C:\Users\Zac\Downloads\_images_2021_02_01_20_gVph8F.mp4.thumbnail.png"))
+                .GetToastContent();
+
+            var things = stuff.GetContent();
+
+            XmlDocument x = new XmlDocument();
+            x.LoadXml(things);
+
+            ToastNotification toast = new ToastNotification(x);
+
+            ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
+            Thread.Sleep(10000);
             return;
 #endif
 
@@ -185,6 +207,9 @@ namespace Shotr.Ui
                     File.WriteAllText(Path.Combine(SettingsService.FolderPath, "error.log"), ex.ToString());
                 }
             }
+            
+            DesktopNotificationManagerCompat.RegisterAumidAndComServer<Toast>("Shotr");
+            DesktopNotificationManagerCompat.RegisterActivator<Toast>();
 
             Application.Run(form);
             GC.KeepAlive(_mutex);
@@ -201,6 +226,12 @@ namespace Shotr.Ui
             if (!Directory.Exists(SettingsService.CachePath))
             {
                 Directory.CreateDirectory(SettingsService.CachePath);
+            }
+
+            // Copy notification image to cache folder.
+            if (!File.Exists(Path.Combine(SettingsService.CachePath, "shotr.png")))
+            {
+                Resources.shotr.Save(Path.Combine(SettingsService.CachePath, "shotr.png"));
             }
         }
 
@@ -289,11 +320,10 @@ namespace Shotr.Ui
                 Thread.Sleep(5000);
             }
 
-            var updateForm = _serviceProvider.GetService<UpdateForm>();
-            updateForm.SetUpForm(e.UpdateInfo);
-            updateForm.ShowDialog();
+            Toast.Send(null, $"An update to v{displayVersion}{alphaBetaTag} is available!", "View Update", "viewUpdate", 
+                $"changes={e.UpdateInfo.Changes}&subscribeAlphaBeta={(e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)}");
 
-            Updater.Check = false;
+            Updater.TimeToCheck = 60 * 60 * 1000 * 12; // Wait 12 hours till next notification
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

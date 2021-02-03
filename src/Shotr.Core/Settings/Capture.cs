@@ -24,7 +24,7 @@ namespace Shotr.Core.Settings
         [ConfigurationItem(Required = false, Default = true)]
         public bool UseResizableCanvas { get; set; }
 
-        [ConfigurationItem(Required = false, Default = true)]
+        [ConfigurationItem(Required = false, Default = false)]
         public bool CompressionEnabled { get; set; }
         
         [ConfigurationItem(Required = false, Default = CompressionLevel.Maximum)]

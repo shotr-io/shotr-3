@@ -9,6 +9,7 @@ namespace Shotr.Core.UpdateFramework
     public class Updater
     {
         public static bool Check = true;
+        public static int TimeToCheck = 60 * 60 * 1000;
         public static event EventHandler<UpdaterInfoArgs> OnUpdateCheck = delegate { };
         public static void CheckForUpdates(BaseSettings settings)
         {
@@ -28,7 +29,7 @@ namespace Shotr.Core.UpdateFramework
                     {
                         Console.WriteLine($"Updater Exception: {ex}");
                     }
-                    Thread.Sleep(60 * 60 * 1000); //check for updates every hour.
+                    Thread.Sleep(TimeToCheck); //check for updates every hour.
                 }
             }).Start();
         }
