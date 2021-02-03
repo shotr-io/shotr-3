@@ -160,9 +160,10 @@ namespace Shotr.Ui
             hotkeys.LoadHotKeys();
             
             form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
-            
+
+            Updater.BaseSettings = settings;
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
-            Updater.CheckForUpdates(settings);
+            Updater.CheckForUpdates();
             
             // Do not require mandatory login
             if (settings.Login.Enabled == true)
@@ -322,16 +323,13 @@ namespace Shotr.Ui
 
             if (!WineDetectionService.IsWine())
             {
-                Toast.Send(null, $"An update to v{serverVersion}{alphaBetaTag} is available!", "View Update", "viewUpdate",
-                    $"changes={e.UpdateInfo.Changes}&subscribeAlphaBeta={(e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)}");
+                Toast.SendUpdateNotifications($"An update to v{serverVersion}{alphaBetaTag} is available!", e.UpdateInfo.Changes, e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30);
             }
             else
             {
                 var updateForm = new UpdateForm(e.UpdateInfo.Changes, e.Settings.SubscribeToAlphaBeta, false);
                 updateForm.ShowDialog();
             }
-
-            Updater.TimeToCheck = 60 * 60 * 1000 * 12; // Wait 12 hours till next notification
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

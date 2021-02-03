@@ -245,16 +245,16 @@ namespace Shotr.Ui.Forms
 
         private void Uploader_OnUploaded(object sender, UploadResult e)
         {
+            var pathExtension = e != null ? Path.GetExtension(e.URL) : ((FileExtensions)((object[])sender)[2]).ToString();
+            pathExtension = pathExtension.Replace(".", "");
+            var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{pathExtension}";
+
             if (_settings.Capture.SaveToDirectory)
             {
                 if (_settings.Capture.SaveToDirectoryPath is {} && !Directory.Exists(_settings.Capture.SaveToDirectoryPath))
                 {
                     Directory.CreateDirectory(_settings.Capture.SaveToDirectoryPath);
                 }
-
-                var extension = e != null ? Path.GetExtension(e.URL) : ((FileExtensions) ((object[]) sender)[2]).ToString();
-                extension = extension.Replace(".", "");
-                var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{extension}";
 
                 File.WriteAllBytes(filename, (byte[])((object[])sender)[1]);
             }
@@ -358,10 +358,17 @@ namespace Shotr.Ui.Forms
                         {
                             if (!WineDetectionService.IsWine())
                             {
+                                var screenshotText = $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!";
                                 Toast.Send(fileName,
-                                    mime.Contains("video") 
+                                    mime.Contains("video")
                                         ? "Recording saved!"
-                                        : $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!");
+                                        : screenshotText,
+                                    _settings.Capture.SaveToDirectory ? "Open Containing Folder" : null,
+                                    _settings.Capture.SaveToDirectory ? "openDirectory" : null,
+                                    _settings.Capture.SaveToDirectory
+                                        ? $"path={filename}"
+                                        : null
+                                );
                             }
                             else
                             {

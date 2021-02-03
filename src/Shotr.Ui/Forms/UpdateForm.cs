@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
+using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
@@ -48,6 +49,7 @@ namespace Shotr.Ui.Forms
         private void metroButton2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Updater.CheckForUpdates();
             Close();
         }
 
