@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Pipes;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 
 namespace Shotr.Core.Pipes
@@ -16,12 +17,11 @@ namespace Shotr.Core.Pipes
             new Thread(delegate()
             {
                 var ps = new PipeSecurity();
-                ps.AddAccessRule(new PipeAccessRule("Everyone", PipeAccessRights.FullControl, AccessControlType.Allow));
+                ps.AddAccessRule(new PipeAccessRule(new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), PipeAccessRights.ReadWrite, AccessControlType.Allow));
                 while (true)
                 {
-                    var pipeServer = new NamedPipeServerStream("ShotrInputHandler", PipeDirection.InOut, 1,
-                        PipeTransmissionMode.Message, PipeOptions.WriteThrough, 1024, 1024);
-                    //pipeServer.SetAccessControl(ps);
+                    var pipeServer = NamedPipeServerStreamConstructors.New("ShotrInputHandler", PipeDirection.InOut, 1,
+                        PipeTransmissionMode.Message, PipeOptions.WriteThrough, 1024, 1024, ps);
                     try
                     {
                         Console.WriteLine("[PIPE SERVER] Waiting for client...");
