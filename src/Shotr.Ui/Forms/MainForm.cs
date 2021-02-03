@@ -6,8 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Shotr.Core;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Hotkey;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities.Hotkeys;
@@ -292,11 +294,10 @@ namespace Shotr.Ui.Forms
 
             Invoke((MethodInvoker)(() =>
             {
+                Image jpg = null;
+                Bitmap b = null;
                 try
                 {
-                    Image jpg;
-                    Bitmap b;
-
                     using (var k = new MemoryStream((byte[]) ((object[]) sender)[1]))
                     {
                         jpg = Image.FromStream(k);
@@ -311,7 +312,7 @@ namespace Shotr.Ui.Forms
 
                     dataObj.SetImage(b);
                     Clipboard.SetDataObject(dataObj);
-                    jpg.Dispose();
+                    //jpg.Dispose();
                     //b.Dispose();
                 }
                 catch (Exception ex)
@@ -325,26 +326,59 @@ namespace Shotr.Ui.Forms
 
                 try
                 {
+                    string? fileName = null;
+                    if (b is { })
+                    {
+                        fileName = Path.Combine(SettingsService.CachePath, "notification.png");
+                        b.Save(fileName);
+                    }
+
+                    var mime = (string)((object[])sender)[0];
+                    
                     if (e != null)
                     {
                         if (_settings.ShowNotifications)
                         {
-                            var notification = new Notification(url, (string) ((object[]) sender)[0]);
-                            notification.Show();
+                            if (!WineDetectionService.IsWine())
+                            {
+                                SendNotification(fileName,
+                                    mime.Contains("text") ? "Text uploaded and link copied to clipboard!" :
+                                    mime.Contains("video") ? "Recording uploaded and link copied to clipboard!" :
+                                    "Screenshot uploaded and link copied to clipboard!", "View Upload", "viewUrl",
+                                    $"url={url}");
+                            }
+                            else
+                            {
+                                var notification = new Notification(url, (string)((object[])sender)[0]);
+                                notification.Show();
+                            }
                         }
                     }
                     else
                     {
                         if (_settings.ShowNotifications)
                         {
-                            var notification = new NoUploadNotification((string) ((object[]) sender)[0]);
-                            notification.Show();
+                            if (!WineDetectionService.IsWine())
+                            {
+                                SendNotification(fileName,
+                                    mime.Contains("video") 
+                                        ? "Recording saved!"
+                                        : "Screenshot saved and copied to clipboard!");
+                            }
+                            else
+                            {
+                                var notification = new NoUploadNotification(mime);
+                                notification.Show();
+                            }
                         }
                     }
                 }
                 catch
                 {
                 }
+
+                jpg?.Dispose();
+                b?.Dispose();
             }));
         }
 
@@ -946,6 +980,32 @@ namespace Shotr.Ui.Forms
 
                 UpdateControls();
             }
+        }
+
+        private void SendNotification(string? imagePath, string text, string? buttonText = null, string? action = null, string? query = null)
+        {
+            var toastBuilder = new ToastContentBuilder()
+                .AddAppLogoOverride(new Uri(Path.Combine(SettingsService.CachePath, "shotr.png")), ToastGenericAppLogoCrop.Default)
+                .AddText("Shotr")
+                .AddText(text);
+
+            if (imagePath is { })
+            {
+                toastBuilder.AddHeroImage(new Uri(imagePath));
+            }
+
+            if (buttonText is {} && action is {} && query is {})
+            {
+                toastBuilder.AddButton(buttonText, ToastActivationType.Foreground, $"action={action}&{query}");
+            }
+            
+            XmlDocument x = new XmlDocument();
+            var content = toastBuilder.GetToastContent().GetContent();
+            x.LoadXml(content);
+
+            ToastNotification toast = new ToastNotification(x);
+
+            ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
         }
     }
 }

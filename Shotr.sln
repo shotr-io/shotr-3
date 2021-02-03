@@ -29,6 +29,9 @@ Global
 		ThemeDebugger|Any CPU = ThemeDebugger|Any CPU
 		ThemeDebugger|x64 = ThemeDebugger|x64
 		ThemeDebugger|x86 = ThemeDebugger|x86
+		WindowsNotification|Any CPU = WindowsNotification|Any CPU
+		WindowsNotification|x64 = WindowsNotification|x64
+		WindowsNotification|x86 = WindowsNotification|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
@@ -55,6 +58,12 @@ Global
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.WindowsNotification|Any CPU.ActiveCfg = WindowsNotification|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.WindowsNotification|Any CPU.Build.0 = WindowsNotification|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.WindowsNotification|x64.ActiveCfg = WindowsNotification|x64
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.WindowsNotification|x64.Build.0 = WindowsNotification|x64
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.WindowsNotification|x86.ActiveCfg = WindowsNotification|Any CPU
+		{EB71B51F-26B4-4142-86BD-935ABD0DFDBA}.WindowsNotification|x86.Build.0 = WindowsNotification|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.BetaTest|x64.ActiveCfg = BetaTest|x64
@@ -79,6 +88,12 @@ Global
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.WindowsNotification|Any CPU.ActiveCfg = WindowsNotification|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.WindowsNotification|Any CPU.Build.0 = WindowsNotification|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.WindowsNotification|x64.ActiveCfg = WindowsNotification|x64
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.WindowsNotification|x64.Build.0 = WindowsNotification|x64
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.WindowsNotification|x86.ActiveCfg = WindowsNotification|Any CPU
+		{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}.WindowsNotification|x86.Build.0 = WindowsNotification|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.BetaTest|x64.ActiveCfg = BetaTest|x64
@@ -103,6 +118,12 @@ Global
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{176CDC05-72A1-44C5-BD7C-7487832694C8}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.WindowsNotification|Any CPU.ActiveCfg = WindowsNotification|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.WindowsNotification|Any CPU.Build.0 = WindowsNotification|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.WindowsNotification|x64.ActiveCfg = WindowsNotification|x64
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.WindowsNotification|x64.Build.0 = WindowsNotification|x64
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.WindowsNotification|x86.ActiveCfg = WindowsNotification|Any CPU
+		{176CDC05-72A1-44C5-BD7C-7487832694C8}.WindowsNotification|x86.Build.0 = WindowsNotification|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.BetaTest|x64.ActiveCfg = BetaTest|x64
@@ -127,6 +148,12 @@ Global
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.ThemeDebugger|x64.Build.0 = ThemeDebugger|x64
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.ThemeDebugger|x86.ActiveCfg = ThemeDebugger|Any CPU
 		{C41C05C3-B25D-421B-BF17-ED098AED839A}.ThemeDebugger|x86.Build.0 = ThemeDebugger|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.WindowsNotification|Any CPU.ActiveCfg = WindowsNotification|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.WindowsNotification|Any CPU.Build.0 = WindowsNotification|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.WindowsNotification|x64.ActiveCfg = WindowsNotification|x64
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.WindowsNotification|x64.Build.0 = WindowsNotification|x64
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.WindowsNotification|x86.ActiveCfg = WindowsNotification|Any CPU
+		{C41C05C3-B25D-421B-BF17-ED098AED839A}.WindowsNotification|x86.Build.0 = WindowsNotification|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|Any CPU.ActiveCfg = BetaTest|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|Any CPU.Build.0 = BetaTest|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.BetaTest|x64.ActiveCfg = BetaTest|Any CPU
@@ -148,6 +175,12 @@ Global
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.ThemeDebugger|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.ThemeDebugger|x64.ActiveCfg = Debug|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.ThemeDebugger|x86.ActiveCfg = Debug|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|Any CPU.ActiveCfg = WindowsNotification|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|Any CPU.Build.0 = WindowsNotification|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x64.ActiveCfg = WindowsNotification|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x64.Build.0 = WindowsNotification|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x86.ActiveCfg = WindowsNotification|Any CPU
+		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x86.Build.0 = WindowsNotification|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
