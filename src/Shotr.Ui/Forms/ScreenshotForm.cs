@@ -162,6 +162,10 @@ namespace Shotr.Ui.Forms
                     _resizing = false;
                     _oldResizePosition = Point.Empty;
                     Cursor = Cursors.Cross;
+                    if (_uploadButton is { })
+                    {
+                        _uploadButton.Visible = false;
+                    }
                     return;
                 }
                 CloseWindow();
@@ -349,13 +353,17 @@ namespace Shotr.Ui.Forms
                     }
                     else
                     {
-                        
+
                         //move inwards.
                         var output = (_x.X - mouse.X);
-                        if (_x.Width + output <= 50) { return; }
+                        if (_x.Width + output <= 50)
+                        {
+                            return;
+                        }
+
                         _x.X -= output;
                         _x.Width += output;
-                       
+
                     }
                 }
                 else if (_resizeLocation == ResizeLocation.Right)
@@ -386,13 +394,13 @@ namespace Shotr.Ui.Forms
                         //move inwards.
                         if (_x.Height >= 50)
                         {
-                        var output = (mouse.Y - _x.Y);
-                        _x.Y += output;
-                        _x.Height -= output;
+                            var output = (mouse.Y - _x.Y);
+                            _x.Y += output;
+                            _x.Height -= output;
                         }
                     }
                     else
-                    {                  
+                    {
                         var output = (_x.Y - mouse.Y);
                         _x.Y -= output;
                         _x.Height += output;
@@ -428,6 +436,7 @@ namespace Shotr.Ui.Forms
                             _x.Width -= output;
                         }
                     }
+
                     if (mouse.Y > _x.Y)
                     {
                         if (_x.Height >= 50)
@@ -438,6 +447,7 @@ namespace Shotr.Ui.Forms
                             _x.Height -= output;
                         }
                     }
+
                     if (mouse.X < _x.X)
                     {
                         //move inwards.
@@ -445,6 +455,7 @@ namespace Shotr.Ui.Forms
                         _x.X -= output;
                         _x.Width += output;
                     }
+
                     if (mouse.Y < _x.Y)
                     {
                         //move inwards.
@@ -460,6 +471,7 @@ namespace Shotr.Ui.Forms
                         var output = (mouse.X - _x.X);
                         _x.Width = output;
                     }
+
                     if (mouse.Y > _x.Y)
                     {
                         if (_x.Height >= 50)
@@ -470,6 +482,7 @@ namespace Shotr.Ui.Forms
                             _x.Height -= output;
                         }
                     }
+
                     if (mouse.X < _x.X + _x.Width)
                     {
                         if (_x.Width >= 50)
@@ -479,6 +492,7 @@ namespace Shotr.Ui.Forms
                             _x.Width -= output;
                         }
                     }
+
                     if (mouse.Y < _x.Y)
                     {
                         //move inwards.
@@ -494,12 +508,14 @@ namespace Shotr.Ui.Forms
                         var output = (mouse.X - _x.X);
                         _x.Width = output;
                     }
+
                     if (mouse.Y > _x.Y + _x.Height)
                     {
                         //move inwards.
                         var output = (mouse.Y - _x.Y);
                         _x.Height = output;
                     }
+
                     if (mouse.X < _x.X + _x.Width)
                     {
                         if (_x.Width >= 50)
@@ -509,6 +525,7 @@ namespace Shotr.Ui.Forms
                             _x.Width -= output;
                         }
                     }
+
                     if (mouse.Y < _x.Y + _x.Height)
                     {
                         if (_x.Height >= 50)
@@ -530,19 +547,22 @@ namespace Shotr.Ui.Forms
                             _x.Width -= output;
                         }
                     }
+
                     if (mouse.Y > _x.Y + _x.Height)
                     {
                         //move inwards.
                         var output = (mouse.Y - _x.Y);
                         _x.Height += output;
                     }
+
                     if (mouse.X < _x.X)
-                    {                      
+                    {
                         //move inwards.
                         var output = (_x.X - mouse.X);
                         _x.X -= output;
                         _x.Width += output;
                     }
+
                     if (mouse.Y < _x.Y + _x.Height)
                     {
                         if (_x.Height >= 50)
@@ -555,10 +575,12 @@ namespace Shotr.Ui.Forms
                 }
                 else if (_resizeLocation == ResizeLocation.Any)
                 {
-                    if(_oldResizePosition == Point.Empty) {
+                    if (_oldResizePosition == Point.Empty)
+                    {
                         _oldResizePosition = mouse;
                         return;
                     }
+
                     //move relative to mouse.
                     _x.X += (mouse.X - _oldResizePosition.X);
                     _x.Y += (mouse.Y - _oldResizePosition.Y);
@@ -643,7 +665,7 @@ namespace Shotr.Ui.Forms
 
             var scalingFactor = DpiScaler.GetScalingFactor(this);
 
-            if (_activated && _x.Height > 1 && _x.Width > 1)
+            if (_activated && _x.Height > 1 && _x.Width > 1 || _resizing)
             {
                 try
                 {
@@ -651,38 +673,22 @@ namespace Shotr.Ui.Forms
 
                     _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                     e.Graphics.DrawRectangle(_pen, _x);
-                    if ((_x.Width > 250 && _x.Height > Font.Height * 2.2) && _settings.Capture.ShowInformation)
+                    if (_settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), Font, _brush, new PointF(_x.X, _x.Y));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), Font, _brush, new PointF(_x.X, _x.Y - Font.Height * 2));
+                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y - Font.Height));
                     }
+                    // Draw buttons.
                 }
                 catch { }
             }
-            else if(_resizing)
-            {
-                try
-                {
-                    e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
 
-                    _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                    e.Graphics.DrawRectangle(_pen, _x);
-                    if ((_x.Width > 250 && _x.Height > Font.Height * 2.2) && _settings.Capture.ShowInformation)
-                    {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, (_settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")), Font, _brush, new PointF(_x.X, _x.Y));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
-                    }
-                }
-                catch { }
-            }
-            //draw shit on form graphics.            
+            //draw shit on form graphics.
             if (_editing && _drawing)
             {
                 var cursorloc = PointToClient(Cursor.Position);
-                //edit.DrawImage(screenshot, new Rectangle(0, 0, this.Bounds.Width, this.Bounds.Height));
                 _edit.SmoothingMode = SmoothingMode.HighQuality;
                 _edit.DrawLine(_chosenPen, _prex, _prey, cursorloc.X, cursorloc.Y);
-                //edit.FillEllipse(Brushes.Red, new Rectangle(e.X, e.Y, 4, 4));
                 _prex = cursorloc.X;
                 _prey = cursorloc.Y;
             }
@@ -778,6 +784,7 @@ namespace Shotr.Ui.Forms
         }
         private bool _resizing;
         private bool _resizemove;
+        private ThemedButton _uploadButton;
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             if (_resizing)
@@ -787,7 +794,6 @@ namespace Shotr.Ui.Forms
                 _resizeLocation = ResizeLocation.None;
                 return;
             }
-
             if (!_editing)
             {
                 if (!_settings.Capture.UseResizableCanvas)
@@ -797,6 +803,34 @@ namespace Shotr.Ui.Forms
                 }
                 _activated = false;
                 _resizing = true;
+
+                if (_uploadButton is null)
+                {
+                    _uploadButton = new ThemedButton()
+                    {
+                        Scaled = false,
+                        Text = "Upload",
+                        Size = new Size(75, 23),
+                        Location = new Point(_x.X, _x.Y + _x.Height + 2)
+                    };
+
+                    _uploadButton.MouseClick += (o, args) =>
+                    {
+                        _activated = false;
+                        UploadImage();
+                    };
+
+                    _uploadButton.Cursor = Cursors.Default;
+
+                    //_uploadButton.ManualDpiScale();
+
+                    Controls.Add(_uploadButton);
+                }
+                else
+                {
+                    _uploadButton.Visible = true;
+                    _uploadButton.Location = new Point(_x.X, _x.Y + _x.Height + 2);
+                }
             }
             else 
             {
@@ -914,6 +948,21 @@ namespace Shotr.Ui.Forms
             {
                 var mouselocation = PointToClient(Cursor.Position);
                 _x = CreateRectangle(_orig.X, _orig.Y, mouselocation.X, mouselocation.Y);
+            }
+
+            if (_resizing)
+            {
+                if (_uploadButton is { })
+                {
+                    var y = _x.Y + _x.Height + 2;
+                    var x = _x.X;
+                    if (y > Size.Height - _uploadButton.Height)
+                    {
+                        y = y - _uploadButton.Height - 2;
+                        x += 2;
+                    }
+                    _uploadButton.Location = new Point(x, y);
+                }
             }
             Refresh();
         }

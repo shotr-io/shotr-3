@@ -307,20 +307,23 @@ namespace Shotr.Ui.Forms
             }
             else if(_isRecording)
             {
+                var elapsed = string.Format("00:{0:#00}:{1:#00}", Stopwatch.Elapsed.Minutes, Stopwatch.Elapsed.Seconds);
+                var measurement = e.Graphics.MeasureString(elapsed, _metroF);
+
                 //transparent yo.
                 _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                e.Graphics.DrawRectangle(_pen, 0, 0, _x.Width - 1, Height - 29);
+                e.Graphics.DrawRectangle(_pen, 0, 0, _x.Width - 1, _x.Height);
                 //draw circle below stuffs.
                 if (_showrecording)
                 {
-                    e.Graphics.FillEllipse(Brushes.Red, Width - 25, Height - 28, 25, 25);
-                    e.Graphics.DrawEllipse(Pens.Black, Width - 25, Height - 28, 25, 25);
+                    e.Graphics.FillEllipse(Brushes.Red, Width - 20, _x.Height + 2, 20, 20);
+                    e.Graphics.DrawEllipse(Pens.Black, Width - 20, _x.Height + 2, 20, 20);
                 }
-                //show timer.            
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 32, 33, 37)), 0, Height - 28, 55, 20);
-                e.Graphics.DrawRectangle(Pens.Black, 0, Height - 28, 55, 20);
+                //show timer.
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 32, 33, 37)), 0, _x.Height + 4, measurement.Width + 4, measurement.Height + 4);
+                e.Graphics.DrawRectangle(Pens.Black, 0, _x.Height + 4, measurement.Width + 4, measurement.Height + 4);
                 e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                e.Graphics.DrawString(string.Format("00:{0:#00}:{1:#00}", Stopwatch.Elapsed.Minutes, Stopwatch.Elapsed.Seconds), _metroF, Brushes.White, 0, Height - 28);
+                e.Graphics.DrawString(elapsed, _metroF, Brushes.White, 2, _x.Height + 6);
             }
         }
 
@@ -356,14 +359,22 @@ namespace Shotr.Ui.Forms
             }
             Activate();
         }
+
         public FFmpegHelperService Fmp;
         public bool Cancel;
+        private ThemedButton _stopButton;
+        private ThemedButton _cancelButton;
+
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             //resize form, set lime to transparent, and yolo swag.
             if (_activated)
             {
-                if (_x.Width < 50 || _x.Height < 50) { return; }
+                if (_x.Width < 50 || _x.Height < 50)
+                {
+                    return;
+                }
+
                 var newpoint = PointToScreen(new Point(_x.X, _x.Y));
                 _x = new Rectangle(newpoint, new Size(_x.Width, _x.Height));
                 _activated = false;
@@ -372,40 +383,38 @@ namespace Shotr.Ui.Forms
                 Location = new Point(_x.X, _x.Y);
                 var themedPanel = new Panel()
                 {
-                    Size = new Size(_x.Width - 2, _x.Height),
+                    Size = new Size(_x.Width - 2, _x.Height - 1),
                     Location = new Point(1, 1),
                     BackColor = Color.LimeGreen,
                 };
-                    
+                
+                var scale = DpiScaler.GetScalingFactor(this);
+
                 Controls.Add(themedPanel);
                 //add a stop button.
                 //TODO: check to make sure that the shit isn't offscreen, if so then like idk
-                var stopButton = new ThemedButton()
+                _stopButton = new ThemedButton()
                 {
                     Scaled = false,
                     Text = "Stop",
-                    Size = new Size(75, 23),
-                    Location = new Point(60, Height - 28)
+                    Size = new Size((int)(75 * scale), (int)(23 * scale)),
+                    Location = new Point((int)(80 * scale), _x.Height + 4)
                 };
-                stopButton.Click += m_Click;
+                _stopButton.Click += m_Click;
+                Controls.Add(_stopButton);
 
-
-                Controls.Add(stopButton);
-
-                var cancelButton = new ThemedButton()
+                _cancelButton = new ThemedButton()
                 {
                     Scaled = false,
                     Text = "Cancel",
-                    Size = new Size(75, 23),
-                    Location = new Point(140, Height - 28),
+                    Size = new Size((int)(75 * scale), (int)(23 * scale)),
+                    Location = new Point((int)(_stopButton.Location.X + _stopButton.Width + 6 * scale), _x.Height + 4),
                 };
 
-                cancelButton.Click += mb_Click;
+                _cancelButton.Click += mb_Click;
+                Controls.Add(_cancelButton);
 
-
-                Controls.Add(cancelButton);
-
-                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + 30);
+                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + _cancelButton.Height + 4);
 
                 TopMost = true;
                 BackColor = Color.LimeGreen;
