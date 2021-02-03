@@ -33,7 +33,7 @@ namespace Shotr.Core.Plugin
         public string UploaderURL
         {
             get { 
-#if DEBUG
+#if DEBUG || BETATEST
                 //return "http://localhost:5001/api/upload";
                 return "https://shotr.dev/api/upload";
 #else
@@ -61,9 +61,9 @@ namespace Shotr.Core.Plugin
 
         public string PageURL
         {
-            get { 
-#if DEBUG
-                    return "https://shotr.dev/"; 
+            get {
+#if DEBUG || BETATEST
+                return "https://shotr.dev/"; 
 #else
                     return "https://shotr.io/"; 
 #endif

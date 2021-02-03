@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO.Pipes;
-using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Shotr.Core.Pipes
@@ -26,13 +23,14 @@ namespace Shotr.Core.Pipes
 
                 pipeClient.Close();
             }
-            catch
+            catch (Exception ex)
             {
                 //Shotr isn't running. Re-run it?
-                MessageBox.Show("Shotr wasn't previously running. Starting Shotr.", "Shotr wasn't running.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Process.Start(Assembly.GetExecutingAssembly().Location);
-                Thread.Sleep(5000);
-                SendCommand(arg);
+                Console.WriteLine("[PIPE CLIENT] Sent request to pipe server!");
+                MessageBox.Show($"Error when trying to show other instance of Shotr: {ex}", "Can't show Shotr!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //Process.Start(Assembly.GetExecutingAssembly().Location);
+                //Thread.Sleep(5000);
+                //SendCommand(arg);
             }
         }
     }

@@ -7,7 +7,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Controls;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
@@ -40,7 +41,6 @@ namespace Shotr.Ui.Forms
 
         private Rectangle _x = Rectangle.Empty;
 
-        private Font _kfont = new Font(DefaultFont, FontStyle.Bold);
         private Font _metroF;
         private bool _activated;
         private bool _drawing = true;
@@ -63,6 +63,10 @@ namespace Shotr.Ui.Forms
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             
             InitializeComponent();
+
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
+            Font = Theme.Font((int)(Font.Size * scalingFactor));
+
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
             TopMost = true;
@@ -199,6 +203,8 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
+            pixelSize = (int)(pixelSize * scalingFactor);
             var width = horizontalPixelCount * pixelSize;
             var height = verticalPixelCount * pixelSize;
             var image = new Bitmap(width - 1, height - 1);
@@ -243,6 +249,7 @@ namespace Shotr.Ui.Forms
         //GraphicsUnit.Pixel);
             if (_drawing)
             {
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
                 e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));//this.Bounds);
 
                 if (_activated && _x.Height > 1 && _x.Width > 1)
@@ -253,10 +260,10 @@ namespace Shotr.Ui.Forms
 
                         _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                         e.Graphics.DrawRectangle(_pen, _x);
-                        if ((_x.Width > 80 || _x.Height > _kfont.Height * 2) && _settings.Capture.ShowInformation)
+                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && _settings.Capture.ShowInformation)
                         {
-                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, _settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : ""), _kfont, _brush, new PointF(_x.X, _x.Y));
-                            e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), _kfont, _brush, new PointF(_x.X, _x.Y + _kfont.Height));
+                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, _settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : ""), Font, _brush, new PointF(_x.X, _x.Y));
+                            e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
                         }
                     }
                     catch { }
@@ -268,10 +275,10 @@ namespace Shotr.Ui.Forms
                     var cursorloc = PointToClient(Cursor.Position);
                     using (var magnifier = (Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                     {
-                        if ((_x.Width > 80 || _x.Height > _kfont.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (_kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (_kfont.Height * 2))))))
+                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
                         {
                             //draw it below the text.
-                            location = new Point(cursorloc.X + 5, cursorloc.Y + (_kfont.Height * 2) + 5);
+                            location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
                         }
                         else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
                         {
@@ -362,32 +369,43 @@ namespace Shotr.Ui.Forms
                 _activated = false;
                 TransparencyKey = Color.LimeGreen;
                 //make a minimum size required.
-                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + 30);
                 Location = new Point(_x.X, _x.Y);
-                var f = new Panel();
-                f.Size = new Size(_x.Width - 2, _x.Height);
-                f.Location = new Point(1, 1);
-                f.BackColor = Color.LimeGreen;
-                Controls.Add(f);
+                var themedPanel = new Panel()
+                {
+                    Size = new Size(_x.Width - 2, _x.Height),
+                    Location = new Point(1, 1),
+                    BackColor = Color.LimeGreen,
+                };
+                    
+                Controls.Add(themedPanel);
                 //add a stop button.
                 //TODO: check to make sure that the shit isn't offscreen, if so then like idk
-                var m = new MetroButton();
-                m.Text = "Stop";
-                m.Size = new Size(75, 23);
-                m.Location = new Point(60, Height - 28);
-                m.Click += m_Click;
-                m.Theme = "Dark";
-                m.Style = "Blue";
-                Controls.Add(m);
+                var stopButton = new ThemedButton()
+                {
+                    Scaled = false,
+                    Text = "Stop",
+                    Size = new Size(75, 23),
+                    Location = new Point(60, Height - 28)
+                };
+                stopButton.Click += m_Click;
 
-                var mb = new MetroButton();
-                mb.Text = "Cancel";
-                mb.Size = new Size(75, 23);
-                mb.Location = new Point(140, Height - 28);
-                mb.Click += mb_Click;
-                mb.Theme = "Dark";
-                mb.Style = "Blue";
-                Controls.Add(mb);
+
+                Controls.Add(stopButton);
+
+                var cancelButton = new ThemedButton()
+                {
+                    Scaled = false,
+                    Text = "Cancel",
+                    Size = new Size(75, 23),
+                    Location = new Point(140, Height - 28),
+                };
+
+                cancelButton.Click += mb_Click;
+
+
+                Controls.Add(cancelButton);
+
+                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + 30);
 
                 TopMost = true;
                 BackColor = Color.LimeGreen;

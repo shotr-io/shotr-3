@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms
 {
@@ -32,28 +33,31 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-            this.metroTextBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledTextbox();
+            this.metroTextBox1 = new Shotr.Core.Controls.Theme.ThemedTextBox();
             this.dpiScaledPictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dpiScaledPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // metroTextBox1
             // 
+            this.metroTextBox1.BasePaint = false;
             this.metroTextBox1.Location = new System.Drawing.Point(14, 63);
             this.metroTextBox1.Multiline = true;
             this.metroTextBox1.Name = "metroTextBox1";
             this.metroTextBox1.ReadOnly = true;
+            this.metroTextBox1.Scaled = true;
             this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.metroTextBox1.Size = new System.Drawing.Size(447, 331);
-            this.metroTextBox1.Style = "NewTheme";
-            this.metroTextBox1.TabIndex = 3;
+            this.metroTextBox1.TabIndex = 2;
             this.metroTextBox1.TabStop = false;
-            this.metroTextBox1.Theme = "NewTheme";
+            this.metroTextBox1.UseSystemPasswordChar = false;
             // 
             // dpiScaledPictureBox1
             // 
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.dpiScaledPictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("dpiScaledPictureBox1.Image")));
+            this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
+            this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dpiScaledPictureBox1.BasePaint = false;
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(167, 7);
             this.dpiScaledPictureBox1.Name = "dpiScaledPictureBox1";
             this.dpiScaledPictureBox1.Scaled = true;
@@ -65,26 +69,17 @@ namespace Shotr.Ui.Forms
             // AboutForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(475, 408);
             this.Controls.Add(this.dpiScaledPictureBox1);
             this.Controls.Add(this.metroTextBox1);
-            this.DisplayHeader = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 0);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Movable = false;
             this.Name = "AboutForm";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
-            this.Resizable = false;
-            this.ShowCustomWindowButtons = false;
-            this.ShowFormIcon = true;
-            this.ShowFormTopBorder = false;
-            this.Style = "NewTheme";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
-            this.Theme = "NewTheme";
             this.Load += new System.EventHandler(this.AboutForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dpiScaledPictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -92,7 +87,7 @@ namespace Shotr.Ui.Forms
         }
 
         #endregion
-        private DpiScaledTextbox metroTextBox1;
+        private ThemedTextBox metroTextBox1;
         private DpiScaledPictureBox dpiScaledPictureBox1;
     }
 }

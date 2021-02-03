@@ -4,12 +4,13 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Shotr.Core;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Model;
 using Shotr.Core.Settings;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class LoginForm : DpiScaledForm
+    public partial class LoginForm : ThemedForm
     {
         private readonly BaseSettings _settings;
 
@@ -20,14 +21,14 @@ namespace Shotr.Ui.Forms
             InitializeComponent();
         }
 
-        private void dpiScaledButton1_Click(object sender, EventArgs e)
+        private void ThemedButton1_Click(object sender, EventArgs e)
         {
             var httpClient = new HttpClient();
 
             var formContent = new MultipartFormDataContent
             {
-                { new StringContent(dpiScaledTextbox1.Text), "email" },
-                { new StringContent(dpiScaledTextbox2.Text), "password" }
+                { new StringContent(ThemedTextBox1.TextBoxText), "email" },
+                { new StringContent(ThemedTextBox2.TextBoxText), "password" }
             };
             
             var response = httpClient.PostAsync("https://shotr.dev/api", formContent).Result;
@@ -58,20 +59,20 @@ namespace Shotr.Ui.Forms
             }
         }
 
-        private void dpiScaledLinkLabel1_Click(object sender, EventArgs e)
+        private void ThemedLinkLabel1_Click(object sender, EventArgs e)
         {
             // Open browser with link to forgot page
-#if DEBUG
+#if DEBUG || BETATEST
             "https://shotr.dev/auth/forgot".OpenUrl();
 #else
             "https://shotr.io/auth/forgot".OpenUrl();
 #endif
         }
 
-        private void dpiScaledLinkLabel2_Click(object sender, EventArgs e)
+        private void ThemedLinkLabel2_Click(object sender, EventArgs e)
         {
             // Register page
-#if DEBUG
+#if DEBUG || BETATEST
             "https://shotr.dev/auth/register".OpenUrl();
 #else
             "https://shotr.io/auth/forgot".OpenUrl();

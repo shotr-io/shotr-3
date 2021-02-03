@@ -3,12 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Forms;
 using Microsoft.Win32;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Installer
 {
-    public partial class UninstallerForm : MetroForm
+    public partial class UninstallerForm : ThemedForm
     {
         public UninstallerForm()
         {
@@ -55,13 +55,18 @@ namespace Shotr.Ui.Installer
             }
             //Delete Shotr folder.
             SetInstallStatusText("Removing folders...");
-            var Install_Reg_Loc = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
 
-            var hKey = (Registry.LocalMachine).OpenSubKey(Install_Reg_Loc, true);
-            var appKey = hKey.OpenSubKey("Shotr");
-            location = (string)appKey.GetValue("InstallLocation");
-            appKey.Close();
-            hKey.Close();
+            try
+            {
+                var Install_Reg_Loc = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
+
+                var hKey = (Registry.LocalMachine).OpenSubKey(Install_Reg_Loc, true);
+                var appKey = hKey.OpenSubKey("Shotr");
+                location = (string) appKey.GetValue("InstallLocation");
+                appKey.Close();
+                hKey.Close();
+            }
+            catch { }
 
             try
             {
@@ -91,7 +96,13 @@ namespace Shotr.Ui.Installer
             catch { }
             
             //Uninstall.
-            RemoveControlPanelProgram("Shotr");
+            try
+            {
+                RemoveControlPanelProgram("Shotr");
+            }
+            catch
+            {
+            }
 
             SetInstallStatusText("Finished.");
 
@@ -154,7 +165,7 @@ namespace Shotr.Ui.Installer
         }
 
         public static void RemoveControlPanelProgram(string application)
-        {
+        { 
             var InstallerRegLoc = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
             var homeKey = (Registry.LocalMachine).OpenSubKey(InstallerRegLoc, true);
             var appSubKey = homeKey.OpenSubKey(application);

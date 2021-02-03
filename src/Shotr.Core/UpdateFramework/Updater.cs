@@ -20,13 +20,8 @@ namespace Shotr.Core.UpdateFramework
                 {
                     try
                     {
-                        var updateData = p.DownloadString((settings.SubscribeToAlphaBeta ? "https://shotr.io/beta" : "https://shotr.io/update"));
+                        var updateData = p.DownloadString("https://shotr.dev/api/updates/latest");
                         var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
-                        if (deserializedUpdateData.Error)
-                        {
-                            return;
-                        }
-                        
                         OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, settings));
                     }
                     catch(Exception ex)

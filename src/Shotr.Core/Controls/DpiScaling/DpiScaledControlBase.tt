@@ -1,0 +1,90 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
+using Microsoft.Win32;
+
+namespace Shotr.Core.Controls.DpiScaling {
+	<#
+	
+    var controls = new (string, bool)[]
+    {
+        ("Control", true),
+        ("Button", true),
+        ("CheckBox", true),
+        ("ListView",true),
+        ("PictureBox",true),
+        ("ComboBox", true),
+        ("Form",false),
+        ("Label",true),
+        ("LinkLabel",true),
+        ("Panel",true),
+        ("ProgressBar",true),
+        ("TabControl",true),
+        ("TabPage",true),
+        ("TextBox",true),
+    };
+
+
+	foreach( var control in controls )
+    { 
+    #>#region <#=control.Item1#>
+	public class DpiScaled<#=control.Item1#> : <#=control.Item1#>
+    {
+        public virtual bool Scaled { get; set; } = true;
+        public virtual bool BasePaint { get; set; } = false;
+
+        private Size _originalSize { get; set; }
+        private Point _originalLocation { get; set; }
+        private bool _alreadyRan { get; set; }
+
+        protected virtual void OnControlScaled(float scalingFactor) 
+        {
+        }
+
+        protected override void OnPaint(PaintEventArgs e) 
+        {
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+
+                Scale();
+            }
+
+            if (BasePaint) 
+            {
+                base.OnPaint(e);
+            }
+        }
+
+        private void Scale()
+        {
+            if (DpiScaler.NotDpiScaling(this))
+            {    
+                return;
+            }
+
+            if (Scaled)
+            {
+                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, <#=control.Item2.ToString().ToLower() #>);
+                Console.WriteLine($"DPI Scaled <#=control.Item1#>: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y})");
+                OnControlScaled(DpiScaler.GetScalingFactor(this));
+            }
+        }
+
+        public void ManualDpiScale()
+        {
+            (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+    }
+    #endregion
+
+	<# } #>
+}

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms.Settings
 {
@@ -32,51 +33,51 @@ namespace Shotr.Ui.Forms.Settings
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
-            this.metroTabControl1 = new Shotr.Core.Controls.DpiScaling.DpiScaledTabControl();
-            this.metroTabPage1 = new Shotr.Core.Controls.DpiScaling.DpiScaledTabPage();
-            this.metroPanel2 = new Shotr.Core.Controls.DpiScaling.DpiScaledPanel();
-            this.metroLabel13 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.soundToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.startupToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel15 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroLabel16 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.minimizedToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel17 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.alphaToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel14 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroLabel11 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.showNotificationsToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroPanel1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPanel();
-            this.metroTextBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledTextbox();
-            this.metroLabel10 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.saveToDirectoryToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel9 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroTabPage3 = new Shotr.Core.Controls.DpiScaling.DpiScaledTabPage();
-            this.metroPanel3 = new Shotr.Core.Controls.DpiScaling.DpiScaledPanel();
-            this.metroLabel18 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.useresizablecanvas = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel19 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroLabel12 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroLabel6 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.stitchFullscreenToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.imageCodecCombo = new Shotr.Core.Controls.DpiScaling.DpiScaledCombobox();
-            this.imageCompressionToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel7 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroLabel8 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.imageQualityCombo = new Shotr.Core.Controls.DpiScaling.DpiScaledCombobox();
-            this.metroTabPage4 = new Shotr.Core.Controls.DpiScaling.DpiScaledTabPage();
-            this.metroPanel4 = new Shotr.Core.Controls.DpiScaling.DpiScaledPanel();
-            this.metroLabel5 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.audioDeviceCombo = new Shotr.Core.Controls.DpiScaling.DpiScaledCombobox();
-            this.metroLabel4 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.metroLabel20 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.recordAudioToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.metroLabel3 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.framerateCombo = new Shotr.Core.Controls.DpiScaling.DpiScaledCombobox();
-            this.metroLabel1 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
-            this.recordCursorToggle = new Shotr.Core.Controls.DpiScaling.DpiScaledToggle();
-            this.encodingCombo = new Shotr.Core.Controls.DpiScaling.DpiScaledCombobox();
-            this.metroLabel2 = new Shotr.Core.Controls.DpiScaling.DpiScaledLabel();
+            this.metroTabControl1 = new Shotr.Core.Controls.Theme.ThemedTabControl();
+            this.metroTabPage1 = new Shotr.Core.Controls.Theme.ThemedTabPage();
+            this.metroPanel2 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.metroLabel13 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.soundToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.startupToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel15 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroLabel16 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.minimizedToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel17 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.alphaToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel14 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroLabel11 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.showNotificationsToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroPanel1 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.metroTextBox1 = new Shotr.Core.Controls.Theme.ThemedTextBox();
+            this.metroLabel10 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.saveToDirectoryToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel9 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroTabPage3 = new Shotr.Core.Controls.Theme.ThemedTabPage();
+            this.metroPanel3 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.metroLabel18 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.useresizablecanvas = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel19 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroLabel12 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroLabel6 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.stitchFullscreenToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.imageCodecCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
+            this.imageCompressionToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel7 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroLabel8 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.imageQualityCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
+            this.metroTabPage4 = new Shotr.Core.Controls.Theme.ThemedTabPage();
+            this.metroPanel4 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.metroLabel5 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.audioDeviceCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
+            this.metroLabel4 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.metroLabel20 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.recordAudioToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.metroLabel3 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.framerateCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
+            this.metroLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.recordCursorToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.encodingCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
+            this.metroLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.dpiScaledPictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
@@ -91,34 +92,34 @@ namespace Shotr.Ui.Forms.Settings
             // 
             // metroTabControl1
             // 
+            this.metroTabControl1.BasePaint = false;
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
+            this.metroTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.metroTabControl1.Location = new System.Drawing.Point(10, 57);
             this.metroTabControl1.Name = "metroTabControl1";
+            this.metroTabControl1.Scaled = true;
             this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(568, 299);
-            this.metroTabControl1.Style = "NewTheme";
+            this.metroTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.metroTabControl1.TabIndex = 0;
-            this.metroTabControl1.Theme = "NewTheme";
             // 
             // metroTabPage1
             // 
+            this.metroTabPage1.BasePaint = false;
             this.metroTabPage1.Controls.Add(this.metroPanel2);
             this.metroTabPage1.Controls.Add(this.metroPanel1);
-            this.metroTabPage1.HorizontalScrollbarBarColor = true;
             this.metroTabPage1.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage1.Name = "metroTabPage1";
+            this.metroTabPage1.Scaled = true;
             this.metroTabPage1.Size = new System.Drawing.Size(560, 270);
-            this.metroTabPage1.Style = "NewTheme";
             this.metroTabPage1.TabIndex = 0;
             this.metroTabPage1.Text = "General";
-            this.metroTabPage1.Theme = "NewTheme";
-            this.metroTabPage1.VerticalScrollbarBarColor = true;
             // 
             // metroPanel2
             // 
-            this.metroPanel2.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
+            this.metroPanel2.BasePaint = false;
             this.metroPanel2.Controls.Add(this.metroLabel13);
             this.metroPanel2.Controls.Add(this.soundToggle);
             this.metroPanel2.Controls.Add(this.startupToggle);
@@ -130,249 +131,221 @@ namespace Shotr.Ui.Forms.Settings
             this.metroPanel2.Controls.Add(this.metroLabel14);
             this.metroPanel2.Controls.Add(this.metroLabel11);
             this.metroPanel2.Controls.Add(this.showNotificationsToggle);
-            this.metroPanel2.HorizontalScrollbarBarColor = true;
-            this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel2.HorizontalScrollbarSize = 10;
             this.metroPanel2.Location = new System.Drawing.Point(8, 7);
             this.metroPanel2.Name = "metroPanel2";
+            this.metroPanel2.Scaled = true;
             this.metroPanel2.Size = new System.Drawing.Size(544, 162);
-            this.metroPanel2.Style = "NewTheme";
             this.metroPanel2.TabIndex = 53;
-            this.metroPanel2.Theme = "NewTheme";
-            this.metroPanel2.VerticalScrollbarBarColor = true;
-            this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel2.VerticalScrollbarSize = 10;
             // 
             // metroLabel13
             // 
             this.metroLabel13.AutoSize = true;
-            this.metroLabel13.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel13.Location = new System.Drawing.Point(17, 129);
+            this.metroLabel13.BasePaint = false;
+            this.metroLabel13.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel13.Location = new System.Drawing.Point(63, 132);
             this.metroLabel13.Name = "metroLabel13";
             this.metroLabel13.Scaled = true;
-            this.metroLabel13.Size = new System.Drawing.Size(84, 22);
-            this.metroLabel13.Style = "NewTheme";
+            this.metroLabel13.Size = new System.Drawing.Size(77, 15);
             this.metroLabel13.TabIndex = 56;
-            this.metroLabel13.Text = "Play Sounds:";
-            this.metroLabel13.Theme = "NewTheme";
-            this.metroLabel13.UseCompatibleTextRendering = true;
+            this.metroLabel13.Text = "Play Sounds";
             // 
             // soundToggle
             // 
             this.soundToggle.AutoSize = true;
-            this.soundToggle.Location = new System.Drawing.Point(447, 128);
+            this.soundToggle.BasePaint = false;
+            this.soundToggle.Location = new System.Drawing.Point(17, 130);
             this.soundToggle.Name = "soundToggle";
-            this.soundToggle.Size = new System.Drawing.Size(80, 19);
-            this.soundToggle.Style = "NewTheme";
+            this.soundToggle.Scaled = true;
+            this.soundToggle.Size = new System.Drawing.Size(43, 19);
             this.soundToggle.TabIndex = 55;
             this.soundToggle.Text = "Off";
-            this.soundToggle.Theme = "NewTheme";
             this.soundToggle.UseVisualStyleBackColor = false;
             // 
             // startupToggle
             // 
             this.startupToggle.AutoSize = true;
-            this.startupToggle.Location = new System.Drawing.Point(447, 50);
+            this.startupToggle.BasePaint = false;
+            this.startupToggle.Location = new System.Drawing.Point(17, 52);
             this.startupToggle.Name = "startupToggle";
-            this.startupToggle.Size = new System.Drawing.Size(80, 19);
-            this.startupToggle.Style = "NewTheme";
+            this.startupToggle.Scaled = true;
+            this.startupToggle.Size = new System.Drawing.Size(43, 19);
             this.startupToggle.TabIndex = 49;
             this.startupToggle.Text = "Off";
-            this.startupToggle.Theme = "NewTheme";
             this.startupToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel15
             // 
             this.metroLabel15.AutoSize = true;
-            this.metroLabel15.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel15.Location = new System.Drawing.Point(17, 51);
+            this.metroLabel15.BasePaint = false;
+            this.metroLabel15.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel15.Location = new System.Drawing.Point(63, 54);
             this.metroLabel15.Name = "metroLabel15";
             this.metroLabel15.Scaled = true;
-            this.metroLabel15.Size = new System.Drawing.Size(54, 22);
-            this.metroLabel15.Style = "NewTheme";
+            this.metroLabel15.Size = new System.Drawing.Size(82, 15);
             this.metroLabel15.TabIndex = 50;
-            this.metroLabel15.Text = "Startup:";
-            this.metroLabel15.Theme = "NewTheme";
-            this.metroLabel15.UseCompatibleTextRendering = true;
+            this.metroLabel15.Text = "Start With OS";
             // 
             // metroLabel16
             // 
             this.metroLabel16.AutoSize = true;
-            this.metroLabel16.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel16.Location = new System.Drawing.Point(17, 77);
+            this.metroLabel16.BasePaint = false;
+            this.metroLabel16.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel16.Location = new System.Drawing.Point(63, 80);
             this.metroLabel16.Name = "metroLabel16";
             this.metroLabel16.Scaled = true;
-            this.metroLabel16.Size = new System.Drawing.Size(101, 22);
-            this.metroLabel16.Style = "NewTheme";
+            this.metroLabel16.Size = new System.Drawing.Size(95, 15);
             this.metroLabel16.TabIndex = 51;
-            this.metroLabel16.Text = "Start Minimized:";
-            this.metroLabel16.Theme = "NewTheme";
-            this.metroLabel16.UseCompatibleTextRendering = true;
+            this.metroLabel16.Text = "Start Minimized";
             // 
             // minimizedToggle
             // 
             this.minimizedToggle.AutoSize = true;
-            this.minimizedToggle.Location = new System.Drawing.Point(447, 76);
+            this.minimizedToggle.BasePaint = false;
+            this.minimizedToggle.Location = new System.Drawing.Point(17, 78);
             this.minimizedToggle.Name = "minimizedToggle";
-            this.minimizedToggle.Size = new System.Drawing.Size(80, 19);
-            this.minimizedToggle.Style = "NewTheme";
+            this.minimizedToggle.Scaled = true;
+            this.minimizedToggle.Size = new System.Drawing.Size(43, 19);
             this.minimizedToggle.TabIndex = 52;
             this.minimizedToggle.Text = "Off";
-            this.minimizedToggle.Theme = "NewTheme";
             this.minimizedToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel17
             // 
             this.metroLabel17.AutoSize = true;
-            this.metroLabel17.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel17.Location = new System.Drawing.Point(17, 103);
+            this.metroLabel17.BasePaint = false;
+            this.metroLabel17.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel17.Location = new System.Drawing.Point(63, 106);
             this.metroLabel17.Name = "metroLabel17";
             this.metroLabel17.Scaled = true;
-            this.metroLabel17.Size = new System.Drawing.Size(165, 22);
-            this.metroLabel17.Style = "NewTheme";
+            this.metroLabel17.Size = new System.Drawing.Size(80, 15);
             this.metroLabel17.TabIndex = 54;
-            this.metroLabel17.Text = "Show Alpha/Beta Updates:";
-            this.metroLabel17.Theme = "NewTheme";
-            this.metroLabel17.UseCompatibleTextRendering = true;
+            this.metroLabel17.Text = "Enable Alpha";
             // 
             // alphaToggle
             // 
             this.alphaToggle.AutoSize = true;
-            this.alphaToggle.Location = new System.Drawing.Point(447, 102);
+            this.alphaToggle.BasePaint = false;
+            this.alphaToggle.Location = new System.Drawing.Point(17, 104);
             this.alphaToggle.Name = "alphaToggle";
-            this.alphaToggle.Size = new System.Drawing.Size(80, 19);
-            this.alphaToggle.Style = "NewTheme";
+            this.alphaToggle.Scaled = true;
+            this.alphaToggle.Size = new System.Drawing.Size(43, 19);
             this.alphaToggle.TabIndex = 53;
             this.alphaToggle.Text = "Off";
-            this.alphaToggle.Theme = "NewTheme";
             this.alphaToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel14
             // 
-            this.metroLabel14.FontSize = MetroFramework5.Drawing.MetroFontSize.Medium;
+            this.metroLabel14.BasePaint = false;
             this.metroLabel14.Location = new System.Drawing.Point(134, 3);
             this.metroLabel14.Name = "metroLabel14";
             this.metroLabel14.Scaled = true;
             this.metroLabel14.Size = new System.Drawing.Size(276, 19);
-            this.metroLabel14.Style = "NewTheme";
             this.metroLabel14.TabIndex = 7;
             this.metroLabel14.Text = "General Options";
             this.metroLabel14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel14.Theme = "NewTheme";
-            this.metroLabel14.UseCompatibleTextRendering = true;
             // 
             // metroLabel11
             // 
             this.metroLabel11.AutoSize = true;
-            this.metroLabel11.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel11.Location = new System.Drawing.Point(17, 25);
+            this.metroLabel11.BasePaint = false;
+            this.metroLabel11.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel11.Location = new System.Drawing.Point(63, 28);
             this.metroLabel11.Name = "metroLabel11";
             this.metroLabel11.Scaled = true;
-            this.metroLabel11.Size = new System.Drawing.Size(120, 22);
-            this.metroLabel11.Style = "NewTheme";
+            this.metroLabel11.Size = new System.Drawing.Size(113, 15);
             this.metroLabel11.TabIndex = 48;
             this.metroLabel11.Text = "Show Notifications";
-            this.metroLabel11.Theme = "NewTheme";
-            this.metroLabel11.UseCompatibleTextRendering = true;
             // 
             // showNotificationsToggle
             // 
             this.showNotificationsToggle.AutoSize = true;
-            this.showNotificationsToggle.Location = new System.Drawing.Point(447, 24);
+            this.showNotificationsToggle.BasePaint = false;
+            this.showNotificationsToggle.Location = new System.Drawing.Point(17, 26);
             this.showNotificationsToggle.Name = "showNotificationsToggle";
-            this.showNotificationsToggle.Size = new System.Drawing.Size(80, 19);
-            this.showNotificationsToggle.Style = "NewTheme";
+            this.showNotificationsToggle.Scaled = true;
+            this.showNotificationsToggle.Size = new System.Drawing.Size(43, 19);
             this.showNotificationsToggle.TabIndex = 47;
             this.showNotificationsToggle.Text = "Off";
-            this.showNotificationsToggle.Theme = "NewTheme";
             this.showNotificationsToggle.UseVisualStyleBackColor = false;
             // 
             // metroPanel1
             // 
-            this.metroPanel1.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
+            this.metroPanel1.BasePaint = false;
             this.metroPanel1.Controls.Add(this.metroTextBox1);
             this.metroPanel1.Controls.Add(this.metroLabel10);
             this.metroPanel1.Controls.Add(this.saveToDirectoryToggle);
             this.metroPanel1.Controls.Add(this.metroLabel9);
-            this.metroPanel1.HorizontalScrollbarBarColor = true;
-            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.HorizontalScrollbarSize = 10;
             this.metroPanel1.Location = new System.Drawing.Point(8, 175);
             this.metroPanel1.Name = "metroPanel1";
+            this.metroPanel1.Scaled = true;
             this.metroPanel1.Size = new System.Drawing.Size(544, 85);
-            this.metroPanel1.Style = "NewTheme";
             this.metroPanel1.TabIndex = 52;
-            this.metroPanel1.Theme = "NewTheme";
-            this.metroPanel1.VerticalScrollbarBarColor = true;
-            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.VerticalScrollbarSize = 10;
             // 
             // metroTextBox1
             // 
+            this.metroTextBox1.BasePaint = false;
+            this.metroTextBox1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroTextBox1.Location = new System.Drawing.Point(17, 43);
+            this.metroTextBox1.Multiline = false;
             this.metroTextBox1.Name = "metroTextBox1";
             this.metroTextBox1.ReadOnly = true;
+            this.metroTextBox1.Scaled = true;
+            this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.metroTextBox1.Size = new System.Drawing.Size(510, 23);
-            this.metroTextBox1.Style = "NewTheme";
             this.metroTextBox1.TabIndex = 54;
-            this.metroTextBox1.Theme = "NewTheme";
+            this.metroTextBox1.TabStop = false;
+            this.metroTextBox1.UseSystemPasswordChar = false;
             // 
             // metroLabel10
             // 
             this.metroLabel10.AutoSize = true;
-            this.metroLabel10.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel10.BasePaint = false;
+            this.metroLabel10.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroLabel10.Location = new System.Drawing.Point(14, 21);
             this.metroLabel10.Name = "metroLabel10";
             this.metroLabel10.Scaled = true;
-            this.metroLabel10.Size = new System.Drawing.Size(110, 22);
-            this.metroLabel10.Style = "NewTheme";
+            this.metroLabel10.Size = new System.Drawing.Size(105, 15);
             this.metroLabel10.TabIndex = 53;
             this.metroLabel10.Text = "Save to Directory";
-            this.metroLabel10.Theme = "NewTheme";
-            this.metroLabel10.UseCompatibleTextRendering = true;
             // 
             // saveToDirectoryToggle
             // 
             this.saveToDirectoryToggle.AutoSize = true;
-            this.saveToDirectoryToggle.Location = new System.Drawing.Point(447, 19);
+            this.saveToDirectoryToggle.BasePaint = false;
+            this.saveToDirectoryToggle.Location = new System.Drawing.Point(484, 20);
             this.saveToDirectoryToggle.Name = "saveToDirectoryToggle";
-            this.saveToDirectoryToggle.Size = new System.Drawing.Size(80, 19);
-            this.saveToDirectoryToggle.Style = "NewTheme";
+            this.saveToDirectoryToggle.Scaled = true;
+            this.saveToDirectoryToggle.Size = new System.Drawing.Size(43, 19);
             this.saveToDirectoryToggle.TabIndex = 52;
             this.saveToDirectoryToggle.Text = "Off";
-            this.saveToDirectoryToggle.Theme = "NewTheme";
             this.saveToDirectoryToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel9
             // 
-            this.metroLabel9.FontSize = MetroFramework5.Drawing.MetroFontSize.Medium;
+            this.metroLabel9.BasePaint = false;
+            this.metroLabel9.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroLabel9.Location = new System.Drawing.Point(134, 3);
             this.metroLabel9.Name = "metroLabel9";
             this.metroLabel9.Scaled = true;
             this.metroLabel9.Size = new System.Drawing.Size(276, 19);
-            this.metroLabel9.Style = "NewTheme";
             this.metroLabel9.TabIndex = 7;
             this.metroLabel9.Text = "Save to Directory";
             this.metroLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel9.Theme = "NewTheme";
-            this.metroLabel9.UseCompatibleTextRendering = true;
             // 
             // metroTabPage3
             // 
+            this.metroTabPage3.BasePaint = false;
             this.metroTabPage3.Controls.Add(this.metroPanel3);
-            this.metroTabPage3.HorizontalScrollbarBarColor = true;
             this.metroTabPage3.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage3.Name = "metroTabPage3";
-            this.metroTabPage3.Size = new System.Drawing.Size(192, 71);
-            this.metroTabPage3.Style = "NewTheme";
+            this.metroTabPage3.Scaled = true;
+            this.metroTabPage3.Size = new System.Drawing.Size(560, 270);
             this.metroTabPage3.TabIndex = 2;
             this.metroTabPage3.Text = "Capture";
-            this.metroTabPage3.Theme = "NewTheme";
-            this.metroTabPage3.VerticalScrollbarBarColor = true;
             // 
             // metroPanel3
             // 
-            this.metroPanel3.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
+            this.metroPanel3.BasePaint = false;
             this.metroPanel3.Controls.Add(this.metroLabel18);
             this.metroPanel3.Controls.Add(this.useresizablecanvas);
             this.metroPanel3.Controls.Add(this.metroLabel19);
@@ -384,157 +357,137 @@ namespace Shotr.Ui.Forms.Settings
             this.metroPanel3.Controls.Add(this.metroLabel7);
             this.metroPanel3.Controls.Add(this.metroLabel8);
             this.metroPanel3.Controls.Add(this.imageQualityCombo);
-            this.metroPanel3.HorizontalScrollbarBarColor = true;
-            this.metroPanel3.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel3.HorizontalScrollbarSize = 10;
             this.metroPanel3.Location = new System.Drawing.Point(8, 7);
             this.metroPanel3.Name = "metroPanel3";
+            this.metroPanel3.Scaled = true;
             this.metroPanel3.Size = new System.Drawing.Size(544, 216);
-            this.metroPanel3.Style = "NewTheme";
             this.metroPanel3.TabIndex = 53;
-            this.metroPanel3.Theme = "NewTheme";
-            this.metroPanel3.VerticalScrollbarBarColor = true;
-            this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel3.VerticalScrollbarSize = 10;
             // 
             // metroLabel18
             // 
             this.metroLabel18.AutoSize = true;
-            this.metroLabel18.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel18.BasePaint = false;
             this.metroLabel18.Location = new System.Drawing.Point(17, 173);
             this.metroLabel18.Name = "metroLabel18";
             this.metroLabel18.Scaled = true;
-            this.metroLabel18.Size = new System.Drawing.Size(241, 22);
-            this.metroLabel18.Style = "NewTheme";
+            this.metroLabel18.Size = new System.Drawing.Size(233, 15);
             this.metroLabel18.TabIndex = 40;
             this.metroLabel18.Text = "Use Resizable Canvas (Enter to Upload):";
-            this.metroLabel18.Theme = "NewTheme";
-            this.metroLabel18.UseCompatibleTextRendering = true;
             // 
             // useresizablecanvas
             // 
             this.useresizablecanvas.AutoSize = true;
-            this.useresizablecanvas.Location = new System.Drawing.Point(447, 174);
+            this.useresizablecanvas.BasePaint = false;
+            this.useresizablecanvas.Location = new System.Drawing.Point(484, 172);
             this.useresizablecanvas.Name = "useresizablecanvas";
-            this.useresizablecanvas.Size = new System.Drawing.Size(80, 19);
-            this.useresizablecanvas.Style = "NewTheme";
+            this.useresizablecanvas.Scaled = true;
+            this.useresizablecanvas.Size = new System.Drawing.Size(43, 19);
             this.useresizablecanvas.TabIndex = 39;
             this.useresizablecanvas.Text = "Off";
-            this.useresizablecanvas.Theme = "NewTheme";
             this.useresizablecanvas.UseVisualStyleBackColor = false;
             // 
             // metroLabel19
             // 
-            this.metroLabel19.FontSize = MetroFramework5.Drawing.MetroFontSize.Medium;
+            this.metroLabel19.BasePaint = false;
             this.metroLabel19.Location = new System.Drawing.Point(134, 3);
             this.metroLabel19.Name = "metroLabel19";
             this.metroLabel19.Scaled = true;
             this.metroLabel19.Size = new System.Drawing.Size(276, 19);
-            this.metroLabel19.Style = "NewTheme";
             this.metroLabel19.TabIndex = 7;
             this.metroLabel19.Text = "Screenshot Capture Options";
             this.metroLabel19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel19.Theme = "NewTheme";
-            this.metroLabel19.UseCompatibleTextRendering = true;
             // 
             // metroLabel12
             // 
             this.metroLabel12.AutoSize = true;
-            this.metroLabel12.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel12.BasePaint = false;
             this.metroLabel12.Location = new System.Drawing.Point(17, 139);
             this.metroLabel12.Name = "metroLabel12";
             this.metroLabel12.Scaled = true;
-            this.metroLabel12.Size = new System.Drawing.Size(162, 22);
-            this.metroLabel12.Style = "NewTheme";
+            this.metroLabel12.Size = new System.Drawing.Size(158, 15);
             this.metroLabel12.TabIndex = 38;
             this.metroLabel12.Text = "Stitch Fullscreen Captures:";
-            this.metroLabel12.Theme = "NewTheme";
-            this.metroLabel12.UseCompatibleTextRendering = true;
             // 
             // metroLabel6
             // 
             this.metroLabel6.AutoSize = true;
-            this.metroLabel6.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel6.BasePaint = false;
             this.metroLabel6.Location = new System.Drawing.Point(17, 30);
             this.metroLabel6.Name = "metroLabel6";
             this.metroLabel6.Scaled = true;
-            this.metroLabel6.Size = new System.Drawing.Size(92, 22);
-            this.metroLabel6.Style = "NewTheme";
+            this.metroLabel6.Size = new System.Drawing.Size(84, 15);
             this.metroLabel6.TabIndex = 36;
             this.metroLabel6.Text = "Image Codec:";
-            this.metroLabel6.Theme = "NewTheme";
-            this.metroLabel6.UseCompatibleTextRendering = true;
             // 
             // stitchFullscreenToggle
             // 
             this.stitchFullscreenToggle.AutoSize = true;
-            this.stitchFullscreenToggle.Location = new System.Drawing.Point(447, 142);
+            this.stitchFullscreenToggle.BasePaint = false;
+            this.stitchFullscreenToggle.Location = new System.Drawing.Point(484, 138);
             this.stitchFullscreenToggle.Name = "stitchFullscreenToggle";
-            this.stitchFullscreenToggle.Size = new System.Drawing.Size(80, 19);
-            this.stitchFullscreenToggle.Style = "NewTheme";
+            this.stitchFullscreenToggle.Scaled = true;
+            this.stitchFullscreenToggle.Size = new System.Drawing.Size(43, 19);
             this.stitchFullscreenToggle.TabIndex = 37;
             this.stitchFullscreenToggle.Text = "Off";
-            this.stitchFullscreenToggle.Theme = "NewTheme";
             this.stitchFullscreenToggle.UseVisualStyleBackColor = false;
             // 
             // imageCodecCombo
             // 
+            this.imageCodecCombo.BasePaint = false;
+            this.imageCodecCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.imageCodecCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.imageCodecCombo.FormattingEnabled = true;
-            this.imageCodecCombo.ItemHeight = 29;
+            this.imageCodecCombo.ItemHeight = 15;
             this.imageCodecCombo.Items.AddRange(new object[] {
             "png",
             "jpeg"});
             this.imageCodecCombo.Location = new System.Drawing.Point(323, 25);
             this.imageCodecCombo.Name = "imageCodecCombo";
-            this.imageCodecCombo.Size = new System.Drawing.Size(204, 35);
-            this.imageCodecCombo.Style = "NewTheme";
+            this.imageCodecCombo.Scaled = true;
+            this.imageCodecCombo.Size = new System.Drawing.Size(204, 21);
             this.imageCodecCombo.TabIndex = 31;
-            this.imageCodecCombo.Theme = "NewTheme";
             // 
             // imageCompressionToggle
             // 
             this.imageCompressionToggle.AutoSize = true;
-            this.imageCompressionToggle.Location = new System.Drawing.Point(447, 110);
+            this.imageCompressionToggle.BasePaint = false;
+            this.imageCompressionToggle.Location = new System.Drawing.Point(484, 106);
             this.imageCompressionToggle.Name = "imageCompressionToggle";
-            this.imageCompressionToggle.Size = new System.Drawing.Size(80, 19);
-            this.imageCompressionToggle.Style = "NewTheme";
+            this.imageCompressionToggle.Scaled = true;
+            this.imageCompressionToggle.Size = new System.Drawing.Size(43, 19);
             this.imageCompressionToggle.TabIndex = 32;
             this.imageCompressionToggle.Text = "Off";
-            this.imageCompressionToggle.Theme = "NewTheme";
             this.imageCompressionToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel7
             // 
             this.metroLabel7.AutoSize = true;
-            this.metroLabel7.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel7.BasePaint = false;
             this.metroLabel7.Location = new System.Drawing.Point(17, 69);
             this.metroLabel7.Name = "metroLabel7";
             this.metroLabel7.Scaled = true;
-            this.metroLabel7.Size = new System.Drawing.Size(94, 22);
-            this.metroLabel7.Style = "NewTheme";
+            this.metroLabel7.Size = new System.Drawing.Size(87, 15);
             this.metroLabel7.TabIndex = 35;
             this.metroLabel7.Text = "Image Quality:";
-            this.metroLabel7.Theme = "NewTheme";
-            this.metroLabel7.UseCompatibleTextRendering = true;
             // 
             // metroLabel8
             // 
             this.metroLabel8.AutoSize = true;
-            this.metroLabel8.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel8.BasePaint = false;
             this.metroLabel8.Location = new System.Drawing.Point(17, 107);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Scaled = true;
-            this.metroLabel8.Size = new System.Drawing.Size(132, 22);
-            this.metroLabel8.Style = "NewTheme";
+            this.metroLabel8.Size = new System.Drawing.Size(120, 15);
             this.metroLabel8.TabIndex = 33;
             this.metroLabel8.Text = "Image Compression:";
-            this.metroLabel8.Theme = "NewTheme";
-            this.metroLabel8.UseCompatibleTextRendering = true;
             // 
             // imageQualityCombo
             // 
+            this.imageQualityCombo.BasePaint = false;
+            this.imageQualityCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.imageQualityCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.imageQualityCombo.FormattingEnabled = true;
-            this.imageQualityCombo.ItemHeight = 29;
+            this.imageQualityCombo.ItemHeight = 15;
             this.imageQualityCombo.Items.AddRange(new object[] {
             "Maximum",
             "Ultra",
@@ -543,27 +496,24 @@ namespace Shotr.Ui.Forms.Settings
             "Low"});
             this.imageQualityCombo.Location = new System.Drawing.Point(323, 64);
             this.imageQualityCombo.Name = "imageQualityCombo";
-            this.imageQualityCombo.Size = new System.Drawing.Size(204, 35);
-            this.imageQualityCombo.Style = "NewTheme";
+            this.imageQualityCombo.Scaled = true;
+            this.imageQualityCombo.Size = new System.Drawing.Size(204, 21);
             this.imageQualityCombo.TabIndex = 34;
-            this.imageQualityCombo.Theme = "NewTheme";
             // 
             // metroTabPage4
             // 
+            this.metroTabPage4.BasePaint = false;
             this.metroTabPage4.Controls.Add(this.metroPanel4);
-            this.metroTabPage4.HorizontalScrollbarBarColor = true;
             this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage4.Name = "metroTabPage4";
-            this.metroTabPage4.Size = new System.Drawing.Size(192, 71);
-            this.metroTabPage4.Style = "NewTheme";
+            this.metroTabPage4.Scaled = true;
+            this.metroTabPage4.Size = new System.Drawing.Size(560, 270);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "Recorder";
-            this.metroTabPage4.Theme = "NewTheme";
-            this.metroTabPage4.VerticalScrollbarBarColor = true;
             // 
             // metroPanel4
             // 
-            this.metroPanel4.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
+            this.metroPanel4.BasePaint = false;
             this.metroPanel4.Controls.Add(this.metroLabel5);
             this.metroPanel4.Controls.Add(this.audioDeviceCombo);
             this.metroPanel4.Controls.Add(this.metroLabel4);
@@ -575,102 +525,88 @@ namespace Shotr.Ui.Forms.Settings
             this.metroPanel4.Controls.Add(this.recordCursorToggle);
             this.metroPanel4.Controls.Add(this.encodingCombo);
             this.metroPanel4.Controls.Add(this.metroLabel2);
-            this.metroPanel4.HorizontalScrollbarBarColor = true;
-            this.metroPanel4.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel4.HorizontalScrollbarSize = 10;
             this.metroPanel4.Location = new System.Drawing.Point(8, 7);
             this.metroPanel4.Name = "metroPanel4";
+            this.metroPanel4.Scaled = true;
             this.metroPanel4.Size = new System.Drawing.Size(544, 216);
-            this.metroPanel4.Style = "NewTheme";
             this.metroPanel4.TabIndex = 53;
-            this.metroPanel4.Theme = "NewTheme";
-            this.metroPanel4.VerticalScrollbarBarColor = true;
-            this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel4.VerticalScrollbarSize = 10;
             // 
             // metroLabel5
             // 
             this.metroLabel5.AutoSize = true;
-            this.metroLabel5.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
-            this.metroLabel5.Location = new System.Drawing.Point(17, 173);
+            this.metroLabel5.BasePaint = false;
+            this.metroLabel5.Location = new System.Drawing.Point(17, 171);
             this.metroLabel5.Name = "metroLabel5";
             this.metroLabel5.Scaled = true;
-            this.metroLabel5.Size = new System.Drawing.Size(89, 22);
-            this.metroLabel5.Style = "NewTheme";
+            this.metroLabel5.Size = new System.Drawing.Size(85, 15);
             this.metroLabel5.TabIndex = 48;
             this.metroLabel5.Text = "Audio Device:";
-            this.metroLabel5.Theme = "NewTheme";
-            this.metroLabel5.UseCompatibleTextRendering = true;
             // 
             // audioDeviceCombo
             // 
+            this.audioDeviceCombo.BasePaint = false;
+            this.audioDeviceCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.audioDeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.audioDeviceCombo.FormattingEnabled = true;
-            this.audioDeviceCombo.ItemHeight = 29;
+            this.audioDeviceCombo.ItemHeight = 15;
             this.audioDeviceCombo.Location = new System.Drawing.Point(322, 168);
             this.audioDeviceCombo.Name = "audioDeviceCombo";
-            this.audioDeviceCombo.Size = new System.Drawing.Size(205, 35);
-            this.audioDeviceCombo.Style = "NewTheme";
+            this.audioDeviceCombo.Scaled = true;
+            this.audioDeviceCombo.Size = new System.Drawing.Size(205, 21);
             this.audioDeviceCombo.TabIndex = 47;
-            this.audioDeviceCombo.Theme = "NewTheme";
             // 
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel4.BasePaint = false;
             this.metroLabel4.Location = new System.Drawing.Point(17, 139);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Scaled = true;
-            this.metroLabel4.Size = new System.Drawing.Size(90, 22);
-            this.metroLabel4.Style = "NewTheme";
+            this.metroLabel4.Size = new System.Drawing.Size(85, 15);
             this.metroLabel4.TabIndex = 46;
             this.metroLabel4.Text = "Record Audio:";
-            this.metroLabel4.Theme = "NewTheme";
-            this.metroLabel4.UseCompatibleTextRendering = true;
             // 
             // metroLabel20
             // 
-            this.metroLabel20.FontSize = MetroFramework5.Drawing.MetroFontSize.Medium;
+            this.metroLabel20.BasePaint = false;
             this.metroLabel20.Location = new System.Drawing.Point(134, 3);
             this.metroLabel20.Name = "metroLabel20";
             this.metroLabel20.Scaled = true;
             this.metroLabel20.Size = new System.Drawing.Size(276, 19);
-            this.metroLabel20.Style = "NewTheme";
             this.metroLabel20.TabIndex = 7;
             this.metroLabel20.Text = "Save to Directory";
             this.metroLabel20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroLabel20.Theme = "NewTheme";
-            this.metroLabel20.UseCompatibleTextRendering = true;
             // 
             // recordAudioToggle
             // 
             this.recordAudioToggle.AutoSize = true;
-            this.recordAudioToggle.Location = new System.Drawing.Point(447, 142);
+            this.recordAudioToggle.BasePaint = false;
+            this.recordAudioToggle.Location = new System.Drawing.Point(484, 138);
             this.recordAudioToggle.Name = "recordAudioToggle";
-            this.recordAudioToggle.Size = new System.Drawing.Size(80, 19);
-            this.recordAudioToggle.Style = "NewTheme";
+            this.recordAudioToggle.Scaled = true;
+            this.recordAudioToggle.Size = new System.Drawing.Size(43, 19);
             this.recordAudioToggle.TabIndex = 45;
             this.recordAudioToggle.Text = "Off";
-            this.recordAudioToggle.Theme = "NewTheme";
             this.recordAudioToggle.UseVisualStyleBackColor = false;
             // 
             // metroLabel3
             // 
             this.metroLabel3.AutoSize = true;
-            this.metroLabel3.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel3.BasePaint = false;
             this.metroLabel3.Location = new System.Drawing.Point(17, 30);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Scaled = true;
-            this.metroLabel3.Size = new System.Drawing.Size(72, 22);
-            this.metroLabel3.Style = "NewTheme";
+            this.metroLabel3.Size = new System.Drawing.Size(67, 15);
             this.metroLabel3.TabIndex = 44;
             this.metroLabel3.Text = "Framerate:";
-            this.metroLabel3.Theme = "NewTheme";
-            this.metroLabel3.UseCompatibleTextRendering = true;
             // 
             // framerateCombo
             // 
+            this.framerateCombo.BasePaint = false;
+            this.framerateCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.framerateCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.framerateCombo.FormattingEnabled = true;
-            this.framerateCombo.ItemHeight = 29;
+            this.framerateCombo.ItemHeight = 15;
             this.framerateCombo.Items.AddRange(new object[] {
             "60",
             "50",
@@ -681,41 +617,40 @@ namespace Shotr.Ui.Forms.Settings
             "10"});
             this.framerateCombo.Location = new System.Drawing.Point(323, 25);
             this.framerateCombo.Name = "framerateCombo";
-            this.framerateCombo.Size = new System.Drawing.Size(204, 35);
-            this.framerateCombo.Style = "NewTheme";
+            this.framerateCombo.Scaled = true;
+            this.framerateCombo.Size = new System.Drawing.Size(204, 21);
             this.framerateCombo.TabIndex = 39;
-            this.framerateCombo.Theme = "NewTheme";
             // 
             // metroLabel1
             // 
             this.metroLabel1.AutoSize = true;
-            this.metroLabel1.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel1.BasePaint = false;
             this.metroLabel1.Location = new System.Drawing.Point(17, 69);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Scaled = true;
-            this.metroLabel1.Size = new System.Drawing.Size(118, 22);
-            this.metroLabel1.Style = "NewTheme";
+            this.metroLabel1.Size = new System.Drawing.Size(111, 15);
             this.metroLabel1.TabIndex = 43;
             this.metroLabel1.Text = "Encoding Threads:";
-            this.metroLabel1.Theme = "NewTheme";
-            this.metroLabel1.UseCompatibleTextRendering = true;
             // 
             // recordCursorToggle
             // 
             this.recordCursorToggle.AutoSize = true;
-            this.recordCursorToggle.Location = new System.Drawing.Point(447, 110);
+            this.recordCursorToggle.BasePaint = false;
+            this.recordCursorToggle.Location = new System.Drawing.Point(484, 107);
             this.recordCursorToggle.Name = "recordCursorToggle";
-            this.recordCursorToggle.Size = new System.Drawing.Size(80, 19);
-            this.recordCursorToggle.Style = "NewTheme";
+            this.recordCursorToggle.Scaled = true;
+            this.recordCursorToggle.Size = new System.Drawing.Size(43, 19);
             this.recordCursorToggle.TabIndex = 40;
             this.recordCursorToggle.Text = "Off";
-            this.recordCursorToggle.Theme = "NewTheme";
             this.recordCursorToggle.UseVisualStyleBackColor = false;
             // 
             // encodingCombo
             // 
+            this.encodingCombo.BasePaint = false;
+            this.encodingCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.encodingCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.encodingCombo.FormattingEnabled = true;
-            this.encodingCombo.ItemHeight = 29;
+            this.encodingCombo.ItemHeight = 15;
             this.encodingCombo.Items.AddRange(new object[] {
             "8",
             "7",
@@ -727,29 +662,27 @@ namespace Shotr.Ui.Forms.Settings
             "1"});
             this.encodingCombo.Location = new System.Drawing.Point(323, 64);
             this.encodingCombo.Name = "encodingCombo";
-            this.encodingCombo.Size = new System.Drawing.Size(204, 35);
-            this.encodingCombo.Style = "NewTheme";
+            this.encodingCombo.Scaled = true;
+            this.encodingCombo.Size = new System.Drawing.Size(204, 21);
             this.encodingCombo.TabIndex = 42;
-            this.encodingCombo.Theme = "NewTheme";
             // 
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.FontSize = MetroFramework5.Drawing.MetroFontSize.Small;
+            this.metroLabel2.BasePaint = false;
             this.metroLabel2.Location = new System.Drawing.Point(17, 108);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Scaled = true;
-            this.metroLabel2.Size = new System.Drawing.Size(94, 22);
-            this.metroLabel2.Style = "NewTheme";
+            this.metroLabel2.Size = new System.Drawing.Size(90, 15);
             this.metroLabel2.TabIndex = 41;
             this.metroLabel2.Text = "Record Cursor:";
-            this.metroLabel2.Theme = "NewTheme";
-            this.metroLabel2.UseCompatibleTextRendering = true;
             // 
             // dpiScaledPictureBox1
             // 
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.dpiScaledPictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("dpiScaledPictureBox1.Image")));
+            this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
+            this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.dpiScaledPictureBox1.BasePaint = false;
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(5, 11);
             this.dpiScaledPictureBox1.Name = "dpiScaledPictureBox1";
             this.dpiScaledPictureBox1.Scaled = true;
@@ -761,23 +694,17 @@ namespace Shotr.Ui.Forms.Settings
             // SettingsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BorderStyle = MetroFramework5.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(587, 372);
-            this.Controls.Add(this.dpiScaledPictureBox1);
             this.Controls.Add(this.metroTabControl1);
-            this.DisplayHeader = false;
+            this.Controls.Add(this.dpiScaledPictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
-            this.Resizable = false;
-            this.ShowCustomWindowButtons = false;
-            this.ShowFormTopBorder = false;
-            this.Style = "NewTheme";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
-            this.Theme = "NewTheme";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);
@@ -798,51 +725,51 @@ namespace Shotr.Ui.Forms.Settings
 
         #endregion
 
-        private DpiScaledTabControl metroTabControl1;
-        private DpiScaledTabPage metroTabPage1;
-        private DpiScaledTabPage metroTabPage3;
-        private DpiScaledTabPage metroTabPage4;
-        private DpiScaledLabel metroLabel5;
-        private DpiScaledCombobox audioDeviceCombo;
-        private DpiScaledLabel metroLabel4;
-        private DpiScaledToggle recordAudioToggle;
-        private DpiScaledLabel metroLabel3;
-        private DpiScaledLabel metroLabel1;
-        private DpiScaledCombobox encodingCombo;
-        private DpiScaledLabel metroLabel2;
-        private DpiScaledToggle recordCursorToggle;
-        private DpiScaledCombobox framerateCombo;
-        private DpiScaledLabel metroLabel11;
-        private DpiScaledToggle showNotificationsToggle;
-        private DpiScaledLabel metroLabel12;
-        private DpiScaledToggle stitchFullscreenToggle;
-        private DpiScaledLabel metroLabel6;
-        private DpiScaledLabel metroLabel7;
-        private DpiScaledCombobox imageQualityCombo;
-        private DpiScaledLabel metroLabel8;
-        private DpiScaledToggle imageCompressionToggle;
-        private DpiScaledCombobox imageCodecCombo;
-        private DpiScaledPanel metroPanel1;
-        private DpiScaledTextbox metroTextBox1;
-        private DpiScaledLabel metroLabel10;
-        private DpiScaledToggle saveToDirectoryToggle;
-        private DpiScaledLabel metroLabel9;
-        private DpiScaledPanel metroPanel2;
-        private DpiScaledLabel metroLabel14;
-        private DpiScaledLabel metroLabel13;
-        private DpiScaledToggle soundToggle;
-        private DpiScaledToggle startupToggle;
-        private DpiScaledLabel metroLabel15;
-        private DpiScaledLabel metroLabel16;
-        private DpiScaledToggle minimizedToggle;
-        private DpiScaledLabel metroLabel17;
-        private DpiScaledToggle alphaToggle;
-        private DpiScaledPanel metroPanel3;
-        private DpiScaledLabel metroLabel19;
-        private DpiScaledPanel metroPanel4;
-        private DpiScaledLabel metroLabel20;
-        private DpiScaledLabel metroLabel18;
-        private DpiScaledToggle useresizablecanvas;
+        private ThemedTabControl metroTabControl1;
+        private ThemedTabPage metroTabPage1;
+        private ThemedTabPage metroTabPage3;
+        private ThemedTabPage metroTabPage4;
+        private ThemedLabel metroLabel5;
+        private ThemedComboBox audioDeviceCombo;
+        private ThemedLabel metroLabel4;
+        private ThemedToggle recordAudioToggle;
+        private ThemedLabel metroLabel3;
+        private ThemedLabel metroLabel1;
+        private ThemedComboBox encodingCombo;
+        private ThemedLabel metroLabel2;
+        private ThemedToggle recordCursorToggle;
+        private ThemedComboBox framerateCombo;
+        private ThemedLabel metroLabel11;
+        private ThemedToggle showNotificationsToggle;
+        private ThemedLabel metroLabel12;
+        private ThemedToggle stitchFullscreenToggle;
+        private ThemedLabel metroLabel6;
+        private ThemedLabel metroLabel7;
+        private ThemedComboBox imageQualityCombo;
+        private ThemedLabel metroLabel8;
+        private ThemedToggle imageCompressionToggle;
+        private ThemedComboBox imageCodecCombo;
+        private ThemedPanel metroPanel1;
+        private ThemedTextBox metroTextBox1;
+        private ThemedLabel metroLabel10;
+        private ThemedToggle saveToDirectoryToggle;
+        private ThemedLabel metroLabel9;
+        private ThemedPanel metroPanel2;
+        private ThemedLabel metroLabel14;
+        private ThemedLabel metroLabel13;
+        private ThemedToggle soundToggle;
+        private ThemedToggle startupToggle;
+        private ThemedLabel metroLabel15;
+        private ThemedLabel metroLabel16;
+        private ThemedToggle minimizedToggle;
+        private ThemedLabel metroLabel17;
+        private ThemedToggle alphaToggle;
+        private ThemedPanel metroPanel3;
+        private ThemedLabel metroLabel19;
+        private ThemedPanel metroPanel4;
+        private ThemedLabel metroLabel20;
+        private ThemedLabel metroLabel18;
+        private ThemedToggle useresizablecanvas;
         private DpiScaledPictureBox dpiScaledPictureBox1;
     }
 }

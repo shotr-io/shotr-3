@@ -9,7 +9,7 @@
 //
 // namespace Shotr.Ui.Forms.Settings
 // {
-//     public partial class CustomUploader : DpiScaledForm
+//     public partial class CustomUploader: ThemedForm
 //     {
 //         private bool _customUploader;
 //         private NameValueCollection _nvc = new NameValueCollection();
@@ -297,7 +297,7 @@
 //             metroPanel1.Visible = true;
 //         }
 //
-//         private void dpiScaledButton1_Click(object sender, EventArgs e)
+//         private void ThemedButton1_Click(object sender, EventArgs e)
 //         {
 //             ClearAllShits();
 //             metroPanel2.Visible = true;

@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Model;
@@ -21,7 +22,6 @@ using Shotr.Core.UpdateFramework;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using Shotr.Ui.Forms;
-using Shotr.Ui.Forms.Settings;
 using Shotr.Ui.Properties;
 using ShotrUploaderPlugin;
 
@@ -76,9 +76,18 @@ namespace Shotr.Ui
         [STAThread]
         static void Main(string[] args)
         {
+            Theme.LoadFonts();
+            CreateDirectories();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
+#if THEMEDEBUGGER
+            TryEnableDpiAware();
+            Application.Run(new ThemeShowcase());
+            return;
+#endif
+
             if (args.Length > 0)
             {
                 foreach (var arg in args)
@@ -98,7 +107,9 @@ namespace Shotr.Ui
                     }
                 }
             }
-            
+
+            Console.SetOut(new ConsoleWriter(_debug));
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             
             _mutex = new Mutex(true, "ShotrMutexHotKeyHook", out var mutex);
@@ -109,11 +120,7 @@ namespace Shotr.Ui
                 return;
             }
 
-            Console.SetOut(new ConsoleWriter(_debug));
-
             Console.WriteLine($"Starting Shotr v{Assembly.GetExecutingAssembly().GetName().Version}...");
-            
-            TryEnableDpiAware();
 
             var services = new ServiceCollection();
 
@@ -121,6 +128,8 @@ namespace Shotr.Ui
             _serviceProvider = services.BuildServiceProvider();
 
             ConfigureApplication();
+
+            TryEnableDpiAware();
 
             var form = _serviceProvider.GetService<MainForm>();
             var settings = _serviceProvider.GetService<BaseSettings>();
@@ -176,13 +185,13 @@ namespace Shotr.Ui
                     File.WriteAllText(Path.Combine(SettingsService.FolderPath, "error.log"), ex.ToString());
                 }
             }
-            
+
             Application.Run(form);
             GC.KeepAlive(_mutex);
             _mutex.ReleaseMutex();
         }
-        
-        static void ConfigureApplication()
+
+        static void CreateDirectories()
         {
             //Create application directory.
             if (!Directory.Exists(SettingsService.FolderPath))
@@ -193,7 +202,10 @@ namespace Shotr.Ui
             {
                 Directory.CreateDirectory(SettingsService.CachePath);
             }
-            
+        }
+
+        static void ConfigureApplication()
+        {   
             //check if audio shit is installed, if not then register it.
             var audioSnifferPath = Path.Combine(SettingsService.FolderPath, "audio-sniffer.dll");
             if (!File.Exists(audioSnifferPath))
@@ -246,15 +258,15 @@ namespace Shotr.Ui
 
             var alphaBetaTag = e.UpdateInfo switch
             {
-                { Alpha: true } => "a",
-                { Beta: true } => "b",
+                { ChannelTypeId: 20 } => "a",
+                { ChannelTypeId: 30 } => "b",
                 _ => string.Empty
             };
 
             if (serverVersion > assemblyVersion)
             {
                 //check if it's an alpha or beta update.
-                if (e.UpdateInfo.Alpha || e.UpdateInfo.Beta)
+                if (e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)
                 {
                     //check if the user has subscribed to them or not.
                     if (!e.Settings.SubscribeToAlphaBeta)
@@ -265,20 +277,11 @@ namespace Shotr.Ui
                 //show update form.
                 Console.WriteLine($"There is an update available to Shotr - v{displayVersion}{alphaBetaTag}.");
             }
-            else if (serverVersion == assemblyVersion)
+            else
             {
                 Console.WriteLine($"You are running Shotr - v{displayVersion}{alphaBetaTag}.");
 
                 return;
-            }
-            else
-            {
-                if (e.Settings.SubscribeToAlphaBeta)
-                {
-                    return;
-                }
-                
-                Console.WriteLine($"There is an update (downgrade) available to Shotr - v{displayVersion}{alphaBetaTag}.");
             }
 
             while (Utils.GetForegroundProcess() != null)

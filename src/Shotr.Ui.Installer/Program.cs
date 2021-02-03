@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
+using Shotr.Core.Controls.Theme;
 using Shotr.Ui.Installer.Utils;
 
 namespace Shotr.Ui.Installer
@@ -18,6 +19,13 @@ namespace Shotr.Ui.Installer
         [STAThread]
         static void Main(string[] args)
         {
+            Theme.LoadFonts();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            TryEnableDpiAware();
+
             //check parent process.
             try
             {
@@ -48,15 +56,13 @@ namespace Shotr.Ui.Installer
             {
                 var store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
                 store.Open(OpenFlags.ReadWrite);
-                store.Add(new X509Certificate2(X509Certificate.CreateFromSignedFile(Assembly.GetExecutingAssembly().Location)));
+                store.Add(new X509Certificate2(
+                    X509Certificate.CreateFromSignedFile(Assembly.GetExecutingAssembly().Location)));
                 store.Close();
             }
-            catch { }
-
-            TryEnableDpiAware();
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            catch
+            {
+            }
 
             if (Application.ExecutablePath.Contains("uninstall.exe"))
             {

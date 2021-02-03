@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -7,15 +6,13 @@ using System.Net;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Windows.Forms;
-using MetroFramework5.Forms;
 using Microsoft.Win32;
-using Shotr.Core.Controls.DpiScaling;
-using Shotr.Core.Entities;
+using Shotr.Core.Controls.Theme;
 using Shotr.Ui.Installer.Utils;
 
 namespace Shotr.Ui.Installer
 {
-    public partial class InstallerForm : DpiScaledForm
+    public partial class InstallerForm : ThemedForm
     {
         public InstallerForm()
         {
@@ -85,7 +82,6 @@ namespace Shotr.Ui.Installer
         private void Form1_Load(object sender, EventArgs e)
         {
             Utils.Utils.r = new Random(Environment.TickCount);
-            step4TextBox.Visible = false;
             metroTextBox2.Text = Environment.GetFolderPath((Environment.Is64BitOperatingSystem ? Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles)) + "\\Shotr\\";
             //estimate required space.
             new Thread(delegate()
@@ -93,7 +89,7 @@ namespace Shotr.Ui.Installer
                     var output = 2.0f;
                     try
                     {
-                        var url = Program.Alpha ? "https://shotr.io/latest_alpha.zip" : "http://shotr.io/latest.zip";
+                        var url = "https://shotr.dev/downloads/latest_beta.zip";
                         var r = (HttpWebRequest)WebRequest.Create(url);
 						r.Proxy = null;
                         r.Method = "HEAD";
@@ -191,23 +187,26 @@ namespace Shotr.Ui.Installer
             installedLocation = installPath;
             if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Temp\\")) { Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Temp\\"); }
             tempFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Temp\\" + Utils.Utils.RandStr(Utils.Utils.r.Next(5, 10)) + ".tmp";
-            var p = new WebClient();
-            p.Proxy = null;
+            var p = new WebClient() { Proxy = null };
             try
             {
                 SetInstallStatusText("Downloading required files...");
+                Log("Downloading the latest Shotr...");
                 DownloadCompleted += Form1_DownloadCompleted;
-                new Thread(delegate() {
-                    try
+                try
+                {
+                    var url = "https://shotr.dev/downloads/latest_beta.zip";
+                    p.DownloadProgressChanged += (_, args) =>
                     {
-                        var url = Program.Alpha ? "https://shotr.io/latest_alpha.zip" : "http://shotr.io/latest.zip";
-                        p.DownloadFile(new Uri(url), tempFile);
-                        DownloadCompleted.Invoke(false);
-                    }
-                    catch(Exception ex) {
-                        DownloadCompleted.Invoke(true, ex);
-                    }
-                }).Start();                
+                        step4ProgressBar.Value = args.ProgressPercentage;
+                    };
+                    p.DownloadFileCompleted += (sender, args) => DownloadCompleted.Invoke(false);
+                    p.DownloadFileAsync(new Uri(url), tempFile);
+                }
+                catch (Exception ex)
+                {
+                    DownloadCompleted.Invoke(true, ex);
+                }
             }
             catch(Exception ex)
             {
@@ -385,20 +384,6 @@ namespace Shotr.Ui.Installer
         #endregion
 
         #region Step 4
-        private void step4ShowDetailButton_Click(object sender, EventArgs e)
-        {
-            if(step4ShowDetailButton.Text == "Show Details")
-            {
-                step4TextBox.Visible = true;
-                step4ShowDetailButton.Text = "Hide Details";
-            }
-            else
-            {
-                step4TextBox.Visible = false;
-                step4ShowDetailButton.Text = "Show Details";
-            }
-                
-        }
 
         private void step4CancelButton_Click(object sender, EventArgs e)
         {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
-using MetroFramework5.Controls;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities.Hotkeys;
 
 namespace Shotr.Core.Controls.Hotkey
 {
-    public class HotkeyButton : MetroButton
+    public class HotKeyButton : ThemedButton
     {
         public event EventHandler OnHotKeyChanged = delegate { };
         public event EventHandler OnHotKeyClicked = delegate { };
@@ -16,11 +16,11 @@ namespace Shotr.Core.Controls.Hotkey
         public HotKeyData? HotKey { get; set; }
         private HotKeyData? PreHk { get; set; }
 
-        public HotkeyButton()
+        public HotKeyButton()
         {
-            //override some shits here.
             Text = "None";
             Editing = false;
+            Highlight = false;
         }
 
         private void SetHkText()
@@ -72,8 +72,8 @@ namespace Shotr.Core.Controls.Hotkey
             {
                 if (kevent.KeyData == Keys.Escape)
                 {
-                    Highlight = false;
                     Editing = false;
+                    Highlight = false;
                     HotKey = PreHk;
                     SetHkText();
                     OnHotKeyCanceled(this, EventArgs.Empty);

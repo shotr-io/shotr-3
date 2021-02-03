@@ -1,9 +1,9 @@
 ﻿using System;
-using MetroFramework5.Forms;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Installer
 {
-    public partial class CancelForm : MetroForm
+    public partial class CancelForm : ThemedForm
     {
         public CancelForm()
         {

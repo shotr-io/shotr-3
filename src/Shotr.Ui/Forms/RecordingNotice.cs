@@ -1,10 +1,12 @@
 ﻿using System;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class RecordingNotice : DpiScaledForm
+    public partial class RecordingNotice : ThemedForm
     {
         private readonly BaseSettings _settings;
         public RecordingNotice(BaseSettings settings)
@@ -19,6 +21,7 @@ namespace Shotr.Ui.Forms
             if (metroCheckBox1.Checked)
             {
                 _settings.Record.ShowWarning = false;
+                SettingsService.Save(_settings);
             }
             Close();
         }

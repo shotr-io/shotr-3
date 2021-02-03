@@ -4,28 +4,28 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <AssemblyName>ShotrInstaller</AssemblyName>
+    <AssemblyName>Shotr-Installer</AssemblyName>
     <ApplicationIcon>shotr-icon.ico</ApplicationIcon>
     <Version>3.0.0</Version>
     <Company>Shotr</Company>
     <Product>Shotr</Product>
     <Authors>Shotr</Authors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject>Shotr.Ui.Installer.Program</StartupObject>
+    <Configurations>Debug;Release;BetaTest</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetroFramework5\MetroFramework5.csproj" />
     <ProjectReference Include="..\Shotr.Core\Shotr.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CancelForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="CancelForm.cs" />
     <Compile Update="CancelForm.Designer.cs">
       <DependentUpon>CancelForm.cs</DependentUpon>
     </Compile>
@@ -40,9 +40,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="UninstallerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="UninstallerForm.cs" />
     <Compile Update="UninstallerForm.Designer.cs">
       <DependentUpon>UninstallerForm.cs</DependentUpon>
     </Compile>

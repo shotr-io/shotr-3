@@ -12,7 +12,11 @@ namespace Shotr.Core.Controls.DpiScaling
 
         public static bool NotDpiScaling(Control control)
         {
-            return GetScalingFactor(control).Equals(1f) || (Process.GetCurrentProcess().ProcessName == "devenv");
+            var process = Process.GetCurrentProcess();
+            var notScaling = process.ProcessName == "DesignToolsServer" || GetScalingFactor(control).Equals(1f);
+            process.Dispose();
+
+            return notScaling;
         }
 
         public static float GetScalingFactor(Control control)
@@ -27,9 +31,9 @@ namespace Shotr.Core.Controls.DpiScaling
             return _scalingFactor;
         }
 
-        public static (Size, Point) ScaleControl(Control control, Size size, Point location)
+        public static (Size, Point) ScaleControl(Control control, Size size, Point location, bool scaleLocation = true)
         {
-            if (control.Size.IsEmpty || control.Location.IsEmpty)
+            if (control.Size.IsEmpty)
             {
                 return (size, location);
             }
@@ -48,10 +52,20 @@ namespace Shotr.Core.Controls.DpiScaling
 
             if (!dpiScalingFactor.Equals(1))
             {
-                control.Size = new Size((int)(size.Width * dpiScalingFactor), (int)(size.Height * dpiScalingFactor));
-                control.Location = new Point((int)(location.X * dpiScalingFactor), (int)(location.Y * dpiScalingFactor));   
-            }
+                if (control is Form)
+                {
+                    control.ClientSize = new Size((int)(control.ClientSize.Width * dpiScalingFactor), (int)(control.ClientSize.Height * dpiScalingFactor));
+                }
+                else
+                {
+                    control.Size = new Size((int)(size.Width * dpiScalingFactor), (int)(size.Height * dpiScalingFactor));
+                }
 
+                if (scaleLocation)
+                {
+                    control.Location = new Point((int)(location.X * dpiScalingFactor), (int)(location.Y * dpiScalingFactor));
+                }
+            }
             return (size, location);
         }
 
@@ -107,7 +121,7 @@ namespace Shotr.Core.Controls.DpiScaling
             {
                 return font;
             }
-
+            
             if (factor < 1f) 
             {
                 if (dpiScalingFactor < 2f)
@@ -125,9 +139,10 @@ namespace Shotr.Core.Controls.DpiScaling
                     factor += 0.1f;
                 }
             }
+            Console.WriteLine($"Multiplying font size in pixels * scalingFactor: {font.Size}{font.Unit} * {dpiScalingFactor} => {font.Size * dpiScalingFactor}{font.Unit}");
+            //Console.WriteLine("Font Size: {0} ({1}) - Scaling: {2} * {3} - {4} {5}", (font.SizeInPoints * ((dpiScalingFactor * 96f) / 72) * dpiScalingFactor) * factor, font.SizeInPoints * (dpiScalingFactor / 72), dpiScalingFactor, font.Size, font.SizeInPoints, font.Unit);
 
-            Console.WriteLine("Font Size: {0} ({1}) - Scaling: {2} * {3}", (font.SizeInPoints * ((dpiScalingFactor * 96f) / 72) * dpiScalingFactor) * factor, font.SizeInPoints * (dpiScalingFactor / 72), dpiScalingFactor, font.Size);
-            return new Font(font.FontFamily, ((font.SizeInPoints * ((dpiScalingFactor * 96f) / 72)) * dpiScalingFactor) * factor, font.Style, GraphicsUnit.Pixel);
+            return Theme.Theme.Font(font.Size);
         }
     }
 }

@@ -2,20 +2,21 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
-    public partial class UpdateForm : DpiScaledForm
+    public partial class UpdateForm : ThemedForm
     {
         private readonly BaseSettings _settings;
-        private bool _allowClose;
 
         UpdaterResponse _upd;
         public UpdateForm(BaseSettings settings)
@@ -23,48 +24,42 @@ namespace Shotr.Ui.Forms
             _settings = settings;
             
             InitializeComponent();
-            ManualDpiScale();
-            ScaleForm = false;
         }
 
         public void SetUpForm(UpdaterResponse p)
         {
-            metroTextBox1.Text = p.Changelog;
+            metroTextBox1.Text = p.Changes;
             TopMost = false;
-            if (p.Stable)
-            {
-                metroButton2.Visible = false;
-                metroButton1.Location = metroButton2.Location;
-                metroLabel2.Text = " A new update is available.";
-            }
+            metroLabel2.Text = " A new update is available.";
             _upd = p;
+            metroTextBox1.DeselectAll();
         }
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
             //start the updating.
-            Size = new Size(265, 70);
+            ClientSize = new Size((int)(373 * scalingFactor), (int)(71 * scalingFactor));
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Width / 2 - (Size.Width / 2), Screen.PrimaryScreen.WorkingArea.Height / 2 - (Size.Height / 2));
             metroTextBox1.Visible = false;
             metroLabel1.Visible = false;
             metroLabel2.Visible = false;
             metroButton1.Visible = false;
             metroButton2.Visible = false;
-            metroProgressSpinner1.Visible = true;
+            themedProgressBar1.Visible = true;
             Text = "Shotr - Updating";
-            Movable = true;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             //update shit.
-            UpdateFromUrl(_upd.UpdateUrl);
+            UpdateFromUrl();
         }
 
         private void metroButton2_Click(object sender, EventArgs e)
         {
-            _allowClose = true;
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        private void UpdateFromUrl(string url)
+        private void UpdateFromUrl()
         {
             new Thread(delegate()
             {
@@ -72,26 +67,53 @@ namespace Shotr.Ui.Forms
                 var m = new WebClient { Proxy = null };
                 try
                 {
-                    m.DownloadFile("https://shotr.io/latest", Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe"));
-                    var p = new Process();
-                    p.StartInfo.Verb = "runas";
-                    p.StartInfo.UseShellExecute = true;
-                    p.StartInfo.FileName = Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe");
-                    p.StartInfo.Arguments = "--run-installer --silent" + (_settings.SubscribeToAlphaBeta ? " --install-beta " : "");
-                    p.Start();
-                    Environment.Exit(0);
+                    m.DownloadProgressChanged += (s, e) =>
+                    {
+                        Invoke((MethodInvoker) delegate() { themedProgressBar1.Value = e.ProgressPercentage; });
+                    };
+                    m.DownloadFileCompleted += (sender, args) =>
+                    {
+                        using (var fs = File.OpenRead(Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip")))
+                        {
+                            using (var zip = new ZipArchive(fs))
+                            {
+                                foreach (var zipEntry in zip.Entries)
+                                {
+                                    var fileName = Path.Combine(SettingsService.FolderPath, zipEntry.Name);
+                                    zipEntry.ExtractToFile(fileName, true);
+                                }
+                            }
+                        }
+
+                        File.Delete(Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip"));
+
+                        var p = new Process();
+                        p.StartInfo.Verb = "runas";
+                        p.StartInfo.UseShellExecute = true;
+                        p.StartInfo.FileName = Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe");
+                        p.StartInfo.Arguments = "--run-installer" + (_settings.SubscribeToAlphaBeta ? " --install-beta " : ""); // temp remove silent to show progress
+                        p.Start();
+
+                        Environment.Exit(0);
+                    };
+
+                    m.DownloadFileAsync(new Uri("https://shotr.dev/downloads/Shotr-Installer.zip"), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip"));
+                    
                 }
                 catch (Exception ex)
                 {
                     Invoke((MethodInvoker)delegate () 
                     {
                         MessageBox.Show("There was an error while updating. Error message: " + ex);
-                        _allowClose = true;
                         Close();
                     });
                 }
-                //}
             }).Start();
+        }
+
+        private void UpdateForm_Load(object sender, EventArgs e)
+        {
+            metroTextBox1.DeselectAll();
         }
     }
 }

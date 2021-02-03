@@ -61,6 +61,16 @@ namespace Shotr.Ui.Installer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Shotr_Logo_Banner___icon_with_new_color___White {
+            get {
+                object obj = ResourceManager.GetObject("Shotr Logo Banner - icon with new color - White", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Terms of Service (&quot;Terms&quot;)
         ///Last updated: March 16, 2015
         ///Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms of Service&quot;) carefully before using the &quot;Service&quot; operated by  (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;).

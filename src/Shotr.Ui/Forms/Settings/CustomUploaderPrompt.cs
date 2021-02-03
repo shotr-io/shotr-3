@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
-using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms.Settings
 {
-    public partial class CustomUploaderPrompt : DpiScaledForm
+    public partial class CustomUploaderPrompt : ThemedForm
     {
         public CustomUploaderPrompt()
         {

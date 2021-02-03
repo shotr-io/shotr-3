@@ -73,9 +73,9 @@ namespace Shotr.Core.Utils
         public static Bitmap CreateEmptyBitmap(System.Drawing.Image img, PixelFormat pixelFormat, int widthOffset = 0, int heightOffset = 0)
         {
 			try {
-            var bitmap = new Bitmap(img.Width + widthOffset, img.Height + heightOffset, pixelFormat);
-            bitmap.SetResolution(img.HorizontalResolution, img.VerticalResolution);
-            return bitmap;
+                var bitmap = new Bitmap(img.Width + widthOffset, img.Height + heightOffset, pixelFormat);
+                bitmap.SetResolution(img.HorizontalResolution, img.VerticalResolution);
+                return bitmap;
 			}
 			catch{
 				return null;
@@ -85,13 +85,13 @@ namespace Shotr.Core.Utils
         public static Bitmap CopyActiveWindow(Rectangle src)
         {
 			try {
-            var CurrScreen = Screen.FromPoint(Cursor.Position).Bounds;
-            var bmpScreenCapture = new Bitmap(src.Width, src.Height);
-            var g = Graphics.FromImage(bmpScreenCapture);
-            g.CopyFromScreen(new Point(src.Left, src.Top),
-                                     Point.Empty,
-                                     src.Size);
-            return bmpScreenCapture;
+                var CurrScreen = Screen.FromPoint(Cursor.Position).Bounds;
+                var bmpScreenCapture = new Bitmap(src.Width, src.Height);
+                var g = Graphics.FromImage(bmpScreenCapture);
+                g.CopyFromScreen(new Point(src.Left, src.Top),
+                                         Point.Empty,
+                                         src.Size);
+                return bmpScreenCapture;
 			}
 			catch {
 				return null;

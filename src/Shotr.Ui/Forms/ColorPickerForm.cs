@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Shotr.Core.Controls.DpiScaling;
+using Shotr.Core.Controls.Theme;
 using Shotr.Core.Settings;
 using Shotr.Core.Utils;
 
@@ -27,8 +29,6 @@ namespace Shotr.Ui.Forms
         private TextureBrush _textbrush;
 
         private Rectangle _x = Rectangle.Empty;
-
-        private Font _kfont = new Font(DefaultFont, FontStyle.Bold);
         private bool _drawing = true;
 
         private readonly BaseSettings _settings;
@@ -38,6 +38,9 @@ namespace Shotr.Ui.Forms
             
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             InitializeComponent();
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
+            Font = Theme.Font((int)(Font.Size * scalingFactor));
+
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
             
@@ -193,6 +196,7 @@ namespace Shotr.Ui.Forms
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
             if (_drawing)
             {
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width+1, Bounds.Height+1));
                 e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));
                 if (_settings.Capture.ShowZoom)
                 {
@@ -201,10 +205,10 @@ namespace Shotr.Ui.Forms
                     var cursorloc = PointToClient(Cursor.Position);
                     using (var magnifier = (Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                     {
-                        if ((_x.Width > 80 || _x.Height > _kfont.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (_kfont.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (_kfont.Height * 2))))))
+                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
                         {
                             //draw it below the text.
-                            location = new Point(cursorloc.X + 5, cursorloc.Y + (_kfont.Height * 2) + 5);
+                            location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
                         }
                         else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
                         {
@@ -229,7 +233,7 @@ namespace Shotr.Ui.Forms
                         //draw magnifier.
                         e.Graphics.DrawImage(magnifier, location);
                         e.Graphics.DrawString(
-                            $"{(_settings.Capture.ShowColor ? GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")}", _kfont, _brush, location);
+                            $"{(_settings.Capture.ShowColor ? GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")}", Font, _brush, location);
                     }
                 }
             }
