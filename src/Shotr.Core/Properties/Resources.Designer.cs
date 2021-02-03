@@ -109,15 +109,5 @@ namespace Shotr.Core.Properties {
                 return ((byte[])(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] sounds_917_communication_channel {
-            get {
-                object obj = ResourceManager.GetObject("sounds_917_communication_channel", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

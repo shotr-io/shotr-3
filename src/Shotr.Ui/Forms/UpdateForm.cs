@@ -19,10 +19,11 @@ namespace Shotr.Ui.Forms
         {
             InitializeComponent();
 
+            changes = changes.Replace("\n", "\r\n");
             metroTextBox1.Text = changes;
             _subscribeToAlphaBeta = subscribeToAlphaBeta;
 
-            TopMost = false;
+            TopMost = true;
             metroTextBox1.DeselectAll();
         }
 

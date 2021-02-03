@@ -22,14 +22,12 @@ namespace Shotr.Core.Uploader
         public event UploadProgressEvent OnProgress = delegate { };
 
         private Queue<ImageShell> _uploadQueue = new Queue<ImageShell>();
-
-        private readonly MusicPlayerService _musicPlayerService;
+        
         private readonly BaseSettings _settings;
         private readonly IEnumerable<IImageUploader> _imageUploaders;
 
-        public Uploader(MusicPlayerService musicPlayerService, BaseSettings settings, IEnumerable<IImageUploader> imageUploaders)
+        public Uploader(BaseSettings settings, IEnumerable<IImageUploader> imageUploaders)
         {
-            _musicPlayerService = musicPlayerService;
             _settings = settings;
             _imageUploaders = imageUploaders;
         }
@@ -132,8 +130,6 @@ namespace Shotr.Core.Uploader
             }
             if (!m.Error)
             {
-                _musicPlayerService.PlayUploaded();
-                
                 OnUploaded(new object[] { f.ContentType, f.Data }, m);
                 f.Data = null;
                 GC.Collect();

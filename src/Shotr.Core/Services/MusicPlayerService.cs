@@ -12,7 +12,6 @@ namespace Shotr.Core.Services
         private readonly dcrypt _dcrypt;
 
         private readonly SoundPlayer _capturedSound;
-        private readonly SoundPlayer _uploadedSound;
 
         public MusicPlayerService(BaseSettings settings, dcrypt dcrypt)
         {
@@ -21,9 +20,6 @@ namespace Shotr.Core.Services
 
             var capturedMemoryStream = new MemoryStream(_dcrypt.Decrypt(Resources.sounds_1046_et_voila));
             _capturedSound = new SoundPlayer(capturedMemoryStream);
-                
-            var uploadedMemoryStream = new MemoryStream(_dcrypt.Decrypt(Resources.sounds_917_communication_channel));
-            _uploadedSound = new SoundPlayer(uploadedMemoryStream);
         }
         
         public void PlayCaptured()
@@ -31,14 +27,6 @@ namespace Shotr.Core.Services
             if (_settings.PlaySounds)
             {
                 _capturedSound.Play();
-            }
-        }
-
-        public void PlayUploaded()
-        {
-            if (_settings.PlaySounds)
-            {
-                _uploadedSound.Play();
             }
         }
     }
