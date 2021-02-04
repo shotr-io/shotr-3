@@ -250,22 +250,18 @@ namespace Shotr.Ui.Forms
                     //check if screen isn't big enough to fit on right side, if so then fit on left side.
                     var location = new Point(0, 0);
                     var cursorloc = PointToClient(Cursor.Position);
+                    var translatedBounds = PointToClient(new Point(Bounds.X, Bounds.Y));
                     using (var magnifier = (Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                     {
-                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
-                        {
-                            //draw it below the text.
-                            location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
-                        }
-                        else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
-                        {
-                            //bottom left
-                            location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
-                        }
-                        else if (cursorloc.Y + magnifier.Width + 5 > Height && cursorloc.X - magnifier.Height - 5 < Bounds.X)
+                        if (cursorloc.Y + magnifier.Height + 5 > Height && cursorloc.X - magnifier.Width - 5 < translatedBounds.X)
                         {
                             //top right
                             location = new Point(cursorloc.X + 5, cursorloc.Y - magnifier.Height - 5);
+                        }
+                        else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < translatedBounds.Y)
+                        {
+                            //bottom left
+                            location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
                         }
                         else if (cursorloc.X + magnifier.Width + 5 > Width || cursorloc.Y + magnifier.Height + 5 > Height)
                         {
