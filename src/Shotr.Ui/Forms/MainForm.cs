@@ -424,21 +424,13 @@ namespace Shotr.Ui.Forms
                     uploadCountLabel.Text = _settings.Uploads.Count.ToString();
                 }
                 myAccountPanel.BringToFront();
-
-                regionLabel.Enabled = true;
-                fullscreenLabel.Enabled = true;
-                recordScreenLabel.Enabled = true;
-                activeWindowLabel.Enabled = true;
+                
                 clipboardLabel.Enabled = true;
-
-                regionHotKeyButton.Enabled = true;
-                fullScreenHotKeyButton.Enabled = true;
-                recordScreenHotKeyButton.Enabled = true;
-                activeWindowHotKeyButton.Enabled = true;
+                
                 uploadClipboardHotKeyButton.Enabled = true;
 
                 // Show History tab
-                if (_settings.LegacyHistory is null && !metroTabControl1.TabPages.Contains(metroTabPage4))
+                if (_settings.LegacyHistory is null && !metroTabControl1.TabPages.ContainsKey("metroTabPage4"))
                 {
                     metroTabControl1.TabPages.Insert(0, metroTabPage4);
                 }
@@ -446,16 +438,8 @@ namespace Shotr.Ui.Forms
             else
             {
                 // Disable all the other buttons and labels and unregister the hotkeys.
-                regionLabel.Enabled = false;
-                fullscreenLabel.Enabled = false;
-                recordScreenLabel.Enabled = false;
-                activeWindowLabel.Enabled = false;
                 clipboardLabel.Enabled = false;
 
-                regionHotKeyButton.Enabled = false;
-                fullScreenHotKeyButton.Enabled = false;
-                recordScreenHotKeyButton.Enabled = false;
-                activeWindowHotKeyButton.Enabled = false;
                 uploadClipboardHotKeyButton.Enabled = false;
 
                 // Hide history tab.
@@ -681,9 +665,25 @@ namespace Shotr.Ui.Forms
                     Invoke((MethodInvoker)(() =>
                     {
                         var rect = Utils.GetActiveWindowCoords();
-                        var cloneBitmap = Utils.CopyActiveWindow(rect);
-                        
-                        Process(cloneBitmap, true);
+
+                        var capture = Utils.CopyScreen();
+                        var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks, rect);
+                        screenshotForm.ShowDialog();
+
+                        var cloneBitmap = screenshotForm.GetProcessedImage();
+
+                        switch (screenshotForm.ScreenshotAction)
+                        {
+                            case ScreenshotActionEnum.Upload:
+                                Process(cloneBitmap, true);
+                                break;
+                            case ScreenshotActionEnum.SaveToFile:
+                                Process(cloneBitmap, false, true);
+                                break;
+                            case ScreenshotActionEnum.SaveToClipboard:
+                                Process(cloneBitmap);
+                                break;
+                        }
 
                         _tasks.Reset();
                     }));

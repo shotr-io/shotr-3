@@ -35,7 +35,7 @@ namespace Shotr.Ui.Forms
         private Bitmap _origscreenshot;
 
         private Point _orig;
-        private Pen _pen = new Pen(Color.White, 1) { DashPattern = new[] { 6.0F, 4.0F } };
+        private Pen _pen = new Pen(Color.White, 1) {DashPattern = new[] {6.0F, 4.0F}};
 
         private Brush _brush = new SolidBrush(Color.White);
         private TextureBrush _textbrush;
@@ -45,7 +45,7 @@ namespace Shotr.Ui.Forms
         private bool _activated;
         private bool _editing;
         private bool _drawing;
-        
+
         private Stopwatch _stopwatch = Stopwatch.StartNew();
 
         private SingleInstance _tasks;
@@ -72,7 +72,7 @@ namespace Shotr.Ui.Forms
         private ThemedButton _saveButton;
         private ThemedButton _clipboardButton;
 
-        public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks)
+        public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks, Rectangle? coordinates = null)
         {
             _settings = settings;
             _uploader = uploader;
@@ -85,19 +85,20 @@ namespace Shotr.Ui.Forms
                 _availableColors.Add(Color.FromName(prop.Name));
             }
 
-            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint,
+                true);
 
             InitializeComponent();
 
             var dpiScale = DpiScaler.GetScalingFactor(this);
-            base.Font = Theme.Font((int)(base.Font.Size * dpiScale));
+            base.Font = Theme.Font((int) (base.Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
             TopMost = true;
             ShowInTaskbar = false;
 
             _screenshot = bitmap;
             _tasks = tasks;
-            
+
             _timer.Interval = 10;
             _timer.Start();
 
@@ -108,15 +109,20 @@ namespace Shotr.Ui.Forms
             {
                 screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
                 //take smallest height
-                float scale = 1;//(dpiX / 96f);
+                float scale = 1; //(dpiX / 96f);
                 //take smallest height
-                height = (int)Math.Round(((screen.Bounds.Height * scale) >= height) ? (screen.Bounds.Height * scale) : height);
-                width += (int)Math.Round(screen.Bounds.Width * scale);
+                height = (int) Math.Round(((screen.Bounds.Height * scale) >= height)
+                    ? (screen.Bounds.Height * scale)
+                    : height);
+                width += (int) Math.Round(screen.Bounds.Width * scale);
                 left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
                 top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + (int)Math.Round(screen.Bounds.Height * scale);
-                if (top < 0 || screen.Bounds.Y >= height) height += (int)Math.Round(screen.Bounds.Height * scale);
-                Console.WriteLine("Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
+                if (screen.Bounds.Y + screen.Bounds.Height > height)
+                    height = screen.Bounds.Y + (int) Math.Round(screen.Bounds.Height * scale);
+                if (top < 0 || screen.Bounds.Y >= height) height += (int) Math.Round(screen.Bounds.Height * scale);
+                Console.WriteLine(
+                    "Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}",
+                    screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
                 i++;
             }
 
@@ -124,14 +130,15 @@ namespace Shotr.Ui.Forms
             //get point of left-most monitor.
             Location = new Point(left, top);
 
+            KeyPreview = true;
             KeyUp += ScreenshotForm_KeyUp;
             KeyDown += ScreenshotForm_KeyDown;
 
             base.Cursor = Cursors.Cross;
 
-            _origscreenshot = (Bitmap)_screenshot.Clone();
+            _origscreenshot = (Bitmap) _screenshot.Clone();
             _screenshot = new Bitmap(_screenshot, width, height);
-            
+
             using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {
                 var brush = new TextureBrush(image);
@@ -143,15 +150,31 @@ namespace Shotr.Ui.Forms
             brush1.WrapMode = WrapMode.Clamp;
 
             DoubleBuffered = true;
-            
+
             _edit = Graphics.FromImage(_screenshot);
-            
+
             MouseMove += ScreenshotForm_MouseMove;
             MouseDown += ScreenshotForm_MouseDown;
             MouseUp += ScreenshotForm_MouseUp;
             MouseWheel += ScreenshotForm_MouseWheel;
+
+            if (coordinates is { })
+            {
+                var fixedCoordinates = coordinates.Value;
+                var point = new Point(fixedCoordinates.X, fixedCoordinates.Y);
+                var translated = PointToClient(point);
+                fixedCoordinates.X = translated.X;
+                fixedCoordinates.Y = translated.Y;
+
+                _x = fixedCoordinates;
+
+                SetupButtons();
+                _activated = false;
+                _editing = false;
+                _resizing = true;
+            }
         }
-        
+
         void ScreenshotForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
@@ -200,6 +223,7 @@ namespace Shotr.Ui.Forms
 
                     return;
                 }
+
                 CloseWindow();
             }
             else if (e.KeyCode == Keys.Z)
@@ -233,11 +257,12 @@ namespace Shotr.Ui.Forms
                         brush.WrapMode = WrapMode.Clamp;
                         _textbrush = brush;
                     }
+
                     //this.textbrush.ScaleTransform((this.Size.Width / (this.Size.Width * Utils.getScalingFactor())), (this.Size.Height / (this.Size.Height * Utils.getScalingFactor())));
                     _editing = false;
                 }
+
                 //turn on editing mode.
-                
             }
             else if (e.KeyCode == Keys.Enter)
             {
@@ -253,13 +278,15 @@ namespace Shotr.Ui.Forms
         {
             return _clonedBitmap;
         }
+
         private void ProcessImage()
         {
             //save screenshot at x.
             var format = _screenshot.PixelFormat;
             try
             {
-                _clonedBitmap = _screenshot.Clone(new Rectangle(new Point(_x.X, _x.Y), new Size(_x.Width, _x.Height)), format);
+                _clonedBitmap = _screenshot.Clone(new Rectangle(new Point(_x.X, _x.Y), new Size(_x.Width, _x.Height)),
+                    format);
             }
             catch
             {
@@ -269,16 +296,19 @@ namespace Shotr.Ui.Forms
                 {
                     _x.Width = _screenshot.Width - _x.X;
                 }
+
                 if (_x.Y + _x.Height > _screenshot.Height)
                 {
                     _x.Height = _screenshot.Height - _x.Y;
                 }
+
                 if (_x.X < 0)
                 {
                     var l = 0 - _x.X;
                     _x.Width -= l;
                     _x.X = 0;
                 }
+
                 if (_x.Y < 0)
                 {
                     var l = 0 - _x.Y;
@@ -301,6 +331,7 @@ namespace Shotr.Ui.Forms
                     return;
                 }
             }
+
             _screenshot.Dispose();
 
             Hide();
@@ -315,20 +346,23 @@ namespace Shotr.Ui.Forms
                 //left side.
                 if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
-                    Cursor = Cursors.SizeWE;                  
+                    Cursor = Cursors.SizeWE;
                 }
                 //right side.
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                         (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeWE;
                 }
                 //top
-                else if((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
+                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     Cursor = Cursors.SizeNS;
                 }
                 //bottom 
-                else if((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
+                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     Cursor = Cursors.SizeNS;
                 }
@@ -336,19 +370,23 @@ namespace Shotr.Ui.Forms
                 {
                     Cursor = Cursors.SizeNWSE;
                 }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     Cursor = Cursors.SizeNESW;
                 }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     Cursor = Cursors.SizeNWSE;
                 }
-                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) &&
+                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     Cursor = Cursors.SizeNESW;
                 }
-                else if((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
+                else if ((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y &&
+                          mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeAll;
                 }
@@ -374,7 +412,6 @@ namespace Shotr.Ui.Forms
                     }
                     else
                     {
-
                         //move inwards.
                         var output = (_x.X - mouse.X);
                         if (_x.Width + output <= 50)
@@ -384,7 +421,6 @@ namespace Shotr.Ui.Forms
 
                         _x.X -= output;
                         _x.Width += output;
-
                     }
                 }
                 else if (_resizeLocation == ResizeLocation.Right)
@@ -632,10 +668,12 @@ namespace Shotr.Ui.Forms
                 graphics.FillRectangle(new SolidBrush(color), new Rectangle(0, 0, width, height));
                 graphics.DrawRectangle(Pens.Black, 0, 0, width, height);
             }
+
             return image;
         }
 
-        private Bitmap Magnifier(Image img, Point position, int horizontalPixelCount, int verticalPixelCount, int pixelSize)
+        private Bitmap Magnifier(Image img, Point position, int horizontalPixelCount, int verticalPixelCount,
+            int pixelSize)
         {
             horizontalPixelCount = Between(horizontalPixelCount | 1, 1, 0x65);
             verticalPixelCount = Between(verticalPixelCount | 1, 1, 0x65);
@@ -645,8 +683,9 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
+
             var scalingFactor = DpiScaler.GetScalingFactor(this);
-            pixelSize = (int)(pixelSize * scalingFactor);
+            pixelSize = (int) (pixelSize * scalingFactor);
             var width = horizontalPixelCount * pixelSize;
             var height = verticalPixelCount * pixelSize;
             var image = new Bitmap(width - 1, height - 1);
@@ -654,29 +693,40 @@ namespace Shotr.Ui.Forms
             {
                 graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 graphics.PixelOffsetMode = PixelOffsetMode.Half;
-                graphics.DrawImage(img, new Rectangle(0, 0, width, height), new Rectangle(position.X - (horizontalPixelCount / 2), position.Y - (verticalPixelCount / 2), horizontalPixelCount, verticalPixelCount), GraphicsUnit.Pixel);
+                graphics.DrawImage(img, new Rectangle(0, 0, width, height),
+                    new Rectangle(position.X - (horizontalPixelCount / 2), position.Y - (verticalPixelCount / 2),
+                        horizontalPixelCount, verticalPixelCount), GraphicsUnit.Pixel);
                 graphics.PixelOffsetMode = PixelOffsetMode.None;
                 using (var pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
                 {
                     for (var i = 1; i < horizontalPixelCount; i++)
                     {
-                        graphics.DrawLine(pen, new Point((i * pixelSize) - 1, 0), new Point((i * pixelSize) - 1, height - 1));
+                        graphics.DrawLine(pen, new Point((i * pixelSize) - 1, 0),
+                            new Point((i * pixelSize) - 1, height - 1));
                     }
+
                     for (var j = 1; j < verticalPixelCount; j++)
                     {
-                        graphics.DrawLine(pen, new Point(0, (j * pixelSize) - 1), new Point(width - 1, (j * pixelSize) - 1));
+                        graphics.DrawLine(pen, new Point(0, (j * pixelSize) - 1),
+                            new Point(width - 1, (j * pixelSize) - 1));
                     }
                 }
-                graphics.DrawRectangle(Pens.Black, ((width - pixelSize) / 2) - 1, ((height - pixelSize) / 2) - 1, pixelSize, pixelSize);
-                graphics.DrawRectangle(Pens.White, (width - pixelSize) / 2, (height - pixelSize) / 2, pixelSize - 2, pixelSize - 2);
+
+                graphics.DrawRectangle(Pens.Black, ((width - pixelSize) / 2) - 1, ((height - pixelSize) / 2) - 1,
+                    pixelSize, pixelSize);
+                graphics.DrawRectangle(Pens.White, (width - pixelSize) / 2, (height - pixelSize) / 2, pixelSize - 2,
+                    pixelSize - 2);
             }
+
             return image;
         }
+
         void ScreenshotForm_Paint(object sender, PaintEventArgs e)
         {
             if (!_editing)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black),
+                    new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
                 e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Size.Width, Size.Height));
             }
             else
@@ -692,18 +742,23 @@ namespace Shotr.Ui.Forms
                 {
                     e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
 
-                    _pen.DashOffset = ((int)(_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
+                    _pen.DashOffset = ((int) (_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                     e.Graphics.DrawRectangle(_pen, _x);
                     if (_settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush, new PointF(_x.X, _x.Y - Font.Height * 2));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y - Font.Height));
+                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush,
+                            new PointF(_x.X, _x.Y - Font.Height * 2));
+                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush,
+                            new PointF(_x.X, _x.Y - Font.Height));
                     }
+
                     // Draw buttons.
                 }
-                catch { }
+                catch
+                {
+                }
             }
-            
+
             if (_editing && _drawing)
             {
                 var cursorloc = PointToClient(Cursor.Position);
@@ -718,9 +773,15 @@ namespace Shotr.Ui.Forms
                 //check if screen isn't big enough to fit on right side, if so then fit on left side.
                 var location = new Point(0, 0);
                 var cursorloc = PointToClient(Cursor.Position);
-                using (var magnifier = (_editing ? ShowSolidColor(_screenshot, new Point(cursorloc.X, cursorloc.Y), (int)(50 * scalingFactor), (int)(50 * scalingFactor), _chosenColor) :  Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
+                using (var magnifier = (_editing
+                    ? ShowSolidColor(_screenshot, new Point(cursorloc.X, cursorloc.Y), (int) (50 * scalingFactor),
+                        (int) (50 * scalingFactor), _chosenColor)
+                    : Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                 {
-                    if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
+                    if ((_x.Width > 80 || _x.Height > Font.Height * 2) &&
+                        (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y ||
+                         new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(
+                             new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
                     {
                         //draw it below the text.
                         location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
@@ -730,7 +791,8 @@ namespace Shotr.Ui.Forms
                         //bottom left
                         location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
                     }
-                    else if (cursorloc.Y + magnifier.Width + 5 > Height && cursorloc.X - magnifier.Height - 5 < Bounds.X)
+                    else if (cursorloc.Y + magnifier.Width + 5 > Height &&
+                             cursorloc.X - magnifier.Height - 5 < Bounds.X)
                     {
                         //top right
                         location = new Point(cursorloc.X + 5, cursorloc.Y - magnifier.Height - 5);
@@ -745,6 +807,7 @@ namespace Shotr.Ui.Forms
                         //bottom right
                         location = new Point(cursorloc.X + 5, cursorloc.Y + 5);
                     }
+
                     //draw magnifier.
                     e.Graphics.DrawImage(magnifier, location);
                 }
@@ -769,6 +832,7 @@ namespace Shotr.Ui.Forms
                 BringWindowToTop(Handle);
                 ShowWindow(Handle, swShow);
             }
+
             Activate();
         }
 
@@ -800,6 +864,7 @@ namespace Shotr.Ui.Forms
                 _resizeLocation = ResizeLocation.None;
                 return;
             }
+
             if (!_editing)
             {
                 if (!_settings.Capture.UseResizableCanvas)
@@ -807,109 +872,20 @@ namespace Shotr.Ui.Forms
                     ProcessImage();
                     return;
                 }
+
                 _activated = false;
                 _resizing = true;
 
-                var startX = 0;
-                var xStart = 0;
-
-                var scale = DpiScaler.GetScalingFactor(this);
-
-                if (_uploadButton is null)
-                {
-                    if (_settings.Login.Enabled is { } && _settings.Login.Enabled == true)
-                    {
-                        _uploadButton = new ThemedButton()
-                        {
-                            Scaled = false,
-                            Text = "Upload",
-                            Size = new Size((int) (scale * 75), (int) (scale * 23)),
-                            Location = new Point(_x.X, _x.Y + _x.Height + 2),
-                            Cursor = Cursors.Default
-                        };
-
-                        _uploadButton.MouseClick += (o, args) =>
-                        {
-                            _activated = false;
-                            ScreenshotAction = ScreenshotActionEnum.Upload;
-                            ProcessImage();
-                        };
-
-                        Controls.Add(_uploadButton);
-
-                        startX = _x.X + _uploadButton.Width + 6;
-                    }
-                }
-                else
-                {
-                    if (_settings.Login.Enabled is { } && _settings.Login.Enabled == true)
-                    {
-                        _uploadButton.Visible = true;
-                        _uploadButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
-                        xStart = _uploadButton.Width + 6;
-                    }
-                }
-
-                if (_saveButton is null)
-                {
-                    _saveButton = new ThemedButton()
-                    {
-                        Scaled = false,
-                        Text = "Save to File",
-                        Size = new Size((int) (scale * 75), (int) (scale * 23)),
-                        Location = new Point(startX, _x.Y + _x.Height + 2),
-                        Cursor = Cursors.Default
-                    };
-                    _saveButton.MouseClick += (_, _) =>
-                    {
-                        _activated = false;
-                        ScreenshotAction = ScreenshotActionEnum.SaveToFile;
-                        ProcessImage();
-                    };
-
-                    Controls.Add(_saveButton);
-                }
-                else
-                {
-                    _saveButton.Visible = true;
-                    _saveButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
-                }
-
-                if (_clipboardButton is null) 
-                { 
-                    var measurement = TextRenderer.MeasureText("Save to Clipboard", Font);
-
-                    _clipboardButton = new ThemedButton()
-                    {
-                        Scaled = false,
-                        Text = "Save to Clipboard",
-                        Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
-                        Location = new Point(_saveButton.Location.X + _saveButton.Width + 6, _x.Y + _x.Height + 2),
-                        Cursor = Cursors.Default
-                    };
-                    _clipboardButton.MouseClick += (_, _) =>
-                    {
-                        _activated = false;
-                        ScreenshotAction = ScreenshotActionEnum.SaveToClipboard;
-                        ProcessImage();
-                    };
-
-                    Controls.Add(_clipboardButton);
-                }
-                else
-                {
-                    _clipboardButton.Visible = true;
-                    _clipboardButton.Location = new Point(_saveButton.Location.X + _saveButton.Width + 6, _x.Y + _x.Height + 2);
-                }
+                SetupButtons();
             }
-            else 
+            else
             {
                 _drawing = false;
                 if (e.Button == MouseButtons.Right)
                 {
                     //clear drawings.
                     _screenshot.Dispose();
-                    _screenshot = (Bitmap)_origscreenshot.Clone();
+                    _screenshot = (Bitmap) _origscreenshot.Clone();
                     _edit = Graphics.FromImage(_screenshot);
                 }
             }
@@ -920,42 +896,52 @@ namespace Shotr.Ui.Forms
             if (_resizing)
             {
                 var mouse = PointToClient(Cursor.Position);
-                if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y + 4 && mouse.Y <= _x.Y + _x.Height - 4))
+                if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) &&
+                    (mouse.Y >= _x.Y + 4 && mouse.Y <= _x.Y + _x.Height - 4))
                 {
                     _resizeLocation = ResizeLocation.Left;
                 }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y + 4 && mouse.Y <= _x.Y + _x.Height - 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                         (mouse.Y >= _x.Y + 4 && mouse.Y <= _x.Y + _x.Height - 4))
                 {
                     _resizeLocation = ResizeLocation.Right;
                 }
-                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
+                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     _resizeLocation = ResizeLocation.Top;
                 }
-                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
+                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     _resizeLocation = ResizeLocation.Bottom;
                 }
-                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) &&
+                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     _resizeLocation = ResizeLocation.TopLeft;
                 }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
-                    _resizeLocation = ResizeLocation.TopRight;                   
+                    _resizeLocation = ResizeLocation.TopRight;
                 }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     _resizeLocation = ResizeLocation.BottomRight;
                 }
-                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) &&
+                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
                     _resizeLocation = ResizeLocation.BottomLeft;
                 }
-                else if((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
+                else if ((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y &&
+                          mouse.Y <= _x.Y + _x.Height))
                 {
                     _resizeLocation = ResizeLocation.Any;
                 }
+
                 _resizemove = true;
                 return;
             }
@@ -986,6 +972,100 @@ namespace Shotr.Ui.Forms
             }
         }
 
+        private void SetupButtons()
+        {
+            var startX = _x.X;
+            var xStart = _x.X;
+
+            var scale = DpiScaler.GetScalingFactor(this);
+
+            if (_settings.Login.Enabled == true)
+            {
+                if (_uploadButton is null)
+                {
+                    _uploadButton = new ThemedButton()
+                    {
+                        Scaled = false,
+                        Text = "Upload",
+                        Size = new Size((int)(scale * 75), (int)(scale * 23)),
+                        Location = new Point(startX, _x.Y + _x.Height + 2),
+                        Cursor = Cursors.Default
+                    };
+
+                    _uploadButton.MouseClick += (o, args) =>
+                    {
+                        _activated = false;
+                        ScreenshotAction = ScreenshotActionEnum.Upload;
+                        ProcessImage();
+                    };
+
+                    Controls.Add(_uploadButton);
+
+                    startX += _uploadButton.Width + 6;
+                }
+                else
+                {
+                    _uploadButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                    _uploadButton.Visible = true;
+                    xStart += _uploadButton.Width + 6;
+                }
+            }
+
+            if (_saveButton is null)
+            {
+                _saveButton = new ThemedButton()
+                {
+                    Scaled = false,
+                    Text = "Save to File",
+                    Size = new Size((int)(scale * 75), (int)(scale * 23)),
+                    Location = new Point(startX, _x.Y + _x.Height + 2),
+                    Cursor = Cursors.Default
+                };
+                _saveButton.MouseClick += (_, _) =>
+                {
+                    _activated = false;
+                    ScreenshotAction = ScreenshotActionEnum.SaveToFile;
+                    ProcessImage();
+                };
+
+                Controls.Add(_saveButton);
+                startX += _saveButton.Width + 6;
+            }
+            else
+            {
+                _saveButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                _saveButton.Visible = true;
+                xStart += _saveButton.Width + 6;
+            }
+
+            if (_clipboardButton is null)
+            {
+                var measurement = TextRenderer.MeasureText("Save to Clipboard", Font);
+
+                _clipboardButton = new ThemedButton()
+                {
+                    Scaled = false,
+                    Text = "Save to Clipboard",
+                    Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                    Location = new Point(startX, _x.Y + _x.Height + 2),
+                    Cursor = Cursors.Default
+                };
+                _clipboardButton.MouseClick += (_, _) =>
+                {
+                    _activated = false;
+                    ScreenshotAction = ScreenshotActionEnum.SaveToClipboard;
+                    ProcessImage();
+                };
+
+                Controls.Add(_clipboardButton);
+            }
+            else
+            {
+                _clipboardButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                _clipboardButton.Visible = true;
+            }
+        }
+
         public static Rectangle CreateRectangle(int x, int y, int x2, int y2)
         {
             int num;
@@ -999,6 +1079,7 @@ namespace Shotr.Ui.Forms
                 num = (x - x2) + 1;
                 x = x2;
             }
+
             if (y <= y2)
             {
                 num2 = (y2 - y) + 1;
@@ -1008,6 +1089,7 @@ namespace Shotr.Ui.Forms
                 num2 = (y - y2) + 1;
                 y = y2;
             }
+
             return new Rectangle(x, y, num, num2);
         }
 
@@ -1019,7 +1101,7 @@ namespace Shotr.Ui.Forms
                 _x = CreateRectangle(_orig.X, _orig.Y, mouselocation.X, mouselocation.Y);
             }
 
-            if (_resizing)
+            if (_resizing && _x != Rectangle.Empty)
             {
                 var startX = _x.X;
                 var y = _x.Y + _x.Height + 2;
@@ -1028,6 +1110,7 @@ namespace Shotr.Ui.Forms
                     y = y - (_uploadButton?.Height ?? _clipboardButton.Height) - 2;
                     startX += 2;
                 }
+
                 if (_uploadButton is { })
                 {
                     _uploadButton.Location = new Point(startX, y);
@@ -1045,6 +1128,7 @@ namespace Shotr.Ui.Forms
                     _clipboardButton.Location = new Point(startX, y);
                 }
             }
+
             Refresh();
         }
 
@@ -1054,10 +1138,12 @@ namespace Shotr.Ui.Forms
             {
                 Show();
             }
+
             if (WindowState == FormWindowState.Minimized)
             {
                 WindowState = FormWindowState.Normal;
             }
+
             BringToFront();
             Activate();
         }
