@@ -135,8 +135,13 @@ namespace Shotr.Ui
             }
         }
 
+        public static void Send(string text, int timeout)
+        {
+            Send(null, text, null, null, null, timeout);
+        }
+
         public static void Send(string? imagePath, string text, string? buttonText = null, string? action = null,
-            string? query = null)
+            string? query = null, int? timeout = null)
         {
             try
             {
@@ -162,7 +167,7 @@ namespace Shotr.Ui
 
                 var toast = new ToastNotification(x);
                 toast.ExpiresOnReboot = true;
-                toast.ExpirationTime = DateTimeOffset.Now.AddSeconds(5);
+                toast.ExpirationTime = DateTimeOffset.Now.AddSeconds(timeout ?? 5);
 
                 ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
             }

@@ -11,6 +11,7 @@ using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
@@ -71,6 +72,9 @@ namespace Shotr.Ui.Forms
         private ThemedButton _uploadButton;
         private ThemedButton _saveButton;
         private ThemedButton _clipboardButton;
+        private ThemedButton _editButton;
+
+        private bool wasResizing = false;
 
         public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks, Rectangle? coordinates = null)
         {
@@ -180,6 +184,29 @@ namespace Shotr.Ui.Forms
             }
         }
 
+        private void SetButtonVisibility(bool visible)
+        {
+            if (_uploadButton is { })
+            {
+                _uploadButton.Visible = visible;
+            }
+
+            if (_saveButton is { })
+            {
+                _saveButton.Visible = visible;
+            }
+
+            if (_clipboardButton is { })
+            {
+                _clipboardButton.Visible = visible;
+            }
+
+            if (_editButton is { })
+            {
+                _editButton.Visible = visible;
+            }
+        }
+
         void ScreenshotForm_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
@@ -189,20 +216,8 @@ namespace Shotr.Ui.Forms
                     _resizing = false;
                     _oldResizePosition = Point.Empty;
                     Cursor = Cursors.Cross;
-                    if (_uploadButton is { })
-                    {
-                        _uploadButton.Visible = false;
-                    }
-
-                    if (_saveButton is { })
-                    {
-                        _saveButton.Visible = false;
-                    }
-
-                    if (_clipboardButton is { })
-                    {
-                        _clipboardButton.Visible = false;
-                    }
+                    
+                    SetButtonVisibility(false);
 
                     return;
                 }
@@ -217,18 +232,17 @@ namespace Shotr.Ui.Forms
             {
                 _settings.Capture.ShowInformation = !_settings.Capture.ShowInformation;
             }
-            else if (e.KeyCode == Keys.C)
-            {
-                _settings.Capture.ShowColor = !_settings.Capture.ShowColor;
-            }
             else if (e.KeyCode == Keys.E)
             {
                 if (!_editing)
                 {
+                    wasResizing = _resizing;
                     _editing = true;
                     _activated = false;
                     //remember resizing & activated.
                     _resizing = false;
+                    SetButtonVisibility(false);
+                    Cursor = Cursors.Cross;
                 }
                 else
                 {
@@ -243,6 +257,11 @@ namespace Shotr.Ui.Forms
 
                     //this.textbrush.ScaleTransform((this.Size.Width / (this.Size.Width * Utils.getScalingFactor())), (this.Size.Height / (this.Size.Height * Utils.getScalingFactor())));
                     _editing = false;
+                    if (wasResizing) { 
+                        _resizing = true;
+                        SetButtonVisibility(true);
+                    }
+                    Cursor = Cursors.SizeAll;
                 }
 
                 //turn on editing mode.
@@ -1049,6 +1068,41 @@ namespace Shotr.Ui.Forms
                 _saveButton.Visible = true;
                 xStart += _saveButton.Width + 6;
             }
+
+            if (_editButton is null)
+            {
+                _editButton = new ThemedButton()
+                {
+                    Scaled = false,
+                    Text = "Edit",
+                    Size = new Size((int)(scale * 75), (int)(scale * 23)),
+                    Location = new Point(startX, _x.Y + _x.Height + 2),
+                    Cursor = Cursors.Default
+                };
+                _editButton.MouseClick += (_, _) =>
+                {
+                    wasResizing = _resizing;
+
+                    _editing = true;
+                    _activated = false;
+                    _resizing = false;
+                    if (!WineDetectionService.IsWine())
+                    {
+                        Toast.Send("When you are done editing, press the 'E' key to go back to selecting your screenshot. You can use your scroll wheel to change colors.", 10);
+                    }
+
+                    SetButtonVisibility(false);
+                };
+
+                Controls.Add(_editButton);
+                startX += _editButton.Width + 6;
+            }
+            else
+            {
+                _editButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                _editButton.Visible = true;
+                xStart += _editButton.Width + 6;
+            }
         }
 
         public static Rectangle CreateRectangle(int x, int y, int x2, int y2)
@@ -1112,6 +1166,12 @@ namespace Shotr.Ui.Forms
                 {
                     _saveButton.Location = new Point(startX, y);
                     startX += _saveButton.Width + 6;
+                }
+
+                if (_editButton is { })
+                {
+                    _editButton.Location = new Point(startX, y);
+                    startX += _editButton.Width + 6;
                 }
             }
 
