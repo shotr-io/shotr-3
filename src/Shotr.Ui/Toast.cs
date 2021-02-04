@@ -154,7 +154,7 @@ namespace Shotr.Ui
 
                 var toast = new ToastNotification(x);
                 toast.ExpiresOnReboot = true;
-                toast.ExpirationTime = DateTimeOffset.Now.AddSeconds(10);
+                toast.ExpirationTime = DateTimeOffset.Now.AddSeconds(5);
 
                 ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
             }

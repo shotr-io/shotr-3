@@ -93,8 +93,8 @@ namespace Shotr.Ui.Forms
             var dpiScale = DpiScaler.GetScalingFactor(this);
             base.Font = Theme.Font((int) (base.Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
-            TopMost = true;
-            ShowInTaskbar = false;
+            TopMost = false;
+            ShowInTaskbar = true;
 
             _screenshot = bitmap;
             _tasks = tasks;
@@ -104,31 +104,12 @@ namespace Shotr.Ui.Forms
 
             Paint += ScreenshotForm_Paint;
             FormBorderStyle = FormBorderStyle.None;
-            int height = 0, width = 0, left = 0, top = 0, i = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                screen.GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
-                //take smallest height
-                float scale = 1; //(dpiX / 96f);
-                //take smallest height
-                height = (int) Math.Round(((screen.Bounds.Height * scale) >= height)
-                    ? (screen.Bounds.Height * scale)
-                    : height);
-                width += (int) Math.Round(screen.Bounds.Width * scale);
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height)
-                    height = screen.Bounds.Y + (int) Math.Round(screen.Bounds.Height * scale);
-                if (top < 0 || screen.Bounds.Y >= height) height += (int) Math.Round(screen.Bounds.Height * scale);
-                Console.WriteLine(
-                    "Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}",
-                    screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
-                i++;
-            }
 
-            Size = new Size(width, height);
+            var rect = Utils.GetScreenBoundaries();
+
+            Size = rect.Size;
             //get point of left-most monitor.
-            Location = new Point(left, top);
+            Location = rect.Location;
 
             KeyPreview = true;
             KeyUp += ScreenshotForm_KeyUp;
@@ -137,7 +118,7 @@ namespace Shotr.Ui.Forms
             base.Cursor = Cursors.Cross;
 
             _origscreenshot = (Bitmap) _screenshot.Clone();
-            _screenshot = new Bitmap(_screenshot, width, height);
+            _screenshot = new Bitmap(_screenshot, rect.Width, rect.Height);
 
             using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {
@@ -172,6 +153,8 @@ namespace Shotr.Ui.Forms
                 _activated = false;
                 _editing = false;
                 _resizing = true;
+
+                Focus();
             }
         }
 
@@ -1011,6 +994,35 @@ namespace Shotr.Ui.Forms
                 }
             }
 
+            if (_clipboardButton is null)
+            {
+                var measurement = TextRenderer.MeasureText("Save to Clipboard", Font);
+
+                _clipboardButton = new ThemedButton()
+                {
+                    Scaled = false,
+                    Text = "Save to Clipboard",
+                    Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                    Location = new Point(startX, _x.Y + _x.Height + 2),
+                    Cursor = Cursors.Default
+                };
+                _clipboardButton.MouseClick += (_, _) =>
+                {
+                    _activated = false;
+                    ScreenshotAction = ScreenshotActionEnum.SaveToClipboard;
+                    ProcessImage();
+                };
+
+                Controls.Add(_clipboardButton);
+                startX += _clipboardButton.Width + 6;
+            }
+            else
+            {
+                _clipboardButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
+                _clipboardButton.Visible = true;
+                xStart += _clipboardButton.Width + 6;
+            }
+
             if (_saveButton is null)
             {
                 _saveButton = new ThemedButton()
@@ -1036,33 +1048,6 @@ namespace Shotr.Ui.Forms
                 _saveButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
                 _saveButton.Visible = true;
                 xStart += _saveButton.Width + 6;
-            }
-
-            if (_clipboardButton is null)
-            {
-                var measurement = TextRenderer.MeasureText("Save to Clipboard", Font);
-
-                _clipboardButton = new ThemedButton()
-                {
-                    Scaled = false,
-                    Text = "Save to Clipboard",
-                    Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
-                    Location = new Point(startX, _x.Y + _x.Height + 2),
-                    Cursor = Cursors.Default
-                };
-                _clipboardButton.MouseClick += (_, _) =>
-                {
-                    _activated = false;
-                    ScreenshotAction = ScreenshotActionEnum.SaveToClipboard;
-                    ProcessImage();
-                };
-
-                Controls.Add(_clipboardButton);
-            }
-            else
-            {
-                _clipboardButton.Location = new Point(xStart, _x.Y + _x.Height + 2);
-                _clipboardButton.Visible = true;
             }
         }
 
@@ -1117,15 +1102,16 @@ namespace Shotr.Ui.Forms
                     startX += _uploadButton.Width + 6;
                 }
 
+                if (_clipboardButton is { })
+                {
+                    _clipboardButton.Location = new Point(startX, y);
+                    startX += _clipboardButton.Width + 6;
+                }
+
                 if (_saveButton is { })
                 {
                     _saveButton.Location = new Point(startX, y);
                     startX += _saveButton.Width + 6;
-                }
-
-                if (_clipboardButton is { })
-                {
-                    _clipboardButton.Location = new Point(startX, y);
                 }
             }
 

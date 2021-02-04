@@ -98,7 +98,7 @@ namespace Shotr.Core.Utils
 			}
         }
 
-        public static Bitmap CopyScreen()
+        public static Rectangle GetScreenBoundaries()
         {
             var height = 0;
             var width = 0;
@@ -117,8 +117,13 @@ namespace Shotr.Core.Utils
                 Console.WriteLine("Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
                 i++;
             }
-            
-            var CurrScreen = new Rectangle(new Point(left, top), new Size(width, height));
+
+            return new Rectangle(new Point(left, top), new Size(width, height));
+        }
+
+        public static Bitmap CopyScreen()
+        {
+            var CurrScreen = GetScreenBoundaries();
 
             Console.WriteLine("Post Scaling: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", CurrScreen.Y, CurrScreen.X, CurrScreen.Width, CurrScreen.Height);
 
@@ -131,8 +136,8 @@ namespace Shotr.Core.Utils
                 cursor = WinApi.CaptureCursor(ref x, ref y);
                 //calculate x & y's real position relative to the form.
                 //which is (-left)+x | (-top)+y
-                x = x + -left;
-                y = y + -top;
+                x = x + -CurrScreen.Left;
+                y = y + -CurrScreen.Top;
                 g.DrawImage(cursor, new Point(x, y));
                 cursor.Dispose();
             }

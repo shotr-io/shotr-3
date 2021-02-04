@@ -82,30 +82,17 @@ namespace Shotr.Ui.Forms
             Paint += ScreenshotForm_Paint;
             FormBorderStyle = FormBorderStyle.None;
 
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                //take smallest height
-                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
-                width += screen.Bounds.Width;
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
-                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
-            }
-            Size = new Size(width, height);
+            var rect = Utils.GetScreenBoundaries();
+            Size = rect.Size;
             //get point of left-most monitor.
-            Location = new Point(left, top);
+            Location = rect.Location;
 
             KeyUp += ScreenshotForm_KeyUp;
             KeyDown += ScreenshotForm_KeyDown;
 
             Cursor = Cursors.Cross;
 
-            _screenshot = new Bitmap(_screenshot, width, height);
+            _screenshot = new Bitmap(_screenshot, rect.Width, rect.Height);
 
             using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {

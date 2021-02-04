@@ -642,31 +642,29 @@ namespace Shotr.Ui.Forms
                     {
                         var capture = Utils.CopyScreen();
                         var colorPickerForm = new ColorPickerForm(_settings, capture);
-                        colorPickerForm.ShowDialog();
+
+                        if (colorPickerForm.ShowDialog() == DialogResult.OK)
+                        {
+                            Toast.Send(null, "Color code copied to clipboard!");
+                        }
 
                         _tasks.Reset();
                     }));
                     break;
                 case KeyTask.Fullscreen:
-                    _tasks.CurrentTask = hotkey.Task;
-                    Invoke((MethodInvoker)(() =>
-                    {
-                        var capture = _settings.Capture.StitchFullscreen
-                                          ? Utils.CopyScreen()
-                                          : Utils.BitBltCopy(Screen.FromPoint(Cursor.Position).Bounds);
-
-                        Process(capture, true);
-                        
-                        _tasks.Reset();
-                    }));
-                    break;
                 case KeyTask.ActiveWindow:
                     _tasks.CurrentTask = hotkey.Task;
                     Invoke((MethodInvoker)(() =>
                     {
                         var rect = Utils.GetActiveWindowCoords();
-
                         var capture = Utils.CopyScreen();
+
+                        if (hotkey.Task == KeyTask.Fullscreen)
+                        {
+                            var translated = Utils.GetScreenBoundaries();
+                            rect = new Rectangle(translated.X, translated.Y, capture.Width, capture.Height);
+                        }
+                        
                         var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks, rect);
                         screenshotForm.ShowDialog();
 
@@ -791,6 +789,7 @@ namespace Shotr.Ui.Forms
                         if (result == DialogResult.OK)
                         {
                             File.WriteAllBytes(saveDialog.FileName, image);
+                            Toast.Send(null, "Image saved to file!", "Open Containing Folder", "openDirectory", $"path={saveDialog.FileName}");
                         }
 
                         return;

@@ -117,8 +117,6 @@ namespace Shotr.Ui
                     switch (arg)
                     {
                         case "--debug":
-                            if (!WinApi.AttachConsole(-1))
-                                WinApi.AllocConsole();
                             _debug = true;
                             break;
                         case "--region":
@@ -127,6 +125,14 @@ namespace Shotr.Ui
                             Environment.Exit(0);
                             break;
                     }
+                }
+            }
+
+            if (_debug)
+            {
+                if (!WinApi.AttachConsole(-1)) 
+                { 
+                    WinApi.AllocConsole();
                 }
             }
 
