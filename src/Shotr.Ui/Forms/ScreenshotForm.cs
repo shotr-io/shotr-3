@@ -978,15 +978,16 @@ namespace Shotr.Ui.Forms
                 if (_uploadButton is null)
                 {
                     var uploadText = "Upload";
-                    var measurement = TextRenderer.MeasureText(uploadText, Font);
+                    var measurement = TextRenderer.MeasureText(uploadText, Theme.Font(12));
 
                     _uploadButton = new ThemedButton()
                     {
                         Scaled = false,
                         Text = uploadText,
-                        Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                        Size = new Size(measurement.Width, (int)(scale * 23)),
                         Location = new Point(startX, _x.Y + _x.Height + 2),
-                        Cursor = Cursors.Default
+                        Cursor = Cursors.Default,
+                        Font = Theme.Font(12)
                     };
 
                     _uploadButton.MouseClick += (o, args) =>
@@ -1011,15 +1012,16 @@ namespace Shotr.Ui.Forms
             if (_clipboardButton is null)
             {
                 var saveToClipboardText = "Save to Clipboard";
-                var measurement = TextRenderer.MeasureText(saveToClipboardText, Font);
+                var measurement = TextRenderer.MeasureText(saveToClipboardText, Theme.Font(12));
 
                 _clipboardButton = new ThemedButton()
                 {
                     Scaled = false,
                     Text = saveToClipboardText,
-                    Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                    Size = new Size(measurement.Width, (int)(scale * 23)),
                     Location = new Point(startX, _x.Y + _x.Height + 2),
-                    Cursor = Cursors.Default
+                    Cursor = Cursors.Default,
+                    Font = Theme.Font(12)
                 };
                 _clipboardButton.MouseClick += (_, _) =>
                 {
@@ -1041,15 +1043,16 @@ namespace Shotr.Ui.Forms
             if (_saveButton is null)
             {
                 var saveToFileText = "Save to File";
-                var measurement = TextRenderer.MeasureText(saveToFileText, Font);
+                var measurement = TextRenderer.MeasureText(saveToFileText, Theme.Font(12));
 
                 _saveButton = new ThemedButton()
                 {
                     Scaled = false,
                     Text = saveToFileText,
-                    Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                    Size = new Size(measurement.Width, (int)(scale * 23)),
                     Location = new Point(startX, _x.Y + _x.Height + 2),
-                    Cursor = Cursors.Default
+                    Cursor = Cursors.Default,
+                    Font = Theme.Font(12)
                 };
                 _saveButton.MouseClick += (_, _) =>
                 {
@@ -1071,15 +1074,16 @@ namespace Shotr.Ui.Forms
             if (_editButton is null)
             {
                 var editButtonText = "Edit";
-                var measurement = TextRenderer.MeasureText(editButtonText, Font);
+                var measurement = TextRenderer.MeasureText(editButtonText, Theme.Font(12));
 
                 _editButton = new ThemedButton()
                 {
                     Scaled = false,
                     Text = editButtonText,
-                    Size = new Size((int)(scale * measurement.Width), (int)(scale * 23)),
+                    Size = new Size(measurement.Width, (int)(scale * 23)),
                     Location = new Point(startX, _x.Y + _x.Height + 2),
-                    Cursor = Cursors.Default
+                    Cursor = Cursors.Default,
+                    Font = Theme.Font(12)
                 };
                 _editButton.MouseClick += (_, _) =>
                 {

@@ -51,6 +51,7 @@ namespace Shotr.Ui.Forms
             this.Load += new System.EventHandler(this.ScreenshotForm_Load);
             this.Shown += new System.EventHandler(this.ScreenshotForm_Shown);
             this.ResumeLayout(false);
+
         }
 
         #endregion

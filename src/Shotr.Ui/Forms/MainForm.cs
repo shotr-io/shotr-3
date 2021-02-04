@@ -720,7 +720,7 @@ namespace Shotr.Ui.Forms
                             }
 
                             var capture = Utils.CopyScreen();
-                            _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader, capture, metroLabel9.Font, _tasks);
+                            _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader, capture, _tasks);
                             _videoRecorderForm.Show();
                         }));
                     }

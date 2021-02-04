@@ -139,7 +139,7 @@ namespace Shotr.Core.Controls.DpiScaling
                     factor += 0.1f;
                 }
             }
-            Console.WriteLine($"Multiplying font size in pixels * scalingFactor: {font.Size}{font.Unit} * {dpiScalingFactor} => {font.Size * dpiScalingFactor}{font.Unit}");
+            //Console.WriteLine($"Multiplying font size in pixels * scalingFactor: {font.Size}{font.Unit} * {dpiScalingFactor} => {font.Size * dpiScalingFactor}{font.Unit}");
             //Console.WriteLine("Font Size: {0} ({1}) - Scaling: {2} * {3} - {4} {5}", (font.SizeInPoints * ((dpiScalingFactor * 96f) / 72) * dpiScalingFactor) * factor, font.SizeInPoints * (dpiScalingFactor / 72), dpiScalingFactor, font.Size, font.SizeInPoints, font.Unit);
 
             return Theme.Theme.Font(font.Size);

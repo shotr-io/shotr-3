@@ -41,7 +41,6 @@ namespace Shotr.Ui.Forms
 
         private Rectangle _x = Rectangle.Empty;
 
-        private Font _metroF;
         private bool _activated;
         private bool _drawing = true;
         private bool _showrecording;
@@ -54,7 +53,7 @@ namespace Shotr.Ui.Forms
         private readonly MusicPlayerService _musicPlayerService;
         private readonly Uploader _uploader;
 
-        public VideoRecorderForm(BaseSettings settings, MusicPlayerService musicPlayerService, Uploader uploader, Bitmap bitmap, Font metroFont, SingleInstance tasks)
+        public VideoRecorderForm(BaseSettings settings, MusicPlayerService musicPlayerService, Uploader uploader, Bitmap bitmap, SingleInstance tasks)
         {
             _settings = settings;
             _musicPlayerService = musicPlayerService;
@@ -73,7 +72,6 @@ namespace Shotr.Ui.Forms
             ShowInTaskbar = false;
 
             _screenshot = bitmap;
-            _metroF = metroFont;
             _tasks = tasks;
 
             timer1.Interval = 10;
@@ -144,7 +142,8 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                CloseWindow();
+                Cancel = true;
+                Fmp.Close();
             }
             else if (e.KeyCode == Keys.Z)
             {
@@ -153,10 +152,6 @@ namespace Shotr.Ui.Forms
             else if (e.KeyCode == Keys.I)
             {
                 _settings.Capture.ShowInformation = !_settings.Capture.ShowInformation;
-            }
-            else if (e.KeyCode == Keys.C)
-            {
-                _settings.Capture.ShowColor = !_settings.Capture.ShowColor;
             }
         }    
         private void CloseWindow()
@@ -234,12 +229,11 @@ namespace Shotr.Ui.Forms
                     try
                     {
                         e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
-
                         _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                         e.Graphics.DrawRectangle(_pen, _x);
                         if ((_x.Width > 80 || _x.Height > Font.Height * 2) && _settings.Capture.ShowInformation)
                         {
-                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, _settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : ""), Font, _brush, new PointF(_x.X, _x.Y));
+                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush, new PointF(_x.X, _x.Y));
                             e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
                         }
                     }
@@ -281,7 +275,7 @@ namespace Shotr.Ui.Forms
             else if(_isRecording)
             {
                 var elapsed = string.Format("00:{0:#00}:{1:#00}", Stopwatch.Elapsed.Minutes, Stopwatch.Elapsed.Seconds);
-                var measurement = e.Graphics.MeasureString(elapsed, _metroF);
+                var measurement = e.Graphics.MeasureString(elapsed, Font);
 
                 //transparent yo.
                 _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
@@ -292,11 +286,12 @@ namespace Shotr.Ui.Forms
                     e.Graphics.FillEllipse(Brushes.Red, Width - 20, _x.Height + 2, 20, 20);
                     e.Graphics.DrawEllipse(Pens.Black, Width - 20, _x.Height + 2, 20, 20);
                 }
+
                 //show timer.
                 e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 32, 33, 37)), 0, _x.Height + 4, measurement.Width + 4, measurement.Height + 4);
                 e.Graphics.DrawRectangle(Pens.Black, 0, _x.Height + 4, measurement.Width + 4, measurement.Height + 4);
                 e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                e.Graphics.DrawString(elapsed, _metroF, Brushes.White, 2, _x.Height + 6);
+                e.Graphics.DrawString(elapsed, Font, Brushes.White, 2, _x.Height + 6);
             }
         }
 
@@ -363,26 +358,33 @@ namespace Shotr.Ui.Forms
                     BackColor = Color.LimeGreen,
                 };
                 
-                var scale = DpiScaler.GetScalingFactor(this);
-
                 Controls.Add(themedPanel);
-                
+
+                var scale = DpiScaler.GetScalingFactor(this);
+                var font = Theme.Font(12);
+
+                var stopButtonText = "Stop";
+                var stopButtonTextMeasurement = TextRenderer.MeasureText(stopButtonText, font);
                 _stopButton = new ThemedButton()
                 {
                     Scaled = false,
-                    Text = "Stop",
-                    Size = new Size((int)(75 * scale), (int)(23 * scale)),
-                    Location = new Point((int)(80 * scale), _x.Height + 4)
+                    Text = stopButtonText,
+                    Size = new Size(stopButtonTextMeasurement.Width, (int)(23 * scale)),
+                    Location = new Point((int)(80 * scale), _x.Height + 4),
+                    Font = font
                 };
                 _stopButton.Click += m_Click;
                 Controls.Add(_stopButton);
 
+                var cancelButtonText = "Cancel";
+                var cancelButtonTextMeasurement = TextRenderer.MeasureText(cancelButtonText, font);
                 _cancelButton = new ThemedButton()
                 {
                     Scaled = false,
-                    Text = "Cancel",
-                    Size = new Size((int)(75 * scale), (int)(23 * scale)),
+                    Text = cancelButtonText,
+                    Size = new Size(cancelButtonTextMeasurement.Width, (int)(23 * scale)),
                     Location = new Point((int)(_stopButton.Location.X + _stopButton.Width + 6 * scale), _x.Height + 4),
+                    Font = font
                 };
 
                 _cancelButton.Click += mb_Click;
@@ -429,10 +431,11 @@ namespace Shotr.Ui.Forms
                 new Thread(delegate()
                 {
                     Fmp.Record();
+                    _drawing = false;
                     _tasks.Reset();
                     Stopwatch.Stop();
                     timer1.Stop();
-
+                    
                     if (!Cancel)
                     {
                         // Ask to save.
@@ -482,10 +485,9 @@ namespace Shotr.Ui.Forms
                         catch { }
                     }
 
-                    Invoke((MethodInvoker) (() =>
+                    Invoke((MethodInvoker)(() =>
                     {
-                        Close();
-                        Dispose();
+                        CloseWindow();
                     }));
                 }).Start();
             }
@@ -494,17 +496,15 @@ namespace Shotr.Ui.Forms
         void mb_Click(object sender, EventArgs e)
         {
             Cancel = true;
-            Stopwatch.Stop();
             Fmp.Close();
-            CloseWindow();
         }
 
         void m_Click(object sender, EventArgs e)
         {
             //stop recording.
-            Stopwatch.Stop();
             Fmp.Close();
         }
+
         private bool _isRecording;
         void fmp_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
