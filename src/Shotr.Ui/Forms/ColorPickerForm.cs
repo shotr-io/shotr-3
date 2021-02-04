@@ -149,6 +149,9 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
+
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
+            pixelSize = (int)(pixelSize * scalingFactor);
             var width = horizontalPixelCount * pixelSize;
             var height = verticalPixelCount * pixelSize;
             var image = new Bitmap(width - 1, height - 1);
