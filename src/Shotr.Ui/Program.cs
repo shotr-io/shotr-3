@@ -64,7 +64,7 @@ namespace Shotr.Ui
             
             // etc
             services.AddSingleton(_ => new dcrypt(Resources.a));
-            services.AddTransient<Uploader>();
+            services.AddSingleton<Uploader>();
             services.AddSingleton<MusicPlayerService>();
             services.AddSingleton<HotKeyService>();
             services.AddSingleton<PipeServer>();

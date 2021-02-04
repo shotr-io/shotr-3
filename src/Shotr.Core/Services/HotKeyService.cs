@@ -33,7 +33,11 @@ namespace Shotr.Core.Services
 
         public void LoadHotKeys()
         {
-            LoadHotKey(_settings.Hotkey.Clipboard, KeyTask.UploadClipboard);
+            if (_settings.Login.Enabled == true)
+            {
+                LoadHotKey(_settings.Hotkey.Clipboard, KeyTask.UploadClipboard);
+            }
+
             LoadHotKey(_settings.Hotkey.Fullscreen, KeyTask.Fullscreen);
             LoadHotKey(_settings.Hotkey.RecordScreen, KeyTask.RecordScreen);
             LoadHotKey(_settings.Hotkey.ActiveWindow, KeyTask.ActiveWindow);

@@ -201,13 +201,6 @@ namespace Shotr.Ui.Forms
                 graphics.PixelOffsetMode = PixelOffsetMode.Half;
                 graphics.DrawImage(img, new Rectangle(0, 0, width, height), new Rectangle(position.X - (horizontalPixelCount / 2), position.Y - (verticalPixelCount / 2), horizontalPixelCount, verticalPixelCount), GraphicsUnit.Pixel);
                 graphics.PixelOffsetMode = PixelOffsetMode.None;
-                /*using (SolidBrush brush = new SolidBrush(Color.FromArgb(0x7d, Color.LightBlue)))
-                {
-                    graphics.FillRectangle(brush, new Rectangle(0, (height - pixelSize) / 2, (width - pixelSize) / 2, pixelSize));
-                    graphics.FillRectangle(brush, new Rectangle((width + pixelSize) / 2, (height - pixelSize) / 2, (width - pixelSize) / 2, pixelSize));
-                    graphics.FillRectangle(brush, new Rectangle((width - pixelSize) / 2, 0, pixelSize, (height - pixelSize) / 2));
-                    graphics.FillRectangle(brush, new Rectangle((width - pixelSize) / 2, (height + pixelSize) / 2, pixelSize, (height - pixelSize) / 2));
-                }*/
                 using (var pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
                 {
                     for (var i = 1; i < horizontalPixelCount; i++)
@@ -230,10 +223,7 @@ namespace Shotr.Ui.Forms
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
-            //e.Graphics.DrawImage(screenshot, this.ClientRectangle,
-        //new Rectangle(0, 0, screenshot.Width, screenshot.Height),
-        //GraphicsUnit.Pixel);
+            
             if (_drawing)
             {
                 e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
@@ -352,6 +342,8 @@ namespace Shotr.Ui.Forms
         private ThemedButton _stopButton;
         private ThemedButton _cancelButton;
 
+        public string? OutputPath;
+
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             //resize form, set lime to transparent, and yolo swag.
@@ -441,54 +433,64 @@ namespace Shotr.Ui.Forms
                 new Thread(delegate()
                 {
                     Fmp.Record();
-                    if (!Cancel)
-                    {
-                        _tasks.Reset();
-                        //check filesize.
-                        var fz = new FileInfo(sc.OutputPath);
-                        if (fz.Length >= (99 * (1024 * 1024)))
-                        {
-                            //let user know that the file is bigger than 100MB.
-                            Invoke((MethodInvoker)(() =>
-                            {
-                                MessageBox.Show("Your recording is over the 100MB limit for Shotr uploads. You'll need to save your recording locally instead.");
-                                var xz = new SaveFileDialog
-                                {
-                                    Filter = "MPEG4 | *.mp4",
-                                    FileName = "*.mp4"
-                                };
-                                if (xz.ShowDialog() == DialogResult.OK)
-                                {
-                                    //save file.
-                                    File.Copy(sc.OutputPath, xz.FileName);
-                                }
-                            }));
-                        }
-                        else
-                        {
-                            _musicPlayerService.PlayCaptured();
-                            //TODO: buffer file input into uploader, cause like idk huge file sizes.
-                            _uploader.AddToQueue(new ImageShell(File.ReadAllBytes(sc.OutputPath), FileExtensions.mp4));
-                        }
-                    }
-                    try
-                    {
-                        File.Delete(sc.OutputPath);
-                    }
-                    catch
-                    {
-                    }
+                    _tasks.Reset();
                     Stopwatch.Stop();
                     timer1.Stop();
-                    try
+
+                    if (!Cancel)
                     {
+                        // Ask to save.
+                        string? filePath = null;
                         Invoke((MethodInvoker)(() =>
                         {
-                            Close();
-                            Dispose();
+                            var xz = new SaveFileDialog
+                            {
+                                Filter = "MPEG4 (*.mp4) | *.mp4",
+                                FileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.mp4"
+                            };
+                            if (xz.ShowDialog() == DialogResult.OK)
+                            {
+                                filePath = xz.FileName;
+                                //save file.
+                                File.Copy(sc.OutputPath, filePath);
+                            }
                         }));
+
+                        _musicPlayerService.PlayCaptured();
+
+                        if (filePath is { })
+                        {
+                            if (!WineDetectionService.IsWine())
+                            {
+                                Toast.Send(null, "Video saved to folder!", _settings.Login.Enabled == true ? "Upload" : null, "uploadVideo", $"path={filePath}");
+                            }
+                            else
+                            {
+                                var result = MessageBox.Show("Video saved to folder. Would you like to upload it?",
+                                    "Upload Video",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                                if (result == DialogResult.Yes)
+                                {
+                                    _uploader.AddToQueue(
+                                        new ImageShell(File.ReadAllBytes(filePath), FileExtensions.mp4));
+                                }
+                            }
+                        }
                     }
-                    catch { }
+                    else
+                    {
+                        try
+                        {
+                            File.Delete(sc.OutputPath);
+                        }
+                        catch { }
+                    }
+
+                    Invoke((MethodInvoker) (() =>
+                    {
+                        Close();
+                        Dispose();
+                    }));
                 }).Start();
             }
         }

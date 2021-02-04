@@ -5,11 +5,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Shotr.Core;
 using Shotr.Core.Services;
 using Shotr.Core.UpdateFramework;
+using Shotr.Core.Uploader;
 using Shotr.Ui.Forms;
+using ShotrUploaderPlugin;
 using Exception = System.Exception;
 
 namespace Shotr.Ui
@@ -75,6 +78,11 @@ namespace Shotr.Ui
                         Updater.CheckForUpdates();
                     }
 
+                    break;
+                case "uploadVideo":
+                    var videoPath = dict["path"];
+                    var uploader = Program.ServiceProvider.GetService<Uploader>();
+                    uploader.AddToQueue(new ImageShell(File.ReadAllBytes(videoPath), FileExtensions.mp4));
                     break;
             }
         }
