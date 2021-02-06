@@ -7,10 +7,10 @@ assignees: ''
 
 ---
 
-### Is your feature request related to a problem? Please describe
+## 📝 Provide a description of the new feature
 
-### Describe the solution you'd like
+_What is the expected behavior of the proposed feature?  What is the scenario this would be used?_
 
-### Describe alternatives you've considered
+---
 
-### Additional context
+If you'd like to see this feature implemented, add a 👍 reaction to this post.
