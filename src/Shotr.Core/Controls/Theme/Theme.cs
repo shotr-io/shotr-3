@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -19,7 +20,18 @@ namespace Shotr.Core.Controls.Theme
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Font Font(float emSize) => new Font(_privateFontCollection.Families.FirstOrDefault(p => p.Name == "Inter") ?? new FontFamily("Inter"), emSize == 9f ? 12f : emSize, FontStyle.Regular, GraphicsUnit.Pixel);
+        private static Dictionary<float, Font> _cachedFonts = new Dictionary<float, Font>();
+        public static Font Font(float emSize)
+        {
+            if(_cachedFonts.ContainsKey(emSize))
+            {
+                return _cachedFonts[emSize];
+            }
+            var font = new Font(_privateFontCollection.Families.FirstOrDefault(p => p.Name == "Inter") ?? new FontFamily("Inter"), emSize == 9f ? 12f : emSize, FontStyle.Regular, GraphicsUnit.Pixel);
+            _cachedFonts.Add(emSize, font);
+
+            return font;
+        }
         public static Font Font(Font font, Control control) => DpiScaler.ScaleFont(font, control);
 
         public static Color FormBackColor = Color.FromArgb(19, 19, 48);

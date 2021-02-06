@@ -31,7 +31,7 @@ namespace Shotr.Ui
 {
     static class Program
     {
-        private static ServiceProvider _serviceProvider;
+        public static ServiceProvider ServiceProvider;
         private static Mutex _mutex;
         
 #if DEBUG
@@ -64,7 +64,7 @@ namespace Shotr.Ui
             
             // etc
             services.AddSingleton(_ => new dcrypt(Resources.a));
-            services.AddTransient<Uploader>();
+            services.AddSingleton<Uploader>();
             services.AddSingleton<MusicPlayerService>();
             services.AddSingleton<HotKeyService>();
             services.AddSingleton<PipeServer>();
@@ -117,8 +117,6 @@ namespace Shotr.Ui
                     switch (arg)
                     {
                         case "--debug":
-                            if (!WinApi.AttachConsole(-1))
-                                WinApi.AllocConsole();
                             _debug = true;
                             break;
                         case "--region":
@@ -127,6 +125,14 @@ namespace Shotr.Ui
                             Environment.Exit(0);
                             break;
                     }
+                }
+            }
+
+            if (_debug)
+            {
+                if (!WinApi.AttachConsole(-1)) 
+                { 
+                    WinApi.AllocConsole();
                 }
             }
 
@@ -147,22 +153,23 @@ namespace Shotr.Ui
             var services = new ServiceCollection();
 
             ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
+            ServiceProvider = services.BuildServiceProvider();
 
             ConfigureApplication();
 
             TryEnableDpiAware();
 
-            var form = _serviceProvider.GetService<MainForm>();
-            var settings = _serviceProvider.GetService<BaseSettings>();
-            var hotkeys = _serviceProvider.GetService<HotKeyService>();
+            var form = ServiceProvider.GetService<MainForm>();
+            var settings = ServiceProvider.GetService<BaseSettings>();
+            var hotkeys = ServiceProvider.GetService<HotKeyService>();
             
             hotkeys.LoadHotKeys();
             
             form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
-            
+
+            Updater.BaseSettings = settings;
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
-            Updater.CheckForUpdates(settings);
+            Updater.CheckForUpdates();
             
             // Do not require mandatory login
             if (settings.Login.Enabled == true)
@@ -227,12 +234,6 @@ namespace Shotr.Ui
             {
                 Directory.CreateDirectory(SettingsService.CachePath);
             }
-
-            // Copy notification image to cache folder.
-            if (!File.Exists(Path.Combine(SettingsService.CachePath, "shotr.png")))
-            {
-                Resources.shotr.Save(Path.Combine(SettingsService.CachePath, "shotr.png"));
-            }
         }
 
         static void ConfigureApplication()
@@ -242,7 +243,7 @@ namespace Shotr.Ui
             if (!File.Exists(audioSnifferPath))
             {
                 //decrypt it and output it
-                var dcrypt = _serviceProvider.GetService<dcrypt>();
+                var dcrypt = ServiceProvider.GetService<dcrypt>();
                 File.WriteAllBytes(audioSnifferPath, dcrypt.Decrypt(Resources.audio_sniffer));
                 //register it
                 var ps = new ProcessStartInfo
@@ -273,6 +274,12 @@ namespace Shotr.Ui
                     File.Delete(file);
                 }
                 catch { }
+            }
+
+            // Copy notification image to cache folder.
+            if (!File.Exists(Path.Combine(SettingsService.CachePath, "shotr.png")))
+            {
+                Resources.shotr.Save(Path.Combine(SettingsService.CachePath, "shotr.png"));
             }
 
             ServicePointManager.DefaultConnectionLimit = 100;
@@ -322,23 +329,20 @@ namespace Shotr.Ui
 
             if (!WineDetectionService.IsWine())
             {
-                Toast.Send(null, $"An update to v{serverVersion}{alphaBetaTag} is available!", "View Update", "viewUpdate",
-                    $"changes={e.UpdateInfo.Changes}&subscribeAlphaBeta={(e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30)}");
+                Toast.SendUpdateNotifications($"An update to v{serverVersion}{alphaBetaTag} is available!", e.UpdateInfo.Changes, e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30);
             }
             else
             {
                 var updateForm = new UpdateForm(e.UpdateInfo.Changes, e.Settings.SubscribeToAlphaBeta, false);
                 updateForm.ShowDialog();
             }
-
-            Updater.TimeToCheck = 60 * 60 * 1000 * 12; // Wait 12 hours till next notification
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             File.WriteAllText(SettingsService.ErrorPath, e.ExceptionObject.ToString());
 
-            var uploader = _serviceProvider.GetService<Uploader>();
+            var uploader = ServiceProvider.GetService<Uploader>();
             uploader.RemoveHandlers();
             uploader.OnUploaded += (_, e) =>
             {

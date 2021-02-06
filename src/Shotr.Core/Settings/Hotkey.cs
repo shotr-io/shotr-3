@@ -20,7 +20,7 @@ namespace Shotr.Core.Settings
         [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.D5)]
         public Keys Clipboard { get; set; }
         
-        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.Oemtilde)]
-        public Keys NoUpload { get; set; }
+        [ConfigurationItem(Required = false, Default = Keys.Control | Keys.Shift | Keys.C)]
+        public Keys ColorPicker { get; set; }
     }
 }

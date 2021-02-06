@@ -15,6 +15,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
 
+        public DpiScaledControl() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
+
         protected virtual void OnControlScaled(float scalingFactor) 
         {
         }
@@ -53,6 +63,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -65,6 +81,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledButton() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -104,6 +130,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -116,6 +148,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledCheckBox() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -155,6 +197,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -167,6 +215,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledListView() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -206,6 +264,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -218,6 +282,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledPictureBox() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -257,6 +331,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -269,6 +349,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledComboBox() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -308,6 +398,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -320,6 +416,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledForm() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -359,6 +465,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -371,6 +483,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledLabel() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -410,6 +532,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -422,6 +550,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledLinkLabel() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -461,6 +599,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -473,6 +617,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledPanel() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -512,6 +666,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -524,6 +684,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledProgressBar() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -563,6 +733,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -575,6 +751,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledTabControl() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -614,6 +800,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -626,6 +818,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledTabPage() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -665,6 +867,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
     #endregion
 
@@ -677,6 +885,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+
+        public DpiScaledTextBox() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
 
         protected virtual void OnControlScaled(float scalingFactor) 
         {
@@ -715,6 +933,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         public void ManualDpiScale()
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
         }
     }
     #endregion

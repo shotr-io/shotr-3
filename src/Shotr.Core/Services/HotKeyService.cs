@@ -36,13 +36,13 @@ namespace Shotr.Core.Services
             if (_settings.Login.Enabled == true)
             {
                 LoadHotKey(_settings.Hotkey.Clipboard, KeyTask.UploadClipboard);
-                LoadHotKey(_settings.Hotkey.Fullscreen, KeyTask.Fullscreen);
-                LoadHotKey(_settings.Hotkey.RecordScreen, KeyTask.RecordScreen);
-                LoadHotKey(_settings.Hotkey.ActiveWindow, KeyTask.ActiveWindow);
-                LoadHotKey(_settings.Hotkey.Region, KeyTask.Region);
             }
-            
-            LoadHotKey(_settings.Hotkey.NoUpload, KeyTask.RegionNoUpload);
+
+            LoadHotKey(_settings.Hotkey.Fullscreen, KeyTask.Fullscreen);
+            LoadHotKey(_settings.Hotkey.RecordScreen, KeyTask.RecordScreen);
+            LoadHotKey(_settings.Hotkey.ActiveWindow, KeyTask.ActiveWindow);
+            LoadHotKey(_settings.Hotkey.Region, KeyTask.Region);
+            LoadHotKey(_settings.Hotkey.ColorPicker, KeyTask.ColorPicker);
         }
 
         public void UnloadHotKeys()

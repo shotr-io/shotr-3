@@ -14,10 +14,10 @@ namespace Shotr.Core.Settings
 
         [ConfigurationItem(Required = false, Default = true)]
         public bool ShowZoom { get; set; }
-        
+
         [ConfigurationItem(Required = false, Default = true)]
-        public bool ShowColor { get; set; }
-        
+        public bool ShowEditNotification { get; set; }
+
         [ConfigurationItem(Required = false, Default = true)]
         public bool ShowInformation { get; set; }
         

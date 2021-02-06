@@ -8,6 +8,6 @@ namespace Shotr.Core.Entities.Hotkeys
         ActiveWindow = 3,
         RecordScreen = 4,
         UploadClipboard = 5,
-        RegionNoUpload = 6
+        ColorPicker = 6
     }
 }

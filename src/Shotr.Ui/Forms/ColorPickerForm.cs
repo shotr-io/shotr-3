@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
@@ -51,30 +52,17 @@ namespace Shotr.Ui.Forms
             Paint += ScreenshotForm_Paint;
             FormBorderStyle = FormBorderStyle.None;
 
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                //take smallest height
-                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
-                width += screen.Bounds.Width;
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
-                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
-            }
-            Size = new Size(width, height);
+            var rect = Utils.GetScreenBoundaries();
+            Size = rect.Size;
             //get point of left-most monitor.
-            Location = new Point(left, top);
+            Location = rect.Location;
 
             KeyUp += ScreenshotForm_KeyUp;
             KeyDown += ScreenshotForm_KeyDown;
 
             Cursor = Cursors.Cross;
 
-            _screenshot = new Bitmap(_screenshot, width, height);
+            _screenshot = new Bitmap(_screenshot, rect.Width, rect.Height);
 
             using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {
@@ -85,7 +73,8 @@ namespace Shotr.Ui.Forms
 
             DoubleBuffered = true;
 
-            ShowInTaskbar = false;
+            ShowInTaskbar = true;
+            TopMost = false;
 
             timer2.Interval = 1000;
             timer2.Start();
@@ -129,10 +118,6 @@ namespace Shotr.Ui.Forms
             {
                 _settings.Capture.ShowInformation = !_settings.Capture.ShowInformation;
             }
-            else if (e.KeyCode == Keys.C)
-            {
-                _settings.Capture.ShowColor = !_settings.Capture.ShowColor;
-            }
         }    
         private void CloseWindow()
         {
@@ -164,6 +149,9 @@ namespace Shotr.Ui.Forms
                 horizontalPixelCount = verticalPixelCount = 15;
                 pixelSize = 10;
             }
+
+            var scalingFactor = DpiScaler.GetScalingFactor(this);
+            pixelSize = (int)(pixelSize * scalingFactor);
             var width = horizontalPixelCount * pixelSize;
             var height = verticalPixelCount * pixelSize;
             var image = new Bitmap(width - 1, height - 1);
@@ -203,22 +191,18 @@ namespace Shotr.Ui.Forms
                     //check if screen isn't big enough to fit on right side, if so then fit on left side.
                     var location = new Point(0, 0);
                     var cursorloc = PointToClient(Cursor.Position);
+                    var translatedBounds = PointToClient(new Point(Bounds.X, Bounds.Y));
                     using (var magnifier = (Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                     {
-                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
-                        {
-                            //draw it below the text.
-                            location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
-                        }
-                        else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
-                        {
-                            //bottom left
-                            location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
-                        }
-                        else if (cursorloc.Y + magnifier.Width + 5 > Height && cursorloc.X - magnifier.Height - 5 < Bounds.X)
+                        if (cursorloc.Y + magnifier.Height + 5 > Height && cursorloc.X - magnifier.Width - 5 < translatedBounds.X)
                         {
                             //top right
                             location = new Point(cursorloc.X + 5, cursorloc.Y - magnifier.Height - 5);
+                        }
+                        else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < translatedBounds.Y)
+                        {
+                            //bottom left
+                            location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
                         }
                         else if (cursorloc.X + magnifier.Width + 5 > Width || cursorloc.Y + magnifier.Height + 5 > Height)
                         {
@@ -232,8 +216,25 @@ namespace Shotr.Ui.Forms
                         }
                         //draw magnifier.
                         e.Graphics.DrawImage(magnifier, location);
-                        e.Graphics.DrawString(
-                            $"{(_settings.Capture.ShowColor ? GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : "")}", Font, _brush, location);
+
+                        // Draw hex code outside of the box
+                        var font = Theme.Font(12);
+                        var hexCode = GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y));
+                        var textMeasurement = TextRenderer.MeasureText(hexCode, font);
+                        var hexLocation = new Point(location.X, location.Y - textMeasurement.Height - 10);
+                        var rect = new Rectangle(hexLocation.X, hexLocation.Y, textMeasurement.Width + 4, textMeasurement.Height + 4);
+
+                        // Account for the cursor being at the top of the screen, draw the text below.
+                        if (cursorloc.Y - rect.Height - 10 < Bounds.Y)
+                        {
+                            rect.Y = location.Y + magnifier.Height + 9;
+                        }
+                        
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 32, 33, 37)), rect.X, rect.Y - 4, rect.Width, rect.Height);
+                        e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y - 4, rect.Width, rect.Height);
+                        e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                        var textPoint = new Point(rect.X + 2, rect.Y - 2);
+                        e.Graphics.DrawString(hexCode, font, _brush, textPoint);
                     }
                 }
             }
@@ -276,6 +277,7 @@ namespace Shotr.Ui.Forms
                 try
                 {
                     Clipboard.SetText(GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)));
+                    DialogResult = DialogResult.OK; 
                     CloseWindow();
                 }
                 catch { }
@@ -283,6 +285,7 @@ namespace Shotr.Ui.Forms
             else if (e.Button == MouseButtons.Right)
             {
                 //cancel this shit.
+                DialogResult = DialogResult.Cancel;
                 CloseWindow();
             }
         }

@@ -98,7 +98,7 @@ namespace Shotr.Core.Utils
 			}
         }
 
-        public static Bitmap CopyScreen()
+        public static Rectangle GetScreenBoundaries()
         {
             var height = 0;
             var width = 0;
@@ -117,8 +117,13 @@ namespace Shotr.Core.Utils
                 Console.WriteLine("Monitor {4} [ScalingX: {5}, ScalingY: {6}]: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", screen.Bounds.Top, screen.Bounds.Left, screen.Bounds.Width, screen.Bounds.Height, i, dpiX, dpiY);
                 i++;
             }
-            
-            var CurrScreen = new Rectangle(new Point(left, top), new Size(width, height));
+
+            return new Rectangle(new Point(left, top), new Size(width, height));
+        }
+
+        public static Bitmap CopyScreen()
+        {
+            var CurrScreen = GetScreenBoundaries();
 
             Console.WriteLine("Post Scaling: - Top: {0}, Left: {1}, Width: {2}, Height: {3}", CurrScreen.Y, CurrScreen.X, CurrScreen.Width, CurrScreen.Height);
 
@@ -131,8 +136,8 @@ namespace Shotr.Core.Utils
                 cursor = WinApi.CaptureCursor(ref x, ref y);
                 //calculate x & y's real position relative to the form.
                 //which is (-left)+x | (-top)+y
-                x = x + -left;
-                y = y + -top;
+                x = x + -CurrScreen.Left;
+                y = y + -CurrScreen.Top;
                 g.DrawImage(cursor, new Point(x, y));
                 cursor.Dispose();
             }
@@ -227,6 +232,30 @@ namespace Shotr.Core.Utils
         public static extern IntPtr GetDesktopWindow();
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindowDC(IntPtr ptr);
+        [DllImport("dwmapi.dll")]
+        static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out Rect pvAttribute, int cbAttribute);
+
+        [Flags]
+        public enum DwmWindowAttribute : uint
+        {
+            DWMWA_NCRENDERING_ENABLED = 1,
+            DWMWA_NCRENDERING_POLICY,
+            DWMWA_TRANSITIONS_FORCEDISABLED,
+            DWMWA_ALLOW_NCPAINT,
+            DWMWA_CAPTION_BUTTON_BOUNDS,
+            DWMWA_NONCLIENT_RTL_LAYOUT,
+            DWMWA_FORCE_ICONIC_REPRESENTATION,
+            DWMWA_FLIP3D_POLICY,
+            DWMWA_EXTENDED_FRAME_BOUNDS,
+            DWMWA_HAS_ICONIC_BITMAP,
+            DWMWA_DISALLOW_PEEK,
+            DWMWA_EXCLUDED_FROM_PEEK,
+            DWMWA_CLOAK,
+            DWMWA_CLOAKED,
+            DWMWA_FREEZE_REPRESENTATION,
+            DWMWA_LAST
+        }
+        
         public static Bitmap BitBltCopy(Rectangle scr)
         {
             var hDesk = GetDesktopWindow();
@@ -247,7 +276,15 @@ namespace Shotr.Core.Utils
         {
             var foregroundWindowsHandle = GetForegroundWindow();
             var rect = new Rect();
+
             GetWindowRect(foregroundWindowsHandle, ref rect);
+
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                int size = Marshal.SizeOf(typeof(Rect));
+                DwmGetWindowAttribute(foregroundWindowsHandle, (int)DwmWindowAttribute.DWMWA_EXTENDED_FRAME_BOUNDS, out rect, size);
+            }
+            
             var bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
             //grab image
             return bounds;

@@ -6,9 +6,11 @@ using System.IO.Compression;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
+using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
@@ -29,6 +31,12 @@ namespace Shotr.Ui.Forms
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
+            var mainForm = Program.ServiceProvider.GetService<MainForm>();
+            Invoke((MethodInvoker)delegate ()
+            {
+                mainForm.Hide();
+            });
+
             var scalingFactor = DpiScaler.GetScalingFactor(this);
             //start the updating.
             ClientSize = new Size((int)(373 * scalingFactor), (int)(71 * scalingFactor));
@@ -48,6 +56,7 @@ namespace Shotr.Ui.Forms
         private void metroButton2_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Updater.CheckForUpdates();
             Close();
         }
 
@@ -106,6 +115,11 @@ namespace Shotr.Ui.Forms
         private void UpdateForm_Load(object sender, EventArgs e)
         {
             metroTextBox1.DeselectAll();
+            var mainForm = Program.ServiceProvider.GetService<MainForm>();
+            Invoke((MethodInvoker)delegate ()
+            {
+                mainForm.Hide();
+            });
         }
     }
 }

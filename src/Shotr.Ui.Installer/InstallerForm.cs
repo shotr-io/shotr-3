@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Shotr.Core.Controls.Theme;
+using Shotr.Core.Services;
 using Shotr.Ui.Installer.Utils;
 using Toasty;
 
@@ -429,7 +430,14 @@ namespace Shotr.Ui.Installer
             if (step5CheckBox.Checked)
             //start shit.
             {
-                Process.Start(installedLocation + "\\Shotr.exe");
+                if (!WineDetectionService.IsWine())
+                {
+                    RunAsDesktopUser.Run(installedLocation + "\\Shotr.exe");
+                }
+                else
+                {
+                    Process.Start(installedLocation + "\\Shotr.exe");
+                }
             }
             Environment.Exit(0);
         }

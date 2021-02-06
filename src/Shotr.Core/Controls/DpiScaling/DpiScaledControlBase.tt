@@ -45,6 +45,16 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
 
+        public DpiScaled<#=control.Item1#>() 
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
+        {
+            Scale();
+        }
+
         protected virtual void OnControlScaled(float scalingFactor) 
         {
         }
@@ -82,6 +92,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         public void ManualDpiScale()
         {
             (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
         }
     }
     #endregion

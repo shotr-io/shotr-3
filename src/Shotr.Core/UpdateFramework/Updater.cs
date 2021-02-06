@@ -9,28 +9,38 @@ namespace Shotr.Core.UpdateFramework
     public class Updater
     {
         public static bool Check = true;
-        public static int TimeToCheck = 60 * 60 * 1000;
+        public static bool FirstRun = true;
+        public static int TimeToCheck = 60 * 60 * 1000 * 24;
+        public static BaseSettings BaseSettings = null;
         public static event EventHandler<UpdaterInfoArgs> OnUpdateCheck = delegate { };
-        public static void CheckForUpdates(BaseSettings settings)
+        public static void CheckForUpdates()
         {
             new Thread(delegate()
             {
+                if (!FirstRun)
+                {
+                    Thread.Sleep(TimeToCheck);
+                }
+                else
+                {
+                    // Wait 15 seconds to get the update, as to not just spam the user.
+                    Thread.Sleep(15 * 1000);
+                }
+
                 //download shotr update url.
                 var p = new WebClient { Proxy = null };
-                while (Check)
+                try
                 {
-                    try
-                    {
-                        var updateData = p.DownloadString("https://shotr.dev/api/updates/latest");
-                        var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
-                        OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, settings));
-                    }
-                    catch(Exception ex)
-                    {
-                        Console.WriteLine($"Updater Exception: {ex}");
-                    }
-                    Thread.Sleep(TimeToCheck); //check for updates every hour.
+                    var updateData = p.DownloadString("https://shotr.dev/api/updates/latest");
+                    var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
+                    OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, BaseSettings));
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Updater Exception: {ex}");
+                }
+
+                FirstRun = false;
             }).Start();
         }
     }

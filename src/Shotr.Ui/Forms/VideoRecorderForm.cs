@@ -41,7 +41,6 @@ namespace Shotr.Ui.Forms
 
         private Rectangle _x = Rectangle.Empty;
 
-        private Font _metroF;
         private bool _activated;
         private bool _drawing = true;
         private bool _showrecording;
@@ -54,7 +53,7 @@ namespace Shotr.Ui.Forms
         private readonly MusicPlayerService _musicPlayerService;
         private readonly Uploader _uploader;
 
-        public VideoRecorderForm(BaseSettings settings, MusicPlayerService musicPlayerService, Uploader uploader, Bitmap bitmap, Font metroFont, SingleInstance tasks)
+        public VideoRecorderForm(BaseSettings settings, MusicPlayerService musicPlayerService, Uploader uploader, Bitmap bitmap, SingleInstance tasks)
         {
             _settings = settings;
             _musicPlayerService = musicPlayerService;
@@ -73,7 +72,6 @@ namespace Shotr.Ui.Forms
             ShowInTaskbar = false;
 
             _screenshot = bitmap;
-            _metroF = metroFont;
             _tasks = tasks;
 
             timer1.Interval = 10;
@@ -82,30 +80,17 @@ namespace Shotr.Ui.Forms
             Paint += ScreenshotForm_Paint;
             FormBorderStyle = FormBorderStyle.None;
 
-            var height = 0;
-            var width = 0;
-            var left = 0;
-            var top = 0;
-            foreach (var screen in Screen.AllScreens)
-            {
-                //take smallest height
-                height = (screen.Bounds.Height >= height) ? screen.Bounds.Height : height;
-                width += screen.Bounds.Width;
-                left = (left >= screen.Bounds.X ? screen.Bounds.X : left);
-                top = (top >= screen.Bounds.Y ? screen.Bounds.Y : top);
-                if (screen.Bounds.Y + screen.Bounds.Height > height) height = screen.Bounds.Y + screen.Bounds.Height;
-                if (top < 0 || screen.Bounds.Y >= height) height += screen.Bounds.Height;
-            }
-            Size = new Size(width, height);
+            var rect = Utils.GetScreenBoundaries();
+            Size = rect.Size;
             //get point of left-most monitor.
-            Location = new Point(left, top);
+            Location = rect.Location;
 
             KeyUp += ScreenshotForm_KeyUp;
             KeyDown += ScreenshotForm_KeyDown;
 
             Cursor = Cursors.Cross;
 
-            _screenshot = new Bitmap(_screenshot, width, height);
+            _screenshot = new Bitmap(_screenshot, rect.Width, rect.Height);
 
             using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {
@@ -157,7 +142,8 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                CloseWindow();
+                Cancel = true;
+                Fmp.Close();
             }
             else if (e.KeyCode == Keys.Z)
             {
@@ -166,10 +152,6 @@ namespace Shotr.Ui.Forms
             else if (e.KeyCode == Keys.I)
             {
                 _settings.Capture.ShowInformation = !_settings.Capture.ShowInformation;
-            }
-            else if (e.KeyCode == Keys.C)
-            {
-                _settings.Capture.ShowColor = !_settings.Capture.ShowColor;
             }
         }    
         private void CloseWindow()
@@ -214,13 +196,6 @@ namespace Shotr.Ui.Forms
                 graphics.PixelOffsetMode = PixelOffsetMode.Half;
                 graphics.DrawImage(img, new Rectangle(0, 0, width, height), new Rectangle(position.X - (horizontalPixelCount / 2), position.Y - (verticalPixelCount / 2), horizontalPixelCount, verticalPixelCount), GraphicsUnit.Pixel);
                 graphics.PixelOffsetMode = PixelOffsetMode.None;
-                /*using (SolidBrush brush = new SolidBrush(Color.FromArgb(0x7d, Color.LightBlue)))
-                {
-                    graphics.FillRectangle(brush, new Rectangle(0, (height - pixelSize) / 2, (width - pixelSize) / 2, pixelSize));
-                    graphics.FillRectangle(brush, new Rectangle((width + pixelSize) / 2, (height - pixelSize) / 2, (width - pixelSize) / 2, pixelSize));
-                    graphics.FillRectangle(brush, new Rectangle((width - pixelSize) / 2, 0, pixelSize, (height - pixelSize) / 2));
-                    graphics.FillRectangle(brush, new Rectangle((width - pixelSize) / 2, (height + pixelSize) / 2, pixelSize, (height - pixelSize) / 2));
-                }*/
                 using (var pen = new Pen(Color.FromArgb(0x4b, Color.Black)))
                 {
                     for (var i = 1; i < horizontalPixelCount; i++)
@@ -243,10 +218,7 @@ namespace Shotr.Ui.Forms
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
             e.Graphics.CompositingMode = CompositingMode.SourceOver;
-
-            //e.Graphics.DrawImage(screenshot, this.ClientRectangle,
-        //new Rectangle(0, 0, screenshot.Width, screenshot.Height),
-        //GraphicsUnit.Pixel);
+            
             if (_drawing)
             {
                 e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
@@ -257,12 +229,11 @@ namespace Shotr.Ui.Forms
                     try
                     {
                         e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
-
                         _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
                         e.Graphics.DrawRectangle(_pen, _x);
                         if ((_x.Width > 80 || _x.Height > Font.Height * 2) && _settings.Capture.ShowInformation)
                         {
-                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}{2}", _x.X, _x.Y, _settings.Capture.ShowColor ? " - " + GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y)) : ""), Font, _brush, new PointF(_x.X, _x.Y));
+                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush, new PointF(_x.X, _x.Y));
                             e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
                         }
                     }
@@ -273,22 +244,18 @@ namespace Shotr.Ui.Forms
                     //check if screen isn't big enough to fit on right side, if so then fit on left side.
                     var location = new Point(0, 0);
                     var cursorloc = PointToClient(Cursor.Position);
+                    var translatedBounds = PointToClient(new Point(Bounds.X, Bounds.Y));
                     using (var magnifier = (Magnifier(_screenshot, new Point(cursorloc.X, cursorloc.Y), 10, 10, 10)))
                     {
-                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && (cursorloc.X - 1 < _x.X && cursorloc.Y - 1 < _x.Y || new Rectangle(new Point(_x.X, _x.Y), new Size(80, (Font.Height * 2))).IntersectsWith(new Rectangle(cursorloc, new Size(80, (Font.Height * 2))))))
-                        {
-                            //draw it below the text.
-                            location = new Point(cursorloc.X + 5, cursorloc.Y + (Font.Height * 2) + 5);
-                        }
-                        else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < Bounds.Y)
-                        {
-                            //bottom left
-                            location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
-                        }
-                        else if (cursorloc.Y + magnifier.Width + 5 > Height && cursorloc.X - magnifier.Height - 5 < Bounds.X)
+                        if (cursorloc.Y + magnifier.Height + 5 > Height && cursorloc.X - magnifier.Width - 5 < translatedBounds.X)
                         {
                             //top right
                             location = new Point(cursorloc.X + 5, cursorloc.Y - magnifier.Height - 5);
+                        }
+                        else if (cursorloc.X + magnifier.Width + 5 > Width && cursorloc.Y - magnifier.Height - 5 < translatedBounds.Y)
+                        {
+                            //bottom left
+                            location = new Point(cursorloc.X - magnifier.Width - 5, cursorloc.Y + 5);
                         }
                         else if (cursorloc.X + magnifier.Width + 5 > Width || cursorloc.Y + magnifier.Height + 5 > Height)
                         {
@@ -307,20 +274,24 @@ namespace Shotr.Ui.Forms
             }
             else if(_isRecording)
             {
+                var elapsed = string.Format("00:{0:#00}:{1:#00}", Stopwatch.Elapsed.Minutes, Stopwatch.Elapsed.Seconds);
+                var measurement = e.Graphics.MeasureString(elapsed, Font);
+
                 //transparent yo.
                 _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                e.Graphics.DrawRectangle(_pen, 0, 0, _x.Width - 1, Height - 29);
+                e.Graphics.DrawRectangle(_pen, 0, 0, _x.Width - 1, _x.Height);
                 //draw circle below stuffs.
                 if (_showrecording)
                 {
-                    e.Graphics.FillEllipse(Brushes.Red, Width - 25, Height - 28, 25, 25);
-                    e.Graphics.DrawEllipse(Pens.Black, Width - 25, Height - 28, 25, 25);
+                    e.Graphics.FillEllipse(Brushes.Red, Width - 20, _x.Height + 2, 20, 20);
+                    e.Graphics.DrawEllipse(Pens.Black, Width - 20, _x.Height + 2, 20, 20);
                 }
-                //show timer.            
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 32, 33, 37)), 0, Height - 28, 55, 20);
-                e.Graphics.DrawRectangle(Pens.Black, 0, Height - 28, 55, 20);
+
+                //show timer.
+                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 32, 33, 37)), 0, _x.Height + 4, measurement.Width + 4, measurement.Height + 4);
+                e.Graphics.DrawRectangle(Pens.Black, 0, _x.Height + 4, measurement.Width + 4, measurement.Height + 4);
                 e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                e.Graphics.DrawString(string.Format("00:{0:#00}:{1:#00}", Stopwatch.Elapsed.Minutes, Stopwatch.Elapsed.Seconds), _metroF, Brushes.White, 0, Height - 28);
+                e.Graphics.DrawString(elapsed, Font, Brushes.White, 2, _x.Height + 6);
             }
         }
 
@@ -356,14 +327,24 @@ namespace Shotr.Ui.Forms
             }
             Activate();
         }
+
         public FFmpegHelperService Fmp;
         public bool Cancel;
+        private ThemedButton _stopButton;
+        private ThemedButton _cancelButton;
+
+        public string? OutputPath;
+
         void ScreenshotForm_MouseUp(object sender, MouseEventArgs e)
         {
             //resize form, set lime to transparent, and yolo swag.
             if (_activated)
             {
-                if (_x.Width < 50 || _x.Height < 50) { return; }
+                if (_x.Width < 50 || _x.Height < 50)
+                {
+                    return;
+                }
+
                 var newpoint = PointToScreen(new Point(_x.X, _x.Y));
                 _x = new Rectangle(newpoint, new Size(_x.Width, _x.Height));
                 _activated = false;
@@ -372,40 +353,44 @@ namespace Shotr.Ui.Forms
                 Location = new Point(_x.X, _x.Y);
                 var themedPanel = new Panel()
                 {
-                    Size = new Size(_x.Width - 2, _x.Height),
+                    Size = new Size(_x.Width - 2, _x.Height - 1),
                     Location = new Point(1, 1),
                     BackColor = Color.LimeGreen,
                 };
-                    
+                
                 Controls.Add(themedPanel);
-                //add a stop button.
-                //TODO: check to make sure that the shit isn't offscreen, if so then like idk
-                var stopButton = new ThemedButton()
+
+                var scale = DpiScaler.GetScalingFactor(this);
+                var font = Theme.Font(12);
+
+                var stopButtonText = "Stop";
+                var stopButtonTextMeasurement = TextRenderer.MeasureText(stopButtonText, font);
+                _stopButton = new ThemedButton()
                 {
                     Scaled = false,
-                    Text = "Stop",
-                    Size = new Size(75, 23),
-                    Location = new Point(60, Height - 28)
+                    Text = stopButtonText,
+                    Size = new Size(stopButtonTextMeasurement.Width, (int)(23 * scale)),
+                    Location = new Point((int)(80 * scale), _x.Height + 4),
+                    Font = font
                 };
-                stopButton.Click += m_Click;
+                _stopButton.Click += m_Click;
+                Controls.Add(_stopButton);
 
-
-                Controls.Add(stopButton);
-
-                var cancelButton = new ThemedButton()
+                var cancelButtonText = "Cancel";
+                var cancelButtonTextMeasurement = TextRenderer.MeasureText(cancelButtonText, font);
+                _cancelButton = new ThemedButton()
                 {
                     Scaled = false,
-                    Text = "Cancel",
-                    Size = new Size(75, 23),
-                    Location = new Point(140, Height - 28),
+                    Text = cancelButtonText,
+                    Size = new Size(cancelButtonTextMeasurement.Width, (int)(23 * scale)),
+                    Location = new Point((int)(_stopButton.Location.X + _stopButton.Width + 6 * scale), _x.Height + 4),
+                    Font = font
                 };
 
-                cancelButton.Click += mb_Click;
+                _cancelButton.Click += mb_Click;
+                Controls.Add(_cancelButton);
 
-
-                Controls.Add(cancelButton);
-
-                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + 30);
+                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + _cancelButton.Height + 4);
 
                 TopMost = true;
                 BackColor = Color.LimeGreen;
@@ -446,55 +431,64 @@ namespace Shotr.Ui.Forms
                 new Thread(delegate()
                 {
                     Fmp.Record();
-                    if (!Cancel)
-                    {
-                        _tasks.Reset();
-                        //check filesize.
-                        var fz = new FileInfo(sc.OutputPath);
-                        if (fz.Length >= (99 * (1024 * 1024)))
-                        {
-                            //let user know that the file is bigger than 100MB.
-                            Invoke((MethodInvoker)(() =>
-                            {
-                                MessageBox.Show("Your recording is over the 100MB limit for Shotr uploads. You'll need to save your recording locally instead.");
-                                var xz = new SaveFileDialog
-                                {
-                                    Filter = "MPEG4 | *.mp4",
-                                    FileName = "*.mp4"
-                                };
-                                if (xz.ShowDialog() == DialogResult.OK)
-                                {
-                                    //save file.
-                                    File.Copy(sc.OutputPath, xz.FileName);
-                                }
-                            }));
-                        }
-                        else
-                        {
-                            _musicPlayerService.PlayCaptured();
-                            //TODO: buffer file input into uploader, cause like idk huge file sizes.
-                            _uploader.AddToQueue(new ImageShell(File.ReadAllBytes(sc.OutputPath), FileExtensions.mp4));
-                        }
-                    }
-                    //lel die ked
-                    try
-                    {
-                        File.Delete(sc.OutputPath);
-                    }
-                    catch
-                    {
-                    }
+                    _drawing = false;
+                    _tasks.Reset();
                     Stopwatch.Stop();
                     timer1.Stop();
-                    try
+                    
+                    if (!Cancel)
                     {
+                        // Ask to save.
+                        string? filePath = null;
                         Invoke((MethodInvoker)(() =>
                         {
-                            Close();
-                            Dispose();
+                            var xz = new SaveFileDialog
+                            {
+                                Filter = "MPEG4 (*.mp4) | *.mp4",
+                                FileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.mp4"
+                            };
+                            if (xz.ShowDialog() == DialogResult.OK)
+                            {
+                                filePath = xz.FileName;
+                                //save file.
+                                File.Copy(sc.OutputPath, filePath);
+                            }
                         }));
+
+                        _musicPlayerService.PlayCaptured();
+
+                        if (filePath is { })
+                        {
+                            if (!WineDetectionService.IsWine())
+                            {
+                                Toast.Send(null, "Video saved to folder!", _settings.Login.Enabled == true ? "Upload" : null, "uploadVideo", $"path={filePath}");
+                            }
+                            else
+                            {
+                                var result = MessageBox.Show("Video saved to folder. Would you like to upload it?",
+                                    "Upload Video",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                                if (result == DialogResult.Yes)
+                                {
+                                    _uploader.AddToQueue(
+                                        new ImageShell(File.ReadAllBytes(filePath), FileExtensions.mp4));
+                                }
+                            }
+                        }
                     }
-                    catch { }
+                    else
+                    {
+                        try
+                        {
+                            File.Delete(sc.OutputPath);
+                        }
+                        catch { }
+                    }
+
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        CloseWindow();
+                    }));
                 }).Start();
             }
         }
@@ -502,17 +496,15 @@ namespace Shotr.Ui.Forms
         void mb_Click(object sender, EventArgs e)
         {
             Cancel = true;
-            Stopwatch.Stop();
             Fmp.Close();
-            CloseWindow();
         }
 
         void m_Click(object sender, EventArgs e)
         {
             //stop recording.
-            Stopwatch.Stop();
             Fmp.Close();
         }
+
         private bool _isRecording;
         void fmp_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {

@@ -50,7 +50,6 @@ namespace Shotr.Ui.Forms
             this.Text = "RegionCaptureForm";
             this.Load += new System.EventHandler(this.ScreenshotForm_Load);
             this.Shown += new System.EventHandler(this.ScreenshotForm_Shown);
-            this.MouseHover += new System.EventHandler(this.ScreenshotForm_MouseHover);
             this.ResumeLayout(false);
 
         }

@@ -61,7 +61,7 @@ namespace Shotr.Ui.Forms
             this.betterListViewColumnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.metroTabPage2 = new Shotr.Core.Controls.Theme.ThemedTabPage();
             this.metroPanel2 = new Shotr.Core.Controls.Theme.ThemedPanel();
-            this.noUploadHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
+            this.colorPickerHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
             this.saveOnlyLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.uploadClipboardHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
             this.clipboardLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
@@ -332,7 +332,7 @@ namespace Shotr.Ui.Forms
             // metroPanel2
             // 
             this.metroPanel2.BasePaint = false;
-            this.metroPanel2.Controls.Add(this.noUploadHotKeyButton);
+            this.metroPanel2.Controls.Add(this.colorPickerHotKeyButton);
             this.metroPanel2.Controls.Add(this.saveOnlyLabel);
             this.metroPanel2.Controls.Add(this.uploadClipboardHotKeyButton);
             this.metroPanel2.Controls.Add(this.clipboardLabel);
@@ -356,29 +356,29 @@ namespace Shotr.Ui.Forms
             this.metroPanel2.Size = new System.Drawing.Size(282, 272);
             this.metroPanel2.TabIndex = 25;
             // 
-            // noUploadHotKeyButton
+            // colorPickerHotKeyButton
             // 
-            this.noUploadHotKeyButton.BasePaint = false;
-            this.noUploadHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.noUploadHotKeyButton.Highlight = false;
-            this.noUploadHotKeyButton.HotKey = null;
-            this.noUploadHotKeyButton.Location = new System.Drawing.Point(121, 26);
-            this.noUploadHotKeyButton.Name = "noUploadHotKeyButton";
-            this.noUploadHotKeyButton.Scaled = true;
-            this.noUploadHotKeyButton.Size = new System.Drawing.Size(142, 21);
-            this.noUploadHotKeyButton.TabIndex = 32;
-            this.noUploadHotKeyButton.Text = "None";
+            this.colorPickerHotKeyButton.BasePaint = false;
+            this.colorPickerHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.colorPickerHotKeyButton.Highlight = false;
+            this.colorPickerHotKeyButton.HotKey = null;
+            this.colorPickerHotKeyButton.Location = new System.Drawing.Point(121, 161);
+            this.colorPickerHotKeyButton.Name = "colorPickerHotKeyButton";
+            this.colorPickerHotKeyButton.Scaled = true;
+            this.colorPickerHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.colorPickerHotKeyButton.TabIndex = 32;
+            this.colorPickerHotKeyButton.Text = "None";
             // 
             // saveOnlyLabel
             // 
             this.saveOnlyLabel.BasePaint = false;
             this.saveOnlyLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.saveOnlyLabel.Location = new System.Drawing.Point(16, 28);
+            this.saveOnlyLabel.Location = new System.Drawing.Point(16, 164);
             this.saveOnlyLabel.Name = "saveOnlyLabel";
             this.saveOnlyLabel.Scaled = true;
             this.saveOnlyLabel.Size = new System.Drawing.Size(103, 22);
             this.saveOnlyLabel.TabIndex = 31;
-            this.saveOnlyLabel.Text = "Clipboard Save:";
+            this.saveOnlyLabel.Text = "Color Picker:";
             // 
             // uploadClipboardHotKeyButton
             // 
@@ -386,7 +386,7 @@ namespace Shotr.Ui.Forms
             this.uploadClipboardHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.uploadClipboardHotKeyButton.Highlight = false;
             this.uploadClipboardHotKeyButton.HotKey = null;
-            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 160);
+            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 135);
             this.uploadClipboardHotKeyButton.Name = "uploadClipboardHotKeyButton";
             this.uploadClipboardHotKeyButton.Scaled = true;
             this.uploadClipboardHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -397,7 +397,7 @@ namespace Shotr.Ui.Forms
             // 
             this.clipboardLabel.BasePaint = false;
             this.clipboardLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.clipboardLabel.Location = new System.Drawing.Point(16, 163);
+            this.clipboardLabel.Location = new System.Drawing.Point(16, 137);
             this.clipboardLabel.Name = "clipboardLabel";
             this.clipboardLabel.Scaled = true;
             this.clipboardLabel.Size = new System.Drawing.Size(81, 22);
@@ -410,7 +410,7 @@ namespace Shotr.Ui.Forms
             this.recordScreenHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.recordScreenHotKeyButton.Highlight = false;
             this.recordScreenHotKeyButton.HotKey = null;
-            this.recordScreenHotKeyButton.Location = new System.Drawing.Point(121, 134);
+            this.recordScreenHotKeyButton.Location = new System.Drawing.Point(121, 109);
             this.recordScreenHotKeyButton.Name = "recordScreenHotKeyButton";
             this.recordScreenHotKeyButton.Scaled = true;
             this.recordScreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -421,7 +421,7 @@ namespace Shotr.Ui.Forms
             // 
             this.recordScreenLabel.BasePaint = false;
             this.recordScreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.recordScreenLabel.Location = new System.Drawing.Point(16, 137);
+            this.recordScreenLabel.Location = new System.Drawing.Point(16, 111);
             this.recordScreenLabel.Name = "recordScreenLabel";
             this.recordScreenLabel.Scaled = true;
             this.recordScreenLabel.Size = new System.Drawing.Size(96, 22);
@@ -434,7 +434,7 @@ namespace Shotr.Ui.Forms
             this.activeWindowHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.activeWindowHotKeyButton.Highlight = false;
             this.activeWindowHotKeyButton.HotKey = null;
-            this.activeWindowHotKeyButton.Location = new System.Drawing.Point(121, 107);
+            this.activeWindowHotKeyButton.Location = new System.Drawing.Point(121, 82);
             this.activeWindowHotKeyButton.Name = "activeWindowHotKeyButton";
             this.activeWindowHotKeyButton.Scaled = true;
             this.activeWindowHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -447,7 +447,7 @@ namespace Shotr.Ui.Forms
             this.fullScreenHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.fullScreenHotKeyButton.Highlight = false;
             this.fullScreenHotKeyButton.HotKey = null;
-            this.fullScreenHotKeyButton.Location = new System.Drawing.Point(121, 80);
+            this.fullScreenHotKeyButton.Location = new System.Drawing.Point(121, 55);
             this.fullScreenHotKeyButton.Name = "fullScreenHotKeyButton";
             this.fullScreenHotKeyButton.Scaled = true;
             this.fullScreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -460,7 +460,7 @@ namespace Shotr.Ui.Forms
             this.regionHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.regionHotKeyButton.Highlight = false;
             this.regionHotKeyButton.HotKey = null;
-            this.regionHotKeyButton.Location = new System.Drawing.Point(121, 53);
+            this.regionHotKeyButton.Location = new System.Drawing.Point(121, 28);
             this.regionHotKeyButton.Name = "regionHotKeyButton";
             this.regionHotKeyButton.Scaled = true;
             this.regionHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -519,7 +519,7 @@ namespace Shotr.Ui.Forms
             // 
             this.regionLabel.BasePaint = false;
             this.regionLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.regionLabel.Location = new System.Drawing.Point(16, 55);
+            this.regionLabel.Location = new System.Drawing.Point(16, 31);
             this.regionLabel.Name = "regionLabel";
             this.regionLabel.Scaled = true;
             this.regionLabel.Size = new System.Drawing.Size(53, 22);
@@ -545,7 +545,7 @@ namespace Shotr.Ui.Forms
             // 
             this.fullscreenLabel.BasePaint = false;
             this.fullscreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.fullscreenLabel.Location = new System.Drawing.Point(16, 82);
+            this.fullscreenLabel.Location = new System.Drawing.Point(16, 58);
             this.fullscreenLabel.Name = "fullscreenLabel";
             this.fullscreenLabel.Scaled = true;
             this.fullscreenLabel.Size = new System.Drawing.Size(70, 22);
@@ -556,7 +556,7 @@ namespace Shotr.Ui.Forms
             // 
             this.activeWindowLabel.BasePaint = false;
             this.activeWindowLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.activeWindowLabel.Location = new System.Drawing.Point(16, 109);
+            this.activeWindowLabel.Location = new System.Drawing.Point(16, 85);
             this.activeWindowLabel.Name = "activeWindowLabel";
             this.activeWindowLabel.Scaled = true;
             this.activeWindowLabel.Size = new System.Drawing.Size(99, 22);
@@ -927,7 +927,7 @@ namespace Shotr.Ui.Forms
         private ThemedLabel emailLabel;
         private ThemedButton logoutButton;
         private ThemedButton viewAccountButton;
-        private HotKeyButton noUploadHotKeyButton;
+        private HotKeyButton colorPickerHotKeyButton;
         private ThemedLabel saveOnlyLabel;
         private ThemedPanel loginToShotrPanel;
         private ThemedButton loginToShotrButton;
