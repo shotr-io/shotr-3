@@ -218,7 +218,7 @@ namespace Shotr.Ui.Forms
                         e.Graphics.DrawImage(magnifier, location);
 
                         // Draw hex code outside of the box
-                        var font = Theme.Font(12);
+                        var font = Theme.Font(14);
                         var hexCode = GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y));
                         var textMeasurement = TextRenderer.MeasureText(hexCode, font);
                         var hexLocation = new Point(location.X, location.Y - textMeasurement.Height - 10);
@@ -234,7 +234,7 @@ namespace Shotr.Ui.Forms
                         e.Graphics.DrawRectangle(Pens.Black, rect.X, rect.Y - 4, rect.Width, rect.Height);
                         e.Graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
                         var textPoint = new Point(rect.X + 2, rect.Y - 2);
-                        e.Graphics.DrawString(hexCode, font, _brush, textPoint);
+                        TextRenderer.DrawText(e.Graphics, hexCode, font, textPoint, Color.White);
                     }
                 }
             }
