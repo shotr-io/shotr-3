@@ -37,12 +37,12 @@ namespace Shotr.Core.Pipes
                         catch (IOException e)
                         {
                             Console.WriteLine("[PIPE SERVER] ERROR: Pipe client had an error. Code: {0}", e.Message);
-                        }
+                        }   
                     }
                     catch
                     {
-                        pipeServer.Close();
                     }
+                    pipeServer.Close();
                 }
             }).Start();
         }
