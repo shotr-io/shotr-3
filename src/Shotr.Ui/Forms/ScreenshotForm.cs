@@ -1094,7 +1094,12 @@ namespace Shotr.Ui.Forms
                     _resizing = false;
                     if (!WineDetectionService.IsWine())
                     {
-                        Toast.Send("When you are done editing, press the 'E' key to go back to selecting your screenshot. You can use your scroll wheel to change colors.", 10);
+                        if (_settings.Capture.ShowEditNotification)
+                        {
+                            Toast.Send(null,
+                                "When you are done editing, press the 'E' key to go back to selecting your screenshot. You can use your scroll wheel to change colors",
+                                "Don't Show Again", "dontShowEditNotification", "dontshow=true");
+                        }
                     }
 
                     SetButtonVisibility(false);

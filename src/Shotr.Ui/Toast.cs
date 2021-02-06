@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Shotr.Core;
 using Shotr.Core.Services;
+using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 using Shotr.Core.Uploader;
 using Shotr.Ui.Forms;
@@ -82,7 +83,20 @@ namespace Shotr.Ui
                 case "uploadVideo":
                     var videoPath = dict["path"];
                     var uploader = Program.ServiceProvider.GetService<Uploader>();
-                    uploader.AddToQueue(new ImageShell(File.ReadAllBytes(videoPath), FileExtensions.mp4));
+                    if (uploader is { })
+                    {
+                        uploader.AddToQueue(new ImageShell(File.ReadAllBytes(videoPath), FileExtensions.mp4));
+                    }
+
+                    break;
+                case "dontShowEditNotification":
+                    var settings = Program.ServiceProvider.GetService<BaseSettings>();
+                    if (settings is { }) // settings != null
+                    {
+                        settings.Capture.ShowEditNotification = false;
+                        SettingsService.Save(settings);
+                    }
+
                     break;
             }
         }

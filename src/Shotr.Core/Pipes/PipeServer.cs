@@ -31,17 +31,17 @@ namespace Shotr.Core.Pipes
                         {
                             var ss = new StreamString(pipeServer);
                             var data = ss.ReadString();
+                            Console.WriteLine($"[PIPE SERVER] Received the message: {data}.");
                             PipeServerReceivedClient.Invoke(this, new PipeServerEventArgs(data));
                         }
                         catch (IOException e)
                         {
                             Console.WriteLine("[PIPE SERVER] ERROR: Pipe client had an error. Code: {0}", e.Message);
                         }
-                        pipeServer.Close();
                     }
                     catch
                     {
-
+                        pipeServer.Close();
                     }
                 }
             }).Start();

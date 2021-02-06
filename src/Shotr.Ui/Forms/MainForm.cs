@@ -79,7 +79,7 @@ namespace Shotr.Ui.Forms
         void _pipeserver_PipeServerReceivedClient(object sender, PipeServerEventArgs e)
         {
             switch (e.Data)
-            {
+            { 
                 case "--region":
                     var regionHotkey = _hotkeyService.GetHotKey(KeyTask.Region);
                     if (regionHotkey is { })
