@@ -781,7 +781,7 @@ namespace Shotr.Ui.Forms
                     {
                         var saveDialog = new SaveFileDialog
                         {
-                            Filter = $"{_settings.Capture.Extension} files (*.{_settings.Capture.Extension})|*.*.{_settings.Capture.Extension}|All files (*.*)|*.*",
+                            Filter = $"{_settings.Capture.Extension} files (*.{_settings.Capture.Extension})|*.{_settings.Capture.Extension}|All files (*.*)|*.*",
                             FileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{_settings.Capture.Extension}",
                         };
 
