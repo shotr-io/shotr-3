@@ -72,6 +72,13 @@ namespace Shotr.Core.Services
             ConfigurationWriter.WriteToFile(settings, _settingsPath, encryptHandler, true);
         }
 
+        public static void Reset()
+        {
+            // Load an empty instance of BaseSettings.
+            var defaults = ConfigurationParser.Parse<BaseSettings>();
+            Save(defaults);
+        }
+
         private static Dictionary<long, UploadResult>? LoadLegacyHistory()
         {
             var bin = new BinaryFormatter();

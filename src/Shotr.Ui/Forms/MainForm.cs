@@ -918,8 +918,8 @@ namespace Shotr.Ui.Forms
         {
             if (MessageBox.Show(this, "This will set your settings back to default, continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                // todo: Reset to default settings.
-                UpdateControls();
+                SettingsService.Reset();
+                Application.Restart();
             }
         }
         
