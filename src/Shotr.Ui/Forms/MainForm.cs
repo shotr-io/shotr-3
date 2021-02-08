@@ -920,6 +920,7 @@ namespace Shotr.Ui.Forms
             {
                 SettingsService.Reset();
                 Application.Restart();
+                Environment.Exit(0);
             }
         }
         
