@@ -304,9 +304,9 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel10.Location = new System.Drawing.Point(14, 21);
             this.metroLabel10.Name = "metroLabel10";
             this.metroLabel10.Scaled = true;
-            this.metroLabel10.Size = new System.Drawing.Size(105, 15);
+            this.metroLabel10.Size = new System.Drawing.Size(33, 15);
             this.metroLabel10.TabIndex = 53;
-            this.metroLabel10.Text = "Save to Directory";
+            this.metroLabel10.Text = "Path";
             // 
             // saveToDirectoryToggle
             // 
@@ -574,7 +574,7 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel20.Scaled = true;
             this.metroLabel20.Size = new System.Drawing.Size(276, 19);
             this.metroLabel20.TabIndex = 7;
-            this.metroLabel20.Text = "Save to Directory";
+            this.metroLabel20.Text = "Screen Recorder Settings";
             this.metroLabel20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // recordAudioToggle

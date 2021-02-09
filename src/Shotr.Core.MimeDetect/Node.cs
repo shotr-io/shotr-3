@@ -106,7 +106,11 @@ namespace Shotr.Core.MimeDetect
 
                 if (child._children.Count > 0)
                 {
-                    return GetFileExtForMime(child, mime);
+                    var ret = GetFileExtForMime(child, mime);
+                    if (ret is { })
+                    {
+                        return ret;
+                    }
                 }
             }
             // Couldn't find ext?
