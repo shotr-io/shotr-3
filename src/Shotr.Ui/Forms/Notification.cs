@@ -7,6 +7,7 @@ using Shotr.Core;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
+using Shotr.Core.MimeDetect;
 
 namespace Shotr.Ui.Forms
 {
@@ -38,7 +39,7 @@ namespace Shotr.Ui.Forms
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
         }
 
-        public Notification(string url, string mime)
+        public Notification(string url, FileTypeEnum fileType)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
@@ -50,7 +51,17 @@ namespace Shotr.Ui.Forms
             _animator.Duration = 500;
             
             metroLink1.Text = url;
-            metroLabel1.Text = mime.Contains("text") ? "Text Uploaded!" : mime.Contains("video") ? "Recording Uploaded!" : "Screenshot Uploaded!";
+            metroLabel1.Text = fileType switch
+            {
+                FileTypeEnum.Image => "Image Uploaded!",
+                FileTypeEnum.Text => "Text Uploaded!",
+                FileTypeEnum.Video => "Recording Uploaded!",
+                FileTypeEnum.Audio => "Audio Uploaded!",
+                FileTypeEnum.Archive => "Archive Uploaded",
+                FileTypeEnum.Document => "Document Uploaded!",
+                FileTypeEnum.Pdf => "Pdf Uploaded!",
+                _ => "Uploaded!"
+            };
         }
 
         void Notification_Closing(object sender, CancelEventArgs e)

@@ -2,7 +2,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Shotr.Core.Custom;
-using ShotrUploaderPlugin;
+using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Services
 {

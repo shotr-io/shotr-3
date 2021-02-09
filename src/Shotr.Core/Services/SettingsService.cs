@@ -6,7 +6,7 @@ using System.Text;
 using CustomEnvironmentConfig;
 using Shotr.Core.Entities;
 using Shotr.Core.Settings;
-using ShotrUploaderPlugin;
+using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Services
 {

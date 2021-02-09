@@ -7,7 +7,6 @@ using Shotr.Core.Entities;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.Utils;
-using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms.Settings
 {
@@ -192,8 +191,7 @@ namespace Shotr.Ui.Forms.Settings
 
         private void imageCodecCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var imageCodec = (FileExtensions)Enum.Parse(typeof(FileExtensions), imageCodecCombo.Text);
-            _settings.Capture.Extension = imageCodec;
+            _settings.Capture.Extension = imageCodecCombo.Text;
             SettingsService.Save(_settings);
         }
 

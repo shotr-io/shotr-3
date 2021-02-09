@@ -6,9 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
-using Microsoft.Toolkit.Uwp.Notifications;
 using Shotr.Core;
 using Shotr.Core.Controls.Hotkey;
 using Shotr.Core.Controls.Theme;
@@ -16,13 +13,13 @@ using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
 using Shotr.Core.Entities.Web;
 using Shotr.Core.Image;
+using Shotr.Core.MimeDetect;
 using Shotr.Core.Pipes;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using Shotr.Ui.Forms.Settings;
-using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
 {
@@ -194,7 +191,7 @@ namespace Shotr.Ui.Forms
             }
         }
 
-        void Uploader_OnProgress(object sender, double progress)
+        void Uploader_OnProgress(double progress)
         {
             //set up the icon.
             try
@@ -230,25 +227,41 @@ namespace Shotr.Ui.Forms
             catch { }
         }
 
-        void Uploader_OnError(object sender, ImageShell e)
+        void Uploader_OnError(FileShell fileShell, bool allowReUpload, FileTypeEnum fileType, string uploader, string errorMessage)
         {
-            var f = (UploadedImageJsonResult)sender;
-            try
+            if (!WineDetectionService.IsWine())
             {
-                var errorNotification = new ErrorNotification(e, f);
-                Invoke((MethodInvoker)(() => { errorNotification.Show(); }));
+                // Take the current file and save it to a temp file if in mem to allow re-upload.
+                var filePath = fileShell.Path ?? Path.GetTempFileName();
+                if (fileShell.Data is { } && fileShell.Path is null)
+                {
+                    File.WriteAllBytes(filePath, fileShell.Data);
+                }
+
+                var message = $"Upload to {uploader} failed: {errorMessage}";
+
+                Toast.Send(null, message.Substring(0, message.Length > 128 ? 125 : message.Length)+"...", 
+                    allowReUpload ? "Retry Upload" : null, 
+                    allowReUpload ? "retryUpload" : null,
+                    allowReUpload ? $"path={filePath}" : null);
             }
-            catch
+            else
             {
-                Console.WriteLine("Error while showing error.");
+                try
+                {
+                    var errorNotification = new ErrorNotification(fileShell, fileType, allowReUpload, uploader, errorMessage);
+                    Invoke((MethodInvoker)(() => { errorNotification.Show(); }));
+                }
+                catch
+                {
+                    Console.WriteLine("Error while showing error.");
+                }
             }
         }
 
-        private void Uploader_OnUploaded(object sender, UploadResult e)
+        private void Uploader_OnUploaded(FileShell fileShell, UploadResult? result, SaveResult? saveResult, FileTypeEnum fileType, string extension, string uploader)
         {
-            var pathExtension = e != null ? Path.GetExtension(e.URL) : ((FileExtensions)((object[])sender)[2]).ToString();
-            pathExtension = pathExtension.Replace(".", "");
-            var filename = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{pathExtension}";
+            var fileName = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{extension}";
 
             if (_settings.Capture.SaveToDirectory)
             {
@@ -257,12 +270,19 @@ namespace Shotr.Ui.Forms
                     Directory.CreateDirectory(_settings.Capture.SaveToDirectoryPath);
                 }
 
-                File.WriteAllBytes(filename, (byte[])((object[])sender)[1]);
+                if (fileShell.Data is { })
+                {
+                    File.WriteAllBytes(fileName, fileShell.Data);
+                } 
+                else if (fileShell.Path is { })
+                {
+                    File.Copy(fileShell.Path, fileName);
+                }
             }
 
-            var url = e is {} ? _settings.Capture.DirectUrl ? e.URL : e.PageURL : "";
+            var url = result is {} ? _settings.Capture.DirectUrl ? result.Url : result.PageUrl : "";
 
-            if (e is { })
+            if (result is { })
             {
                 // Add to history.
                 var listViewItem = new ListViewItem
@@ -270,17 +290,16 @@ namespace Shotr.Ui.Forms
                     Text = url
                 };
 
-                listViewItem.SubItems.Add(Utils.FromUnixTime(e.Time).ToString());
+                listViewItem.SubItems.Add(result.Time.FromUnixTime().ToString());
 
-                var parsedUrl = new Uri(e.URL);
+                var parsedUrl = new Uri(result.Url);
                 var withoutExtension = Path.GetFileNameWithoutExtension(parsedUrl.AbsolutePath);
-                var extension = Path.GetExtension(parsedUrl.AbsolutePath);
 
                 var uploadItem = new UploadItem
                 {
                     Name = withoutExtension,
                     Extension = extension,
-                    Time = Utils.FromUnixTime(e.Time)
+                    Time = result.Time.FromUnixTime()
                 };
 
                 _settings.Uploads ??= new List<UploadItem>();
@@ -297,16 +316,16 @@ namespace Shotr.Ui.Forms
             {
                 Image jpg = null;
                 Bitmap b = null;
-                try
+                if (fileType == FileTypeEnum.Image)
                 {
-                    using (var k = new MemoryStream((byte[]) ((object[]) sender)[1]))
+                    using (var k = new MemoryStream(fileShell.Data ?? File.ReadAllBytes(fileShell.Path)))
                     {
                         jpg = Image.FromStream(k);
                         b = new Bitmap(jpg);
                     }
 
                     var dataObj = new DataObject();
-                    if (e != null)
+                    if (result != null)
                     {
                         dataObj.SetText(url);
                     }
@@ -314,13 +333,9 @@ namespace Shotr.Ui.Forms
                     dataObj.SetImage(b);
                     Clipboard.SetDataObject(dataObj);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine("Cannot set image and text in clipboard at same time, error: {0}", ex);
-                    if (e != null)
-                    {
-                        Clipboard.SetText(url);
-                    }
+                    Clipboard.SetText(url);
                 }
 
                 try
@@ -331,24 +346,23 @@ namespace Shotr.Ui.Forms
                         fileName = Path.Combine(SettingsService.CachePath, "notification.png");
                         b.Save(fileName);
                     }
-
-                    var mime = (string)((object[])sender)[0];
                     
-                    if (e != null)
+                    if (result != null)
                     {
                         if (_settings.ShowNotifications)
                         {
                             if (!WineDetectionService.IsWine())
                             {
                                 Toast.Send(fileName,
-                                    mime.Contains("text") ? "Text uploaded and link copied to clipboard!" :
-                                    mime.Contains("video") ? "Recording uploaded and link copied to clipboard!" :
-                                    "Screenshot uploaded and link copied to clipboard!", "View Upload", "viewUrl",
+                                    fileType == FileTypeEnum.Text ? "Text uploaded and link copied to clipboard!" :
+                                    fileType == FileTypeEnum.Video ? "Recording uploaded and link copied to clipboard!" :
+                                    fileType == FileTypeEnum.Image ? "Screenshot uploaded and link copied to clipboard!" :
+                                    "File uploaded and link copied to clipboard!", "View Upload", "viewUrl",
                                     $"url={url}");
                             }
                             else
                             {
-                                var notification = new Notification(url, (string)((object[])sender)[0]);
+                                var notification = new Notification(url, fileType);
                                 notification.Show();
                             }
                         }
@@ -361,19 +375,16 @@ namespace Shotr.Ui.Forms
                             {
                                 var screenshotText = $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!";
                                 Toast.Send(fileName,
-                                    mime.Contains("video")
+                                    fileType == FileTypeEnum.Video
                                         ? "Recording saved!"
                                         : screenshotText,
                                     _settings.Capture.SaveToDirectory ? "Open Containing Folder" : null,
                                     _settings.Capture.SaveToDirectory ? "openDirectory" : null,
-                                    _settings.Capture.SaveToDirectory
-                                        ? $"path={filename}"
-                                        : null
-                                );
+                                    _settings.Capture.SaveToDirectory ? $"path={fileName}" : null);
                             }
                             else
                             {
-                                var notification = new NoUploadNotification(mime);
+                                var notification = new NoUploadNotification(fileType);
                                 notification.Show();
                             }
                         }
@@ -504,14 +515,14 @@ namespace Shotr.Ui.Forms
                     if (directUrl)
                     {
                         var m = GetUploader(templist[i].Uploader);
-                        var x = new ListViewItem { Text = !m.SupportsPages && !directUrl ? templist[i].URL : templist[i].PageURL };
-                        x.SubItems.Add(Utils.FromUnixTime(templist[i].Time).ToString());
+                        var x = new ListViewItem { Text = !m.SupportsPages && !directUrl ? templist[i].Url : templist[i].PageUrl };
+                        x.SubItems.Add(templist[i].Time.FromUnixTime().ToString());
                         themedListView1.Items.Add(x);
                     }
                     else
                     {
-                        var x = new ListViewItem { Text = (directUrl ? templist[i].URL : templist[i].PageURL) };
-                        x.SubItems.Add(Utils.FromUnixTime(templist[i].Time).ToString());
+                        var x = new ListViewItem { Text = (directUrl ? templist[i].Url : templist[i].PageUrl) };
+                        x.SubItems.Add(templist[i].Time.FromUnixTime().ToString());
                         themedListView1.Items.Add(x);
                     }
                 }
@@ -730,23 +741,27 @@ namespace Shotr.Ui.Forms
                     if (Clipboard.ContainsText())
                     {
                         //try to upload via shotr
-                        _uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(Clipboard.GetText()), FileExtensions.txt));
+                        _uploader.AddToQueue(new FileShell(Encoding.ASCII.GetBytes(Clipboard.GetText())));
                     }
                     else if (Clipboard.ContainsImage())
                     {
-                        _uploader.AddToQueue(new ImageShell(Utils.ImageToByteArray(Clipboard.GetImage(), FileExtensions.png, false, 100L), FileExtensions.png));
+                        var image = Clipboard.GetImage();
+                        if (image is { })
+                        {
+                            _uploader.AddToQueue(new FileShell(image.ImageToByteArray()));
+                        }
                     }
                     else if (Clipboard.ContainsFileDropList())
                     {
                         var file = Clipboard.GetFileDropList();
                         if (file.Count == 1)
                         {
-                            //upload image, first check extension.
-                            var ext = Path.GetExtension(file[0]);
-                            ext = ext.Replace(".", "");
-                            if (Enum.IsDefined(typeof(FileExtensions), ext.ToLower()))
+                            var mime = new Mime();
+                            var node = mime.DetectFile(file[0]);
+
+                            if (node.FileType != FileTypeEnum.Unknown)
                             {
-                                _uploader.AddToQueue(new ImageShell(File.ReadAllBytes(file[0]), (FileExtensions)Enum.Parse(typeof(FileExtensions), ext)));
+                                _uploader.AddToQueue(new FileShell(file[0]));
                             }
                         }
                     }
@@ -759,21 +774,21 @@ namespace Shotr.Ui.Forms
                 if (bitmap != null)
                 {
                     _musicPlayerService.PlayCaptured();
+                    var mime = new Mime();
 
+                    var fileMimeType = mime.GetMimeForFileExtension(_settings.Capture.Extension);
                     var image = _settings.Capture.Extension switch
                     {
-                        { } p when p == FileExtensions.png && _settings.Capture.CompressionEnabled =>
-                            Utils.ImageToByteArray(Utils.Quantize(bitmap), FileExtensions.png, false, 0),
-                        FileExtensions.png => Utils.ImageToByteArray(bitmap, FileExtensions.png, false, 0),
-                        _ => Utils.ImageToByteArray(bitmap, FileExtensions.jpg,
-                            _settings.Capture.CompressionEnabled, (long) _settings.Capture.CompressionLevel)
+                        { } p when p == "png" && _settings.Capture.CompressionEnabled => Utils.Quantize(bitmap).ImageToByteArrayConvert(fileMimeType),
+                        "png" => bitmap.ImageToByteArrayConvert(fileMimeType),
+                        _ => bitmap.ImageToByteArrayCompressed(fileMimeType, (long) _settings.Capture.CompressionLevel)
                     };
                             
                     bitmap.Dispose();
 
                     if (upload)
                     {
-                        _uploader.AddToQueue(new ImageShell(image, _settings.Capture.Extension));
+                        _uploader.AddToQueue(new FileShell(image));
                         return;
                     }
 
@@ -795,7 +810,7 @@ namespace Shotr.Ui.Forms
                         return;
                     }
                     
-                    _uploader.ProcessWithoutUpload(new ImageShell(image, _settings.Capture.Extension));
+                    _uploader.ProcessWithoutUpload(new FileShell(image));
                 }
             }
         }
@@ -832,10 +847,10 @@ namespace Shotr.Ui.Forms
                 if (_settings.LegacyHistory is { })
                 {
                     if (_settings.LegacyHistory.TryGetValue(
-                        Utils.ToUnixTime(DateTime.Parse(themedListView1.SelectedItems[0].SubItems[1].Text)),
+                        DateTime.Parse(themedListView1.SelectedItems[0].SubItems[1].Text).ToUnixTime(),
                         out var uploadResult))
                     {
-                        uploadResult.URL.OpenUrl();
+                        uploadResult.Url.OpenUrl();
                         return;
                     }
                 }

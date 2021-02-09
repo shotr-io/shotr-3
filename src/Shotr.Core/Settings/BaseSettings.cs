@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CustomEnvironmentConfig;
 using Shotr.Core.Entities.Web;
-using ShotrUploaderPlugin;
+using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Settings
 {

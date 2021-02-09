@@ -748,10 +748,7 @@ namespace Shotr.Ui.Forms
                     e.Graphics.DrawRectangle(_pen, _x);
                     if (_settings.Capture.ShowInformation)
                     {
-                        e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush,
-                            new PointF(_x.X, _x.Y - Font.Height * 2));
-                        e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush,
-                            new PointF(_x.X, _x.Y - Font.Height));
+                        TextRenderer.DrawText(e.Graphics, string.Format("X: {0} Y: {1} W: {0} H: {1}", _x.X, _x.Y, _x.Width, _x.Height), Theme.Font(12),new Point(_x.X, _x.Y - Font.Height), Color.White);
                     }
 
                     // Draw buttons.
