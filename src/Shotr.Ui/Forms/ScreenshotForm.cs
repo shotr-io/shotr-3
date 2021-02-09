@@ -57,7 +57,7 @@ namespace Shotr.Ui.Forms
         Graphics _edit;
         private int _prex;
         private int _prey;
-        private Color _chosenColor = Color.Red;
+        private Color _chosenColor; // Should be _availableColors[0] (Red)
         private int _colorIndex;
         private List<Color> _availableColors;
         private Pen _chosenPen;
@@ -82,12 +82,18 @@ namespace Shotr.Ui.Forms
             _uploader = uploader;
 
             _availableColors = new List<Color>();
-            var colorsType = typeof(Color);
-            var properties = colorsType.GetProperties(BindingFlags.Static | BindingFlags.Public);
-            foreach (var prop in properties.OrderByDescending(p => p.Name))
-            {
-                _availableColors.Add(Color.FromName(prop.Name));
-            }
+            _availableColors.AddRange(new List<Color>() {
+                Color.Red, // Keep 'Red' as the first index
+                Color.Black,
+                Color.White,
+                Color.Orange,
+                Color.Yellow,
+                Color.Green,
+                Color.Blue,
+                Color.Indigo,
+                Color.Violet
+            });
+            _chosenColor = _availableColors[0];
 
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint,
                 true);
@@ -957,9 +963,9 @@ namespace Shotr.Ui.Forms
             }
             else
             {
-                //choose pen.
+                // Choose pen
                 _chosenPen = new Pen(_chosenColor, 3);
-                //draw shit on theform.
+                // Draw on the form
                 _prex = e.X;
                 _prey = e.Y;
                 _drawing = true;
