@@ -69,6 +69,7 @@ namespace Shotr.Ui.Forms
 
         private bool _resizing;
         private bool _resizemove;
+        private bool _quickEscape; // For Active & Fullscreen captures
         private ThemedButton _uploadButton;
         private ThemedButton _saveButton;
         private ThemedButton _clipboardButton;
@@ -160,6 +161,7 @@ namespace Shotr.Ui.Forms
                 _x = fixedCoordinates;
 
                 SetupButtons();
+                _quickEscape = true; // Single escape to exit screenshot form
                 _activated = false;
                 _editing = false;
                 _resizing = true;
@@ -217,7 +219,7 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                if (_resizing)
+                if (_resizing && !_quickEscape)
                 {
                     _resizing = false;
                     _oldResizePosition = Point.Empty;
