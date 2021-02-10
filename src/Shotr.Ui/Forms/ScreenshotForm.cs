@@ -69,6 +69,7 @@ namespace Shotr.Ui.Forms
 
         private bool _resizing;
         private bool _resizemove;
+        private bool _quickEscape; // For Active & Fullscreen captures
         private ThemedButton _uploadButton;
         private ThemedButton _saveButton;
         private ThemedButton _clipboardButton;
@@ -160,6 +161,7 @@ namespace Shotr.Ui.Forms
                 _x = fixedCoordinates;
 
                 SetupButtons();
+                _quickEscape = true; // Single escape to exit screenshot form
                 _activated = false;
                 _editing = false;
                 _resizing = true;
@@ -217,7 +219,7 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                if (_resizing)
+                if (_resizing && !_quickEscape)
                 {
                     _resizing = false;
                     _oldResizePosition = Point.Empty;
@@ -240,19 +242,26 @@ namespace Shotr.Ui.Forms
             }
             else if (e.KeyCode == Keys.E)
             {
+                if (!_editing && _settings.Capture.ShowEditNotification)
+                {
+                    Toast.Send(null,
+                        "When you are done editing, press the 'E' key to go back to selecting your screenshot. You can use your scroll wheel to change colors",
+                        "Don't Show Again", "dontShowEditNotification", "dontshow=true");
+                }
+
                 if (!_editing)
                 {
                     wasResizing = _resizing;
                     _editing = true;
                     _activated = false;
-                    //remember resizing & activated.
+                    // Remember resizing & activated.
                     _resizing = false;
                     SetButtonVisibility(false);
                     Cursor = Cursors.Cross;
                 }
                 else
                 {
-                    //save current image and get ready to output it on the form.
+                    // Save current image and get ready to output it on the form.
                     _textbrush.Dispose();
                     using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
                     {
@@ -270,7 +279,7 @@ namespace Shotr.Ui.Forms
                     Cursor = Cursors.SizeAll;
                 }
 
-                //turn on editing mode.
+                // Turn on editing mode.
             }
             else if (e.KeyCode == Keys.Enter)
             {
