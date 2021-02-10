@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -6,9 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
-using Microsoft.Toolkit.Uwp.Notifications;
 using Shotr.Core;
 using Shotr.Core.Controls.Hotkey;
 using Shotr.Core.Controls.Theme;
@@ -398,23 +395,7 @@ namespace Shotr.Ui.Forms
             
             UpdateHotKeys();
             UpdateListView(firstLoad);
-
-            if (firstLoad)
-            {
-                foreach (var uploader in _uploaders)
-                {
-                    selectedImageUploader.Items.Add(uploader.Title);
-                }
-
-                selectedImageUploader.Text = _settings.Capture.Uploader;
-                if (selectedImageUploader.Text == "" && selectedImageUploader.Items.Count > 0)
-                {
-                    selectedImageUploader.Text = (string) selectedImageUploader.Items[0];
-                }
-            }
-
-            UpdateDirectUrl();
-
+            
             if (_settings.Login.Enabled == true)
             {
                 loginToShotrPanel.Visible = false;
@@ -447,27 +428,6 @@ namespace Shotr.Ui.Forms
                 {
                     metroTabControl1.TabPages.Remove(metroTabPage4);
                 }
-            }
-        }
-
-        private void UpdateDirectUrl()
-        {
-            //check if uploader has support for indirect URLs.
-            var uploader = GetUploader(_settings.Capture.Uploader);
-            if (uploader == null) return;
-            //check if it supports indirect urls.
-            if (uploader.SupportsPages)
-            {
-                //enable control for selecting page support.
-                metroLabel11.Visible = true;
-                directUrlToggle.Visible = true;
-                //get from settings or set to default.
-                directUrlToggle.Checked = _settings.Capture.DirectUrl;
-            }
-            else
-            {
-                metroLabel11.Visible = false;
-                directUrlToggle.Visible = false;
             }
         }
 
@@ -899,15 +859,7 @@ namespace Shotr.Ui.Forms
                 metroTabControl1.SelectTab(0);
             }
         }
-
-        private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //save image uploader.
-            _settings.Capture.Uploader = (string)selectedImageUploader.SelectedItem;
-            SettingsService.Save(_settings);
-            UpdateDirectUrl();
-        }
-
+        
         private void customUploaderButton_Click(object sender, EventArgs e)
         {
             // TODO: Rework custom uploader functionality
@@ -926,7 +878,7 @@ namespace Shotr.Ui.Forms
         private void settingsButton_Click(object sender, EventArgs e)
         {
             // Show global settings view
-            new SettingsForm(_settings).ShowDialog();
+            new SettingsForm(_settings, _uploaders).ShowDialog();
         }
 
         private void logoutButton_Click(object sender, EventArgs e)
@@ -990,11 +942,6 @@ namespace Shotr.Ui.Forms
             }
         }
 
-        private IImageUploader? GetUploader(string name)
-        {
-            return _uploaders.FirstOrDefault(p => p.Title == name);
-        }
-
         private void loginToShotrButton_Click(object sender, EventArgs e)
         {
             var loginForm = new LoginForm(_settings);
@@ -1007,6 +954,10 @@ namespace Shotr.Ui.Forms
 
                 UpdateControls();
             }
+        }
+        private IImageUploader? GetUploader(string name)
+        {
+            return _uploaders.FirstOrDefault(p => p.Title == name);
         }
     }
 }
