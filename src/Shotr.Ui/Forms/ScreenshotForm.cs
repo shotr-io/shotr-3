@@ -242,19 +242,26 @@ namespace Shotr.Ui.Forms
             }
             else if (e.KeyCode == Keys.E)
             {
+                if (!_editing && _settings.Capture.ShowEditNotification)
+                {
+                    Toast.Send(null,
+                        "When you are done editing, press the 'E' key to go back to selecting your screenshot. You can use your scroll wheel to change colors",
+                        "Don't Show Again", "dontShowEditNotification", "dontshow=true");
+                }
+
                 if (!_editing)
                 {
                     wasResizing = _resizing;
                     _editing = true;
                     _activated = false;
-                    //remember resizing & activated.
+                    // Remember resizing & activated.
                     _resizing = false;
                     SetButtonVisibility(false);
                     Cursor = Cursors.Cross;
                 }
                 else
                 {
-                    //save current image and get ready to output it on the form.
+                    // Save current image and get ready to output it on the form.
                     _textbrush.Dispose();
                     using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
                     {
@@ -272,7 +279,7 @@ namespace Shotr.Ui.Forms
                     Cursor = Cursors.SizeAll;
                 }
 
-                //turn on editing mode.
+                // Turn on editing mode.
             }
             else if (e.KeyCode == Keys.Enter)
             {
