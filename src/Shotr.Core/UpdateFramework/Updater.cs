@@ -8,7 +8,6 @@ namespace Shotr.Core.UpdateFramework
 {
     public class Updater
     {
-        public static bool Check = true;
         public static bool FirstRun = true;
         public static int TimeToCheck = 60 * 60 * 1000 * 24;
         public static BaseSettings BaseSettings = null;

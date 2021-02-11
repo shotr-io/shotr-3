@@ -43,7 +43,7 @@ namespace Shotr.Ui
                     break;
                 case "viewUpdate":
                     var subscribe = bool.Parse(dict["subscribeAlphaBeta"]);
-                    var updateForm = new UpdateForm(dict["changes"], subscribe);
+                    var updateForm = new UpdateForm(dict["changes"], subscribe, dict["installerUrl"], dict["version"]);
                     updateForm.ShowDialog();
                     break;
                 case "openDirectory":
@@ -101,7 +101,7 @@ namespace Shotr.Ui
             }
         }
 
-        public static void SendUpdateNotifications(string text, string changes, bool subscribeAlphaBeta)
+        public static void SendUpdateNotifications(string text, string changes, string installerUrl, string version, bool subscribeAlphaBeta)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace Shotr.Ui
                     })
                     .AddButton("Snooze", ToastActivationType.Background, "action=snoozeUpdate")
                     .AddButton("View Update", ToastActivationType.Background,
-                        $"action=viewUpdate&changes={changes}&subscribeAlphaBeta={subscribeAlphaBeta}");
+                        $"action=viewUpdate&changes={changes}&subscribeAlphaBeta={subscribeAlphaBeta}&installerUrl={installerUrl}&version={version}");
 
                 var x = new XmlDocument();
                 var content = toastBuilder.GetToastContent().GetContent();

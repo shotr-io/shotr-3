@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Services;
+using Shotr.Core.UpdateFramework;
 using Shotr.Ui.Installer.Utils;
 using Toasty;
 
@@ -16,8 +17,12 @@ namespace Shotr.Ui.Installer
 {
     public partial class InstallerForm : ThemedForm
     {
-        public InstallerForm()
+        private UpdaterResponse? _response;
+
+        public InstallerForm(UpdaterResponse? response)
         {
+            _response = response;
+
             InitializeComponent();
 
             //Hide all panels
@@ -30,18 +35,19 @@ namespace Shotr.Ui.Installer
             metroLabel13.Text = $"Space Available: {(freeBytes / 1024)}{"." + (freeBytes % 1024)}GB";
             metroTextBox1.Text = Properties.Resources.TermsOfService;
 
+            Show();
+
             if (Program.Silent)
             {
+                step3GroupPanel.Hide();
+                step4GroupPanel.Show();
+
                 Utils.Utils.r = new Random(Environment.TickCount);
                 FinishedInstaller += InstallerForm_FinishedInstaller;
                 var Install_Reg_Loc = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
 
                 var hKey = (Registry.LocalMachine).OpenSubKey(Install_Reg_Loc, true);
-
-                Visible = false;
-                ShowInTaskbar = false;
-                Shown += InstallerForm_Shown;
-
+                
                 if (hKey != null)
                 {
                     var appKey = hKey.OpenSubKey("Shotr");
@@ -61,11 +67,6 @@ namespace Shotr.Ui.Installer
                     Install(Environment.GetFolderPath((Environment.Is64BitOperatingSystem ? Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles)) + "\\Shotr\\");
                 }
             }
-        }
-
-        void InstallerForm_Shown(object sender, EventArgs e)
-        {
-            Hide();
         }
 
         void InstallerForm_FinishedInstaller(string location)
@@ -91,7 +92,7 @@ namespace Shotr.Ui.Installer
                     var output = 2.0f;
                     try
                     {
-                        var url = "https://shotr.dev/downloads/latest_beta.zip";
+                        var url = _response.DownloadUrl;
                         var r = (HttpWebRequest)WebRequest.Create(url);
 						r.Proxy = null;
                         r.Method = "HEAD";
@@ -174,9 +175,12 @@ namespace Shotr.Ui.Installer
 
         private void Log(string p)
         {
-            if (!Program.Silent)
+            try
             {
                 Invoke((MethodInvoker) delegate() { step4TextBox.Text += $"[{DateTime.Now}] - {p}\r\n"; });
+            }
+            catch
+            {
             }
         }
         
@@ -197,7 +201,7 @@ namespace Shotr.Ui.Installer
                 DownloadCompleted += Form1_DownloadCompleted;
                 try
                 {
-                    var url = "https://shotr.dev/downloads/latest_beta.zip";
+                    var url = _response.DownloadUrl;
                     p.DownloadProgressChanged += (_, args) =>
                     {
                         step4ProgressBar.Value = args.ProgressPercentage;
