@@ -66,6 +66,7 @@ jobs:
         run: echo ::set-output name=version::$(echo $GITHUB_REF | cut -d / -f 3 | sed s/^v// | sed 's/-a//' )
 
       - name: Download Zip Artifact
+        id: download
         uses: actions/download-artifact@v2
         with:
           name: Shotr
@@ -88,7 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Shotr.zip
+          asset_path: ${{steps.download.outputs.download-path}}/Shotr.zip
           asset_name: Shotr.zip
           asset_content_type: application/zip
 #
