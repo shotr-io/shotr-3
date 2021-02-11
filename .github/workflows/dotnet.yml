@@ -27,8 +27,8 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish -r win-x64 -c BetaTest
+      run: dotnet publish src/Shotr.Ui -r win-x64 -c BetaTest
     - uses: actions/upload-artifact@v2
       with:
         name: Shotr
-        path: /src/Shotr.Ui/bin/BetaTest/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
+        path: ./src/Shotr.Ui/bin/BetaTest/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
