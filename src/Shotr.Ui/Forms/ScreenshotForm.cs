@@ -82,8 +82,7 @@ namespace Shotr.Ui.Forms
             _settings = settings;
             _uploader = uploader;
 
-            _availableColors = new List<Color>();
-            _availableColors.AddRange(new List<Color>() {
+            _availableColors = new List<Color>{
                 Color.Red, // Keep 'Red' as the first index
                 Color.Black,
                 Color.White,
@@ -93,7 +92,7 @@ namespace Shotr.Ui.Forms
                 Color.Blue,
                 Color.Indigo,
                 Color.Violet
-            });
+            };
             _chosenColor = _availableColors[0];
 
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint,
@@ -104,8 +103,9 @@ namespace Shotr.Ui.Forms
             var dpiScale = DpiScaler.GetScalingFactor(this);
             base.Font = Theme.Font((int) (base.Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
-            TopMost = false;
-            ShowInTaskbar = true;
+            
+            TopMost = true;
+            ShowInTaskbar = false;
 
             _screenshot = bitmap;
             _tasks = tasks;

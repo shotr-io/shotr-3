@@ -136,7 +136,7 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(121, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(121, 126);
             // 
             // toolsToolStripMenuItem
             // 
@@ -150,14 +150,14 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator7,
             this.colorPickerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.toolsToolStripMenuItem.Text = "Capture";
             // 
             // regionCaptureToolStripMenuItem
             // 
             this.regionCaptureToolStripMenuItem.Enabled = false;
             this.regionCaptureToolStripMenuItem.Name = "regionCaptureToolStripMenuItem";
-            this.regionCaptureToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.regionCaptureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.regionCaptureToolStripMenuItem.Text = "Region Capture";
             this.regionCaptureToolStripMenuItem.Click += new System.EventHandler(this.regionCaptureToolStripMenuItem_Click);
             // 
@@ -165,58 +165,58 @@ namespace Shotr.Ui.Forms
             // 
             this.fullscreenCaptureToolStripMenuItem.Enabled = false;
             this.fullscreenCaptureToolStripMenuItem.Name = "fullscreenCaptureToolStripMenuItem";
-            this.fullscreenCaptureToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.fullscreenCaptureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fullscreenCaptureToolStripMenuItem.Text = "Fullscreen Capture";
             this.fullscreenCaptureToolStripMenuItem.Click += new System.EventHandler(this.fullscreenCaptureToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // recordScreenToolStripMenuItem
             // 
             this.recordScreenToolStripMenuItem.Enabled = false;
             this.recordScreenToolStripMenuItem.Name = "recordScreenToolStripMenuItem";
-            this.recordScreenToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.recordScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recordScreenToolStripMenuItem.Text = "Record Screen";
             this.recordScreenToolStripMenuItem.Click += new System.EventHandler(this.recordScreenToolStripMenuItem_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
             // 
             // uploadClipboardToolStripMenuItem
             // 
             this.uploadClipboardToolStripMenuItem.Enabled = false;
             this.uploadClipboardToolStripMenuItem.Name = "uploadClipboardToolStripMenuItem";
-            this.uploadClipboardToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.uploadClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.uploadClipboardToolStripMenuItem.Text = "Upload Clipboard";
             this.uploadClipboardToolStripMenuItem.Click += new System.EventHandler(this.uploadClipboardToolStripMenuItem_Click);
             // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(236, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // colorPickerToolStripMenuItem
             // 
             this.colorPickerToolStripMenuItem.Name = "colorPickerToolStripMenuItem";
-            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(239, 44);
+            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.colorPickerToolStripMenuItem.Text = "Color Picker";
             this.colorPickerToolStripMenuItem.Click += new System.EventHandler(this.colorPickerToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.historyToolStripMenuItem.Text = "History";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -228,7 +228,7 @@ namespace Shotr.Ui.Forms
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(120, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
             this.toolStripMenuItem1.Text = "About";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -240,7 +240,7 @@ namespace Shotr.Ui.Forms
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -761,12 +761,12 @@ namespace Shotr.Ui.Forms
             this.toolStripMenuItem2,
             this.clearHistoryToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 136);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 126);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveImageToolStripMenuItem.Text = "Save Image";
             // 
             // toolStripSeparator4
@@ -777,14 +777,14 @@ namespace Shotr.Ui.Forms
             // copyURLToolStripMenuItem
             // 
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
-            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyURLToolStripMenuItem.Text = "Copy URL";
             this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // toolStripSeparator3
@@ -795,13 +795,13 @@ namespace Shotr.Ui.Forms
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 24);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem2.Text = "Remove Entry";
             // 
             // clearHistoryToolStripMenuItem
             // 
             this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
-            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clearHistoryToolStripMenuItem.Text = "Clear History";
             this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.clearHistoryToolStripMenuItem_Click);
             // 

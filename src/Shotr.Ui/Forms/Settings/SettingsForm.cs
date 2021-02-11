@@ -167,21 +167,28 @@ namespace Shotr.Ui.Forms.Settings
 
         private void alphaToggle_CheckedChanged(object sender, EventArgs e)
         {
-            var p = MessageBox.Show(this, "Shotr will restart to check for updates to the latest alpha release. Is that okay?", "Confirm?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            switch (p)
+            _settings.SubscribeToAlphaBeta = alphaToggle.Checked;
+
+            if (alphaToggle.Checked)
             {
-                case DialogResult.Yes:
-                    _settings.SubscribeToAlphaBeta = alphaToggle.Checked;
-                    SettingsService.Save(_settings);
-                    Application.Restart();
-                    Environment.Exit(0);
-                    break;
-                case DialogResult.No:
-                case DialogResult.Cancel:
-                    alphaToggle.Checked = false;
-                    _settings.SubscribeToAlphaBeta = alphaToggle.Checked;
-                    break;
+                var p = MessageBox.Show(this,
+                    "Shotr will restart to check for updates to the latest alpha/beta release. Is that okay?",
+                    "Confirm?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                switch (p)
+                {
+                    case DialogResult.OK:
+                        SettingsService.Save(_settings);
+                        Application.Restart();
+                        Environment.Exit(0);
+                        break;
+                    case DialogResult.Cancel:
+                        alphaToggle.Checked = false;
+                        _settings.SubscribeToAlphaBeta = false;
+                        break;
+                }
             }
+
+            SettingsService.Save(_settings);
         }
 
         private void soundToggle_CheckedChanged(object sender, EventArgs e)
