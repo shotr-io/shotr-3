@@ -5,6 +5,10 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
 
 
 defaults:
@@ -32,3 +36,20 @@ jobs:
       with:
         name: Shotr
         path: ./src/Shotr.Ui/bin/BetaTest/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
+    - uses: actions/comment@2
+  comment-on-pr:
+    name: Leave a comment with a link to the build on the PR
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.issues.createComment( {
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'The artifact is located here: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts' 
+          } )
