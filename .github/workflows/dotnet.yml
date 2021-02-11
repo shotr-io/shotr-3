@@ -38,6 +38,7 @@ jobs:
       with:
         name: Shotr
         path: ./src/Shotr.Ui/bin/BetaTest/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
+
   comment-on-pr:
     name: Leave a comment with a link to the build on the PR
     needs: build
@@ -78,7 +79,7 @@ jobs:
           release_name: ${{ steps.get_release_version.outputs.version }}
           draft: true
           prerelease: ${{ contains(github.ref, '-a') }}
-          body_path: changelog.txt
+          body: 'PLACEHOLDER'
 
       - name: Upload Release Asset
         id: upload-release-asset
