@@ -3,8 +3,14 @@ name: dotnet
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main ]
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
 
 
 defaults:
@@ -26,3 +32,70 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Publish
+      run: dotnet publish src/Shotr.Ui -r win-x64 -c BetaTest
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Shotr
+        path: ./src/Shotr.Ui/bin/BetaTest/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
+  comment-on-pr:
+    name: Leave a comment with a link to the build on the PR
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.issues.createComment( {
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'The artifact is located here: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}#artifacts' 
+          } )
+  create-release:
+    name: Create Release Draft and Attach Asset
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Set Release Version
+        id: get_release_version
+        run: echo ::set-output name=version::$(echo $GITHUB_REF | cut -d / -f 3 | sed s/^v// | sed 's/-a//' )
+
+      - name: Download Zip Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: Shotr
+      - name: Create Release Draft
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ steps.get_release_version.outputs.version }}
+          draft: true
+          prerelease: ${{ contains(github.ref, '-a') }}
+          body_path: changelog.txt
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Shotr.zip
+          asset_name: Shotr.zip
+          asset_content_type: application/zip
+#
+#      - name: Publish Release
+#        run: |
+#          curl \
+#            --request PATCH \
+#            --url https://api.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }} \
+#            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+#            --header "Accept: application/vnd.github.v3+json" \
+#            --data-raw '{"draft":false}'
