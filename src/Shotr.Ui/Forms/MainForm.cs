@@ -483,7 +483,7 @@ namespace Shotr.Ui.Forms
                     {
                         Text = $"https://shotr.dev/{item.Name}",
                     };
-                    listViewItem.SubItems.Add(item.Time.ToString());
+                    listViewItem.SubItems.Add(item.Time.ToLocalTime().ToString());
 
                     themedListView1.Items.Add(listViewItem);
                 }
