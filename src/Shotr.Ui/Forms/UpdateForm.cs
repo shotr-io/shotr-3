@@ -17,13 +17,17 @@ namespace Shotr.Ui.Forms
     public partial class UpdateForm : ThemedForm
     {
         private bool _subscribeToAlphaBeta;
-        public UpdateForm(string changes, bool subscribeToAlphaBeta, bool topMost = true)
+        private string _installerUrl;
+        private string _version;
+        public UpdateForm(string changes, bool subscribeToAlphaBeta, string installerUrl, string version, bool topMost = true)
         {
             InitializeComponent();
 
             changes = changes.Replace("\n", "\r\n");
             metroTextBox1.Text = changes;
             _subscribeToAlphaBeta = subscribeToAlphaBeta;
+            _installerUrl = installerUrl;
+            _version = version;
 
             TopMost = topMost;
             metroTextBox1.DeselectAll();
@@ -92,13 +96,13 @@ namespace Shotr.Ui.Forms
                         p.StartInfo.Verb = "runas";
                         p.StartInfo.UseShellExecute = true;
                         p.StartInfo.FileName = Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe");
-                        p.StartInfo.Arguments = "--run-installer" + (_subscribeToAlphaBeta ? " --install-beta " : ""); // temp remove silent to show progress
+                        p.StartInfo.Arguments = $"--run-installer --install-beta --version={_version}"; // temp remove silent to show progress
                         p.Start();
 
                         Environment.Exit(0);
                     };
 
-                    m.DownloadFileAsync(new Uri("https://shotr.dev/downloads/Shotr-Installer.zip"), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip"));
+                    m.DownloadFileAsync(new Uri(_installerUrl), Path.Combine(SettingsService.FolderPath, "Shotr-Installer.zip"));
                     
                 }
                 catch (Exception ex)

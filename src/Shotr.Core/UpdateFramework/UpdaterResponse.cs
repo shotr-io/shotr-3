@@ -13,8 +13,9 @@ namespace Shotr.Core.UpdateFramework
         
         public string Version { get; set; }
         public string Changes { get; set; }
-        public string AddedUtc { get; set; }
         public string ChannelType { get; set; }
         public int ChannelTypeId { get; set; }
+        public string DownloadUrl { get; set; }
+        public string InstallerUrl { get; set; }
     }
 }

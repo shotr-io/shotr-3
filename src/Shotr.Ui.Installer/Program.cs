@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows.Documents;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using Shotr.Core.Controls.Theme;
+using Shotr.Core.UpdateFramework;
 using Shotr.Ui.Installer.Utils;
 
 namespace Shotr.Ui.Installer
@@ -39,17 +45,56 @@ namespace Shotr.Ui.Installer
 
             }
 
+            string? version = null;
+            
             foreach (var m in args)
             {
                 if (m == "--install-beta")
                 {
                     Alpha = true;
                 }
+
+                if (m.StartsWith("--version="))
+                {
+                    version = m.Split("=")[1];
+                }
+
                 if (m == "--silent")
                 {
                     Silent = true;
                 }
             }
+            
+            UpdaterResponse? response = null;
+
+            try
+            {
+
+                var wc = new WebClient();
+                var str = wc.DownloadString("https://shotr.dev/api/updates");
+                var versions = JsonConvert.DeserializeObject<List<Core.UpdateFramework.UpdaterResponse>>(str);
+                if (version is { })
+                {
+                    response = versions.FirstOrDefault(p => p.Version == version) ?? versions.First();
+                }
+                else if (Alpha)
+                {
+                    response = versions.FirstOrDefault(p => p.ChannelTypeId == 20 || p.ChannelTypeId == 30) ??
+                               versions.First();
+                }
+                else
+                {
+                    response = versions.FirstOrDefault(p => p.ChannelTypeId == 10) ?? versions.First();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("The installer could not connect to the internet. Please connect and try again!",
+                    "Shotr Installer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return;
+            }
+
 
             //we're elevated.
             try
@@ -70,7 +115,7 @@ namespace Shotr.Ui.Installer
                 return;
             }
 
-            Application.Run(new InstallerForm());
+            Application.Run(new InstallerForm(response));
         }
 
         [DllImport("SHCore.dll")]
