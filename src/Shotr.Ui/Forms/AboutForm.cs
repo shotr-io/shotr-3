@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
+using Shotr.Core.UpdateFramework;
 
 namespace Shotr.Ui.Forms
 {
@@ -10,27 +13,28 @@ namespace Shotr.Ui.Forms
         public AboutForm()
         {
             InitializeComponent();
-            metroTextBox1.DeselectAll();
-        }
-
-        private void AboutForm_Load(object sender, EventArgs e)
-        {
-            metroTextBox1.DeselectAll();
-
-            //load changelog.
             try
             {
                 var p = new WebClient { Proxy = null };
-                var changelog = p.DownloadString("https://shotr.io/changelog");
-                changelog = changelog.Replace("<br>", "\r\n");
-                metroTextBox1.Text = changelog;
+                var changelog = p.DownloadString("https://shotr.dev/api/updates");
+                var responses = JsonConvert.DeserializeObject<List<UpdaterResponse>>(changelog);
+                var totalChangelog = "";
+                foreach (var response in responses)
+                {
+                    totalChangelog = $"{totalChangelog}=== v{response.Version} ===\r\n{response.Changes}\r\n\r\n";
+                }
+                metroTextBox1.Text = totalChangelog;
+                metroTextBox1.DeselectAll();
             }
             catch
             {
                 metroTextBox1.Text = "Unable to get changelog. Please try again later.";
             }
-            Focus();
+            metroTextBox1.DeselectAll();
+        }
 
+        private void AboutForm_Load(object sender, EventArgs e)
+        {
             metroTextBox1.DeselectAll();
         }
     }
