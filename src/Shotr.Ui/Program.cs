@@ -328,11 +328,11 @@ namespace Shotr.Ui
 
             if (!WineDetectionService.IsWine())
             {
-                Toast.SendUpdateNotifications($"An update to v{serverVersion}{alphaBetaTag} is available!", e.UpdateInfo.Changes, e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30);
+                Toast.SendUpdateNotifications($"An update to v{serverVersion}{alphaBetaTag} is available!", e.UpdateInfo.Changes, e.UpdateInfo.InstallerUrl, e.UpdateInfo.Version, e.UpdateInfo.ChannelTypeId == 20 || e.UpdateInfo.ChannelTypeId == 30);
             }
             else
             {
-                var updateForm = new UpdateForm(e.UpdateInfo.Changes, e.Settings.SubscribeToAlphaBeta, false);
+                var updateForm = new UpdateForm(e.UpdateInfo.Changes, e.Settings.SubscribeToAlphaBeta, e.UpdateInfo.InstallerUrl, e.UpdateInfo.Version, false);
                 updateForm.ShowDialog();
             }
         }

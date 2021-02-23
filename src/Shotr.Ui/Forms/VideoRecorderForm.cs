@@ -141,8 +141,15 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                Cancel = true;
-                Fmp.Close();
+                if (Fmp is { })
+                {
+                    Cancel = true;
+                    Fmp.Close();
+                }
+                else // Pre-recording state
+                {
+                    CloseWindow();
+                }
             }
             else if (e.KeyCode == Keys.Z)
             {

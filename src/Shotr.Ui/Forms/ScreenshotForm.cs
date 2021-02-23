@@ -57,7 +57,7 @@ namespace Shotr.Ui.Forms
         Graphics _edit;
         private int _prex;
         private int _prey;
-        private Color _chosenColor = Color.Red;
+        private Color _chosenColor; // Should be _availableColors[0] (Red)
         private int _colorIndex;
         private List<Color> _availableColors;
         private Pen _chosenPen;
@@ -69,6 +69,7 @@ namespace Shotr.Ui.Forms
 
         private bool _resizing;
         private bool _resizemove;
+        private bool _quickEscape; // For Active & Fullscreen captures
         private ThemedButton _uploadButton;
         private ThemedButton _saveButton;
         private ThemedButton _clipboardButton;
@@ -81,13 +82,18 @@ namespace Shotr.Ui.Forms
             _settings = settings;
             _uploader = uploader;
 
-            _availableColors = new List<Color>();
-            var colorsType = typeof(Color);
-            var properties = colorsType.GetProperties(BindingFlags.Static | BindingFlags.Public);
-            foreach (var prop in properties.OrderByDescending(p => p.Name))
-            {
-                _availableColors.Add(Color.FromName(prop.Name));
-            }
+            _availableColors = new List<Color>{
+                Color.Red, // Keep 'Red' as the first index
+                Color.Black,
+                Color.White,
+                Color.Orange,
+                Color.Yellow,
+                Color.Green,
+                Color.Blue,
+                Color.Indigo,
+                Color.Violet
+            };
+            _chosenColor = _availableColors[0];
 
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint,
                 true);
@@ -97,8 +103,9 @@ namespace Shotr.Ui.Forms
             var dpiScale = DpiScaler.GetScalingFactor(this);
             base.Font = Theme.Font((int) (base.Font.Size * dpiScale));
             StartPosition = FormStartPosition.Manual;
-            TopMost = false;
-            ShowInTaskbar = true;
+            
+            TopMost = true;
+            ShowInTaskbar = false;
 
             _screenshot = bitmap;
             _tasks = tasks;
@@ -154,6 +161,7 @@ namespace Shotr.Ui.Forms
                 _x = fixedCoordinates;
 
                 SetupButtons();
+                _quickEscape = true; // Single escape to exit screenshot form
                 _activated = false;
                 _editing = false;
                 _resizing = true;
@@ -211,7 +219,7 @@ namespace Shotr.Ui.Forms
         {
             if (e.KeyCode == Keys.Escape)
             {
-                if (_resizing)
+                if (_resizing && !_quickEscape)
                 {
                     _resizing = false;
                     _oldResizePosition = Point.Empty;
@@ -234,19 +242,26 @@ namespace Shotr.Ui.Forms
             }
             else if (e.KeyCode == Keys.E)
             {
+                if (!_editing && _settings.Capture.ShowEditNotification)
+                {
+                    Toast.Send(null,
+                        "When you are done editing, press the 'E' key to go back to selecting your screenshot. You can use your scroll wheel to change colors",
+                        "Don't Show Again", "dontShowEditNotification", "dontshow=true");
+                }
+
                 if (!_editing)
                 {
                     wasResizing = _resizing;
                     _editing = true;
                     _activated = false;
-                    //remember resizing & activated.
+                    // Remember resizing & activated.
                     _resizing = false;
                     SetButtonVisibility(false);
                     Cursor = Cursors.Cross;
                 }
                 else
                 {
-                    //save current image and get ready to output it on the form.
+                    // Save current image and get ready to output it on the form.
                     _textbrush.Dispose();
                     using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
                     {
@@ -264,7 +279,7 @@ namespace Shotr.Ui.Forms
                     Cursor = Cursors.SizeAll;
                 }
 
-                //turn on editing mode.
+                // Turn on editing mode.
             }
             else if (e.KeyCode == Keys.Enter)
             {
@@ -954,9 +969,9 @@ namespace Shotr.Ui.Forms
             }
             else
             {
-                //choose pen.
+                // Choose pen
                 _chosenPen = new Pen(_chosenColor, 3);
-                //draw shit on theform.
+                // Draw on the form
                 _prex = e.X;
                 _prey = e.Y;
                 _drawing = true;
