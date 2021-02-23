@@ -33,9 +33,7 @@
     <Compile Update="CancelForm.Designer.cs">
       <DependentUpon>CancelForm.cs</DependentUpon>
     </Compile>
-    <Compile Update="InstallerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="InstallerForm.cs" />
     <Compile Update="InstallerForm.Designer.cs">
       <DependentUpon>InstallerForm.cs</DependentUpon>
     </Compile>
