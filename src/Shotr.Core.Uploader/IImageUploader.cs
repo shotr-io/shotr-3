@@ -1,6 +1,6 @@
 using System.Collections.Specialized;
 
-namespace ShotrUploaderPlugin
+namespace Shotr.Core.Uploader
 {
     public interface IImageUploader
     {
@@ -22,7 +22,7 @@ namespace ShotrUploaderPlugin
         /// <summary>
         /// The URL to the uploader script. Only used if UseUploadMethod is set to false.
         /// </summary>
-        public string UploaderURL { get; }
+        public string UploaderUrl { get; }
 
         /// <summary>
         /// Values to submit when uploading. Only used if UseUploadMethod is set to false.
@@ -42,7 +42,7 @@ namespace ShotrUploaderPlugin
         /// <summary>
         /// The non-direct URL starting.
         /// </summary>
-        public string PageURL { get; }
+        public string PageUrl { get; }
 
         /// <summary>
         /// Values to submit when posting to the website to delete an image.
@@ -55,6 +55,6 @@ namespace ShotrUploaderPlugin
         /// <param name="filedata">A memorystream containing the data to the image.</param>
         /// <param name="filename">The filename of the image being uploaded.</param>
         /// <returns>new UploadResult Instance. If the upload fails, UploadResult.Error should be set to true.</returns>
-        public UploadResult UploadImage(ImageShell k);
+        public UploadResult UploadImage(FileShell fileShell);
     }
 }

@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using Shotr.Core.Entities;
 using Shotr.Core.Quantizer;
-using ShotrUploaderPlugin;
 
 namespace Shotr.Core.Utils
 {
@@ -333,66 +332,6 @@ namespace Shotr.Core.Utils
             }
             //equal to length, return it.
             return path;
-        }
-
-        private static ImageCodecInfo GetEncoderInfo(String mimeType)
-        {
-            int j;
-            ImageCodecInfo[] encoders;
-            encoders = ImageCodecInfo.GetImageEncoders();
-            for (j = 0; j < encoders.Length; ++j)
-            {
-                if (encoders[j].MimeType == mimeType)
-                    return encoders[j];
-            }
-            return null;
-        }
-
-        public static byte[] ImageToByteArray(System.Drawing.Image imageIn, FileExtensions ext, bool compress, long quality)
-        {
-            using (var ms = new MemoryStream())
-            {
-                if (compress)
-                {
-                    var myImageCodecInfo =
-                        GetEncoderInfo("image/" + (ext == FileExtensions.jpeg ? "jpeg" :
-                                                   ext == FileExtensions.jpg ? "jpeg" : ext.ToString()));
-                    var myEncoder = Encoder.Quality;
-                    var myEncoderParameters = new EncoderParameters(1);
-                    var myEncoderParameter = new EncoderParameter(myEncoder, quality);
-                    myEncoderParameters.Param[0] = myEncoderParameter;
-
-                    imageIn.Save(ms, myImageCodecInfo, myEncoderParameters);
-                }
-                else
-                {
-                    var imageFormat = ext switch
-                    {
-                        FileExtensions.gif  => ImageFormat.Gif,
-                        FileExtensions.png  => ImageFormat.Png,
-                        FileExtensions.bmp  => ImageFormat.Bmp,
-                        FileExtensions.jpg  => ImageFormat.Jpeg,
-                        FileExtensions.jpeg => ImageFormat.Jpeg,
-                        _                   => ImageFormat.Png,
-                    };
-                    
-                    imageIn.Save(ms, imageFormat);
-                }
-
-                return ms.ToArray();
-            }
-        }
-
-        public static DateTime FromUnixTime(long unixTime)
-        {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return epoch.AddSeconds(unixTime);
-        }
-
-        public static long ToUnixTime(DateTime date)
-        {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            return Convert.ToInt64((date - epoch).TotalSeconds);
         }
 
         public static void AddToStartup(bool add)

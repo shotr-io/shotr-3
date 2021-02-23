@@ -13,7 +13,6 @@ using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 using Shotr.Core.Uploader;
 using Shotr.Ui.Forms;
-using ShotrUploaderPlugin;
 using Exception = System.Exception;
 
 namespace Shotr.Ui
@@ -85,7 +84,7 @@ namespace Shotr.Ui
                     var uploader = Program.ServiceProvider.GetService<Uploader>();
                     if (uploader is { })
                     {
-                        uploader.AddToQueue(new ImageShell(File.ReadAllBytes(videoPath), FileExtensions.mp4));
+                        uploader.AddToQueue(new FileShell(videoPath));
                     }
 
                     break;
@@ -97,6 +96,14 @@ namespace Shotr.Ui
                         SettingsService.Save(settings);
                     }
 
+                    break;
+                case "retryUpload":
+                    var path = dict["path"];
+                    var uploaderService = Program.ServiceProvider.GetService<Uploader>();
+                    if (uploaderService is { })
+                    {
+                        uploaderService.AddToQueue(new FileShell(path));
+                    }
                     break;
             }
         }

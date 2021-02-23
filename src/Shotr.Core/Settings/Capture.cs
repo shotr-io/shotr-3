@@ -1,6 +1,6 @@
 ﻿using CustomEnvironmentConfig;
 using Shotr.Core.Entities;
-using ShotrUploaderPlugin;
+using Shotr.Core.MimeDetect;
 
 namespace Shotr.Core.Settings
 {
@@ -30,8 +30,8 @@ namespace Shotr.Core.Settings
         [ConfigurationItem(Required = false, Default = CompressionLevel.Maximum)]
         public CompressionLevel CompressionLevel { get; set; }
         
-        [ConfigurationItem(Required = false, Default = FileExtensions.png)]
-        public FileExtensions Extension { get; set; }
+        [ConfigurationItem(Required = false, Default = "png")]
+        public string Extension { get; set; }
         
         [ConfigurationItem(Required = false, Default = true)]
         public bool StitchFullscreen { get; set; }

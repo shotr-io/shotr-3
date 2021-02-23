@@ -4,24 +4,25 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
+using Shotr.Core.MimeDetect;
 using Shotr.Core.Model;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
-using ShotrUploaderPlugin;
+using Exception = System.Exception;
 
 namespace Shotr.Core.Uploader
 {
     public class Uploader
     {
-        public delegate void UploadCompletedEvent(object sender, UploadResult e);
-        public delegate void UploadFailedEvent(object sender, ImageShell e);
-        public delegate void UploadProgressEvent(object sender, double progress);
+        public delegate void UploadCompletedEvent(FileShell fileShell, UploadResult? result, SaveResult? saveResult, FileTypeEnum fileType, string extension, string? uploader);
+        public delegate void UploadFailedEvent(FileShell e, bool allowReUpload, FileTypeEnum fileType, string? uploader, string errorMessage);
+        public delegate void UploadProgressEvent(double progress);
 
         public event UploadCompletedEvent OnUploaded = delegate { };
         public event UploadFailedEvent OnError = delegate { };
         public event UploadProgressEvent OnProgress = delegate { };
 
-        private Queue<ImageShell> _uploadQueue = new Queue<ImageShell>();
+        private Queue<FileShell> _uploadQueue = new Queue<FileShell>();
         
         private readonly BaseSettings _settings;
         private readonly IEnumerable<IImageUploader> _imageUploaders;
@@ -36,15 +37,19 @@ namespace Shotr.Core.Uploader
         {
             FileUploaderService.OnUploadProgress += FileUploader_OnUploadProgress;
             new Thread(delegate()
+            {
+                while (true)
                 {
-                    while (true)
-                        if (_uploadQueue.Count > 0)
-                        {
-                            //enqueue the next item to be uploaded.
-                            UploadFile(_uploadQueue.Dequeue());
-                        }
-                        else Thread.Sleep(100);
-                }).Start();
+                    if (_uploadQueue.Count > 0)
+                    {
+                        UploadFile(_uploadQueue.Dequeue());
+                    }
+                    else
+                    {
+                        Thread.Sleep(100);
+                    }
+                }
+            }).Start();
         }
         
         public void RemoveHandlers()
@@ -54,22 +59,29 @@ namespace Shotr.Core.Uploader
             OnError = delegate { };
         }
 
-        private void FileUploader_OnUploadProgress(object sender, double progress)
+        private void FileUploader_OnUploadProgress(double progress)
         {
-            OnProgress(sender, progress);
+            OnProgress(progress);
         }
 
-        public void ProcessWithoutUpload(ImageShell f)
+        public void ProcessWithoutUpload(FileShell fileShell)
         {
-            OnUploaded(new object[] { f.ContentType, f.Data, f.Extension }, null);
+            var mime = new Mime();
+            var node = mime.Detect(fileShell.Data);
+
+            var saveResult = new SaveResult
+            {
+                Time = DateTime.Now.ToUnixTime()
+            };
+            OnUploaded(fileShell, null, saveResult, node.FileType, node.Extension, null);
         }
 
-        public void AddToQueue(ImageShell f)
+        public void AddToQueue(FileShell fileShell)
         {
-            _uploadQueue.Enqueue(f);
+            _uploadQueue.Enqueue(fileShell);
         }
         
-        public void UploadFile(ImageShell f)
+        public void UploadFile(FileShell fileShell)
         {
             var imageUploader = GetUploader(_settings.Capture.Uploader);
             if (imageUploader is null)
@@ -77,83 +89,64 @@ namespace Shotr.Core.Uploader
                 throw new Exception($"Image uploader '{_settings.Capture.Uploader}' does not exist.");
             }
 
-            if (imageUploader.Title == "Imgur" && !f.ContentType.Contains("image"))
+            var mime = new Mime();
+
+            var mimeNode = fileShell.Path is { } ? mime.DetectFile(fileShell.Path) : mime.Detect(fileShell.Data);
+            if (mimeNode.FileType == FileTypeEnum.Unknown)
+            {
+                OnError(fileShell, false, mimeNode.FileType, imageUploader.Title, "Cannot process this file. The file type is not supported.");
+                return;
+            }
+
+            if (imageUploader.Title == "Imgur" && mimeNode.FileType != FileTypeEnum.Image)
             {
                 imageUploader = GetUploader("Shotr");
             }
-                  
-            UploadResult m = null;
-            UploadedItemResult json = null;
 
-            var retries = 0;
-        ok:
-            if (imageUploader.UseUploadMethod)
+            string? lastError = null;
+            for (var i = 0; i < 3; i++)
             {
-                m = imageUploader.UploadImage(f);
-            }
-            else
-            {
+                if (imageUploader.UseUploadMethod)
+                {
+                    var result = imageUploader.UploadImage(fileShell);
+                    try
+                    {
+                        OnUploaded(fileShell, result, null, mimeNode.FileType, mimeNode.Extension, imageUploader.Title);
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        lastError = ex.Message;
+                        continue;
+                    }
+                }
+
                 var uploadHeaders = imageUploader.HeaderValues;
 
                 try
                 {
-                    var output = FileUploaderService.UploadFile(imageUploader.UploaderURL, f.Data,
-                        Utils.Utils.GetRandomString(6) + "." + f.Extension, imageUploader.FileValueName, f.ContentType, new NameValueCollection(), 
-                        uploadHeaders);
-                    json = JsonConvert.DeserializeObject<UploadedItemResult>(output);
-                    if (json == null) throw new Exception();
+                    var output = FileUploaderService.UploadFile(imageUploader.UploaderUrl, fileShell, imageUploader.FileValueName, mimeNode.Mime, new NameValueCollection(), uploadHeaders);
+                    var json = JsonConvert.DeserializeObject<UploadedItemResult>(output);
+                    var result = json.ToUploadResult(imageUploader.Title, DateTime.Now);
+
+                    OnUploaded(fileShell, result, null, mimeNode.FileType, mimeNode.Extension, imageUploader.Title);
+
+                    return;
                 }
                 catch (Exception mx)
                 {
-                    if (m == null)
-                    {
-                        json = new UploadedItemResult
-                        {
-                            Error = true,
-                            ErrorMessage = $"There was an error while contacting Shotr. Error: {mx.InnerException}."
-                        };
-                        m = new UploadResult(json.RawUrl, json.Url, null, Utils.Utils.ToUnixTime(DateTime.Now), imageUploader.Title,
-                            json.Error);
-                    }
+                    Console.WriteLine(mx);
+                    lastError = mx.Message;
                 }
 
-                if (json != null)
-                {
-                    m = new UploadResult(json.RawUrl, json.Url, null, Utils.Utils.ToUnixTime(DateTime.Now), imageUploader.Title, json.Error);
-                }
-
-                if(m == null)
-                {
-                    m = new UploadResult("", "", "", 0, imageUploader.Title, true);
-                    goto ok;
-                }               
+                Thread.Sleep((int)Math.Pow(i + 1, 2));
             }
-            if (!m.Error)
+
+            // If they got here, there was an issue.
+            if (lastError is { })
             {
-                OnUploaded(new object[] { f.ContentType, f.Data }, m);
-                f.Data = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                return;
+                OnError(fileShell, true, mimeNode.FileType, imageUploader.Title, lastError);
             }
-            //first try uploading to shotr.io if it's not shotr already.
-            if (retries <= 3 && f.ContentType.Contains("text"))
-            {
-                retries++;
-                if (retries >= 3)
-                {
-                    //ok default to shotr.
-                    if (imageUploader.Title != "Shotr")
-                    {
-                        //re-queue with Shotr instead.
-                        imageUploader = GetUploader("Shotr");
-                        retries = 0;
-                    }
-                    goto ok;
-                }
-            }
-
-            OnError(json, f);
         }
 
         private IImageUploader? GetUploader(string name)

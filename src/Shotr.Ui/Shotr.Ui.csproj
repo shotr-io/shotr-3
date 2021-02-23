@@ -5,8 +5,6 @@
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon>Resources\shotr-icon.ico</ApplicationIcon>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyName>Shotr</AssemblyName>
     <Platforms>AnyCPU;x64</Platforms>
@@ -18,10 +16,16 @@
     <StartupObject>Shotr.Ui.Program</StartupObject>
     <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification</Configurations>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shotr.Core.Uploader\Shotr.Core.Uploader.csproj" />
     <ProjectReference Include="..\Shotr.Core\Shotr.Core.csproj" />
-    <ProjectReference Include="..\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>

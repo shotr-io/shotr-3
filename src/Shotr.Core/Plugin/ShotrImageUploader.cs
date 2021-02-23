@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using Shotr.Core.Settings;
-using ShotrUploaderPlugin;
+using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Plugin
 {
@@ -30,23 +30,13 @@ namespace Shotr.Core.Plugin
 
         public string FileValueName => "file";
 
-        public string UploaderURL
-        {
-            get { 
-#if DEBUG || BETATEST
-                //return "http://localhost:5001/api/upload";
-                return "https://shotr.dev/api/upload";
-#else
-                return "https://shotr.io/upload"; 
-#endif
-            }
-        }
+        public string UploaderUrl => "https://shotr.dev/api/upload";
 
         public string Title => "Shotr";
 
         public bool UseUploadMethod => false;
 
-        public UploadResult UploadImage(ImageShell k)
+        public UploadResult UploadImage(FileShell file)
         {
             throw new NotImplementedException();
         }
@@ -59,15 +49,6 @@ namespace Shotr.Core.Plugin
 
         public bool SupportsPages => true;
 
-        public string PageURL
-        {
-            get {
-#if DEBUG || BETATEST
-                return "https://shotr.dev/"; 
-#else
-                    return "https://shotr.io/"; 
-#endif
-                }
-        }
+        public string PageUrl => "https://shotr.dev/"; 
     }
 }

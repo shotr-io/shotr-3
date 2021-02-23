@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using ShotrUploaderPlugin;
+using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Plugin
 {
@@ -20,20 +20,20 @@ namespace Shotr.Core.Plugin
 
         public string FileValueName => throw new NotImplementedException();
 
-        public string UploaderURL => throw new NotImplementedException();
+        public string UploaderUrl => throw new NotImplementedException();
 
         public string Title => "Imgur";
 
         public bool UseUploadMethod => true;
 
-        public UploadResult UploadImage(ImageShell f)
+        public UploadResult UploadImage(FileShell file)
         {
             var w = new WebClient();
             w.Headers.Add("Authorization", "Client-ID " + clientid);
             var Keys = new NameValueCollection();
             try
             {
-                Keys.Add("image", Convert.ToBase64String(f.Data));
+                Keys.Add("image", Convert.ToBase64String(file.Data));
                 var responseArray = w.UploadValues("https://api.imgur.com/3/image", Keys);
                 var result = Encoding.ASCII.GetString(responseArray);
 
@@ -46,13 +46,13 @@ namespace Shotr.Core.Plugin
                 var deletehash = match1.ToString().Replace("deletehash\":\"", "").Replace("\"", "").Replace("\\/", "/");
                 deletehash = string.Format("{0}/delete/{1}", URL, deletehash);
 
-                var pageurl = url.Replace(".png", "").Replace(".jpg", "").Replace(".gif", "").Replace(ImgURL, PageURL);
+                var pageurl = url.Replace(".png", "").Replace(".jpg", "").Replace(".gif", "").Replace(ImgURL, PageUrl);
 
-                return new UploadResult(url, pageurl, deletehash, Utils.Utils.ToUnixTime(DateTime.Now), Title, false);
+                return new UploadResult(Title, url, pageurl, deletehash, DateTime.Now.ToUnixTime(), false);
             }
-            catch
+            catch (Exception ex)
             {
-                return new UploadResult("", "", "", Utils.Utils.ToUnixTime(DateTime.Now), Title, true);
+                return new UploadResult(Title, "", "", DateTime.Now.ToUnixTime(), true, ex.Message);
             }
         }
 
@@ -64,6 +64,6 @@ namespace Shotr.Core.Plugin
 
         public bool SupportsPages => true;
 
-        public string PageURL => "http://imgur.com";
+        public string PageUrl => "http://imgur.com";
     }
 }

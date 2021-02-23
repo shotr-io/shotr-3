@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Security;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
@@ -28,17 +29,24 @@ namespace Shotr.Core.Controls.Theme
         {
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
-            if (TabPages == null || TabPages.Count == 0 || !(TabPages[SelectedIndex] is ThemedTabPage))
+            if (TabPages.Count < SelectedIndex + 1)
+            {
+                SelectedIndex = 0;
+            }
+
+            if (TabPages.Count == 0 || !(TabPages[SelectedIndex] is ThemedTabPage))
             {
                 e.Graphics.Clear(Theme.TabControlBackColor);
                 return;
             }
+
             var tb = (ThemedTabPage)TabPages[SelectedIndex];
             if (tb.BackColor.A < 255 && tb.BackgroundImage == null)
             {
                 e.Graphics.Clear(Theme.TabControlBackColor);
                 return;
             }
+
             using (Brush bgBrush = new SolidBrush(Theme.TabControlBackColor))
             {
                 var r = new Region(ClientRectangle);
@@ -49,12 +57,14 @@ namespace Shotr.Core.Controls.Theme
             for (var index = 0; index < TabPages.Count; index++)
             {
                 if (index == SelectedIndex) continue;
-                DrawTab(index, e.Graphics);
+
+                DrawTab(TabPages[index], index, e.Graphics);
             }
+
             if (SelectedIndex <= -1) return;
 
             DrawTabBottomBorder(SelectedIndex, e.Graphics);
-            DrawTab(SelectedIndex, e.Graphics);
+            DrawTab(tb, SelectedIndex, e.Graphics);
             DrawTabSelected(SelectedIndex, e.Graphics);
 
             base.OnPaint(e);
@@ -86,9 +96,8 @@ namespace Shotr.Core.Controls.Theme
                 graphics.FillRectangle(selectionBrush, borderRectangle);
             }
         }
-        public virtual void DrawTab(int index, Graphics graphics)
+        public virtual void DrawTab(TabPage tabPage, int index, Graphics graphics)
         {
-            var tabPage = TabPages[index];
             var tabRect = GetTabRect(index);
 
             if (index == 0)

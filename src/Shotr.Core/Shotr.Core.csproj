@@ -24,8 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shotr.Core.MimeDetect\Shotr.Core.MimeDetect.csproj" />
     <ProjectReference Include="..\Shotr.Core.Quantizer\Shotr.Core.Quantizer.csproj" />
-    <ProjectReference Include="..\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj" />
+    <ProjectReference Include="..\Shotr.Core.Uploader\Shotr.Core.Uploader.csproj" />
   </ItemGroup>
 
   <ItemGroup>
