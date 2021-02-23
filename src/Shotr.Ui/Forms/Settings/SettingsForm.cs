@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
+using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms.Settings

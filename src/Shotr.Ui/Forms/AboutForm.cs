@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.UpdateFramework;
 
