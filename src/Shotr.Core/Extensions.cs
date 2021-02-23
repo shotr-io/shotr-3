@@ -1,6 +1,9 @@
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -40,6 +43,69 @@ namespace Shotr.Core
                 ContentAlignment.TopRight => TextFormatFlags.Top | TextFormatFlags.Right,
                 _ => throw new InvalidEnumArgumentException()
             };
+        }
+
+        public static byte[] ImageToByteArray(this System.Drawing.Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, imageIn.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
+        public static byte[] ImageToByteArrayConvert(this System.Drawing.Image imageIn, string mimeType, int quality = 100)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var myImageCodecInfo = GetEncoderInfo(mimeType);
+                var encoderParams = new EncoderParameters(1);
+                var qualityEncoder = new EncoderParameter(Encoder.Quality, quality);
+                encoderParams.Param[0] = qualityEncoder;
+                imageIn.Save(ms, myImageCodecInfo, encoderParams);
+
+                return ms.ToArray();
+            }
+        }
+
+        public static byte[] ImageToByteArrayCompressed(this System.Drawing.Image imageIn, string mimeType, long quality)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var myImageCodecInfo = GetEncoderInfo(mimeType);
+                var myEncoderParameters = new EncoderParameters(1);
+                var myEncoderParameter = new EncoderParameter(Encoder.Quality, quality);
+                myEncoderParameters.Param[0] = myEncoderParameter;
+
+                imageIn.Save(ms, myImageCodecInfo, myEncoderParameters);
+
+                return ms.ToArray();
+            }
+        }
+
+        public static DateTime FromUnixTime(this long unixTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unixTime);
+        }
+
+        public static long ToUnixTime(this DateTime date)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return Convert.ToInt64((date - epoch).TotalSeconds);
+        }
+
+        private static ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            int j;
+            ImageCodecInfo[] encoders;
+            encoders = ImageCodecInfo.GetImageEncoders();
+            for (j = 0; j < encoders.Length; ++j)
+            {
+                if (encoders[j].MimeType == mimeType)
+                    return encoders[j];
+            }
+            return null;
         }
     }
 }

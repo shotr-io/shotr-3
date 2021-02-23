@@ -3,17 +3,18 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
+using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Services
 {
 	class FileUploaderService
 	{
-        public delegate void UploadProgressEvent(object sender, double progress);
+        public delegate void UploadProgressEvent(double progress);
         public static event UploadProgressEvent OnUploadProgress = delegate { };
 
-        public static string UploadFile(string url, byte[] file, string filename, string paramName, string contentType, NameValueCollection nvc, NameValueCollection headers)
+        public static string UploadFile(string url, FileShell file, string paramName, string contentType, NameValueCollection nvc, NameValueCollection headers)
         {
-            Console.WriteLine("Uploading of size {0} bytes to {1}.", file.Length, new Uri(url).Host);
+            Console.WriteLine("Uploading of size {0} bytes to {1}.", file.Size, new Uri(url).Host);
             var boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
             var boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
 
@@ -38,70 +39,59 @@ namespace Shotr.Core.Services
             rs.Write(boundarybytes, 0, boundarybytes.Length);
 
             var headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
-            var header = string.Format(headerTemplate, paramName, filename, contentType);
+            var header = string.Format(headerTemplate, paramName, file.Name ?? Utils.Utils.GetRandomString(10), contentType);
             var headerbytes = Encoding.UTF8.GetBytes(header);
             rs.Write(headerbytes, 0, headerbytes.Length);
-            try
+
+            Stream? stream = null;
+            if (file.Path is { })
             {
-                using (var ms = new MemoryStream(file))
+                stream = File.OpenRead(file.Path);
+            }
+            else if (file.Data is { })
+            {
+                stream = new MemoryStream(file.Data);
+            }
+
+            const int size = 4096;
+            var buffer = new byte[size];
+            int count = 0, pos = 0, lastProgress = 0;
+            while ((count = stream.Read(buffer, 0, size)) > 0)
+            {
+                rs.Write(buffer, 0, count);
+                rs.Flush();
+                pos += count;
+                //report progress.
+                var progress = Convert.ToInt32(Math.Round(pos / (double)file.Size * 100, 0));
+                if (lastProgress != progress)
                 {
-                    const int size = 4096;
-                    var buffer = new byte[size];
-                    var count = 0;
-                    var pos = 0;
-                    var lastprogress = 0;
-                    while ((count = ms.Read(buffer, 0, size)) > 0)
-                    {
-                        rs.Write(buffer, 0, count);
-                        rs.Flush();
-                        pos += count;
-                        //report progress.
-                        var progress = Convert.ToInt32(pos / (double)file.Length * 100);
-                        if (lastprogress != progress)
-                        {
-                            Console.WriteLine("Reporting Upload Progress: {0}%", Convert.ToInt32(progress));
-                            OnUploadProgress(null, progress);
-                            lastprogress = progress;
-                        }
-                    }
+                    Console.WriteLine("Reporting Upload Progress: {0}%", Convert.ToInt32(progress));
+                    OnUploadProgress(progress);
+                    lastProgress = progress;
                 }
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine("Failed, error message: {0}", ex);
-                return "";
-            }
+            stream.Close();
+
             var trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
             rs.Write(trailer, 0, trailer.Length);
             rs.Close();
 
-            WebResponse wresp = null;
             //100%
             try
             {
-                wresp = wr.GetResponse();
-                OnUploadProgress(null, 101d);
-                var stream2 = wresp.GetResponseStream();
-                var reader2 = new StreamReader(stream2);
-                var p = reader2.ReadToEnd();
-                Console.WriteLine("File uploaded, server response is: {0}", p);
-                return p;
+                var response = wr.GetResponse();
+                OnUploadProgress(101d);
+                var output = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                response.Close();
+                Console.WriteLine("File uploaded, server response is: {0}", output);
+                return output;
             }
             catch (Exception ex)
             {
-                OnUploadProgress(null, 101d);
+                OnUploadProgress(101d);
                 Console.WriteLine("Error Uploading File: {0}", ex);
-                if (wresp != null)
-                {
-                    wresp.Close();
-                    wresp = null;
-                }
+                throw;
             }
-            finally
-            {
-                wr = null;
-            }
-            return "";
         }
 	}
 }

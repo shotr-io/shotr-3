@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.Theme;
+using Shotr.Core.MimeDetect;
 
 namespace Shotr.Ui.Forms
 {
@@ -32,7 +33,7 @@ namespace Shotr.Ui.Forms
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
         }
 
-        public NoUploadNotification(string mime)
+        public NoUploadNotification(FileTypeEnum fileType)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;
@@ -42,8 +43,18 @@ namespace Shotr.Ui.Forms
             _animator.Direction = FormAnimator.AnimationDirection.Up;
             _animator.Method = FormAnimator.AnimationMethod.Slide;
             _animator.Duration = 500;
-            
-            metroLabel1.Text = mime.Contains("text") ? "Text Saved!" : mime.Contains("video") ? "Recording Saved!" : "Screenshot Saved!";
+
+            metroLabel1.Text = fileType switch
+            {
+                FileTypeEnum.Image => "Image Saved!",
+                FileTypeEnum.Text => "Text Saved!",
+                FileTypeEnum.Video => "Recording Saved!",
+                FileTypeEnum.Audio => "Audio Saved!",
+                FileTypeEnum.Archive => "Archive Saved!",
+                FileTypeEnum.Document => "Document Saved!",
+                FileTypeEnum.Pdf => "Pdf Saved!",
+                _ => "Saved!"
+            };
         }
 
         void Notification_Closing(object sender, CancelEventArgs e)

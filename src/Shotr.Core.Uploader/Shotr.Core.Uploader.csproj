@@ -6,6 +6,9 @@
         <UseWindowsForms>true</UseWindowsForms>
         <Platforms>AnyCPU;x64</Platforms>
         <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification</Configurations>
+        <AssemblyName>Shotr.Core.Uploader</AssemblyName>
+        <RootNamespace>Shotr.Core.Uploader</RootNamespace>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
 </Project>

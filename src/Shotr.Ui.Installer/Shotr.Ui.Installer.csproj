@@ -20,6 +20,10 @@
     <Configurations>Debug;Release;BetaTest;WindowsNotification</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
   </ItemGroup>
@@ -33,9 +37,7 @@
     <Compile Update="CancelForm.Designer.cs">
       <DependentUpon>CancelForm.cs</DependentUpon>
     </Compile>
-    <Compile Update="InstallerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="InstallerForm.cs" />
     <Compile Update="InstallerForm.Designer.cs">
       <DependentUpon>InstallerForm.cs</DependentUpon>
     </Compile>

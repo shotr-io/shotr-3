@@ -6,8 +6,8 @@ using System.Windows.Forms;
 using Shotr.Core.Controls;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
+using Shotr.Core.MimeDetect;
 using Shotr.Core.Uploader;
-using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
 {
@@ -30,14 +30,14 @@ namespace Shotr.Ui.Forms
                 return cp;
             }
         }
-        private ImageShell _failed;
+        private FileShell _failed;
 
         protected override void OnControlScaled(float scalingFactor)
         {
             Location = new Point(Screen.PrimaryScreen.WorkingArea.Right - Width, Screen.PrimaryScreen.WorkingArea.Height - Height);
         }
 
-        public ErrorNotification(ImageShell failedImg, UploadedImageJsonResult result)
+        public ErrorNotification(FileShell failedImg, FileTypeEnum fileType, bool allowReUpload, string uploader, string errorMessage)
         {
             InitializeComponent();
             StartPosition = FormStartPosition.Manual;           
@@ -47,39 +47,15 @@ namespace Shotr.Ui.Forms
             _animator.Direction = FormAnimator.AnimationDirection.Up;
             _animator.Method = FormAnimator.AnimationMethod.Slide;
             _animator.Duration = 500;
-            if (_failed != null)
+
+            if (!allowReUpload)
             {
-                _failed = failedImg;
-                if (result != null)
-                {
-                    if (!string.IsNullOrEmpty(result.ErrorMessage))
-                    {
-                        try
-                        {
-                            metroLabel2.Text = result.ErrorMessage;
-                        }
-                        catch
-                        {
-                            metroLabel2.Text = (_failed.Extension == FileExtensions.mp4
-                                                    ? "There was an error while uploading your recording."
-                                                    : "There was an error while uploading your screenshot.");
-                        }
-                    }
-                    else
-                        metroLabel2.Text = (_failed.Extension == FileExtensions.mp4
-                                                ? "There was an error while uploading your recording."
-                                                : "There was an error while uploading your screenshot.");
-                }
-                else
-                {
-                    metroLabel2.Text = "There was an error.";
-                }
+                retryButton.Visible = false;
             }
-            else
-            {
-                metroLabel2.Text = result.ErrorMessage;
-                metroButton1.Hide();
-            }
+
+            metroLabel2.Text = (fileType == FileTypeEnum.Video
+                ? "There was an error while uploading your recording."
+                : "There was an error while uploading your screenshot.");
         }
 
         void ErrorNotification_Closing(object sender, CancelEventArgs e)
