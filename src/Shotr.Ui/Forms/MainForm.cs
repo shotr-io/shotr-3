@@ -443,7 +443,7 @@ namespace Shotr.Ui.Forms
                     {
                         Text = $"https://shotr.dev/{item.Name}",
                     };
-                    listViewItem.SubItems.Add(item.Time.ToString());
+                    listViewItem.SubItems.Add(item.Time.ToLocalTime().ToString());
 
                     themedListView1.Items.Add(listViewItem);
                 }
@@ -741,7 +741,7 @@ namespace Shotr.Ui.Forms
                     {
                         var saveDialog = new SaveFileDialog
                         {
-                            Filter = $"{_settings.Capture.Extension} files (*.{_settings.Capture.Extension})|*.*.{_settings.Capture.Extension}|All files (*.*)|*.*",
+                            Filter = $"{_settings.Capture.Extension} files (*.{_settings.Capture.Extension})|*.{_settings.Capture.Extension}|All files (*.*)|*.*",
                             FileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{_settings.Capture.Extension}",
                         };
 
@@ -870,8 +870,9 @@ namespace Shotr.Ui.Forms
         {
             if (MessageBox.Show(this, "This will set your settings back to default, continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                // todo: Reset to default settings.
-                UpdateControls();
+                SettingsService.Reset();
+                Application.Restart();
+                Environment.Exit(0);
             }
         }
         

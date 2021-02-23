@@ -49,7 +49,7 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.Scaled = true;
             this.metroLabel1.Size = new System.Drawing.Size(536, 23);
             this.metroLabel1.TabIndex = 0;
-            this.metroLabel1.Text = "Shotr needs to download FFMPEG in order for screen recording to function.";
+            this.metroLabel1.Text = "Shotr needs to download ffmpeg in order for screen recording to function.";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // metroProgressBar1
@@ -104,7 +104,7 @@ namespace Shotr.Ui.Forms
             this.Name = "FfMpegDownload";
             this.Padding = new System.Windows.Forms.Padding(20, 30, 20, 20);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Download";
+            this.Text = "Download ffmpeg";
             ((System.ComponentModel.ISupportInitialize)(this.dpiScaledPictureBox1)).EndInit();
             this.ResumeLayout(false);
 
