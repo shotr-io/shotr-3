@@ -5,7 +5,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core;
 using Shotr.Core.Controls;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.MimeDetect;
 

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
+using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 
 namespace Shotr.Ui.Forms.Settings
@@ -13,9 +15,12 @@ namespace Shotr.Ui.Forms.Settings
     public partial class SettingsForm : ThemedForm
     {
         private readonly BaseSettings _settings;
-        public SettingsForm(BaseSettings settings)
+        private readonly IEnumerable<IImageUploader> _uploaders;
+        public SettingsForm(BaseSettings settings, IEnumerable<IImageUploader> uploaders)
         {
             _settings = settings;
+            _uploaders = uploaders;
+
             InitializeComponent();
         }
 
@@ -68,8 +73,11 @@ namespace Shotr.Ui.Forms.Settings
             //load all settings here.
             if (_settings.Capture.SaveToDirectory)
             {
-                metroTextBox1.Text = _settings.Capture.SaveToDirectoryPath;
+                saveToDirectoryPathTextBox.Text = _settings.Capture.SaveToDirectoryPath;
             }
+
+            chooseSaveToDirectoryButton.Enabled = _settings.Capture.SaveToDirectory;
+
             saveToDirectoryToggle.Checked = _settings.Capture.SaveToDirectory;
             showNotificationsToggle.Checked = _settings.ShowNotifications;
             startupToggle.Checked = _settings.StartWithWindows;
@@ -102,26 +110,28 @@ namespace Shotr.Ui.Forms.Settings
             recordCursorToggle.CheckedChanged += recordCursorToggle_CheckedChanged;
             recordAudioToggle.CheckedChanged += recordAudioToggle_CheckedChanged;
             audioDeviceCombo.SelectedIndexChanged += audioDeviceCombo_SelectedIndexChanged;
-            useresizablecanvas.CheckedChanged += useresizablecanvas_CheckedChanged;
+            useresizablecanvas.CheckedChanged += UseResizableCanvasCheckedChanged;
+
+            foreach (var uploader in _uploaders)
+            {
+                selectedImageUploader.Items.Add(uploader.Title);
+            }
+
+            selectedImageUploader.Text = _settings.Capture.Uploader;
+            if (selectedImageUploader.Text == "" && selectedImageUploader.Items.Count > 0)
+            {
+                selectedImageUploader.Text = (string) selectedImageUploader.Items[0];
+            }
+
+            UpdateDirectUrl();
         }
 
-        void useresizablecanvas_CheckedChanged(object sender, EventArgs e)
+        void UseResizableCanvasCheckedChanged(object sender, EventArgs e)
         {
             _settings.Capture.UseResizableCanvas = useresizablecanvas.Checked;
             SettingsService.Save(_settings);
         }
         
-        private string ChooseDir()
-        {
-            var f = new FolderBrowserDialog();
-            f.Description = "Choose a directory for Shotr to save files in before upload: ";
-            if (f.ShowDialog() == DialogResult.OK)
-            {
-                return f.SelectedPath;
-            }
-            return null;
-        }
-
         private void saveToDirectoryToggle_CheckedChanged(object sender, EventArgs e)
         {
             //unhide textbox, allow them to browse.
@@ -131,16 +141,15 @@ namespace Shotr.Ui.Forms.Settings
                 var saveDirectoryChoosePath = ChooseDir();
                 if(saveDirectoryChoosePath != null)
                 {
-                    metroTextBox1.Text = saveDirectoryChoosePath;
+                    saveToDirectoryPathTextBox.Text = saveDirectoryChoosePath;
                     _settings.Capture.SaveToDirectory = true;
                     _settings.Capture.SaveToDirectoryPath = saveDirectoryChoosePath;
                 }
             }
             else
             {
-                metroTextBox1.Text = "";
                 _settings.Capture.SaveToDirectory = false;
-                _settings.Capture.SaveToDirectoryPath = null;
+                chooseSaveToDirectoryButton.Enabled = false;
             }
             SettingsService.Save(_settings);
         }
@@ -249,6 +258,66 @@ namespace Shotr.Ui.Forms.Settings
         {
             _settings.Record.AudioDevice = audioDeviceCombo.Text;
             SettingsService.Save(_settings);
+        }
+
+        private void chooseSaveToDirectoryButton_Click(object sender, EventArgs e)
+        {
+            var saveDirectoryChoosePath = ChooseDir();
+            if (saveDirectoryChoosePath != null)
+            {
+                saveToDirectoryPathTextBox.Text = saveDirectoryChoosePath;
+                _settings.Capture.SaveToDirectoryPath = saveDirectoryChoosePath;
+            }
+        }
+
+        private void selectedImageUploader_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _settings.Capture.Uploader = (string)selectedImageUploader.SelectedItem;
+            SettingsService.Save(_settings);
+            UpdateDirectUrl();
+        }
+
+        private void directUrlToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            _settings.Capture.DirectUrl = directUrlToggle.Checked;
+            SettingsService.Save(_settings);
+        }
+        
+        private string ChooseDir()
+        {
+            var f = new FolderBrowserDialog();
+            f.Description = "Choose a directory for Shotr to save files in before upload: ";
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                return f.SelectedPath;
+            }
+            return null;
+        }
+
+        private IImageUploader? GetUploader(string name)
+        {
+            return _uploaders.FirstOrDefault(p => p.Title == name);
+        }
+
+        private void UpdateDirectUrl()
+        {
+            //check if uploader has support for indirect URLs.
+            var uploader = GetUploader(_settings.Capture.Uploader);
+            if (uploader == null) return;
+            //check if it supports indirect urls.
+            if (uploader.SupportsPages)
+            {
+                //enable control for selecting page support.
+                themedLabel1.Visible = true;
+                directUrlToggle.Visible = true;
+                //get from settings or set to default.
+                directUrlToggle.Checked = _settings.Capture.DirectUrl;
+            }
+            else
+            {
+                themedLabel1.Visible = false;
+                directUrlToggle.Visible = false;
+            }
         }
     }
 }

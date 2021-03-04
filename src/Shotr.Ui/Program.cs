@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.UI.Notifications;
 using Newtonsoft.Json;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;

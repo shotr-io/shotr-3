@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Shotr.Core.Controls;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.MimeDetect;
 using Shotr.Core.Uploader;
