@@ -33,7 +33,6 @@ namespace Shotr.Ui.Forms
             this.themedLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.themedLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.themedLabel3 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.themedToggle1 = new Shotr.Core.Controls.Theme.ThemedToggle();
             this.themedLinkLabel1 = new Shotr.Core.Controls.Theme.ThemedLinkLabel();
             this.themedLabel5 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.themedLabel6 = new Shotr.Core.Controls.Theme.ThemedLabel();
@@ -50,12 +49,15 @@ namespace Shotr.Ui.Forms
             this.themedTabControl1 = new Shotr.Core.Controls.Theme.ThemedTabControl();
             this.tabPage1 = new Shotr.Core.Controls.Theme.ThemedTabPage();
             this.tabPage2 = new Shotr.Core.Controls.Theme.ThemedTabPage();
+            this.themedToggle1 = new Shotr.Core.Controls.Theme.ThemedToggle();
+            this.dpiScalingLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.themedPanel1.SuspendLayout();
             this.themedTabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // themedButton1
             // 
+            this.themedButton1.BasePaint = false;
             this.themedButton1.Highlight = false;
             this.themedButton1.Location = new System.Drawing.Point(12, 12);
             this.themedButton1.Name = "themedButton1";
@@ -67,6 +69,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedLabel1
             // 
+            this.themedLabel1.BasePaint = false;
             this.themedLabel1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedLabel1.Location = new System.Drawing.Point(12, 72);
             this.themedLabel1.Name = "themedLabel1";
@@ -75,10 +78,10 @@ namespace Shotr.Ui.Forms
             this.themedLabel1.TabIndex = 1;
             this.themedLabel1.Text = "Themed Label Center";
             this.themedLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.themedLabel1.UseCompatibleTextRendering = false;
             // 
             // themedLabel2
             // 
+            this.themedLabel2.BasePaint = false;
             this.themedLabel2.Location = new System.Drawing.Point(12, 43);
             this.themedLabel2.Name = "themedLabel2";
             this.themedLabel2.Scaled = true;
@@ -86,10 +89,10 @@ namespace Shotr.Ui.Forms
             this.themedLabel2.TabIndex = 2;
             this.themedLabel2.Text = "Themed Label Left";
             this.themedLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.themedLabel2.UseCompatibleTextRendering = false;
             // 
             // themedLabel3
             // 
+            this.themedLabel3.BasePaint = false;
             this.themedLabel3.Location = new System.Drawing.Point(12, 101);
             this.themedLabel3.Name = "themedLabel3";
             this.themedLabel3.Scaled = true;
@@ -97,22 +100,10 @@ namespace Shotr.Ui.Forms
             this.themedLabel3.TabIndex = 3;
             this.themedLabel3.Text = "Themed Label Right";
             this.themedLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.themedLabel3.UseCompatibleTextRendering = false;
-            // 
-            // themedToggle1
-            // 
-            this.themedToggle1.Checked = true;
-            this.themedToggle1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.themedToggle1.Location = new System.Drawing.Point(12, 133);
-            this.themedToggle1.Name = "themedToggle1";
-            this.themedToggle1.Scaled = true;
-            this.themedToggle1.Size = new System.Drawing.Size(52, 26);
-            this.themedToggle1.TabIndex = 4;
-            this.themedToggle1.Text = "themedToggle1";
-            this.themedToggle1.UseVisualStyleBackColor = true;
             // 
             // themedLinkLabel1
             // 
+            this.themedLinkLabel1.BasePaint = false;
             this.themedLinkLabel1.Location = new System.Drawing.Point(12, 162);
             this.themedLinkLabel1.Name = "themedLinkLabel1";
             this.themedLinkLabel1.Scaled = true;
@@ -125,6 +116,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedLabel5
             // 
+            this.themedLabel5.BasePaint = false;
             this.themedLabel5.Font = new System.Drawing.Font("Inter", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedLabel5.Location = new System.Drawing.Point(12, 256);
             this.themedLabel5.Name = "themedLabel5";
@@ -133,10 +125,10 @@ namespace Shotr.Ui.Forms
             this.themedLabel5.TabIndex = 7;
             this.themedLabel5.Text = "Themed Label Right";
             this.themedLabel5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.themedLabel5.UseCompatibleTextRendering = false;
             // 
             // themedLabel6
             // 
+            this.themedLabel6.BasePaint = false;
             this.themedLabel6.Font = new System.Drawing.Font("Inter", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedLabel6.Location = new System.Drawing.Point(12, 198);
             this.themedLabel6.Name = "themedLabel6";
@@ -145,10 +137,10 @@ namespace Shotr.Ui.Forms
             this.themedLabel6.TabIndex = 8;
             this.themedLabel6.Text = "Themed Label Left";
             this.themedLabel6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.themedLabel6.UseCompatibleTextRendering = false;
             // 
             // themedLabel7
             // 
+            this.themedLabel7.BasePaint = false;
             this.themedLabel7.Font = new System.Drawing.Font("Inter", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedLabel7.Location = new System.Drawing.Point(12, 227);
             this.themedLabel7.Name = "themedLabel7";
@@ -157,10 +149,10 @@ namespace Shotr.Ui.Forms
             this.themedLabel7.TabIndex = 9;
             this.themedLabel7.Text = "Themed Label Center";
             this.themedLabel7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.themedLabel7.UseCompatibleTextRendering = false;
             // 
             // themedProgressBar1
             // 
+            this.themedProgressBar1.BasePaint = false;
             this.themedProgressBar1.Font = new System.Drawing.Font("Inter", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedProgressBar1.Location = new System.Drawing.Point(12, 314);
             this.themedProgressBar1.MaxValue = 100;
@@ -172,6 +164,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedButton2
             // 
+            this.themedButton2.BasePaint = false;
             this.themedButton2.Highlight = false;
             this.themedButton2.Location = new System.Drawing.Point(280, 345);
             this.themedButton2.Name = "themedButton2";
@@ -184,6 +177,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedButton3
             // 
+            this.themedButton3.BasePaint = false;
             this.themedButton3.Highlight = false;
             this.themedButton3.Location = new System.Drawing.Point(247, 345);
             this.themedButton3.Name = "themedButton3";
@@ -196,6 +190,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedPanel1
             // 
+            this.themedPanel1.BasePaint = false;
             this.themedPanel1.Controls.Add(this.themedLabel8);
             this.themedPanel1.Location = new System.Drawing.Point(326, 12);
             this.themedPanel1.Name = "themedPanel1";
@@ -205,6 +200,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedLabel8
             // 
+            this.themedLabel8.BasePaint = false;
             this.themedLabel8.Font = new System.Drawing.Font("Inter", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedLabel8.Location = new System.Drawing.Point(12, 31);
             this.themedLabel8.Name = "themedLabel8";
@@ -213,20 +209,20 @@ namespace Shotr.Ui.Forms
             this.themedLabel8.TabIndex = 1;
             this.themedLabel8.Text = "Panel Test";
             this.themedLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.themedLabel8.UseCompatibleTextRendering = false;
             // 
             // themedLabel4
             // 
+            this.themedLabel4.BasePaint = false;
             this.themedLabel4.Location = new System.Drawing.Point(338, 5);
             this.themedLabel4.Name = "themedLabel4";
             this.themedLabel4.Scaled = true;
             this.themedLabel4.Size = new System.Drawing.Size(68, 17);
             this.themedLabel4.TabIndex = 0;
             this.themedLabel4.Text = "Panel Test";
-            this.themedLabel4.UseCompatibleTextRendering = false;
             // 
             // themedTextBox1
             // 
+            this.themedTextBox1.BasePaint = false;
             this.themedTextBox1.Location = new System.Drawing.Point(326, 149);
             this.themedTextBox1.Multiline = false;
             this.themedTextBox1.Name = "themedTextBox1";
@@ -241,6 +237,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedTextBox2
             // 
+            this.themedTextBox2.BasePaint = false;
             this.themedTextBox2.Font = new System.Drawing.Font("Inter", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedTextBox2.Location = new System.Drawing.Point(326, 198);
             this.themedTextBox2.Multiline = false;
@@ -256,6 +253,7 @@ namespace Shotr.Ui.Forms
             // 
             // themedComboBox1
             // 
+            this.themedComboBox1.BasePaint = false;
             this.themedComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.themedComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.themedComboBox1.FormattingEnabled = true;
@@ -268,11 +266,12 @@ namespace Shotr.Ui.Forms
             this.themedComboBox1.Location = new System.Drawing.Point(326, 256);
             this.themedComboBox1.Name = "themedComboBox1";
             this.themedComboBox1.Scaled = true;
-            this.themedComboBox1.Size = new System.Drawing.Size(259, 23);
+            this.themedComboBox1.Size = new System.Drawing.Size(259, 32);
             this.themedComboBox1.TabIndex = 16;
             // 
             // themedTabControl1
             // 
+            this.themedTabControl1.BasePaint = false;
             this.themedTabControl1.Controls.Add(this.tabPage1);
             this.themedTabControl1.Controls.Add(this.tabPage2);
             this.themedTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
@@ -286,6 +285,7 @@ namespace Shotr.Ui.Forms
             // 
             // tabPage1
             // 
+            this.tabPage1.BasePaint = false;
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Scaled = true;
@@ -295,6 +295,7 @@ namespace Shotr.Ui.Forms
             // 
             // tabPage2
             // 
+            this.tabPage2.BasePaint = false;
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -304,10 +305,35 @@ namespace Shotr.Ui.Forms
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // themedToggle1
+            // 
+            this.themedToggle1.AutoSize = true;
+            this.themedToggle1.BasePaint = false;
+            this.themedToggle1.Location = new System.Drawing.Point(12, 133);
+            this.themedToggle1.Name = "themedToggle1";
+            this.themedToggle1.Scaled = true;
+            this.themedToggle1.Size = new System.Drawing.Size(50, 21);
+            this.themedToggle1.TabIndex = 18;
+            this.themedToggle1.Text = "Off";
+            this.themedToggle1.UseVisualStyleBackColor = true;
+            // 
+            // dpiScalingLabel
+            // 
+            this.dpiScalingLabel.AutoSize = true;
+            this.dpiScalingLabel.BasePaint = false;
+            this.dpiScalingLabel.Location = new System.Drawing.Point(326, 314);
+            this.dpiScalingLabel.Name = "dpiScalingLabel";
+            this.dpiScalingLabel.Scaled = true;
+            this.dpiScalingLabel.Size = new System.Drawing.Size(87, 15);
+            this.dpiScalingLabel.TabIndex = 19;
+            this.dpiScalingLabel.Text = "themedLabel9";
+            // 
             // ThemeShowcase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(938, 436);
+            this.Controls.Add(this.dpiScalingLabel);
+            this.Controls.Add(this.themedToggle1);
             this.Controls.Add(this.themedTabControl1);
             this.Controls.Add(this.themedComboBox1);
             this.Controls.Add(this.themedTextBox2);
@@ -321,7 +347,6 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.themedLabel6);
             this.Controls.Add(this.themedLabel5);
             this.Controls.Add(this.themedLinkLabel1);
-            this.Controls.Add(this.themedToggle1);
             this.Controls.Add(this.themedLabel3);
             this.Controls.Add(this.themedLabel2);
             this.Controls.Add(this.themedLabel1);
@@ -331,6 +356,7 @@ namespace Shotr.Ui.Forms
             this.themedPanel1.ResumeLayout(false);
             this.themedTabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -340,7 +366,6 @@ namespace Shotr.Ui.Forms
         private Core.Controls.Theme.ThemedLabel themedLabel1;
         private Core.Controls.Theme.ThemedLabel themedLabel2;
         private Core.Controls.Theme.ThemedLabel themedLabel3;
-        private Core.Controls.Theme.ThemedToggle themedToggle1;
         private Core.Controls.Theme.ThemedLinkLabel themedLinkLabel1;
         private Core.Controls.Theme.ThemedLabel themedLabel5;
         private Core.Controls.Theme.ThemedLabel themedLabel6;
@@ -357,5 +382,7 @@ namespace Shotr.Ui.Forms
         private Core.Controls.Theme.ThemedTabControl themedTabControl1;
         private Core.Controls.Theme.ThemedTabPage tabPage1;
         private Core.Controls.Theme.ThemedTabPage tabPage2;
+        private Core.Controls.Theme.ThemedToggle themedToggle1;
+        private Core.Controls.Theme.ThemedLabel dpiScalingLabel;
     }
 }

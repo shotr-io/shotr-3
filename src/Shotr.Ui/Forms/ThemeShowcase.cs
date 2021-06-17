@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Forms;
+using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 
 namespace Shotr.Ui.Forms
@@ -9,6 +10,8 @@ namespace Shotr.Ui.Forms
         public ThemeShowcase()
         {
             InitializeComponent();
+
+            dpiScalingLabel.Text = $"{DpiScaler.GetScalingFactor(this) * 100}% DPI Scaling Factor";
         }
 
         private void themedLinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -13,6 +13,11 @@ namespace Shotr.Core.Controls.Theme
         private readonly SolidBrush _onColorBrush = new SolidBrush(Theme.ToggleOnColor);
         private readonly SolidBrush _offColorBrush = new SolidBrush(Theme.ToggleOffColor);
 
+        public ThemedToggle()
+        {
+            Text = "Off";
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -26,14 +31,18 @@ namespace Shotr.Core.Controls.Theme
             if (Checked)
             {
                 e.Graphics.FillRectangle(_onColorBrush, 9, 2, Width - 16, Height - 5);
-                e.Graphics.FillEllipse(_onColorBrush, new Rectangle(3, 2, Height - 5, Height - 5));
-                e.Graphics.FillEllipse(_barColorBrush, Width - 20, 0, 18, 18);
+                // left circle
+                e.Graphics.FillEllipse(_onColorBrush, new Rectangle(1, 2, Height - 5, Height - 5));
+                // bar
+                e.Graphics.FillEllipse(_barColorBrush, Width - Height - 2, 0, Height - 1, Height - 1);
             }
             else
             {
                 e.Graphics.FillRectangle(_offColorBrush, 3, 2, Width - 12, Height - 5);
-                e.Graphics.FillEllipse(_offColorBrush, new Rectangle(Width - 16, 2, Height - 5, Height - 5));
-                e.Graphics.FillEllipse(_barColorBrush, new Rectangle(0, 0, 18, 18));
+                // right circle
+                e.Graphics.FillEllipse(_offColorBrush, new Rectangle(Width - Height + 4, 2, Height - 5, Height - 5));
+                // bar
+                e.Graphics.FillEllipse(_barColorBrush, new Rectangle(0, 0, Height - 1, Height - 1));
             }
         }
 
