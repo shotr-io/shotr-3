@@ -58,7 +58,6 @@ namespace Shotr.Ui.Forms.Settings
             this.metroTabPage3 = new Shotr.Core.Controls.Theme.ThemedTabPage();
             this.metroPanel3 = new Shotr.Core.Controls.Theme.ThemedPanel();
             this.themedBar12 = new Shotr.Core.Controls.Theme.ThemedBar();
-            this.themedBar11 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.directUrlToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
             this.themedLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.metroLabel9 = new Shotr.Core.Controls.Theme.ThemedLabel();
@@ -67,8 +66,6 @@ namespace Shotr.Ui.Forms.Settings
             this.themedBar9 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.themedBar2 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.themedBar8 = new Shotr.Core.Controls.Theme.ThemedBar();
-            this.metroLabel18 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.useresizablecanvas = new Shotr.Core.Controls.Theme.ThemedToggle();
             this.metroLabel12 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.metroLabel6 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.stitchFullscreenToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
@@ -79,6 +76,10 @@ namespace Shotr.Ui.Forms.Settings
             this.imageQualityCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
             this.metroTabPage4 = new Shotr.Core.Controls.Theme.ThemedTabPage();
             this.metroPanel4 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.themedBar15 = new Shotr.Core.Controls.Theme.ThemedBar();
+            this.themedBar14 = new Shotr.Core.Controls.Theme.ThemedBar();
+            this.themedBar13 = new Shotr.Core.Controls.Theme.ThemedBar();
+            this.themedBar1 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.metroLabel5 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.audioDeviceCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
             this.metroLabel4 = new Shotr.Core.Controls.Theme.ThemedLabel();
@@ -90,10 +91,6 @@ namespace Shotr.Ui.Forms.Settings
             this.encodingCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
             this.metroLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.dpiScaledPictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
-            this.themedBar1 = new Shotr.Core.Controls.Theme.ThemedBar();
-            this.themedBar13 = new Shotr.Core.Controls.Theme.ThemedBar();
-            this.themedBar14 = new Shotr.Core.Controls.Theme.ThemedBar();
-            this.themedBar15 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             this.metroPanel2.SuspendLayout();
@@ -123,10 +120,10 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroTabPage1.BasePaint = false;
             this.metroTabPage1.Controls.Add(this.metroPanel2);
-            this.metroTabPage1.Location = new System.Drawing.Point(4, 25);
+            this.metroTabPage1.Location = new System.Drawing.Point(4, 29);
             this.metroTabPage1.Name = "metroTabPage1";
             this.metroTabPage1.Scaled = true;
-            this.metroTabPage1.Size = new System.Drawing.Size(332, 270);
+            this.metroTabPage1.Size = new System.Drawing.Size(332, 266);
             this.metroTabPage1.TabIndex = 0;
             this.metroTabPage1.Text = "General";
             // 
@@ -261,7 +258,7 @@ namespace Shotr.Ui.Forms.Settings
             this.saveToDirectoryToggle.Location = new System.Drawing.Point(263, 158);
             this.saveToDirectoryToggle.Name = "saveToDirectoryToggle";
             this.saveToDirectoryToggle.Scaled = true;
-            this.saveToDirectoryToggle.Size = new System.Drawing.Size(43, 19);
+            this.saveToDirectoryToggle.Size = new System.Drawing.Size(50, 21);
             this.saveToDirectoryToggle.TabIndex = 52;
             this.saveToDirectoryToggle.Text = "Off";
             this.saveToDirectoryToggle.UseVisualStyleBackColor = false;
@@ -285,7 +282,7 @@ namespace Shotr.Ui.Forms.Settings
             this.soundToggle.Location = new System.Drawing.Point(263, 128);
             this.soundToggle.Name = "soundToggle";
             this.soundToggle.Scaled = true;
-            this.soundToggle.Size = new System.Drawing.Size(43, 19);
+            this.soundToggle.Size = new System.Drawing.Size(50, 21);
             this.soundToggle.TabIndex = 55;
             this.soundToggle.Text = "Off";
             this.soundToggle.UseVisualStyleBackColor = false;
@@ -297,7 +294,7 @@ namespace Shotr.Ui.Forms.Settings
             this.startupToggle.Location = new System.Drawing.Point(263, 38);
             this.startupToggle.Name = "startupToggle";
             this.startupToggle.Scaled = true;
-            this.startupToggle.Size = new System.Drawing.Size(43, 19);
+            this.startupToggle.Size = new System.Drawing.Size(50, 21);
             this.startupToggle.TabIndex = 49;
             this.startupToggle.Text = "Off";
             this.startupToggle.UseVisualStyleBackColor = false;
@@ -333,7 +330,7 @@ namespace Shotr.Ui.Forms.Settings
             this.minimizedToggle.Location = new System.Drawing.Point(263, 68);
             this.minimizedToggle.Name = "minimizedToggle";
             this.minimizedToggle.Scaled = true;
-            this.minimizedToggle.Size = new System.Drawing.Size(43, 19);
+            this.minimizedToggle.Size = new System.Drawing.Size(50, 21);
             this.minimizedToggle.TabIndex = 52;
             this.minimizedToggle.Text = "Off";
             this.minimizedToggle.UseVisualStyleBackColor = false;
@@ -357,7 +354,7 @@ namespace Shotr.Ui.Forms.Settings
             this.alphaToggle.Location = new System.Drawing.Point(263, 98);
             this.alphaToggle.Name = "alphaToggle";
             this.alphaToggle.Scaled = true;
-            this.alphaToggle.Size = new System.Drawing.Size(43, 19);
+            this.alphaToggle.Size = new System.Drawing.Size(50, 21);
             this.alphaToggle.TabIndex = 53;
             this.alphaToggle.Text = "Off";
             this.alphaToggle.UseVisualStyleBackColor = false;
@@ -381,7 +378,7 @@ namespace Shotr.Ui.Forms.Settings
             this.showNotificationsToggle.Location = new System.Drawing.Point(263, 8);
             this.showNotificationsToggle.Name = "showNotificationsToggle";
             this.showNotificationsToggle.Scaled = true;
-            this.showNotificationsToggle.Size = new System.Drawing.Size(43, 19);
+            this.showNotificationsToggle.Size = new System.Drawing.Size(50, 21);
             this.showNotificationsToggle.TabIndex = 47;
             this.showNotificationsToggle.Text = "Off";
             this.showNotificationsToggle.UseVisualStyleBackColor = false;
@@ -390,10 +387,10 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroTabPage3.BasePaint = false;
             this.metroTabPage3.Controls.Add(this.metroPanel3);
-            this.metroTabPage3.Location = new System.Drawing.Point(4, 25);
+            this.metroTabPage3.Location = new System.Drawing.Point(4, 29);
             this.metroTabPage3.Name = "metroTabPage3";
             this.metroTabPage3.Scaled = true;
-            this.metroTabPage3.Size = new System.Drawing.Size(332, 270);
+            this.metroTabPage3.Size = new System.Drawing.Size(332, 266);
             this.metroTabPage3.TabIndex = 2;
             this.metroTabPage3.Text = "Capture";
             // 
@@ -401,7 +398,6 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroPanel3.BasePaint = false;
             this.metroPanel3.Controls.Add(this.themedBar12);
-            this.metroPanel3.Controls.Add(this.themedBar11);
             this.metroPanel3.Controls.Add(this.directUrlToggle);
             this.metroPanel3.Controls.Add(this.themedLabel1);
             this.metroPanel3.Controls.Add(this.metroLabel9);
@@ -410,8 +406,6 @@ namespace Shotr.Ui.Forms.Settings
             this.metroPanel3.Controls.Add(this.themedBar9);
             this.metroPanel3.Controls.Add(this.themedBar2);
             this.metroPanel3.Controls.Add(this.themedBar8);
-            this.metroPanel3.Controls.Add(this.metroLabel18);
-            this.metroPanel3.Controls.Add(this.useresizablecanvas);
             this.metroPanel3.Controls.Add(this.metroLabel12);
             this.metroPanel3.Controls.Add(this.metroLabel6);
             this.metroPanel3.Controls.Add(this.stitchFullscreenToggle);
@@ -430,33 +424,22 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.themedBar12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
             this.themedBar12.BasePaint = false;
-            this.themedBar12.Location = new System.Drawing.Point(10, 182);
+            this.themedBar12.Location = new System.Drawing.Point(10, 152);
             this.themedBar12.Name = "themedBar12";
             this.themedBar12.Scaled = true;
             this.themedBar12.Size = new System.Drawing.Size(296, 1);
             this.themedBar12.TabIndex = 69;
             this.themedBar12.Text = "themedBar12";
             // 
-            // themedBar11
-            // 
-            this.themedBar11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
-            this.themedBar11.BasePaint = false;
-            this.themedBar11.Location = new System.Drawing.Point(10, 152);
-            this.themedBar11.Name = "themedBar11";
-            this.themedBar11.Scaled = true;
-            this.themedBar11.Size = new System.Drawing.Size(296, 1);
-            this.themedBar11.TabIndex = 68;
-            this.themedBar11.Text = "themedBar11";
-            // 
             // directUrlToggle
             // 
             this.directUrlToggle.AutoSize = true;
             this.directUrlToggle.BasePaint = false;
             this.directUrlToggle.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.directUrlToggle.Location = new System.Drawing.Point(263, 188);
+            this.directUrlToggle.Location = new System.Drawing.Point(263, 158);
             this.directUrlToggle.Name = "directUrlToggle";
             this.directUrlToggle.Scaled = true;
-            this.directUrlToggle.Size = new System.Drawing.Size(43, 19);
+            this.directUrlToggle.Size = new System.Drawing.Size(50, 21);
             this.directUrlToggle.TabIndex = 67;
             this.directUrlToggle.Text = "Off";
             this.directUrlToggle.UseVisualStyleBackColor = false;
@@ -468,7 +451,7 @@ namespace Shotr.Ui.Forms.Settings
             this.themedLabel1.AutoSize = true;
             this.themedLabel1.BasePaint = false;
             this.themedLabel1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.themedLabel1.Location = new System.Drawing.Point(10, 190);
+            this.themedLabel1.Location = new System.Drawing.Point(10, 160);
             this.themedLabel1.Name = "themedLabel1";
             this.themedLabel1.Scaled = true;
             this.themedLabel1.Size = new System.Drawing.Size(128, 15);
@@ -480,7 +463,7 @@ namespace Shotr.Ui.Forms.Settings
             this.metroLabel9.AutoSize = true;
             this.metroLabel9.BasePaint = false;
             this.metroLabel9.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.metroLabel9.Location = new System.Drawing.Point(10, 160);
+            this.metroLabel9.Location = new System.Drawing.Point(10, 130);
             this.metroLabel9.Name = "metroLabel9";
             this.metroLabel9.Scaled = true;
             this.metroLabel9.Size = new System.Drawing.Size(95, 15);
@@ -496,7 +479,7 @@ namespace Shotr.Ui.Forms.Settings
             this.selectedImageUploader.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.selectedImageUploader.FormattingEnabled = true;
             this.selectedImageUploader.ItemHeight = 15;
-            this.selectedImageUploader.Location = new System.Drawing.Point(178, 157);
+            this.selectedImageUploader.Location = new System.Drawing.Point(178, 127);
             this.selectedImageUploader.Name = "selectedImageUploader";
             this.selectedImageUploader.Scaled = true;
             this.selectedImageUploader.Size = new System.Drawing.Size(128, 21);
@@ -547,29 +530,6 @@ namespace Shotr.Ui.Forms.Settings
             this.themedBar8.TabIndex = 60;
             this.themedBar8.Text = "themedBar8";
             // 
-            // metroLabel18
-            // 
-            this.metroLabel18.AutoSize = true;
-            this.metroLabel18.BasePaint = false;
-            this.metroLabel18.Location = new System.Drawing.Point(10, 130);
-            this.metroLabel18.Name = "metroLabel18";
-            this.metroLabel18.Scaled = true;
-            this.metroLabel18.Size = new System.Drawing.Size(93, 15);
-            this.metroLabel18.TabIndex = 40;
-            this.metroLabel18.Text = "Enter to Upload";
-            // 
-            // useresizablecanvas
-            // 
-            this.useresizablecanvas.AutoSize = true;
-            this.useresizablecanvas.BasePaint = false;
-            this.useresizablecanvas.Location = new System.Drawing.Point(263, 128);
-            this.useresizablecanvas.Name = "useresizablecanvas";
-            this.useresizablecanvas.Scaled = true;
-            this.useresizablecanvas.Size = new System.Drawing.Size(43, 19);
-            this.useresizablecanvas.TabIndex = 39;
-            this.useresizablecanvas.Text = "Off";
-            this.useresizablecanvas.UseVisualStyleBackColor = false;
-            // 
             // metroLabel12
             // 
             this.metroLabel12.AutoSize = true;
@@ -599,7 +559,7 @@ namespace Shotr.Ui.Forms.Settings
             this.stitchFullscreenToggle.Location = new System.Drawing.Point(263, 98);
             this.stitchFullscreenToggle.Name = "stitchFullscreenToggle";
             this.stitchFullscreenToggle.Scaled = true;
-            this.stitchFullscreenToggle.Size = new System.Drawing.Size(43, 19);
+            this.stitchFullscreenToggle.Size = new System.Drawing.Size(50, 21);
             this.stitchFullscreenToggle.TabIndex = 37;
             this.stitchFullscreenToggle.Text = "Off";
             this.stitchFullscreenToggle.UseVisualStyleBackColor = false;
@@ -627,7 +587,7 @@ namespace Shotr.Ui.Forms.Settings
             this.imageCompressionToggle.Location = new System.Drawing.Point(263, 38);
             this.imageCompressionToggle.Name = "imageCompressionToggle";
             this.imageCompressionToggle.Scaled = true;
-            this.imageCompressionToggle.Size = new System.Drawing.Size(43, 19);
+            this.imageCompressionToggle.Size = new System.Drawing.Size(50, 21);
             this.imageCompressionToggle.TabIndex = 32;
             this.imageCompressionToggle.Text = "Off";
             this.imageCompressionToggle.UseVisualStyleBackColor = false;
@@ -678,10 +638,10 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroTabPage4.BasePaint = false;
             this.metroTabPage4.Controls.Add(this.metroPanel4);
-            this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
+            this.metroTabPage4.Location = new System.Drawing.Point(4, 29);
             this.metroTabPage4.Name = "metroTabPage4";
             this.metroTabPage4.Scaled = true;
-            this.metroTabPage4.Size = new System.Drawing.Size(332, 270);
+            this.metroTabPage4.Size = new System.Drawing.Size(332, 266);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "Recorder";
             // 
@@ -707,6 +667,50 @@ namespace Shotr.Ui.Forms.Settings
             this.metroPanel4.Scaled = true;
             this.metroPanel4.Size = new System.Drawing.Size(316, 255);
             this.metroPanel4.TabIndex = 53;
+            // 
+            // themedBar15
+            // 
+            this.themedBar15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
+            this.themedBar15.BasePaint = false;
+            this.themedBar15.Location = new System.Drawing.Point(10, 122);
+            this.themedBar15.Name = "themedBar15";
+            this.themedBar15.Scaled = true;
+            this.themedBar15.Size = new System.Drawing.Size(296, 1);
+            this.themedBar15.TabIndex = 64;
+            this.themedBar15.Text = "themedBar15";
+            // 
+            // themedBar14
+            // 
+            this.themedBar14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
+            this.themedBar14.BasePaint = false;
+            this.themedBar14.Location = new System.Drawing.Point(10, 92);
+            this.themedBar14.Name = "themedBar14";
+            this.themedBar14.Scaled = true;
+            this.themedBar14.Size = new System.Drawing.Size(296, 1);
+            this.themedBar14.TabIndex = 63;
+            this.themedBar14.Text = "themedBar14";
+            // 
+            // themedBar13
+            // 
+            this.themedBar13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
+            this.themedBar13.BasePaint = false;
+            this.themedBar13.Location = new System.Drawing.Point(10, 62);
+            this.themedBar13.Name = "themedBar13";
+            this.themedBar13.Scaled = true;
+            this.themedBar13.Size = new System.Drawing.Size(296, 1);
+            this.themedBar13.TabIndex = 62;
+            this.themedBar13.Text = "themedBar13";
+            // 
+            // themedBar1
+            // 
+            this.themedBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
+            this.themedBar1.BasePaint = false;
+            this.themedBar1.Location = new System.Drawing.Point(10, 32);
+            this.themedBar1.Name = "themedBar1";
+            this.themedBar1.Scaled = true;
+            this.themedBar1.Size = new System.Drawing.Size(296, 1);
+            this.themedBar1.TabIndex = 61;
+            this.themedBar1.Text = "themedBar1";
             // 
             // metroLabel5
             // 
@@ -750,7 +754,7 @@ namespace Shotr.Ui.Forms.Settings
             this.recordAudioToggle.Location = new System.Drawing.Point(263, 68);
             this.recordAudioToggle.Name = "recordAudioToggle";
             this.recordAudioToggle.Scaled = true;
-            this.recordAudioToggle.Size = new System.Drawing.Size(43, 19);
+            this.recordAudioToggle.Size = new System.Drawing.Size(50, 21);
             this.recordAudioToggle.TabIndex = 45;
             this.recordAudioToggle.Text = "Off";
             this.recordAudioToggle.UseVisualStyleBackColor = false;
@@ -805,7 +809,7 @@ namespace Shotr.Ui.Forms.Settings
             this.recordCursorToggle.Location = new System.Drawing.Point(263, 128);
             this.recordCursorToggle.Name = "recordCursorToggle";
             this.recordCursorToggle.Scaled = true;
-            this.recordCursorToggle.Size = new System.Drawing.Size(43, 19);
+            this.recordCursorToggle.Size = new System.Drawing.Size(50, 21);
             this.recordCursorToggle.TabIndex = 40;
             this.recordCursorToggle.Text = "Off";
             this.recordCursorToggle.UseVisualStyleBackColor = false;
@@ -846,7 +850,7 @@ namespace Shotr.Ui.Forms.Settings
             // dpiScaledPictureBox1
             // 
             this.dpiScaledPictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.dpiScaledPictureBox1.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
+            this.dpiScaledPictureBox1.BackgroundImage = global::Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.dpiScaledPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dpiScaledPictureBox1.BasePaint = false;
             this.dpiScaledPictureBox1.Location = new System.Drawing.Point(5, 11);
@@ -856,50 +860,6 @@ namespace Shotr.Ui.Forms.Settings
             this.dpiScaledPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.dpiScaledPictureBox1.TabIndex = 1;
             this.dpiScaledPictureBox1.TabStop = false;
-            // 
-            // themedBar1
-            // 
-            this.themedBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
-            this.themedBar1.BasePaint = false;
-            this.themedBar1.Location = new System.Drawing.Point(10, 32);
-            this.themedBar1.Name = "themedBar1";
-            this.themedBar1.Scaled = true;
-            this.themedBar1.Size = new System.Drawing.Size(296, 1);
-            this.themedBar1.TabIndex = 61;
-            this.themedBar1.Text = "themedBar1";
-            // 
-            // themedBar13
-            // 
-            this.themedBar13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
-            this.themedBar13.BasePaint = false;
-            this.themedBar13.Location = new System.Drawing.Point(10, 62);
-            this.themedBar13.Name = "themedBar13";
-            this.themedBar13.Scaled = true;
-            this.themedBar13.Size = new System.Drawing.Size(296, 1);
-            this.themedBar13.TabIndex = 62;
-            this.themedBar13.Text = "themedBar13";
-            // 
-            // themedBar14
-            // 
-            this.themedBar14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
-            this.themedBar14.BasePaint = false;
-            this.themedBar14.Location = new System.Drawing.Point(10, 92);
-            this.themedBar14.Name = "themedBar14";
-            this.themedBar14.Scaled = true;
-            this.themedBar14.Size = new System.Drawing.Size(296, 1);
-            this.themedBar14.TabIndex = 63;
-            this.themedBar14.Text = "themedBar14";
-            // 
-            // themedBar15
-            // 
-            this.themedBar15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
-            this.themedBar15.BasePaint = false;
-            this.themedBar15.Location = new System.Drawing.Point(10, 122);
-            this.themedBar15.Name = "themedBar15";
-            this.themedBar15.Scaled = true;
-            this.themedBar15.Size = new System.Drawing.Size(296, 1);
-            this.themedBar15.TabIndex = 64;
-            this.themedBar15.Text = "themedBar15";
             // 
             // SettingsForm
             // 
@@ -971,8 +931,6 @@ namespace Shotr.Ui.Forms.Settings
         private ThemedToggle alphaToggle;
         private ThemedPanel metroPanel3;
         private ThemedPanel metroPanel4;
-        private ThemedLabel metroLabel18;
-        private ThemedToggle useresizablecanvas;
         private DpiScaledPictureBox dpiScaledPictureBox1;
         private ThemedButton chooseSaveToDirectoryButton;
         private ThemedBar themedBar4;
@@ -985,7 +943,6 @@ namespace Shotr.Ui.Forms.Settings
         private ThemedBar themedBar10;
         private ThemedBar themedBar9;
         private ThemedBar themedBar12;
-        private ThemedBar themedBar11;
         private ThemedToggle directUrlToggle;
         private ThemedLabel themedLabel1;
         private ThemedLabel metroLabel9;

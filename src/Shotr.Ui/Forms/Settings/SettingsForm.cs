@@ -93,7 +93,6 @@ namespace Shotr.Ui.Forms.Settings
             recordCursorToggle.Checked = _settings.Record.RecordCursor;
             recordAudioToggle.Checked = _settings.Record.RecordAudio;
             audioDeviceCombo.Text = _settings.Record.AudioDevice;
-            useresizablecanvas.Checked = _settings.Capture.UseResizableCanvas;
 
             saveToDirectoryToggle.CheckedChanged += saveToDirectoryToggle_CheckedChanged;
             showNotificationsToggle.CheckedChanged += showNotificationsToggle_CheckedChanged;
@@ -110,7 +109,6 @@ namespace Shotr.Ui.Forms.Settings
             recordCursorToggle.CheckedChanged += recordCursorToggle_CheckedChanged;
             recordAudioToggle.CheckedChanged += recordAudioToggle_CheckedChanged;
             audioDeviceCombo.SelectedIndexChanged += audioDeviceCombo_SelectedIndexChanged;
-            useresizablecanvas.CheckedChanged += UseResizableCanvasCheckedChanged;
 
             foreach (var uploader in _uploaders)
             {
@@ -126,12 +124,6 @@ namespace Shotr.Ui.Forms.Settings
             UpdateDirectUrl();
         }
 
-        void UseResizableCanvasCheckedChanged(object sender, EventArgs e)
-        {
-            _settings.Capture.UseResizableCanvas = useresizablecanvas.Checked;
-            SettingsService.Save(_settings);
-        }
-        
         private void saveToDirectoryToggle_CheckedChanged(object sender, EventArgs e)
         {
             //unhide textbox, allow them to browse.

@@ -871,12 +871,6 @@ namespace Shotr.Ui.Forms
 
             if (!_editing)
             {
-                if (!_settings.Capture.UseResizableCanvas)
-                {
-                    ProcessImage();
-                    return;
-                }
-
                 _activated = false;
                 _resizing = true;
 
