@@ -427,6 +427,7 @@ namespace Shotr.Ui.Forms
                 // Show History tab
                 if (_settings.LegacyHistory is null && !metroTabControl1.TabPages.ContainsKey("metroTabPage4"))
                 {
+                    metroTabControl1.SelectTab(0);
                     metroTabControl1.TabPages.Insert(0, metroTabPage4);
                 }
             }
@@ -440,6 +441,7 @@ namespace Shotr.Ui.Forms
                 // Hide history tab.
                 if (_settings.LegacyHistory is null)
                 {
+                    metroTabControl1.SelectTab(0);
                     metroTabControl1.TabPages.Remove(metroTabPage4);
                 }
             }
