@@ -20,9 +20,6 @@ namespace Shotr.Core.Settings
 
         [ConfigurationItem(Required = false, Default = true)]
         public bool ShowInformation { get; set; }
-        
-        [ConfigurationItem(Required = false, Default = true)]
-        public bool UseResizableCanvas { get; set; }
 
         [ConfigurationItem(Required = false, Default = false)]
         public bool CompressionEnabled { get; set; }
