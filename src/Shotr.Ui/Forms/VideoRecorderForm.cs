@@ -432,6 +432,7 @@ namespace Shotr.Ui.Forms
                         Fmp.Options.FFmpeg.AudioCodec = FFmpegAudioCodec.libvorbis;
                     }
                 }
+                Fmp.Options.FFmpeg.Preset = Enum.Parse<FFmpegPreset>(_settings.Record.Quality);
                 Fmp.ErrorDataReceived += fmp_ErrorDataReceived;
                 Fmp.OutputDataReceived += fmp_OutputDataReceived;
                 new Thread(delegate()

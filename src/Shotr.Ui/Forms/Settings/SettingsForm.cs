@@ -111,6 +111,7 @@ namespace Shotr.Ui.Forms.Settings
             recordAudioToggle.CheckedChanged += recordAudioToggle_CheckedChanged;
             audioDeviceCombo.SelectedIndexChanged += audioDeviceCombo_SelectedIndexChanged;
             useresizablecanvas.CheckedChanged += UseResizableCanvasCheckedChanged;
+            qualityCombo.SelectedIndexChanged += QualityCombo_SelectedIndexChanged;
 
             foreach (var uploader in _uploaders)
             {
@@ -123,7 +124,15 @@ namespace Shotr.Ui.Forms.Settings
                 selectedImageUploader.Text = (string) selectedImageUploader.Items[0];
             }
 
+            qualityCombo.Text = _settings.Record.Quality;
+
             UpdateDirectUrl();
+        }
+
+        private void QualityCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _settings.Record.Quality = qualityCombo.Text;
+            SettingsService.Save(_settings);
         }
 
         void UseResizableCanvasCheckedChanged(object sender, EventArgs e)
