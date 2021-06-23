@@ -76,6 +76,9 @@ namespace Shotr.Ui.Forms.Settings
             this.imageQualityCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
             this.metroTabPage4 = new Shotr.Core.Controls.Theme.ThemedTabPage();
             this.metroPanel4 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.themedBar16 = new Shotr.Core.Controls.Theme.ThemedBar();
+            this.qualityLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.qualityCombo = new Shotr.Core.Controls.Theme.ThemedComboBox();
             this.themedBar15 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.themedBar14 = new Shotr.Core.Controls.Theme.ThemedBar();
             this.themedBar13 = new Shotr.Core.Controls.Theme.ThemedBar();
@@ -648,6 +651,9 @@ namespace Shotr.Ui.Forms.Settings
             // metroPanel4
             // 
             this.metroPanel4.BasePaint = false;
+            this.metroPanel4.Controls.Add(this.themedBar16);
+            this.metroPanel4.Controls.Add(this.qualityLabel);
+            this.metroPanel4.Controls.Add(this.qualityCombo);
             this.metroPanel4.Controls.Add(this.themedBar15);
             this.metroPanel4.Controls.Add(this.themedBar14);
             this.metroPanel4.Controls.Add(this.themedBar13);
@@ -668,11 +674,56 @@ namespace Shotr.Ui.Forms.Settings
             this.metroPanel4.Size = new System.Drawing.Size(316, 255);
             this.metroPanel4.TabIndex = 53;
             // 
+            // themedBar16
+            // 
+            this.themedBar16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
+            this.themedBar16.BasePaint = false;
+            this.themedBar16.Location = new System.Drawing.Point(10, 92);
+            this.themedBar16.Name = "themedBar16";
+            this.themedBar16.Scaled = true;
+            this.themedBar16.Size = new System.Drawing.Size(296, 1);
+            this.themedBar16.TabIndex = 67;
+            this.themedBar16.Text = "themedBar16";
+            // 
+            // qualityLabel
+            // 
+            this.qualityLabel.AutoSize = true;
+            this.qualityLabel.BasePaint = false;
+            this.qualityLabel.Location = new System.Drawing.Point(10, 70);
+            this.qualityLabel.Name = "qualityLabel";
+            this.qualityLabel.Scaled = true;
+            this.qualityLabel.Size = new System.Drawing.Size(47, 15);
+            this.qualityLabel.TabIndex = 66;
+            this.qualityLabel.Text = "Quality";
+            // 
+            // qualityComboBox1
+            // 
+            this.qualityCombo.BasePaint = false;
+            this.qualityCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.qualityCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.qualityCombo.FormattingEnabled = true;
+            this.qualityCombo.ItemHeight = 15;
+            this.qualityCombo.Items.AddRange(new object[] {
+            "ultrafast",
+            "superfast",
+            "veryfast",
+            "faster",
+            "fast",
+            "medium",
+            "slow",
+            "slower",
+            "veryslow"});
+            this.qualityCombo.Location = new System.Drawing.Point(178, 67);
+            this.qualityCombo.Name = "qualityComboBox1";
+            this.qualityCombo.Scaled = true;
+            this.qualityCombo.Size = new System.Drawing.Size(128, 21);
+            this.qualityCombo.TabIndex = 65;
+            // 
             // themedBar15
             // 
             this.themedBar15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
             this.themedBar15.BasePaint = false;
-            this.themedBar15.Location = new System.Drawing.Point(10, 122);
+            this.themedBar15.Location = new System.Drawing.Point(10, 152);
             this.themedBar15.Name = "themedBar15";
             this.themedBar15.Scaled = true;
             this.themedBar15.Size = new System.Drawing.Size(296, 1);
@@ -683,7 +734,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.themedBar14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
             this.themedBar14.BasePaint = false;
-            this.themedBar14.Location = new System.Drawing.Point(10, 92);
+            this.themedBar14.Location = new System.Drawing.Point(10, 122);
             this.themedBar14.Name = "themedBar14";
             this.themedBar14.Scaled = true;
             this.themedBar14.Size = new System.Drawing.Size(296, 1);
@@ -716,7 +767,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroLabel5.AutoSize = true;
             this.metroLabel5.BasePaint = false;
-            this.metroLabel5.Location = new System.Drawing.Point(10, 100);
+            this.metroLabel5.Location = new System.Drawing.Point(10, 130);
             this.metroLabel5.Name = "metroLabel5";
             this.metroLabel5.Scaled = true;
             this.metroLabel5.Size = new System.Drawing.Size(82, 15);
@@ -730,7 +781,7 @@ namespace Shotr.Ui.Forms.Settings
             this.audioDeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.audioDeviceCombo.FormattingEnabled = true;
             this.audioDeviceCombo.ItemHeight = 15;
-            this.audioDeviceCombo.Location = new System.Drawing.Point(178, 97);
+            this.audioDeviceCombo.Location = new System.Drawing.Point(178, 127);
             this.audioDeviceCombo.Name = "audioDeviceCombo";
             this.audioDeviceCombo.Scaled = true;
             this.audioDeviceCombo.Size = new System.Drawing.Size(128, 21);
@@ -740,7 +791,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroLabel4.AutoSize = true;
             this.metroLabel4.BasePaint = false;
-            this.metroLabel4.Location = new System.Drawing.Point(10, 70);
+            this.metroLabel4.Location = new System.Drawing.Point(10, 100);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Scaled = true;
             this.metroLabel4.Size = new System.Drawing.Size(82, 15);
@@ -751,7 +802,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.recordAudioToggle.AutoSize = true;
             this.recordAudioToggle.BasePaint = false;
-            this.recordAudioToggle.Location = new System.Drawing.Point(263, 68);
+            this.recordAudioToggle.Location = new System.Drawing.Point(263, 98);
             this.recordAudioToggle.Name = "recordAudioToggle";
             this.recordAudioToggle.Scaled = true;
             this.recordAudioToggle.Size = new System.Drawing.Size(50, 21);
@@ -806,7 +857,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.recordCursorToggle.AutoSize = true;
             this.recordCursorToggle.BasePaint = false;
-            this.recordCursorToggle.Location = new System.Drawing.Point(263, 128);
+            this.recordCursorToggle.Location = new System.Drawing.Point(263, 158);
             this.recordCursorToggle.Name = "recordCursorToggle";
             this.recordCursorToggle.Scaled = true;
             this.recordCursorToggle.Size = new System.Drawing.Size(50, 21);
@@ -840,7 +891,7 @@ namespace Shotr.Ui.Forms.Settings
             // 
             this.metroLabel2.AutoSize = true;
             this.metroLabel2.BasePaint = false;
-            this.metroLabel2.Location = new System.Drawing.Point(10, 130);
+            this.metroLabel2.Location = new System.Drawing.Point(10, 160);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Scaled = true;
             this.metroLabel2.Size = new System.Drawing.Size(87, 15);
@@ -951,5 +1002,8 @@ namespace Shotr.Ui.Forms.Settings
         private ThemedBar themedBar15;
         private ThemedBar themedBar14;
         private ThemedBar themedBar13;
+        private ThemedBar themedBar16;
+        private ThemedLabel qualityLabel;
+        private ThemedComboBox qualityCombo;
     }
 }
