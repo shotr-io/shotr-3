@@ -106,9 +106,13 @@ namespace Shotr.Core.Services
             {
                 Console.WriteLine(ex);
                 //register old hotkey.
-                var oldHotKey = _keyboardHook.RegisterHotKey(new HotKeyData(hotkey.Keys));
-                oldHotKey.Task = task;
-                _hotkeys.Add(oldHotKey);
+                if (hotkey is { })
+                {
+                    var oldHotKey = _keyboardHook.RegisterHotKey(new HotKeyData(hotkey.Keys));
+                    oldHotKey.Task = task;
+                    _hotkeys.Add(oldHotKey);
+                }
+
                 return false;
             }
 

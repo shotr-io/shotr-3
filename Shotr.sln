@@ -9,11 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5C04A2E4-97A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shotr.Core", "src\Shotr.Core\Shotr.Core.csproj", "{80B46D46-CFA4-4D91-BBBA-4C3DD34A9F06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShotrUploaderPlugin", "src\ShotrUploaderPlugin\ShotrUploaderPlugin.csproj", "{176CDC05-72A1-44C5-BD7C-7487832694C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shotr.Core.Uploader", "src\Shotr.Core.Uploader\Shotr.Core.Uploader.csproj", "{176CDC05-72A1-44C5-BD7C-7487832694C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shotr.Core.Quantizer", "src\Shotr.Core.Quantizer\Shotr.Core.Quantizer.csproj", "{C41C05C3-B25D-421B-BF17-ED098AED839A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shotr.Ui.Installer", "src\Shotr.Ui.Installer\Shotr.Ui.Installer.csproj", "{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shotr.Core.MimeDetect", "src\Shotr.Core.MimeDetect\Shotr.Core.MimeDetect.csproj", "{DF6303A9-1576-4FFD-926D-1A8171785594}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,6 +183,36 @@ Global
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x64.Build.0 = WindowsNotification|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x86.ActiveCfg = WindowsNotification|Any CPU
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542}.WindowsNotification|x86.Build.0 = WindowsNotification|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.BetaTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.BetaTest|Any CPU.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.BetaTest|x64.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.BetaTest|x64.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.BetaTest|x86.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.BetaTest|x86.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Debug|x64.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Debug|x86.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Release|x64.Build.0 = Release|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Release|x86.ActiveCfg = Release|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.Release|x86.Build.0 = Release|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.ThemeDebugger|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.ThemeDebugger|Any CPU.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.ThemeDebugger|x64.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.ThemeDebugger|x64.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.ThemeDebugger|x86.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.ThemeDebugger|x86.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.WindowsNotification|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.WindowsNotification|Any CPU.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.WindowsNotification|x64.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.WindowsNotification|x64.Build.0 = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.WindowsNotification|x86.ActiveCfg = Debug|Any CPU
+		{DF6303A9-1576-4FFD-926D-1A8171785594}.WindowsNotification|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -191,6 +223,7 @@ Global
 		{176CDC05-72A1-44C5-BD7C-7487832694C8} = {5C04A2E4-97A6-406E-B487-F0CBAD8BDA0A}
 		{C41C05C3-B25D-421B-BF17-ED098AED839A} = {5C04A2E4-97A6-406E-B487-F0CBAD8BDA0A}
 		{3B1BE3F0-4F66-4AE9-9CA1-C8F155FF1542} = {5C04A2E4-97A6-406E-B487-F0CBAD8BDA0A}
+		{DF6303A9-1576-4FFD-926D-1A8171785594} = {5C04A2E4-97A6-406E-B487-F0CBAD8BDA0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {01BE9BF5-9915-43C8-929B-97A2FE1E5F71}

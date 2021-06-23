@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.UI.Notifications;
 using Newtonsoft.Json;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
@@ -25,7 +24,6 @@ using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using Shotr.Ui.Forms;
 using Shotr.Ui.Properties;
-using ShotrUploaderPlugin;
 
 namespace Shotr.Ui
 {
@@ -162,6 +160,11 @@ namespace Shotr.Ui
             var form = ServiceProvider.GetService<MainForm>();
             var settings = ServiceProvider.GetService<BaseSettings>();
             var hotkeys = ServiceProvider.GetService<HotKeyService>();
+
+            if (settings.StartWithWindows)
+            {
+                Utils.AddToStartup(settings.StartWithWindows);
+            }
             
             hotkeys.LoadHotKeys();
             
@@ -344,25 +347,25 @@ namespace Shotr.Ui
 
             var uploader = ServiceProvider.GetService<Uploader>();
             uploader.RemoveHandlers();
-            uploader.OnUploaded += (_, e) =>
+            uploader.OnUploaded += (fileShell, result, saveResult, fileType, extension, uploader) =>
             {
                 try
                 {
                     var m = new WebClient { Proxy = null };
                     m.Headers.Add("User-Agent: Shotr_Error_Reporter");
-                    m.UploadValues("https://shotr.io/report_error", new NameValueCollection { { "error", e.PageURL } });
+                    m.UploadValues("https://shotr.io/report_error", new NameValueCollection { { "error", result.PageUrl } });
                 }
                 catch { }
                 MessageBox.Show("Shotr has encountered an error and must close.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             };
-            uploader.OnError += (_, e) =>
+            uploader.OnError += (fileShell, allowReupload, fileType, uploader, errorMessage) =>
             {
                 MessageBox.Show("Shotr has encountered an error and must close.", "Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             };
             
-            uploader.AddToQueue(new ImageShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString()), FileExtensions.txt));
+            uploader.AddToQueue(new FileShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString())));
         }
 
         [DllImport("SHCore.dll")]

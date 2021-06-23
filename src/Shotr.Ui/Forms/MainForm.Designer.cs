@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
@@ -71,11 +71,7 @@ namespace Shotr.Ui.Forms
             this.fullScreenHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
             this.regionHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
             this.metroLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.directUrlToggle = new Shotr.Core.Controls.Theme.ThemedToggle();
-            this.metroLabel11 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.metroLabel9 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.regionLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.selectedImageUploader = new Shotr.Core.Controls.Theme.ThemedComboBox();
             this.fullscreenLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.activeWindowLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.metroPanel1 = new Shotr.Core.Controls.Theme.ThemedPanel();
@@ -264,11 +260,11 @@ namespace Shotr.Ui.Forms
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.metroTabControl1.Location = new System.Drawing.Point(10, 57);
+            this.metroTabControl1.Location = new System.Drawing.Point(6, 57);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.Scaled = true;
             this.metroTabControl1.SelectedIndex = 1;
-            this.metroTabControl1.Size = new System.Drawing.Size(601, 311);
+            this.metroTabControl1.Size = new System.Drawing.Size(601, 292);
             this.metroTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.metroTabControl1.TabIndex = 5;
             // 
@@ -280,7 +276,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage4.Name = "metroTabPage4";
             this.metroTabPage4.Padding = new System.Windows.Forms.Padding(10);
             this.metroTabPage4.Scaled = true;
-            this.metroTabPage4.Size = new System.Drawing.Size(593, 282);
+            this.metroTabPage4.Size = new System.Drawing.Size(593, 263);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "History";
             // 
@@ -325,7 +321,7 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
             this.metroTabPage2.Name = "metroTabPage2";
             this.metroTabPage2.Scaled = true;
-            this.metroTabPage2.Size = new System.Drawing.Size(593, 282);
+            this.metroTabPage2.Size = new System.Drawing.Size(593, 263);
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";
             // 
@@ -342,18 +338,14 @@ namespace Shotr.Ui.Forms
             this.metroPanel2.Controls.Add(this.fullScreenHotKeyButton);
             this.metroPanel2.Controls.Add(this.regionHotKeyButton);
             this.metroPanel2.Controls.Add(this.metroLabel1);
-            this.metroPanel2.Controls.Add(this.directUrlToggle);
-            this.metroPanel2.Controls.Add(this.metroLabel11);
-            this.metroPanel2.Controls.Add(this.metroLabel9);
             this.metroPanel2.Controls.Add(this.regionLabel);
-            this.metroPanel2.Controls.Add(this.selectedImageUploader);
             this.metroPanel2.Controls.Add(this.fullscreenLabel);
             this.metroPanel2.Controls.Add(this.activeWindowLabel);
             this.metroPanel2.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.metroPanel2.Location = new System.Drawing.Point(6, 7);
             this.metroPanel2.Name = "metroPanel2";
             this.metroPanel2.Scaled = true;
-            this.metroPanel2.Size = new System.Drawing.Size(282, 272);
+            this.metroPanel2.Size = new System.Drawing.Size(282, 254);
             this.metroPanel2.TabIndex = 25;
             // 
             // colorPickerHotKeyButton
@@ -478,43 +470,6 @@ namespace Shotr.Ui.Forms
             this.metroLabel1.Text = "Action Settings";
             this.metroLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // directUrlToggle
-            // 
-            this.directUrlToggle.BasePaint = false;
-            this.directUrlToggle.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.directUrlToggle.Location = new System.Drawing.Point(215, 235);
-            this.directUrlToggle.Name = "directUrlToggle";
-            this.directUrlToggle.Scaled = true;
-            this.directUrlToggle.Size = new System.Drawing.Size(48, 19);
-            this.directUrlToggle.TabIndex = 18;
-            this.directUrlToggle.Text = "Off";
-            this.directUrlToggle.UseVisualStyleBackColor = false;
-            this.directUrlToggle.Visible = false;
-            // 
-            // metroLabel11
-            // 
-            this.metroLabel11.BasePaint = false;
-            this.metroLabel11.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.metroLabel11.Location = new System.Drawing.Point(16, 236);
-            this.metroLabel11.Name = "metroLabel11";
-            this.metroLabel11.Scaled = true;
-            this.metroLabel11.Size = new System.Drawing.Size(116, 20);
-            this.metroLabel11.TabIndex = 17;
-            this.metroLabel11.Text = "Direct Image URLs:";
-            this.metroLabel11.Visible = false;
-            // 
-            // metroLabel9
-            // 
-            this.metroLabel9.BasePaint = false;
-            this.metroLabel9.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.metroLabel9.Location = new System.Drawing.Point(3, 186);
-            this.metroLabel9.Name = "metroLabel9";
-            this.metroLabel9.Scaled = true;
-            this.metroLabel9.Size = new System.Drawing.Size(276, 21);
-            this.metroLabel9.TabIndex = 16;
-            this.metroLabel9.Text = "Image Uploader";
-            this.metroLabel9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // regionLabel
             // 
             this.regionLabel.BasePaint = false;
@@ -525,21 +480,6 @@ namespace Shotr.Ui.Forms
             this.regionLabel.Size = new System.Drawing.Size(53, 22);
             this.regionLabel.TabIndex = 7;
             this.regionLabel.Text = "Region:";
-            // 
-            // selectedImageUploader
-            // 
-            this.selectedImageUploader.BasePaint = false;
-            this.selectedImageUploader.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.selectedImageUploader.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.selectedImageUploader.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.selectedImageUploader.FormattingEnabled = true;
-            this.selectedImageUploader.ItemHeight = 15;
-            this.selectedImageUploader.Location = new System.Drawing.Point(18, 208);
-            this.selectedImageUploader.Name = "selectedImageUploader";
-            this.selectedImageUploader.Scaled = true;
-            this.selectedImageUploader.Size = new System.Drawing.Size(245, 21);
-            this.selectedImageUploader.TabIndex = 15;
-            this.selectedImageUploader.SelectedIndexChanged += new System.EventHandler(this.metroComboBox1_SelectedIndexChanged);
             // 
             // fullscreenLabel
             // 
@@ -809,13 +749,14 @@ namespace Shotr.Ui.Forms
             // 
             this.metroLabel8.BasePaint = false;
             this.metroLabel8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.metroLabel8.Location = new System.Drawing.Point(317, 346);
+            this.metroLabel8.Font = new System.Drawing.Font("Inter", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.metroLabel8.Location = new System.Drawing.Point(322, 1);
             this.metroLabel8.Name = "metroLabel8";
             this.metroLabel8.Scaled = true;
             this.metroLabel8.Size = new System.Drawing.Size(289, 19);
             this.metroLabel8.TabIndex = 2;
             this.metroLabel8.Text = "v{0}";
-            this.metroLabel8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.metroLabel8.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.metroLabel8.Click += new System.EventHandler(this.aboutLabel_Click);
             // 
             // logoPictureBox
@@ -835,7 +776,7 @@ namespace Shotr.Ui.Forms
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(621, 373);
+            this.ClientSize = new System.Drawing.Size(613, 360);
             this.Controls.Add(this.metroLabel8);
             this.Controls.Add(this.metroTabControl1);
             this.Controls.Add(this.logoPictureBox);
@@ -904,10 +845,6 @@ namespace Shotr.Ui.Forms
         private ThemedLabel metroLabel5;
         private ThemedLabel metroLabel8;
         private ThemedTabPage metroTabPage4;
-        private ThemedLabel metroLabel9;
-        private ThemedComboBox selectedImageUploader;
-        private ThemedToggle directUrlToggle;
-        private ThemedLabel metroLabel11;
         private ThemedListView themedListView1;
         private ThemedButton metroButton2;
         private ThemedPanel metroPanel2;

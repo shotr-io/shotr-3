@@ -21,5 +21,8 @@ namespace Shotr.Core.Settings
         
         [ConfigurationItem(Required = false, Default = true)]
         public bool ShowWarning { get; set; }
+
+        [ConfigurationItem(Required = false, Default = "fast")]
+        public string? Quality { get; set; }
     }
 }

@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Shotr.Core;
-using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Model;
 using Shotr.Core.Settings;

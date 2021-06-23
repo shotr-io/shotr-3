@@ -38,7 +38,7 @@ namespace Shotr.Ui.Forms
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.metroLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.metroLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.metroButton1 = new Shotr.Core.Controls.Theme.ThemedButton();
+            this.retryButton = new Shotr.Core.Controls.Theme.ThemedButton();
             this.pictureBox1 = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
             this.themedButton1 = new Shotr.Core.Controls.Theme.ThemedButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -74,15 +74,15 @@ namespace Shotr.Ui.Forms
             // 
             // metroButton1
             // 
-            this.metroButton1.BasePaint = false;
-            this.metroButton1.Highlight = false;
-            this.metroButton1.Location = new System.Drawing.Point(133, 57);
-            this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Scaled = true;
-            this.metroButton1.Size = new System.Drawing.Size(77, 23);
-            this.metroButton1.TabIndex = 4;
-            this.metroButton1.Text = "Retry";
-            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
+            this.retryButton.BasePaint = false;
+            this.retryButton.Highlight = false;
+            this.retryButton.Location = new System.Drawing.Point(133, 57);
+            this.retryButton.Name = "retryButton";
+            this.retryButton.Scaled = true;
+            this.retryButton.Size = new System.Drawing.Size(77, 23);
+            this.retryButton.TabIndex = 4;
+            this.retryButton.Text = "Retry Upload";
+            this.retryButton.Click += new System.EventHandler(this.metroButton1_Click);
             // 
             // pictureBox1
             // 
@@ -116,7 +116,7 @@ namespace Shotr.Ui.Forms
             this.ClientSize = new System.Drawing.Size(342, 88);
             this.Controls.Add(this.themedButton1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.metroButton1);
+            this.Controls.Add(this.retryButton);
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.metroLabel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -136,7 +136,7 @@ namespace Shotr.Ui.Forms
         private Timer timer1;
         private ThemedLabel metroLabel1;
         private ThemedLabel metroLabel2;
-        private ThemedButton metroButton1;
+        private ThemedButton retryButton;
         private DpiScaledPictureBox pictureBox1;
         private ThemedButton themedButton1;
     }

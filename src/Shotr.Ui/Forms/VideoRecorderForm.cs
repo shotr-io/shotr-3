@@ -14,7 +14,6 @@ using Shotr.Core.Services;
 using Shotr.Core.Settings;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
-using ShotrUploaderPlugin;
 
 namespace Shotr.Ui.Forms
 {
@@ -433,6 +432,7 @@ namespace Shotr.Ui.Forms
                         Fmp.Options.FFmpeg.AudioCodec = FFmpegAudioCodec.libvorbis;
                     }
                 }
+                Fmp.Options.FFmpeg.Preset = Enum.Parse<FFmpegPreset>(_settings.Record.Quality);
                 Fmp.ErrorDataReceived += fmp_ErrorDataReceived;
                 Fmp.OutputDataReceived += fmp_OutputDataReceived;
                 new Thread(delegate()
@@ -475,10 +475,10 @@ namespace Shotr.Ui.Forms
                                 var result = MessageBox.Show("Video saved to folder. Would you like to upload it?",
                                     "Upload Video",
                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
                                 if (result == DialogResult.Yes)
                                 {
-                                    _uploader.AddToQueue(
-                                        new ImageShell(File.ReadAllBytes(filePath), FileExtensions.mp4));
+                                    _uploader.AddToQueue(new FileShell(filePath));
                                 }
                             }
                         }

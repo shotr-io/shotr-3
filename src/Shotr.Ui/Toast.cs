@@ -13,7 +13,6 @@ using Shotr.Core.Settings;
 using Shotr.Core.UpdateFramework;
 using Shotr.Core.Uploader;
 using Shotr.Ui.Forms;
-using ShotrUploaderPlugin;
 using Exception = System.Exception;
 
 namespace Shotr.Ui
@@ -28,76 +27,91 @@ namespace Shotr.Ui
             var splitArgs = invokedArgs.Split("&");
             foreach (var arg in splitArgs)
             {
-                var split = arg.Split("=");
-                dict.Add(split[0], split[1]);
+                if (arg.Contains("="))
+                {
+                    var split = arg.Split("=");
+                    dict.Add(split[0], split[1]);
+                }
             }
 
-            switch (dict["action"])
+            if (dict.ContainsKey("action"))
             {
-                case "viewUrl":
-                    if (dict.ContainsKey("url"))
-                    {
-                        dict["url"].OpenUrl();
-                    }
 
-                    break;
-                case "viewUpdate":
-                    var subscribe = bool.Parse(dict["subscribeAlphaBeta"]);
-                    var updateForm = new UpdateForm(dict["changes"], subscribe, dict["installerUrl"], dict["version"]);
-                    updateForm.ShowDialog();
-                    break;
-                case "openDirectory":
-                    var directory = dict["path"];
-                    var process = new Process
-                    {
-                        StartInfo = new ProcessStartInfo
+                switch (dict["action"])
+                {
+                    case "viewUrl":
+                        if (dict.ContainsKey("url"))
                         {
-                            FileName = "explorer.exe",
-                            Arguments = $"/select, \"{directory}\"",
-                            UseShellExecute = true
+                            dict["url"].OpenUrl();
                         }
-                    };
-                    process.Start();
-                    process.Dispose();
-                    break;
-                case "snoozeUpdate":
-                    if (userInput.ContainsKey("snooze"))
-                    {
-                        var value = userInput["snooze"];
-                        // Transform key to datetime.
-                        var timeToSnooze = value switch
+
+                        break;
+                    case "viewUpdate":
+                        var subscribe = bool.Parse(dict["subscribeAlphaBeta"]);
+                        var updateForm = new UpdateForm(dict["changes"], subscribe, dict["installerUrl"], dict["version"]);
+                        updateForm.ShowDialog();
+                        break;
+                    case "openDirectory":
+                        var directory = dict["path"];
+                        var process = new Process
                         {
-                            "6h" => TimeSpan.FromHours(6),
-                            "12h" => TimeSpan.FromHours(12),
-                            "1d" => TimeSpan.FromDays(1),
-                            "3d" => TimeSpan.FromDays(3),
-                            "1w" => TimeSpan.FromDays(7),
-                            _ => TimeSpan.FromDays(1)
+                            StartInfo = new ProcessStartInfo
+                            {
+                                FileName = "explorer.exe",
+                                Arguments = $"/select, \"{directory}\"",
+                                UseShellExecute = true
+                            }
                         };
+                        process.Start();
+                        process.Dispose();
+                        break;
+                    case "snoozeUpdate":
+                        if (userInput.ContainsKey("snooze"))
+                        {
+                            var value = userInput["snooze"];
+                            // Transform key to datetime.
+                            var timeToSnooze = value switch
+                            {
+                                "6h" => TimeSpan.FromHours(6),
+                                "12h" => TimeSpan.FromHours(12),
+                                "1d" => TimeSpan.FromDays(1),
+                                "3d" => TimeSpan.FromDays(3),
+                                "1w" => TimeSpan.FromDays(7),
+                                _ => TimeSpan.FromDays(1)
+                            };
 
-                        Updater.TimeToCheck = (int) timeToSnooze.TotalMilliseconds;
-                        Updater.CheckForUpdates();
-                    }
+                            Updater.TimeToCheck = (int)timeToSnooze.TotalMilliseconds;
+                            Updater.CheckForUpdates();
+                        }
 
-                    break;
-                case "uploadVideo":
-                    var videoPath = dict["path"];
-                    var uploader = Program.ServiceProvider.GetService<Uploader>();
-                    if (uploader is { })
-                    {
-                        uploader.AddToQueue(new ImageShell(File.ReadAllBytes(videoPath), FileExtensions.mp4));
-                    }
+                        break;
+                    case "uploadVideo":
+                        var videoPath = dict["path"];
+                        var uploader = Program.ServiceProvider.GetService<Uploader>();
+                        if (uploader is { })
+                        {
+                            uploader.AddToQueue(new FileShell(videoPath));
+                        }
 
-                    break;
-                case "dontShowEditNotification":
-                    var settings = Program.ServiceProvider.GetService<BaseSettings>();
-                    if (settings is { }) // settings != null
-                    {
-                        settings.Capture.ShowEditNotification = false;
-                        SettingsService.Save(settings);
-                    }
+                        break;
+                    case "dontShowEditNotification":
+                        var settings = Program.ServiceProvider.GetService<BaseSettings>();
+                        if (settings is { }) // settings != null
+                        {
+                            settings.Capture.ShowEditNotification = false;
+                            SettingsService.Save(settings);
+                        }
 
-                    break;
+                        break;
+                    case "retryUpload":
+                        var path = dict["path"];
+                        var uploaderService = Program.ServiceProvider.GetService<Uploader>();
+                        if (uploaderService is { })
+                        {
+                            uploaderService.AddToQueue(new FileShell(path));
+                        }
+                        break;
+                }
             }
         }
 
