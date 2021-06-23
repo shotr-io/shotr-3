@@ -160,6 +160,11 @@ namespace Shotr.Ui
             var form = ServiceProvider.GetService<MainForm>();
             var settings = ServiceProvider.GetService<BaseSettings>();
             var hotkeys = ServiceProvider.GetService<HotKeyService>();
+
+            if (settings.StartWithWindows)
+            {
+                Utils.AddToStartup(settings.StartWithWindows);
+            }
             
             hotkeys.LoadHotKeys();
             
