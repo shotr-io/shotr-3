@@ -87,10 +87,10 @@ jobs:
             cd $GITHUB_WORKSPACE
             echo 'ISSUES<<EOF' >> $GITHUB_ENV
             echo "### Features: " >> $GITHUB_ENV
-            echo `GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "feature request" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'` >> $GITHUB_ENV
+            echo `GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "feature request" | awk -F $'\t' '{ printf "- %s (#%s)\r\n", $3, $1 }'` >> $GITHUB_ENV
             echo "" >> $GITHUB_ENV
             echo "### Bug Fixes: " >> $GITHUB_ENV
-            echo `GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "bug" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'` >> $GITHUB_ENV
+            echo `GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "bug" | awk -F $'\t' '{ printf "- %s (#%s)\r\n", $3, $1 }'` >> $GITHUB_ENV
             echo 'EOF' >> $GITHUB_ENV
 
       - name: Download Zip Artifact
