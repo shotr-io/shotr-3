@@ -22,6 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set version number
+      id: version_step
       run: | 
         chmod +x "${GITHUB_WORKSPACE}/.github/version.sh"
         "${GITHUB_WORKSPACE}/.github/version.sh"
@@ -37,17 +38,17 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Publish
-      run: dotnet publish -r win-x64 -c "${{ env.BUILD_BRANCH }}" 
+      run: dotnet publish -r win-x64 -c "${{ jobs.version.steps.version_step.outputs.build_branch }}" 
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - uses: actions/upload-artifact@v2
       with:
         name: Shotr
-        path: ./src/Shotr.Ui/bin/${{env.BUILD_BRANCH}}/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
+        path: ./src/Shotr.Ui/bin/${{ jobs.version.steps.version_step.outputs.build_branch }}/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
     - uses: actions/upload-artifact@v2
       with:
         name: Shotr-Installer
-        path: ./src/Shotr.Ui.Installer/bin/${{env.BUILD_BRANCH}}/net5.0-windows/win-x64/publish/Shotr-Installer.exe
+        path: ./src/Shotr.Ui.Installer/bin/${{ jobs.version.steps.version_step.outputs.build_branch }}/net5.0-windows/win-x64/publish/Shotr-Installer.exe
 
   comment-on-pr:
     name: Leave a comment with a link to the build on the PR
