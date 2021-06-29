@@ -17,10 +17,14 @@
     <Authors>Shotr</Authors>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>Shotr.Ui.Installer.Program</StartupObject>
-    <Configurations>Debug;Release;BetaTest;WindowsNotification</Configurations>
+    <Configurations>Debug;Release;BetaTest;WindowsNotification;Testing</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Testing'">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
