@@ -17,19 +17,12 @@ defaults:
     working-directory: ./
     
 jobs:
-  version:
-    runs-on: ubuntu-latest    
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set version number
-      id: version_step
-      run: | 
-        chmod +x "${GITHUB_WORKSPACE}/.github/version.sh"
-        "${GITHUB_WORKSPACE}/.github/version.sh"
   build:
     runs-on: windows-latest    
-    needs: version
     steps:
+    - uses: Vampire/setup-wsl@v1
+      with:
+        distribution: Ubuntu-18.04
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -37,6 +30,12 @@ jobs:
         dotnet-version: 5.0.100
     - name: Restore dependencies
       run: dotnet restore
+    - name: Set version number
+      id: version_step
+      shell: wsl-bash {0}
+      run: | 
+        chmod +x "${GITHUB_WORKSPACE}/.github/version.sh"
+        "${GITHUB_WORKSPACE}/.github/version.sh"
     - name: Publish
       run: dotnet publish -r win-x64 -c "${{ jobs.version.steps.version_step.outputs.build_branch }}" 
     - name: Test
