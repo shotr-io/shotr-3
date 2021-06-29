@@ -2,7 +2,6 @@ name: dotnet
 
 on:
   push:
-    branches: [ main ]
     tags:
       - 'v*'
   pull_request:
@@ -75,14 +74,14 @@ jobs:
         id: get_issues_and_format
         run: | 
         
-        FEATURE_ISSUES=`GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "feature" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'`        
-        REFACTOR_ISSUES=`GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "refactor" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'`
-        BUG_ISSUES=`GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "bug" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'`
-        
-        ISSUES="${FEATURE_ISSUES}${REFACTOR_ISSUES}\n\n${BUG_ISSUES}"
-        echo 'ISSUES<<EOF' >> $GITHUB_ENV
-        echo "$ISSUES" >> $GITHUB_ENV
-        echo 'EOF' >> $GITHUB_ENV
+            FEATURE_ISSUES=`GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "feature" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'`        
+            REFACTOR_ISSUES=`GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "refactor" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'`
+            BUG_ISSUES=`GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} gh issue list -m "${{ steps.get_release_version.outputs.version }}" -s "all" -l "bug" | awk -F $'\t' '{ printf "- %s (#%s)\n", $3, $1 }'`
+            
+            ISSUES="${FEATURE_ISSUES}${REFACTOR_ISSUES}\n\n${BUG_ISSUES}"
+            echo 'ISSUES<<EOF' >> $GITHUB_ENV
+            echo "$ISSUES" >> $GITHUB_ENV
+            echo 'EOF' >> $GITHUB_ENV
 
       - name: Download Zip Artifact
         id: download
