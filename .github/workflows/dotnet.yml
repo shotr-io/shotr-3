@@ -30,7 +30,7 @@ jobs:
     - name: Set version number
       shell: powershell
       run: |
-        $VERSION = & git.exe tag --points-at main
+        $VERSION = & git.exe tag --points-at HEAD
         if ($VERSION) {
             $NVERSION = $VERSION.substring(1)
             echo "[assembly: AssemblyVersion(`"$NVERSION`")]" | Out-File -Append -FilePath ${env:GITHUB_WORKSPACE}/src/Shotr.Ui/Properties/AssemblyVersion.cs -Encoding utf8
