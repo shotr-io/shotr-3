@@ -17,8 +17,17 @@ defaults:
     working-directory: ./
     
 jobs:
+  version:
+    runs-on: ubuntu-latest    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set version number
+      run: | 
+        chmod +x "${GITHUB_WORKSPACE}/.github/version.sh"
+        "${GITHUB_WORKSPACE}/.github/version.sh"
   build:
     runs-on: windows-latest    
+    needs: version
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -27,10 +36,6 @@ jobs:
         dotnet-version: 5.0.100
     - name: Restore dependencies
       run: dotnet restore
-    - name: Set version number
-      run: | 
-        chmod +x "${GITHUB_WORKSPACE}/.github/version.sh"
-        "${GITHUB_WORKSPACE}/.github/version.sh"
     - name: Publish
       run: dotnet publish -r win-x64 -c "${{ env.BUILD_BRANCH }}" 
     - name: Test
