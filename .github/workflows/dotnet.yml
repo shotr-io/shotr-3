@@ -29,7 +29,8 @@ jobs:
       run: dotnet restore
     - name: Set version number
       shell: powershell
-      run: ${GITHUB_WORKSPACE}\.github\version.ps1
+      run: |
+        & ($GITHUB_WORKSPACE + "\.github\version.ps1")
     - name: Publish
       run: dotnet publish -r win-x64 -c "${{ env.CURRENT_BRANCH }}" 
     - name: Test
