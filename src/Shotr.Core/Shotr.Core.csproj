@@ -5,7 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
-    <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification</Configurations>
+    <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -165,10 +165,13 @@ namespace Shotr.Ui
             
             form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
 
+#if TESTING
+#else
             Updater.BaseSettings = settings;
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
             Updater.CheckForUpdates();
-            
+#endif       
+
             // Do not require mandatory login
             if (settings.Login.Enabled == true)
             {

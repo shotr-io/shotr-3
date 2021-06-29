@@ -14,12 +14,15 @@
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <StartupObject>Shotr.Ui.Program</StartupObject>
-    <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification</Configurations>
+    <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Testing'">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
