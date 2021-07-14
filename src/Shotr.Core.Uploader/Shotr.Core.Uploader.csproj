@@ -5,7 +5,7 @@
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWindowsForms>true</UseWindowsForms>
         <Platforms>AnyCPU;x64</Platforms>
-        <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing</Configurations>
+        <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing;Local</Configurations>
         <AssemblyName>Shotr.Core.Uploader</AssemblyName>
         <RootNamespace>Shotr.Core.Uploader</RootNamespace>
         <Nullable>enable</Nullable>

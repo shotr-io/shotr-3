@@ -22,7 +22,7 @@ namespace Shotr.Ui.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Shotr.Ui.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Shotr.Ui.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Shotr.Ui.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Shotr.Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _16x16_icon {
+        public static System.Drawing.Bitmap _16x16_icon {
             get {
                 object obj = ResourceManager.GetObject("16x16_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace Shotr.Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] a {
+        public static byte[] a {
             get {
                 object obj = ResourceManager.GetObject("a", resourceCulture);
                 return ((byte[])(obj));
@@ -83,7 +83,7 @@ namespace Shotr.Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] audio_sniffer {
+        public static byte[] audio_sniffer {
             get {
                 object obj = ResourceManager.GetObject("audio_sniffer", resourceCulture);
                 return ((byte[])(obj));
@@ -93,7 +93,7 @@ namespace Shotr.Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap shotr {
+        public static System.Drawing.Bitmap shotr {
             get {
                 object obj = ResourceManager.GetObject("shotr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +103,7 @@ namespace Shotr.Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap shotr_icon {
+        public static System.Drawing.Bitmap shotr_icon {
             get {
                 object obj = ResourceManager.GetObject("shotr-icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -111,9 +111,19 @@ namespace Shotr.Ui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        public static System.Drawing.Icon shotr_icon_ico {
+            get {
+                object obj = ResourceManager.GetObject("shotr_icon_ico", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap shotr_logo_banner {
+        public static System.Drawing.Bitmap shotr_logo_banner {
             get {
                 object obj = ResourceManager.GetObject("shotr_logo_banner", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
