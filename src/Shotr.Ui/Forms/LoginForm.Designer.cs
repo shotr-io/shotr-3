@@ -35,8 +35,8 @@ namespace Shotr.Ui.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.ThemedButton1 = new Shotr.Core.Controls.Theme.ThemedButton();
             this.ThemedLabel1 = new Shotr.Core.Controls.Theme.ThemedLabel();
-            this.ThemedTextBox1 = new Shotr.Core.Controls.Theme.ThemedTextBox();
-            this.ThemedTextBox2 = new Shotr.Core.Controls.Theme.ThemedTextBox();
+            this.emailTextBox = new Shotr.Core.Controls.Theme.ThemedTextBox();
+            this.passwordTextBox = new Shotr.Core.Controls.Theme.ThemedTextBox();
             this.ThemedLabel2 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.ThemedLabel3 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.ThemedToggle1 = new Shotr.Core.Controls.Theme.ThemedToggle();
@@ -76,35 +76,35 @@ namespace Shotr.Ui.Forms
             // 
             // ThemedTextBox1
             // 
-            this.ThemedTextBox1.BasePaint = false;
-            this.ThemedTextBox1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ThemedTextBox1.Location = new System.Drawing.Point(14, 144);
-            this.ThemedTextBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ThemedTextBox1.Multiline = false;
-            this.ThemedTextBox1.Name = "ThemedTextBox1";
-            this.ThemedTextBox1.ReadOnly = false;
-            this.ThemedTextBox1.Scaled = true;
-            this.ThemedTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.ThemedTextBox1.Size = new System.Drawing.Size(413, 25);
-            this.ThemedTextBox1.TabIndex = 2;
-            this.ThemedTextBox1.TabStop = false;
-            this.ThemedTextBox1.UseSystemPasswordChar = false;
+            this.emailTextBox.BasePaint = false;
+            this.emailTextBox.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.emailTextBox.Location = new System.Drawing.Point(14, 144);
+            this.emailTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.emailTextBox.Multiline = false;
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.ReadOnly = false;
+            this.emailTextBox.Scaled = true;
+            this.emailTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.emailTextBox.Size = new System.Drawing.Size(413, 25);
+            this.emailTextBox.TabIndex = 2;
+            this.emailTextBox.TabStop = false;
+            this.emailTextBox.UseSystemPasswordChar = false;
             // 
             // ThemedTextBox2
             // 
-            this.ThemedTextBox2.BasePaint = false;
-            this.ThemedTextBox2.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ThemedTextBox2.Location = new System.Drawing.Point(14, 196);
-            this.ThemedTextBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ThemedTextBox2.Multiline = false;
-            this.ThemedTextBox2.Name = "ThemedTextBox2";
-            this.ThemedTextBox2.ReadOnly = false;
-            this.ThemedTextBox2.Scaled = true;
-            this.ThemedTextBox2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.ThemedTextBox2.Size = new System.Drawing.Size(413, 25);
-            this.ThemedTextBox2.TabIndex = 3;
-            this.ThemedTextBox2.TabStop = false;
-            this.ThemedTextBox2.UseSystemPasswordChar = true;
+            this.passwordTextBox.BasePaint = false;
+            this.passwordTextBox.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.passwordTextBox.Location = new System.Drawing.Point(14, 196);
+            this.passwordTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.passwordTextBox.Multiline = false;
+            this.passwordTextBox.Name = "passwordTextBox";
+            this.passwordTextBox.ReadOnly = false;
+            this.passwordTextBox.Scaled = true;
+            this.passwordTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.passwordTextBox.Size = new System.Drawing.Size(413, 25);
+            this.passwordTextBox.TabIndex = 3;
+            this.passwordTextBox.TabStop = false;
+            this.passwordTextBox.UseSystemPasswordChar = true;
             // 
             // ThemedLabel2
             // 
@@ -215,8 +215,8 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.ThemedToggle1);
             this.Controls.Add(this.ThemedLabel3);
             this.Controls.Add(this.ThemedLabel2);
-            this.Controls.Add(this.ThemedTextBox2);
-            this.Controls.Add(this.ThemedTextBox1);
+            this.Controls.Add(this.passwordTextBox);
+            this.Controls.Add(this.emailTextBox);
             this.Controls.Add(this.ThemedLabel1);
             this.Controls.Add(this.ThemedButton1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -239,8 +239,8 @@ namespace Shotr.Ui.Forms
 
         private ThemedButton ThemedButton1;
         private ThemedLabel ThemedLabel1;
-        private ThemedTextBox ThemedTextBox1;
-        private ThemedTextBox ThemedTextBox2;
+        private ThemedTextBox emailTextBox;
+        private ThemedTextBox passwordTextBox;
         private ThemedLabel ThemedLabel2;
         private ThemedLabel ThemedLabel3;
         private ThemedToggle ThemedToggle1;

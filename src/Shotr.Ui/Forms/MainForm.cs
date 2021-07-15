@@ -968,7 +968,7 @@ namespace Shotr.Ui.Forms
 
         private void loginToShotrButton_Click(object sender, EventArgs e)
         {
-            var loginForm = new LoginForm(_settings);
+            var loginForm = new LoginForm(_settings, _shotrApiService);
             loginForm.ShowDialog();
             if (loginForm.DialogResult == DialogResult.OK && _settings.Login.Token is {})
             {

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Shotr.Core.MimeDetect;
-using Shotr.Core.Services;
 using Shotr.Core.Uploader;
 
 namespace Shotr.Core.Custom

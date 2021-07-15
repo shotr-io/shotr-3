@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 using Shotr.Core;
 using Shotr.Core.Controls.Theme;
-using Shotr.Core.Model;
+using Shotr.Core.Services;
 using Shotr.Core.Settings;
 
 namespace Shotr.Ui.Forms
@@ -12,34 +11,26 @@ namespace Shotr.Ui.Forms
     public partial class LoginForm : ThemedForm
     {
         private readonly BaseSettings _settings;
+        private readonly ShotrApiService _shotrApiService;
 
-        public LoginForm(BaseSettings settings)
+        public LoginForm(BaseSettings settings, ShotrApiService shotrApiService)
         {
             _settings = settings;
+            _shotrApiService = shotrApiService;
             
             InitializeComponent();
         }
 
-        private void ThemedButton1_Click(object sender, EventArgs e)
+        private async void ThemedButton1_Click(object sender, EventArgs e)
         {
-            var httpClient = new HttpClient();
-
-            var formContent = new MultipartFormDataContent
-            {
-                { new StringContent(ThemedTextBox1.TextBoxText), "email" },
-                { new StringContent(ThemedTextBox2.TextBoxText), "password" }
-            };
-            
-            var response = httpClient.PostAsync("https://shotr.dev/api", formContent).Result;
-
+            ThemedButton1.Enabled = false;
+            emailTextBox.Enabled = false;
+            passwordTextBox.Enabled = false;
             try
             {
-
-                if (response.IsSuccessStatusCode)
+                var user = await _shotrApiService.Login(emailTextBox.TextBoxText, passwordTextBox.TextBoxText);
+                if (user is { })
                 {
-                    var content = response.Content.ReadAsStringAsync().Result;
-                    var user = JsonConvert.DeserializeObject<LoginResponse>(content);
-                    // Sign in
                     DialogResult = DialogResult.OK;
                     _settings.Login.Token = user.Token;
                     _settings.Login.Email = user.Email;
