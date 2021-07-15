@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Shotr.Core.UpdateFramework
+﻿namespace Shotr.Core.UpdateFramework
 {
     public class UpdaterResponse
     {

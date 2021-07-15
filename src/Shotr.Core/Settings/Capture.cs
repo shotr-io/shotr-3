@@ -1,6 +1,5 @@
 ﻿using CustomEnvironmentConfig;
 using Shotr.Core.Entities;
-using Shotr.Core.MimeDetect;
 
 namespace Shotr.Core.Settings
 {
