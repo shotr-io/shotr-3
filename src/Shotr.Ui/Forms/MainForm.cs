@@ -36,6 +36,8 @@ namespace Shotr.Ui.Forms
 
         private readonly IEnumerable<IImageUploader> _uploaders;
         private readonly MusicPlayerService _musicPlayerService;
+
+        private readonly ShotrApiService _shotrApiService;
         
         private Icon _shotrIcon;
         private VideoRecorderForm _videoRecorderForm;
@@ -47,7 +49,8 @@ namespace Shotr.Ui.Forms
                         HotKeyService hotkeyService, 
                         SettingsService settingsService, 
                         IEnumerable<IImageUploader> uploaders, 
-                        MusicPlayerService musicPlayerService)
+                        MusicPlayerService musicPlayerService, 
+                        ShotrApiService shotrApiService)
         {
             _settings = settings;
             _uploader = uploader;
@@ -57,6 +60,7 @@ namespace Shotr.Ui.Forms
             _settingsService = settingsService;
             _uploaders = uploaders;
             _musicPlayerService = musicPlayerService;
+            _shotrApiService = shotrApiService;
 
             InitializeComponent();
             
@@ -824,7 +828,7 @@ namespace Shotr.Ui.Forms
                 if (_settings.Uploads is { })
                 {
                     var upload = _settings.Uploads.FirstOrDefault(p =>
-                        p.Time == DateTime.Parse(themedListView1.SelectedItems[0].SubItems[1].Text));
+                        p.Time.ToLocalTime() == DateTime.Parse(themedListView1.SelectedItems[0].SubItems[1].Text));
 
                     if (upload is null)
                     {
@@ -840,7 +844,6 @@ namespace Shotr.Ui.Forms
                         $"https://shotr.dev/{upload.Name}".OpenUrl();
                     }
                 }
-                //Process.Start();
             }
         }
 
@@ -979,6 +982,15 @@ namespace Shotr.Ui.Forms
         private IImageUploader? GetUploader(string name)
         {
             return _uploaders.FirstOrDefault(p => p.Title == name);
+        }
+
+        private async void viewAccountButton_Click(object sender, EventArgs e)
+        {
+            var token = await _shotrApiService.GenerateTemporaryAuthToken();
+            if (token is { })
+            {
+                token.Token.OpenUrl();
+            }
         }
     }
 }

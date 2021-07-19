@@ -83,7 +83,7 @@ namespace Shotr.Core.Services
         [JsonProperty("uploaded_count")]
         public string UploadedCount { get; set; }
 
-        [System.Text.Json.Serialization.JsonIgnore]
+        [JsonIgnore]
         public bool ServerError { get; set; }
     }
 }

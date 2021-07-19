@@ -68,6 +68,10 @@ namespace Shotr.Ui
             services.AddSingleton<PipeServer>();
             services.AddSingleton<SingleInstance>();
             services.AddSingleton<KeyboardHook>();
+
+            services.AddTransient<ShotrApiService>();
+
+            services.AddHttpClient();
         }
 
         /// <summary>
