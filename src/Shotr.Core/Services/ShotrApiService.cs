@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Shotr.Core.Model;
 using Shotr.Core.Settings;
 
 namespace Shotr.Core.Services
@@ -32,21 +30,57 @@ namespace Shotr.Core.Services
         {
             var client = MakeClient();
             var response = await client.PostAsync($"{_baseUrl}/api/token/temporary", new StringContent(""));
-            return await Deserialize<TemporaryAuthTokenResponse?>(response);
+            var output = await Deserialize<TemporaryAuthTokenResponse?>(response);
+
+            if (output is null)
+            {
+                Console.WriteLine($"Error while creating temporary token. Error message: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+            }
+
+            return output;
         }
 
-        private HttpClient MakeClient()
+        public async Task<LoginResponse?> Login(string? email = null, string? password = null)
+        {
+            var client = MakeClient();
+
+            if (email is null || password is null)
+            {
+                var response = await client.GetAsync($"{_baseUrl}/api");
+                return await Deserialize<LoginResponse>(response);
+            }
+
+            var formContent = new MultipartFormDataContent
+            {
+                {new StringContent(email), "email"},
+                {new StringContent(password), "password"}
+            };
+
+            var loginResponse = await client.PostAsync($"{_baseUrl}/api", formContent);
+            return await Deserialize<LoginResponse>(loginResponse);
+        }
+
+        private HttpClient MakeClient(bool addToken = true)
         {
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("token", _config.Login.Token);
+
+            if (_config.Login.Token is { })
+            {
+                client.DefaultRequestHeaders.Add("token", _config.Login.Token);
+            }
 
             return client;
         }
 
-        private async Task<T> Deserialize<T>(HttpResponseMessage response)
+        private async Task<T?> Deserialize<T>(HttpResponseMessage response)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(content);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+
+            return default;
         }
     }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Security;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 
