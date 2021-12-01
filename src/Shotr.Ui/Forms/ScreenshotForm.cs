@@ -105,7 +105,6 @@ namespace Shotr.Ui.Forms
             TopMost = true;
             ShowInTaskbar = false;
 
-            _screenshot = bitmap;
             _tasks = tasks;
 
             _timer.Interval = 10;
@@ -126,8 +125,10 @@ namespace Shotr.Ui.Forms
 
             base.Cursor = Cursors.Cross;
 
-            _origscreenshot = (Bitmap) _screenshot.Clone();
-            _screenshot = new Bitmap(_screenshot, rect.Width, rect.Height);
+            _origscreenshot = (Bitmap) bitmap.Clone();
+            _screenshot = new Bitmap((Bitmap)bitmap.Clone(), rect.Width, rect.Height);
+            bitmap.Dispose();
+
 
             using (var image = Utils.Apply(Utils.Contrast(0.7f), _screenshot))
             {
@@ -340,6 +341,8 @@ namespace Shotr.Ui.Forms
                 {
                     //wot.
                     _screenshot.Dispose();
+                    _edit.Dispose();
+                    _origscreenshot.Dispose();
                     Dispose();
                     Close();
                     //play error msg.
@@ -348,6 +351,8 @@ namespace Shotr.Ui.Forms
             }
 
             _screenshot.Dispose();
+            _edit.Dispose();
+            _origscreenshot.Dispose();
 
             Hide();
         }
@@ -665,6 +670,7 @@ namespace Shotr.Ui.Forms
         {
             _tasks.Reset();
             _screenshot.Dispose();
+            _origscreenshot.Dispose();
             Dispose();
             Close();
         }

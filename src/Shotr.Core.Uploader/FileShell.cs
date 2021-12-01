@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Shotr.Core.Uploader
 {
-    public class FileShell
+    public class FileShell : IDisposable
     {
         public FileShell(byte[] file)
         {
@@ -21,5 +22,10 @@ namespace Shotr.Core.Uploader
         public string? Name => System.IO.Path.GetFileName(Path);
 
         public long? Size => Path is { } ? new FileInfo(Path).Length : Data?.Length;
+
+        public void Dispose()
+        {
+
+        }
     }
 }

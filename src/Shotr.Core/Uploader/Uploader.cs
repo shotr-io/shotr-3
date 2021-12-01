@@ -74,6 +74,7 @@ namespace Shotr.Core.Uploader
                 Time = DateTime.Now.ToUnixTime()
             };
             OnUploaded(fileShell, null, saveResult, node.FileType, node.Extension, null);
+            fileShell.Dispose();
         }
 
         public void AddToQueue(FileShell fileShell)

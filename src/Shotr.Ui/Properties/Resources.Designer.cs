@@ -83,9 +83,9 @@ namespace Shotr.Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] audio_sniffer {
+        public static byte[] ffmpeg_dshow_audio {
             get {
-                object obj = ResourceManager.GetObject("audio_sniffer", resourceCulture);
+                object obj = ResourceManager.GetObject("ffmpeg_dshow_audio", resourceCulture);
                 return ((byte[])(obj));
             }
         }
