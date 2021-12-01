@@ -229,17 +229,17 @@ namespace Shotr.Ui
         static void ConfigureApplication()
         {   
             //check if audio shit is installed, if not then register it.
-            var audioSnifferPath = Path.Combine(SettingsService.FolderPath, "audio-sniffer.dll");
-            if (!File.Exists(audioSnifferPath))
+            var directShowAudioPath = Path.Combine(SettingsService.FolderPath, "ffmpeg-dshow-audio.dll");
+            if (!File.Exists(directShowAudioPath))
             {
                 //decrypt it and output it
                 var dcrypt = ServiceProvider.GetService<dcrypt>();
-                File.WriteAllBytes(audioSnifferPath, dcrypt.Decrypt(Resources.audio_sniffer));
+                File.WriteAllBytes(directShowAudioPath, dcrypt.Decrypt(Resources.ffmpeg_dshow_audio));
                 //register it
                 var ps = new ProcessStartInfo
                 {
                     FileName = "regsvr32.exe",
-                    Arguments = "/s audio-sniffer.dll",
+                    Arguments = "/s ffmpeg-dshow-audio.dll",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,

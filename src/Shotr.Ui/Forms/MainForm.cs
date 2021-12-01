@@ -594,6 +594,9 @@ namespace Shotr.Ui.Forms
                     _tasks.CurrentTask = hotkey.Task;
                     Invoke((MethodInvoker)(() =>
                     {
+                        var currentBoundaries = Utils.GetScreenBoundaries();
+                        var sizeToAllocate = currentBoundaries.Width * currentBoundaries.Height * 4;
+                        GC.AddMemoryPressure(sizeToAllocate);
                         var capture = Utils.CopyScreen();
                         var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks);
                         screenshotForm.ShowDialog();
@@ -612,6 +615,9 @@ namespace Shotr.Ui.Forms
                                 Process(cloneBitmap);
                                 break;
                         }
+
+                        GC.RemoveMemoryPressure(sizeToAllocate);
+                        GC.Collect(3);
 
                         _tasks.Reset();
                     }));
