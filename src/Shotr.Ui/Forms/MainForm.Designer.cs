@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Shotr.Core.Controls.DpiScaling;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Controls.Hotkey;
+using Shotr.Ui.Properties;
 
 namespace Shotr.Ui.Forms
 {
@@ -114,7 +115,7 @@ namespace Shotr.Ui.Forms
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Icon = Resources.shotr_icon_ico;
             this.notifyIcon1.Text = "Shotr";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
@@ -642,6 +643,7 @@ namespace Shotr.Ui.Forms
             this.viewAccountButton.Size = new System.Drawing.Size(251, 23);
             this.viewAccountButton.TabIndex = 32;
             this.viewAccountButton.Text = "View Account";
+            this.viewAccountButton.Click += new System.EventHandler(this.viewAccountButton_Click);
             // 
             // logoutButton
             // 
@@ -762,9 +764,9 @@ namespace Shotr.Ui.Forms
             // logoPictureBox
             // 
             this.logoPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.logoPictureBox.BackgroundImage = Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.logoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.logoPictureBox.BasePaint = false;
+            this.logoPictureBox.BackgroundImage = Resources.shotr_logo_banner;
             this.logoPictureBox.Location = new System.Drawing.Point(5, 11);
             this.logoPictureBox.Name = "logoPictureBox";
             this.logoPictureBox.Scaled = true;
@@ -782,7 +784,7 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.logoPictureBox);
             this.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = Resources.shotr_icon_ico;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 31, 20, 21);

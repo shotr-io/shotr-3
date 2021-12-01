@@ -5,7 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
-    <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing</Configurations>
+    <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="CustomEnvironmentConfig" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="NamedPipeServerStream.NetFrameworkVersion" Version="1.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />

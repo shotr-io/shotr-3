@@ -3,19 +3,17 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Newtonsoft.Json;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
-using Shotr.Core.Model;
 using Shotr.Core.Pipes;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
@@ -68,6 +66,10 @@ namespace Shotr.Ui
             services.AddSingleton<PipeServer>();
             services.AddSingleton<SingleInstance>();
             services.AddSingleton<KeyboardHook>();
+
+            services.AddTransient<ShotrApiService>();
+
+            services.AddHttpClient();
         }
 
         /// <summary>
@@ -160,6 +162,7 @@ namespace Shotr.Ui
             var form = ServiceProvider.GetService<MainForm>();
             var settings = ServiceProvider.GetService<BaseSettings>();
             var hotkeys = ServiceProvider.GetService<HotKeyService>();
+            var shotrApi = ServiceProvider.GetService<ShotrApiService>();
             
             hotkeys.LoadHotKeys();
             
@@ -177,30 +180,16 @@ namespace Shotr.Ui
             {
                 try
                 {
-                    var successfulLogin = false;
-                    if (settings.Login.Token is {})
+                    var check = Task.Run(async () => await shotrApi.Login()).Result;
+                    if (check is { })
                     {
-                        var httpClient = new HttpClient();
-                        httpClient.DefaultRequestHeaders.Add("token", settings.Login.Token);
-                        // Api call, and make sure token is valid.
-                        var response = httpClient.GetAsync("https://shotr.dev/api").Result;
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var content = response.Content.ReadAsStringAsync().Result;
-                            var user = JsonConvert.DeserializeObject<LoginResponse>(content);
-                            if (user.Token == settings.Login.Token)
-                            {
-                                settings.Login.Email = user.Email;
-                                settings.Login.Token = user.Token;
-                                settings.Uploads = user.Uploads;
-                                successfulLogin = true;
-                            }
-                        }
+                        settings.Login.Email = check.Email;
+                        settings.Login.Token = check.Token;
+                        settings.Uploads = check.Uploads;
                     }
-                
-                    if (!successfulLogin)
+                    else
                     {
-                        var loginForm = new LoginForm(settings);
+                        var loginForm = new LoginForm(settings, shotrApi);
                         if (loginForm.ShowDialog() != DialogResult.OK)
                         {
                             settings.Login.Enabled = false;
@@ -212,7 +201,7 @@ namespace Shotr.Ui
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    File.WriteAllText(Path.Combine(SettingsService.FolderPath, "error.log"), ex.ToString());
+                    File.AppendAllText(Path.Combine(SettingsService.FolderPath, "error.log"), ex.ToString());
                 }
             }
             
@@ -240,17 +229,17 @@ namespace Shotr.Ui
         static void ConfigureApplication()
         {   
             //check if audio shit is installed, if not then register it.
-            var audioSnifferPath = Path.Combine(SettingsService.FolderPath, "audio-sniffer.dll");
-            if (!File.Exists(audioSnifferPath))
+            var directShowAudioPath = Path.Combine(SettingsService.FolderPath, "ffmpeg-dshow-audio.dll");
+            if (!File.Exists(directShowAudioPath))
             {
                 //decrypt it and output it
                 var dcrypt = ServiceProvider.GetService<dcrypt>();
-                File.WriteAllBytes(audioSnifferPath, dcrypt.Decrypt(Resources.audio_sniffer));
+                File.WriteAllBytes(directShowAudioPath, dcrypt.Decrypt(Resources.ffmpeg_dshow_audio));
                 //register it
                 var ps = new ProcessStartInfo
                 {
                     FileName = "regsvr32.exe",
-                    Arguments = "/s audio-sniffer.dll",
+                    Arguments = "/s ffmpeg-dshow-audio.dll",
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
