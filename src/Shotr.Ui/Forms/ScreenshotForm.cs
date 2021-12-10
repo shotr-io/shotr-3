@@ -363,24 +363,24 @@ namespace Shotr.Ui.Forms
             var mouse = PointToClient(Cursor.Position);
             if (!_activated && _resizing && !_resizemove)
             {
-                //left side.
+                // Left side
                 if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeWE;
                 }
-                //right side.
+                // Right side
                 else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
                          (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                 {
                     Cursor = Cursors.SizeWE;
                 }
-                //top
+                // Top
                 else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
                          (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
                 {
                     Cursor = Cursors.SizeNS;
                 }
-                //bottom 
+                // Bottom
                 else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
                          (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
                 {
