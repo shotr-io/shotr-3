@@ -359,7 +359,7 @@ namespace Shotr.Ui.Forms
 
         void ScreenshotForm_MouseMove(object sender, MouseEventArgs e)
         {
-            //change cursor to scalable stuff if we're out of activated.
+            // Change cursor to scalable stuff if we're out of activated.
             var mouse = PointToClient(Cursor.Position);
             if (!_activated && _resizing && !_resizemove)
             {
@@ -415,16 +415,17 @@ namespace Shotr.Ui.Forms
                     Cursor = Cursors.Cross;
                 }
             }
-            else if (_resizemove)
+            else if (_resizemove) // Resize screenshot window
             {
                 if (_resizeLocation == ResizeLocation.Left)
                 {
+                    // X-axis left
                     //should work fine hopefully.
                     if (mouse.X > _x.X)
                     {
                         if (_x.Width >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (mouse.X - _x.X);
                             _x.X += output;
                             _x.Width -= output;
@@ -432,7 +433,7 @@ namespace Shotr.Ui.Forms
                     }
                     else
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (_x.X - mouse.X);
                         if (_x.Width + output <= 50)
                         {
@@ -443,12 +444,13 @@ namespace Shotr.Ui.Forms
                         _x.Width += output;
                     }
                 }
+                // X-axis right
                 else if (_resizeLocation == ResizeLocation.Right)
                 {
                     //should work fine hopefully.
                     if (mouse.X > _x.X + _x.Width)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (mouse.X - _x.X);
                         //x.X += output;
                         _x.Width = output;
@@ -457,18 +459,19 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Width >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (_x.X + _x.Width - mouse.X);
                             _x.Width -= output;
                         }
                     }
                 }
+                // Y-axis top
                 else if (_resizeLocation == ResizeLocation.Top)
                 {
                     //should work fine hopefully.
                     if (mouse.Y > _x.Y)
                     {
-                        //move inwards.
+                        // Move inwards
                         if (_x.Height >= 50)
                         {
                             var output = (mouse.Y - _x.Y);
@@ -483,12 +486,13 @@ namespace Shotr.Ui.Forms
                         _x.Height += output;
                     }
                 }
+                // Y-axis bottom
                 else if (_resizeLocation == ResizeLocation.Bottom)
                 {
                     //should work fine hopefully.
                     if (mouse.Y > _x.Y + _x.Height)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (mouse.Y - _x.Y);
                         _x.Height = output;
                     }
@@ -496,12 +500,13 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Height >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
                             _x.Height -= output;
                         }
                     }
                 }
+                // Top left corner X/Y
                 else if (_resizeLocation == ResizeLocation.TopLeft)
                 {
                     if (mouse.X > _x.X)
@@ -518,7 +523,7 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Height >= 50)
                         {
-                            //move downwards.
+                            // Move downwards
                             var output = (mouse.Y - _x.Y);
                             _x.Y += output;
                             _x.Height -= output;
@@ -527,7 +532,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.X < _x.X)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (_x.X - mouse.X);
                         _x.X -= output;
                         _x.Width += output;
@@ -535,12 +540,13 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y < _x.Y)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (_x.Y - mouse.Y);
                         _x.Y -= output;
                         _x.Height += output;
                     }
                 }
+                // Top right corner X/Y
                 else if (_resizeLocation == ResizeLocation.TopRight)
                 {
                     if (mouse.X > _x.X + _x.Width)
@@ -553,7 +559,7 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Height >= 50)
                         {
-                            //move downwards.
+                            // Move downwards
                             var output = (mouse.Y - _x.Y);
                             _x.Y += output;
                             _x.Height -= output;
@@ -564,7 +570,7 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Width >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (_x.X + _x.Width - mouse.X);
                             _x.Width -= output;
                         }
@@ -572,12 +578,13 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y < _x.Y)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (_x.Y - mouse.Y);
                         _x.Y -= output;
                         _x.Height += output;
                     }
                 }
+                // Bottom right corner X/Y
                 else if (_resizeLocation == ResizeLocation.BottomRight)
                 {
                     if (mouse.X > _x.X + _x.Width)
@@ -588,7 +595,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y > _x.Y + _x.Height)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (mouse.Y - _x.Y);
                         _x.Height = output;
                     }
@@ -597,7 +604,7 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Width >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (_x.X + _x.Width - mouse.X);
                             _x.Width -= output;
                         }
@@ -607,12 +614,13 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Height >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
                             _x.Height -= output;
                         }
                     }
                 }
+                // Bottom left corner X/Y
                 else if (_resizeLocation == ResizeLocation.BottomLeft)
                 {
                     if (mouse.X > _x.X)
@@ -627,14 +635,14 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y > _x.Y + _x.Height)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (mouse.Y - _x.Y);
                         _x.Height += output;
                     }
 
                     if (mouse.X < _x.X)
                     {
-                        //move inwards.
+                        // Move inwards
                         var output = (_x.X - mouse.X);
                         _x.X -= output;
                         _x.Width += output;
@@ -644,7 +652,7 @@ namespace Shotr.Ui.Forms
                     {
                         if (_x.Height >= 50)
                         {
-                            //move inwards.
+                            // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
                             _x.Height -= output;
                         }
@@ -658,7 +666,7 @@ namespace Shotr.Ui.Forms
                         return;
                     }
 
-                    //move relative to mouse.
+                    // Move position relative to mouse
                     _x.X += (mouse.X - _oldResizePosition.X);
                     _x.Y += (mouse.Y - _oldResizePosition.Y);
                     _oldResizePosition = mouse;
