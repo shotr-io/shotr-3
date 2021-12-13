@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <PublishSingleFile>true</PublishSingleFile>
-    <PublishTrimmed>true</PublishTrimmed>
+    <PublishTrimmed>false</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <AssemblyName>Shotr-Installer</AssemblyName>
     <ApplicationIcon>shotr-icon.ico</ApplicationIcon>
@@ -18,6 +18,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>Shotr.Ui.Installer.Program</StartupObject>
     <Configurations>Debug;Release;BetaTest;WindowsNotification;Testing;Local</Configurations>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
