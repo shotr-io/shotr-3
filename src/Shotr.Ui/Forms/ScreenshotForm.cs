@@ -764,7 +764,7 @@ namespace Shotr.Ui.Forms
                     e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
 
                     _pen.DashOffset = ((int) (_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                    e.Graphics.DrawRectangle(_pen, _x);
+                    e.Graphics.DrawRectangle(_pen, new Rectangle(_x.X, _x.Y, _x.Width - 1, _x.Height - 1));
                     if (_settings.Capture.ShowInformation)
                     {
                         TextRenderer.DrawText(e.Graphics, string.Format("X: {0} Y: {1} W: {0} H: {1}", _x.X, _x.Y, _x.Width, _x.Height), Theme.Font(12),new Point(_x.X, _x.Y - Font.Height), Color.White);
