@@ -419,21 +419,35 @@ namespace Shotr.Ui.Forms
             {
                 if (_resizeLocation == ResizeLocation.Left)
                 {
-                    // X-axis left
-                    //should work fine hopefully.
+                    // X-axis Left
                     if (mouse.X > _x.X)
                     {
-                        if (_x.Width >= 50)
+                        if (_x.Width >= 50) // Inwards crop
                         {
-                            // Move inwards
+                            // Move crop inwards
+                            //Debug.WriteLine("inwards priv X b4: " + _x.X);
+                            //Debug.WriteLine("inwards mouse X: " + mouse.X);
                             var output = (mouse.X - _x.X);
-                            _x.X += output;
-                            _x.Width -= output;
+                            var proposedLeftX = _x.X + output;
+                            var currentRightX = _x.X + _x.Width;
+                            // Prevent left X from replacing right X. This can cause the screenshot area to move.
+                            if (proposedLeftX < currentRightX)
+                                _x.X += output;
+                            else
+                                _x.X = currentRightX - 10;
+                            // Prevent width from going into the negatives, this can cause overlap. No smaller than 10px.
+                            if ((_x.Width - output) > 10)
+                                _x.Width -= output;
+                            else
+                                _x.Width = 10;
+                            //Debug.WriteLine("inwards new X: " + _x.X);
+                            //Debug.WriteLine("inwards new width: " + _x.Width);
+                            //Debug.WriteLine("");
                         }
                     }
-                    else
+                    else // Outwards crop
                     {
-                        // Move inwards
+                        // Move crop outwards
                         var output = (_x.X - mouse.X);
                         if (_x.Width + output <= 50)
                         {
@@ -444,24 +458,28 @@ namespace Shotr.Ui.Forms
                         _x.Width += output;
                     }
                 }
-                // X-axis right
+                // X-axis Right
                 else if (_resizeLocation == ResizeLocation.Right)
                 {
                     //should work fine hopefully.
                     if (mouse.X > _x.X + _x.Width)
                     {
-                        // Move inwards
+                        // Move crop inwards
+                        Debug.WriteLine("Mouse x " + mouse.X);
+                        Debug.WriteLine("private x " + _x.X);
                         var output = (mouse.X - _x.X);
                         //x.X += output;
                         _x.Width = output;
+                        Debug.WriteLine("inwards new width " + _x.Width);
                     }
                     else
                     {
                         if (_x.Width >= 50)
                         {
-                            // Move inwards
+                            // Move crop outwards
                             var output = (_x.X + _x.Width - mouse.X);
                             _x.Width -= output;
+                            //Debug.WriteLine("outwards new width " + _x.Width);
                         }
                     }
                 }
