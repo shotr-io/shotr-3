@@ -39,6 +39,7 @@ namespace Shotr.Core.Services
             }
 
             LoadHotKey(_settings.Hotkey.Fullscreen, KeyTask.Fullscreen);
+            LoadHotKey(_settings.Hotkey.ActiveFullscreen, KeyTask.ActiveFullscreen);
             LoadHotKey(_settings.Hotkey.RecordScreen, KeyTask.RecordScreen);
             LoadHotKey(_settings.Hotkey.ActiveWindow, KeyTask.ActiveWindow);
             LoadHotKey(_settings.Hotkey.Region, KeyTask.Region);
