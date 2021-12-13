@@ -656,7 +656,7 @@ namespace Shotr.Ui.Forms
                     _tasks.CurrentTask = hotkey.Task;
                     Invoke((MethodInvoker)(() =>
                     {
-						var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
+						var capture = Utils.CopyScreen();
                         var boundaries = Utils.GetScreenBoundaries();
 
                         var rect = hotkey.Task switch
