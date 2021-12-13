@@ -93,6 +93,7 @@ namespace Shotr.Ui.Forms.Settings
             recordCursorToggle.Checked = _settings.Record.RecordCursor;
             recordAudioToggle.Checked = _settings.Record.RecordAudio;
             audioDeviceCombo.Text = _settings.Record.AudioDevice;
+            hideCursorToggle.Checked = _settings.Capture.HideCursor;
 
             saveToDirectoryToggle.CheckedChanged += saveToDirectoryToggle_CheckedChanged;
             showNotificationsToggle.CheckedChanged += showNotificationsToggle_CheckedChanged;
@@ -110,6 +111,9 @@ namespace Shotr.Ui.Forms.Settings
             recordAudioToggle.CheckedChanged += recordAudioToggle_CheckedChanged;
             audioDeviceCombo.SelectedIndexChanged += audioDeviceCombo_SelectedIndexChanged;
             qualityCombo.SelectedIndexChanged += QualityCombo_SelectedIndexChanged;
+            selectedImageUploader.SelectedIndexChanged += selectedImageUploader_SelectedIndexChanged;
+            directUrlToggle.CheckedChanged += directUrlToggle_CheckedChanged;
+            hideCursorToggle.CheckedChanged += hideCursorToggle_CheckedChanged;
 
             foreach (var uploader in _uploaders)
             {
@@ -281,6 +285,12 @@ namespace Shotr.Ui.Forms.Settings
         private void directUrlToggle_CheckedChanged(object sender, EventArgs e)
         {
             _settings.Capture.DirectUrl = directUrlToggle.Checked;
+            SettingsService.Save(_settings);
+        }
+
+        private void hideCursorToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            _settings.Capture.HideCursor = hideCursorToggle.Checked;
             SettingsService.Save(_settings);
         }
         

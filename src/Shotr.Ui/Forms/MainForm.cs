@@ -597,7 +597,7 @@ namespace Shotr.Ui.Forms
                         var currentBoundaries = Utils.GetScreenBoundaries();
                         var sizeToAllocate = currentBoundaries.Width * currentBoundaries.Height * 4;
                         GC.AddMemoryPressure(sizeToAllocate);
-                        var capture = Utils.CopyScreen();
+                        var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
                         var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks);
                         screenshotForm.ShowDialog();
 
@@ -626,7 +626,7 @@ namespace Shotr.Ui.Forms
                     _tasks.CurrentTask = hotkey.Task;
                     Invoke((MethodInvoker)(() =>
                     {
-                        var capture = Utils.CopyScreen();
+                        var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
                         var colorPickerForm = new ColorPickerForm(_settings, capture);
 
                         if (colorPickerForm.ShowDialog() == DialogResult.OK)
@@ -643,7 +643,7 @@ namespace Shotr.Ui.Forms
                     Invoke((MethodInvoker)(() =>
                     {
                         var rect = Utils.GetActiveWindowCoords();
-                        var capture = Utils.CopyScreen();
+                        var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
 
                         if (hotkey.Task == KeyTask.Fullscreen)
                         {
@@ -705,7 +705,7 @@ namespace Shotr.Ui.Forms
                                 recordingNotice.ShowDialog();
                             }
 
-                            var capture = Utils.CopyScreen();
+                            var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
                             _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader, capture, _tasks);
                             _videoRecorderForm.Show();
                         }));
@@ -931,7 +931,7 @@ namespace Shotr.Ui.Forms
         private void colorPickerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //show color picker form.
-            var capture = Utils.CopyScreen();
+            var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
             var colorPickerForm = new ColorPickerForm(_settings, capture);
             colorPickerForm.ShowDialog();
         }
