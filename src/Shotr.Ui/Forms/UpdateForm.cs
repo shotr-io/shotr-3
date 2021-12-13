@@ -96,7 +96,7 @@ namespace Shotr.Ui.Forms
                         p.StartInfo.Verb = "runas";
                         p.StartInfo.UseShellExecute = true;
                         p.StartInfo.FileName = Path.Combine(SettingsService.FolderPath, "Shotr-Installer.exe");
-                        p.StartInfo.Arguments = $"--run-installer --install-beta --version={_version}"; // temp remove silent to show progress
+                        p.StartInfo.Arguments = $"--run-installer --install-beta --version={_version} --silent";
                         p.Start();
 
                         Environment.Exit(0);
