@@ -6,7 +6,6 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Win32;
