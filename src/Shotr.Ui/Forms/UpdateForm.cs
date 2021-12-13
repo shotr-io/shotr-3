@@ -16,7 +16,6 @@ namespace Shotr.Ui.Forms
 {
     public partial class UpdateForm : ThemedForm
     {
-        private bool _subscribeToAlphaBeta;
         private string _installerUrl;
         private string _version;
         public UpdateForm(string changes, bool subscribeToAlphaBeta, string installerUrl, string version, bool topMost = true)
@@ -25,7 +24,6 @@ namespace Shotr.Ui.Forms
 
             changes = changes.Replace("\n", "\r\n");
             metroTextBox1.Text = changes;
-            _subscribeToAlphaBeta = subscribeToAlphaBeta;
             _installerUrl = installerUrl;
             _version = version;
 
@@ -53,7 +51,7 @@ namespace Shotr.Ui.Forms
             themedProgressBar1.Visible = true;
             Text = "Shotr - Updating";
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            //update shit.
+
             UpdateFromUrl();
         }
 

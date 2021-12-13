@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -30,12 +31,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -47,6 +43,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -97,12 +102,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -114,6 +114,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -164,12 +173,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -181,6 +185,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -231,12 +244,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -248,6 +256,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -298,12 +315,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -315,6 +327,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -365,12 +386,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -382,6 +398,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -432,12 +457,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -449,6 +469,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -499,12 +528,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -516,6 +540,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -566,12 +599,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -583,6 +611,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -633,12 +670,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -650,6 +682,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -700,12 +741,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -717,6 +753,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -767,12 +812,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -784,6 +824,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -834,12 +883,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -851,6 +895,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
@@ -901,12 +954,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         protected override void OnPaint(PaintEventArgs e) 
         {
-            if (!_alreadyRan)
-            {
-                _alreadyRan = true;
-
-                Scale();
-            }
+            Scale();
 
             if (BasePaint) 
             {
@@ -918,6 +966,15 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             if (DpiScaler.NotDpiScaling(this))
             {    
+                return;
+            }
+
+            if (!_alreadyRan)
+            {
+                _alreadyRan = true;
+            }
+            else 
+            {
                 return;
             }
 
