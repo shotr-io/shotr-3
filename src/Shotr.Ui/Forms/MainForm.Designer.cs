@@ -36,7 +36,6 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -115,7 +114,7 @@ namespace Shotr.Ui.Forms
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = Resources.shotr_icon_ico;
+            this.notifyIcon1.Icon = global::Shotr.Ui.Properties.Resources.shotr_icon_ico;
             this.notifyIcon1.Text = "Shotr";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
@@ -261,6 +260,7 @@ namespace Shotr.Ui.Forms
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.metroTabControl1.ItemSize = new System.Drawing.Size(96, 23);
             this.metroTabControl1.Location = new System.Drawing.Point(6, 57);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.Scaled = true;
@@ -273,11 +273,11 @@ namespace Shotr.Ui.Forms
             // 
             this.metroTabPage4.BasePaint = false;
             this.metroTabPage4.Controls.Add(this.themedListView1);
-            this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
+            this.metroTabPage4.Location = new System.Drawing.Point(4, 27);
             this.metroTabPage4.Name = "metroTabPage4";
             this.metroTabPage4.Padding = new System.Windows.Forms.Padding(10);
             this.metroTabPage4.Scaled = true;
-            this.metroTabPage4.Size = new System.Drawing.Size(593, 263);
+            this.metroTabPage4.Size = new System.Drawing.Size(593, 261);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "History";
             // 
@@ -288,7 +288,7 @@ namespace Shotr.Ui.Forms
             this.themedListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.betterListViewColumnHeader1,
             this.betterListViewColumnHeader2});
-            this.themedListView1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.themedListView1.Font = new System.Drawing.Font("Inter", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedListView1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(231)))), ((int)(((byte)(255)))));
             this.themedListView1.FullRowSelect = true;
             this.themedListView1.HideSelection = false;
@@ -304,13 +304,13 @@ namespace Shotr.Ui.Forms
             // 
             this.betterListViewColumnHeader1.Name = "betterListViewColumnHeader1";
             this.betterListViewColumnHeader1.Text = "Image URL";
-            this.betterListViewColumnHeader1.Width = 260;
+            this.betterListViewColumnHeader1.Width = 288;
             // 
             // betterListViewColumnHeader2
             // 
             this.betterListViewColumnHeader2.Name = "betterListViewColumnHeader2";
             this.betterListViewColumnHeader2.Text = "Time Uploaded";
-            this.betterListViewColumnHeader2.Width = 260;
+            this.betterListViewColumnHeader2.Width = 288;
             // 
             // metroTabPage2
             // 
@@ -319,10 +319,10 @@ namespace Shotr.Ui.Forms
             this.metroTabPage2.Controls.Add(this.metroPanel1);
             this.metroTabPage2.Controls.Add(this.loginToShotrPanel);
             this.metroTabPage2.Controls.Add(this.myAccountPanel);
-            this.metroTabPage2.Location = new System.Drawing.Point(4, 25);
+            this.metroTabPage2.Location = new System.Drawing.Point(4, 27);
             this.metroTabPage2.Name = "metroTabPage2";
             this.metroTabPage2.Scaled = true;
-            this.metroTabPage2.Size = new System.Drawing.Size(593, 263);
+            this.metroTabPage2.Size = new System.Drawing.Size(593, 261);
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Settings";
             // 
@@ -346,7 +346,7 @@ namespace Shotr.Ui.Forms
             this.metroPanel2.Location = new System.Drawing.Point(6, 7);
             this.metroPanel2.Name = "metroPanel2";
             this.metroPanel2.Scaled = true;
-            this.metroPanel2.Size = new System.Drawing.Size(282, 254);
+            this.metroPanel2.Size = new System.Drawing.Size(282, 250);
             this.metroPanel2.TabIndex = 25;
             // 
             // colorPickerHotKeyButton
@@ -579,7 +579,7 @@ namespace Shotr.Ui.Forms
             this.loginToShotrPanel.Location = new System.Drawing.Point(304, 139);
             this.loginToShotrPanel.Name = "loginToShotrPanel";
             this.loginToShotrPanel.Scaled = true;
-            this.loginToShotrPanel.Size = new System.Drawing.Size(283, 122);
+            this.loginToShotrPanel.Size = new System.Drawing.Size(283, 118);
             this.loginToShotrPanel.TabIndex = 33;
             // 
             // loginToShotrDescriptionLabel
@@ -630,7 +630,7 @@ namespace Shotr.Ui.Forms
             this.myAccountPanel.Location = new System.Drawing.Point(304, 139);
             this.myAccountPanel.Name = "myAccountPanel";
             this.myAccountPanel.Scaled = true;
-            this.myAccountPanel.Size = new System.Drawing.Size(283, 122);
+            this.myAccountPanel.Size = new System.Drawing.Size(283, 118);
             this.myAccountPanel.TabIndex = 32;
             // 
             // viewAccountButton
@@ -764,9 +764,9 @@ namespace Shotr.Ui.Forms
             // logoPictureBox
             // 
             this.logoPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.logoPictureBox.BackgroundImage = global::Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.logoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.logoPictureBox.BasePaint = false;
-            this.logoPictureBox.BackgroundImage = Resources.shotr_logo_banner;
             this.logoPictureBox.Location = new System.Drawing.Point(5, 11);
             this.logoPictureBox.Name = "logoPictureBox";
             this.logoPictureBox.Scaled = true;
@@ -784,7 +784,7 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.logoPictureBox);
             this.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = Resources.shotr_icon_ico;
+            this.Icon = global::Shotr.Ui.Properties.Resources.shotr_icon_ico;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 31, 20, 21);

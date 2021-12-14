@@ -40,11 +40,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -114,11 +109,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -188,11 +178,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -262,11 +247,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -336,11 +316,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -410,11 +385,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -484,11 +454,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -558,11 +523,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -632,11 +592,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -706,11 +661,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -780,11 +730,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -854,11 +799,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -928,11 +868,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)
@@ -1002,11 +937,6 @@ namespace Shotr.Core.Controls.DpiScaling {
 
         private void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
-            if (DpiScaler.NotDpiScaling(this))
-            {    
-                return;
-            }
-
             if (onPaint && !ignoreCheck) 
             {
                 if (!_alreadyRan)

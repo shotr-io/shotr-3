@@ -1,12 +1,15 @@
 ﻿using Shotr.Core.Controls.DpiScaling;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Shotr.Core.Controls.Theme
 {
     public class ThemedListView : DpiScaledListView
     {
-        private float? _originalFontSize;
+        private Font? _originalFont;
+        private Font _font => Theme.Font(Font, this);
+        private float _controlScaling = -1f;
         public ThemedListView()
         {
             DoubleBuffered = true;
@@ -16,20 +19,35 @@ namespace Shotr.Core.Controls.Theme
 
         protected override void OnControlScaled(float scalingFactor)
         {
-            var totalColumnWidth = Width - 4;
+            if (DpiScaler.NotDpiScaling(this))
+            {
+                return;
+            }
+
+            var totalColumnWidth = Width - 4 - 17;
             for (int i = 0; i < Columns.Count; i++)
             {
                 float colPercentage = (Convert.ToInt32(totalColumnWidth / Columns.Count));
                 Columns[i].Width = (int)colPercentage;
             }
 
-            _originalFontSize ??= Font.Size;
-
-            Font = DpiScaler.ScaleFont(Theme.Font(_originalFontSize.Value), this);
+            _controlScaling = scalingFactor;
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            _originalFont ??= Font;
+
+            if (!DpiScaler.NotDpiScaling(this))
+            {
+                Font = DpiScaler.ScaleFont(Theme.Font(Math.Abs(_originalFont.Size - 9) < 0.000001 ? 12 : _originalFont.Size), this);
+                var newScalingFactor = DpiScaler.GetScalingFactor(this);
+                if (Math.Abs(newScalingFactor - _controlScaling) > 0.00001)
+                {
+                    OnControlScaled(newScalingFactor);
+                }
+            }
+            
             base.OnPaint(e);
         }
 

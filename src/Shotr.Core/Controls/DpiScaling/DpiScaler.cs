@@ -13,7 +13,7 @@ namespace Shotr.Core.Controls.DpiScaling
         public static bool NotDpiScaling(Control control)
         {
             var process = Process.GetCurrentProcess();
-            var notScaling = process.ProcessName == "DesignToolsServer" || GetScalingFactor(control).Equals(1f);
+            var notScaling = process.ProcessName == "DesignToolsServer";
             process.Dispose();
 
             return notScaling;
@@ -21,7 +21,9 @@ namespace Shotr.Core.Controls.DpiScaling
 
         public static float GetScalingFactor(Control control)
         {
-            Screen.FromControl(control).GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
+            var form = (control is Form ? control : control.FindForm()) ?? control;
+
+            Screen.FromControl(form).GetDpi(DpiType.Effective, out var dpiX, out var dpiY);
             if (_scalingFactor.Equals(-1f) || !_scalingFactor.Equals(dpiX / 96f))
             {
                 _scalingFactor = (dpiX / 96f);
@@ -38,15 +40,16 @@ namespace Shotr.Core.Controls.DpiScaling
                 return (size, location);
             }
 
-            var dpiScalingFactor = GetScalingFactor(control);
             if (NotDpiScaling(control))
             {
                 return (size, location);
             }
 
+            var dpiScalingFactor = GetScalingFactor(control);
+
             if (size.IsEmpty)
             {
-                size = control is Form or TabPage or TabControl ? control.ClientSize : control.Size;
+                size = control is Form ? control.ClientSize : control.Size;
             }
 
             if (location.IsEmpty)
@@ -54,7 +57,7 @@ namespace Shotr.Core.Controls.DpiScaling
                 location = control.Location;
             }
 
-            if (control is Form or TabPage or TabControl)
+            if (control is Form)
             {
                 control.ClientSize = new Size((int)(size.Width * dpiScalingFactor), (int)(size.Height * dpiScalingFactor));
             }
@@ -73,11 +76,12 @@ namespace Shotr.Core.Controls.DpiScaling
 
         public static (Size, Point) ScaleSize(Control control, Size size, Point location)
         {
-            var dpiScalingFactor = GetScalingFactor(control);
             if (NotDpiScaling(control))
             {
                 return (size, location);
             }
+
+            var dpiScalingFactor = GetScalingFactor(control);
 
             if (size.IsEmpty)
             {
@@ -89,23 +93,20 @@ namespace Shotr.Core.Controls.DpiScaling
                 location = control.Location;
             }
 
-            if (!dpiScalingFactor.Equals(1))
-            {
-                control.Size = new Size((int)(size.Width * dpiScalingFactor), (int)(size.Height * dpiScalingFactor));
-            }
+            control.Size = new Size((int)(size.Width * dpiScalingFactor), (int)(size.Height * dpiScalingFactor));
 
             return (size, location);
         }
 
         public static (Size, Point) ScaleLocation(Control control, Size size, Point location)
         {
-            var dpiScalingFactor = GetScalingFactor(control);
-
             if (NotDpiScaling(control))
             {
                 return (size, location);
             }
 
+            var dpiScalingFactor = GetScalingFactor(control);
+            
             if (size.IsEmpty)
             {
                 size = control.Size;
@@ -116,30 +117,21 @@ namespace Shotr.Core.Controls.DpiScaling
                 location = control.Location;
             }
 
-            if (!dpiScalingFactor.Equals(1))
-            {
-                control.Location = new Point((int)(location.X * dpiScalingFactor), (int)(location.Y * dpiScalingFactor));
-            }
+            control.Location = new Point((int)(location.X * dpiScalingFactor), (int)(location.Y * dpiScalingFactor));
 
             return (size, location);
         }
 
         public static Font ScaleFont(Font font, Control control)
         {
-            var dpiScalingFactor = GetScalingFactor(control);
-
             if (NotDpiScaling(control))
             {
-                return font;
+                return Theme.Theme.Font(font.Size);
             }
 
+            var dpiScalingFactor = GetScalingFactor(control);
+            
             var originalScalingFactor = dpiScalingFactor;
-
-            if (dpiScalingFactor > 1f)
-            {
-                // only scale text if it's > 1x
-                dpiScalingFactor = dpiScalingFactor - 0.25f;
-            }
 
             float newSize = 0f;
             if (font.Unit == GraphicsUnit.Pixel)

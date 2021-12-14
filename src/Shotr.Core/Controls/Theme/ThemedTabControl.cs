@@ -7,7 +7,7 @@ namespace Shotr.Core.Controls.Theme
     public class ThemedTabControl : DpiScaledTabControl
     {
         private Font _font => Theme.Font(Font, this);
-
+        private Size originalItemSize = new Size(96, 23);
         public const int TAB_BOTTOM_BORDER_HEIGHT = 3;
 
         public ThemedTabControl()
@@ -19,8 +19,29 @@ namespace Shotr.Core.Controls.Theme
 
         protected override void OnControlScaled(float scalingFactor)
         {
-            //var size = new Size(ItemSize.Width, ItemSize.Height + 10);
-            //ItemSize = size;
+            if (DpiScaler.NotDpiScaling(this))
+            {
+                return;
+            }
+
+            // measure font.
+            var maxWidth = originalItemSize.Width;
+            var maxHeight = originalItemSize.Height;
+            foreach (TabPage t in TabPages)
+            {
+                var textMeasuredSize = TextRenderer.MeasureText(t.Text, _font);
+                if (textMeasuredSize.Width > maxWidth)
+                {
+                    maxWidth = textMeasuredSize.Width;
+                }
+
+                if (textMeasuredSize.Height > maxHeight)
+                {
+                    maxHeight = textMeasuredSize.Height;
+                }
+            }
+
+            ItemSize = new Size(maxWidth + 10, maxHeight + 2);
         }
 
         protected override void OnPaint(PaintEventArgs e)

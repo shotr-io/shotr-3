@@ -344,11 +344,11 @@ namespace Shotr.Ui.Forms
 
                 try
                 {
-                    string? fileName = null;
+                    string? toastNotificationImagePath = null;
                     if (b is { })
                     {
-                        fileName = Path.Combine(SettingsService.CachePath, "notification.png");
-                        b.Save(fileName);
+                        toastNotificationImagePath = Path.Combine(SettingsService.CachePath, "notification.png");
+                        b.Save(toastNotificationImagePath);
                     }
                     
                     if (result != null)
@@ -357,7 +357,7 @@ namespace Shotr.Ui.Forms
                         {
                             if (!WineDetectionService.IsWine())
                             {
-                                Toast.Send(fileName,
+                                Toast.Send(toastNotificationImagePath,
                                     fileType == FileTypeEnum.Text ? "Text uploaded and link copied to clipboard!" :
                                     fileType == FileTypeEnum.Video ? "Recording uploaded and link copied to clipboard!" :
                                     fileType == FileTypeEnum.Image ? "Screenshot uploaded and link copied to clipboard!" :
@@ -378,7 +378,7 @@ namespace Shotr.Ui.Forms
                             if (!WineDetectionService.IsWine())
                             {
                                 var screenshotText = $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!";
-                                Toast.Send(fileName,
+                                Toast.Send(toastNotificationImagePath,
                                     fileType == FileTypeEnum.Video
                                         ? "Recording saved!"
                                         : screenshotText,
