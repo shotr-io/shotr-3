@@ -323,6 +323,7 @@ namespace Shotr.Ui.Installer
 
                         try
                         {
+                            SetAsDpiAwareApplication(installedLocation + "Shotr.exe", installedLocation + "uninstall.exe");
                             RegisterControlPanelProgram("Shotr", installedLocation, installedLocation + "shotr.ico", installedLocation + "uninstall.exe", "Shotr", version);
                             File.Copy(Application.ExecutablePath, installedLocation + "\\uninstall.exe");
                         }
@@ -469,6 +470,19 @@ namespace Shotr.Ui.Installer
         {
             e.Cancel = true;
             new CancelForm().ShowDialog();
+        }
+
+        public void SetAsDpiAwareApplication(string pathToShotr, string pathToUninstaller)
+        {
+            var appCompatFlagsPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers";
+            var hKey = (Registry.CurrentUser).OpenSubKey(appCompatFlagsPath, true);
+            if (hKey is { })
+            {
+                hKey.SetValue(pathToShotr, "~ HIGHDPIAWARE");
+                hKey.SetValue(pathToUninstaller, "~ HIGHDPIAWARE");
+
+                hKey.Close();
+            }
         }
 
         public void RegisterControlPanelProgram(string appName, string installLocation, string displayicon, string uninstallString, string publisher, string version)

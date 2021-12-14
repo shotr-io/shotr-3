@@ -130,7 +130,7 @@ namespace Shotr.Core.Controls.DpiScaling
             }
 
             var dpiScalingFactor = GetScalingFactor(control);
-            
+
             var originalScalingFactor = dpiScalingFactor;
 
             float newSize = 0f;

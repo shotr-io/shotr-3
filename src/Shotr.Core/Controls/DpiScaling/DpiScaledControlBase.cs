@@ -13,10 +13,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledControl() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -31,6 +33,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -82,10 +92,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledButton() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -100,6 +112,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -151,10 +171,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledCheckBox() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -169,6 +191,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -220,10 +250,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledListView() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -238,6 +270,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -289,10 +329,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledPictureBox() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -307,6 +349,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -358,10 +408,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledComboBox() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -376,6 +428,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -427,10 +487,43 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+                private int _storedScreenIndex { get; set; }
+        private bool _screenResizing { get; set; }
+        
         public DpiScaledForm() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                            _storedScreenIndex = Array.IndexOf(Screen.AllScreens, Screen.FromControl(this));
+                Move += (sender, args) =>
+                {
+                    if (_screenResizing)
+                    {
+                        var currentIndex = GetScreenIndex();
+                        if (_storedScreenIndex != currentIndex)
+                        {
+                            Refresh();
+                            _storedScreenIndex = currentIndex;
+                        }
+                    }
+                };
+
+                ResizeBegin += (sender, args) =>
+                {
+                    _screenResizing = true;
+                }; 
+            
+                ResizeEnd += (sender, args) =>
+                {
+                    _screenResizing = false;
+                    Scale(ignoreCheck: true);
+                };
+
+                int GetScreenIndex()
+                {
+                    return Array.IndexOf(Screen.AllScreens, Screen.FromControl(this));
+                }
+                        
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -445,6 +538,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -496,10 +597,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledLabel() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -514,6 +617,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -565,10 +676,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledLinkLabel() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -583,6 +696,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -634,10 +755,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledPanel() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -652,6 +775,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -703,10 +834,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledProgressBar() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -721,6 +854,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -772,10 +913,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledTabControl() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -790,6 +933,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -841,10 +992,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledTabPage() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -859,6 +1012,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {
@@ -910,10 +1071,12 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
-
+        private float? _dpiScalingFactor { get; set; }
+        
         public DpiScaledTextBox() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+                    
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -928,6 +1091,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {

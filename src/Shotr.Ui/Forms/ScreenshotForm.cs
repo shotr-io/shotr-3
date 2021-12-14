@@ -767,7 +767,7 @@ namespace Shotr.Ui.Forms
                     e.Graphics.DrawRectangle(_pen, _x);
                     if (_settings.Capture.ShowInformation)
                     {
-                        TextRenderer.DrawText(e.Graphics, string.Format("X: {0} Y: {1} W: {0} H: {1}", _x.X, _x.Y, _x.Width, _x.Height), Theme.Font(12),new Point(_x.X, _x.Y - Font.Height), Color.White);
+                        TextRenderer.DrawText(e.Graphics, string.Format("X: {0} Y: {1} W: {2} H: {3}", _x.X, _x.Y, _x.Width, _x.Height), Theme.Font(12),new Point(_x.X, _x.Y - Font.Height), Color.White);
                     }
 
                     // Draw buttons.

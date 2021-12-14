@@ -43,10 +43,57 @@ namespace Shotr.Core.Controls.DpiScaling {
         private Size _originalSize { get; set; }
         private Point _originalLocation { get; set; }
         private bool _alreadyRan { get; set; }
+        private float? _dpiScalingFactor { get; set; }
+        <#
+        if (control.Item1 == "Form") 
+        {
+        #>
+        private int _storedScreenIndex { get; set; }
+        private bool _screenResizing { get; set; }
+        <#
+        }
+        #>
 
         public DpiScaled<#=control.Item1#>() 
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+            <#
+            if (control.Item1 == "Form") 
+            {
+                #>
+                _storedScreenIndex = Array.IndexOf(Screen.AllScreens, Screen.FromControl(this));
+                Move += (sender, args) =>
+                {
+                    if (_screenResizing)
+                    {
+                        var currentIndex = GetScreenIndex();
+                        if (_storedScreenIndex != currentIndex)
+                        {
+                            Refresh();
+                            _storedScreenIndex = currentIndex;
+                        }
+                    }
+                };
+
+                ResizeBegin += (sender, args) =>
+                {
+                    _screenResizing = true;
+                }; 
+            
+                ResizeEnd += (sender, args) =>
+                {
+                    _screenResizing = false;
+                    Scale(ignoreCheck: true);
+                };
+
+                int GetScreenIndex()
+                {
+                    return Array.IndexOf(Screen.AllScreens, Screen.FromControl(this));
+                }
+                <#
+            }  
+        #>
+        
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs args) 
@@ -61,6 +108,14 @@ namespace Shotr.Core.Controls.DpiScaling {
         protected override void OnPaint(PaintEventArgs e) 
         {
             Scale(onPaint: true);
+
+            _dpiScalingFactor ??= DpiScaler.GetScalingFactor(this);
+
+            if (Math.Abs(_dpiScalingFactor.Value - DpiScaler.GetScalingFactor(this)) > 0.00001) 
+            {
+                Scale(ignoreCheck: true);
+                _dpiScalingFactor = DpiScaler.GetScalingFactor(this);
+            }
 
             if (BasePaint) 
             {

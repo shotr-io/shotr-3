@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Microsoft.Win32;
 using Shotr.Core.Controls.Theme;
 using Shotr.Core.Entities;
 using Shotr.Core.Entities.Hotkeys;
@@ -156,6 +157,8 @@ namespace Shotr.Ui
             ServiceProvider = services.BuildServiceProvider();
 
             ConfigureApplication();
+
+            CheckForCompatLayer();
 
             TryEnableDpiAware();
 
@@ -354,35 +357,27 @@ namespace Shotr.Ui
             
             uploader.AddToQueue(new FileShell(Encoding.ASCII.GetBytes(e.ExceptionObject.ToString())));
         }
-
-        [DllImport("SHCore.dll")]
-        private static extern bool SetProcessDpiAwareness(ProcessDpiAwareness awareness);
-
-        private enum ProcessDpiAwareness
-        {
-            ProcessDpiUnaware = 0,
-            ProcessSystemDpiAware = 1,
-            ProcessPerMonitorDpiAware = 2
-        }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern bool SetProcessDPIAware();
-
-        public static float MeanDpIprimary = 96f;
-
+        
         internal static void TryEnableDpiAware()
         {
-            try
+            Application.SetHighDpiMode(HighDpiMode.PerMonitor);
+        }
+
+        internal static void CheckForCompatLayer()
+        {
+            var appCompatFlagsPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers";
+            var hKey = (Registry.CurrentUser).OpenSubKey(appCompatFlagsPath, true);
+            if (hKey is { })
             {
-                SetProcessDpiAwareness(ProcessDpiAwareness.ProcessPerMonitorDpiAware);
-            }
-            catch
-            {
-                try
-                { // fallback, use (simpler) internal function
-                    SetProcessDPIAware();
+                var output = hKey.GetValue(Application.ExecutablePath);
+                if (output is null)
+                {
+                    hKey.SetValue(Application.ExecutablePath, "~ HIGHDPIAWARE");
+                    Application.Restart();
+                    Environment.Exit(0);
                 }
-                catch { }
+
+                hKey.Close();
             }
         }
     }
