@@ -19,8 +19,8 @@ namespace Shotr.Core.Controls.Theme
 
         protected override void OnControlScaled(float scalingFactor)
         {
-            var size = new Size(ItemSize.Width, ItemSize.Height + 10);
-            ItemSize = size;
+            //var size = new Size(ItemSize.Width, ItemSize.Height + 10);
+            //ItemSize = size;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -71,8 +71,6 @@ namespace Shotr.Core.Controls.Theme
         {
             using (Brush bgBrush = new SolidBrush(Theme.TabControlBorderColor))
             {
-                var scalingFactor = DpiScaler.GetScalingFactor(this);
-
                 var borderRectangle = new Rectangle(DisplayRectangle.X, GetTabRect(index).Bottom + 2 - TAB_BOTTOM_BORDER_HEIGHT,
                     DisplayRectangle.Width, TAB_BOTTOM_BORDER_HEIGHT);
 

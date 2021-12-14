@@ -27,7 +27,7 @@ namespace Shotr.Core.Controls.Theme
             {
                 return _cachedFonts[emSize];
             }
-            var font = new Font(_privateFontCollection.Families.FirstOrDefault(p => p.Name == "Inter") ?? new FontFamily("Inter"), emSize == 9f ? 12f : emSize, FontStyle.Regular, GraphicsUnit.Pixel);
+            var font = new Font(_privateFontCollection.Families.FirstOrDefault(p => p.Name == "Inter") ?? new FontFamily("Inter"), emSize, FontStyle.Regular, GraphicsUnit.Pixel);
             _cachedFonts.Add(emSize, font);
 
             return font;

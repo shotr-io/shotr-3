@@ -6,6 +6,7 @@ namespace Shotr.Core.Controls.Theme
 {
     public class ThemedListView : DpiScaledListView
     {
+        private float? _originalFontSize;
         public ThemedListView()
         {
             DoubleBuffered = true;
@@ -22,7 +23,9 @@ namespace Shotr.Core.Controls.Theme
                 Columns[i].Width = (int)colPercentage;
             }
 
-            Font = Theme.Font(Font.Size * scalingFactor);
+            _originalFontSize ??= Font.Size;
+
+            Font = DpiScaler.ScaleFont(Theme.Font(_originalFontSize.Value), this);
         }
 
         protected override void OnPaint(PaintEventArgs e)
