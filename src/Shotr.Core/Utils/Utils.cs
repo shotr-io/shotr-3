@@ -120,7 +120,7 @@ namespace Shotr.Core.Utils
             return new Rectangle(new Point(left, top), new Size(width, height));
         }
 
-        public static Bitmap CopyScreen()
+        public static Bitmap CopyScreen(bool hideCursor)
         {
             var CurrScreen = GetScreenBoundaries();
 
@@ -128,20 +128,25 @@ namespace Shotr.Core.Utils
 
             var w = BitBltCopy(CurrScreen);
             var g = Graphics.FromImage(w);
-            Bitmap cursor;
-            try
+            if (!hideCursor)
             {
-                int x = 0, y = 0;
-                cursor = WinApi.CaptureCursor(ref x, ref y);
-                //calculate x & y's real position relative to the form.
-                //which is (-left)+x | (-top)+y
-                x = x + -CurrScreen.Left;
-                y = y + -CurrScreen.Top;
-                g.DrawImage(cursor, new Point(x, y));
-                cursor.Dispose();
+                try
+                {
+                    int x = 0, y = 0;
+                    var cursor = WinApi.CaptureCursor(ref x, ref y);
+                    //calculate x & y's real position relative to the form.
+                    //which is (-left)+x | (-top)+y
+                    x = x + -CurrScreen.Left;
+                    y = y + -CurrScreen.Top;
+                    g.DrawImage(cursor, new Point(x, y));
+                    cursor.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while capturing the cursor: {ex}");
+                }
             }
-            catch {
-            }
+
             g.Flush();
             g.Dispose();
             return w;
