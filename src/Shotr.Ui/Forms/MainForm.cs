@@ -144,6 +144,7 @@ namespace Shotr.Ui.Forms
             uploadClipboardHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.UploadClipboard);
             colorPickerHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.ColorPicker);
             recordScreenHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.RecordScreen);
+            activeFullscreenHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.ActiveFullscreen);
 
             activeWindowHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ActiveWindow);
             fullScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.Fullscreen);
@@ -151,6 +152,7 @@ namespace Shotr.Ui.Forms
             uploadClipboardHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.UploadClipboard);
             colorPickerHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ColorPicker);
             recordScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.RecordScreen);
+            activeFullscreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ActiveFullscreen);
 
             activeWindowHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Active Window",
                 activeWindowHotKeyButton.HotKey.ModifiersEnum, activeWindowHotKeyButton.HotKey.HotKey,
@@ -170,6 +172,9 @@ namespace Shotr.Ui.Forms
             recordScreenHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Record Screen",
                 recordScreenHotKeyButton.HotKey.ModifiersEnum, recordScreenHotKeyButton.HotKey.HotKey,
                 KeyTask.RecordScreen);
+            activeFullscreenHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Active Fullscreen",
+                activeFullscreenHotKeyButton.HotKey.ModifiersEnum, activeFullscreenHotKeyButton.HotKey.HotKey,
+                KeyTask.ActiveFullscreen);
             
             notifyIcon1.Disposed += (_, _) =>
             {
@@ -567,6 +572,14 @@ namespace Shotr.Ui.Forms
                 _settings.Hotkey.Clipboard = uploadClipboardHotKey.Keys;
             }
 
+            var activeFullscreenHotKey = _hotkeyService.GetHotKey(KeyTask.ActiveFullscreen);
+            if (activeFullscreenHotKey is { })
+            {
+                activeFullscreenHotKeyButton.Text = activeFullscreenHotKey.Data.ToString();
+                activeFullscreenHotKeyButton.HotKey = activeFullscreenHotKey.Data;
+                _settings.Hotkey.ActiveFullscreen = activeFullscreenHotKey.Keys;
+            }
+
             SettingsService.Save(_settings);
         }
 
@@ -639,18 +652,22 @@ namespace Shotr.Ui.Forms
                     break;
                 case KeyTask.Fullscreen:
                 case KeyTask.ActiveWindow:
+                case KeyTask.ActiveFullscreen:
                     _tasks.CurrentTask = hotkey.Task;
                     Invoke((MethodInvoker)(() =>
                     {
-                        var rect = Utils.GetActiveWindowCoords();
-                        var capture = Utils.CopyScreen();
+						var capture = Utils.CopyScreen();
+                        var boundaries = Utils.GetScreenBoundaries();
 
-                        if (hotkey.Task == KeyTask.Fullscreen)
+                        var rect = hotkey.Task switch
                         {
-                            var translated = Utils.GetScreenBoundaries();
-                            rect = new Rectangle(translated.X, translated.Y, capture.Width, capture.Height);
-                        }
+                            KeyTask.Fullscreen => new Rectangle(boundaries.X, boundaries.Y, capture.Width, capture.Height),
+                            KeyTask.ActiveWindow => Utils.GetActiveWindowCoords(),
+                            KeyTask.ActiveFullscreen => Screen.FromPoint(Cursor.Position).Bounds,
+                            _ => throw new ArgumentNullException("Cannot choose nonexistant capture type.")
+                        };
                         
+
                         var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks, rect);
                         screenshotForm.ShowDialog();
 
