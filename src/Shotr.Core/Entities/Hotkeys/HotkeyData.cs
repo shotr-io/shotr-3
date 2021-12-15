@@ -14,13 +14,6 @@ namespace Shotr.Core.Entities.Hotkeys
         }
 
         private Keys _hk = Keys.None;
-        private KeyTask _task = KeyTask.Empty;
-
-        public KeyTask Task
-        {
-            get => _task;
-            set => _task = value;
-        }
 
         public Keys HotKey => _hk;
 

@@ -38,18 +38,18 @@ namespace Shotr.Ui.Forms
         private readonly MusicPlayerService _musicPlayerService;
 
         private readonly ShotrApiService _shotrApiService;
-        
+
         private Icon _shotrIcon;
         private VideoRecorderForm _videoRecorderForm;
 
         public MainForm(BaseSettings settings,
                         Uploader uploader,
                         PipeServer pipeServer,
-                        SingleInstance tasks, 
-                        HotKeyService hotkeyService, 
-                        SettingsService settingsService, 
-                        IEnumerable<IImageUploader> uploaders, 
-                        MusicPlayerService musicPlayerService, 
+                        SingleInstance tasks,
+                        HotKeyService hotkeyService,
+                        SettingsService settingsService,
+                        IEnumerable<IImageUploader> uploaders,
+                        MusicPlayerService musicPlayerService,
                         ShotrApiService shotrApiService)
         {
             _settings = settings;
@@ -63,7 +63,7 @@ namespace Shotr.Ui.Forms
             _shotrApiService = shotrApiService;
 
             InitializeComponent();
-            
+
             Shown += MainFormShown;
             _pipeServer.PipeServerReceivedClient += _pipeserver_PipeServerReceivedClient;
             _pipeServer.StartServer();
@@ -80,13 +80,14 @@ namespace Shotr.Ui.Forms
         void _pipeserver_PipeServerReceivedClient(object sender, PipeServerEventArgs e)
         {
             switch (e.Data)
-            { 
+            {
                 case "--region":
                     var regionHotkey = _hotkeyService.GetHotKey(KeyTask.Region);
                     if (regionHotkey is { })
                     {
                         hook_KeyPressed(this, new KeyPressedEventArgs(regionHotkey.Id));
                     }
+
                     break;
                 case "--record":
                     var recordHotkey = _hotkeyService.GetHotKey(KeyTask.RecordScreen);
@@ -94,6 +95,7 @@ namespace Shotr.Ui.Forms
                     {
                         hook_KeyPressed(this, new KeyPressedEventArgs(recordHotkey.Id));
                     }
+
                     break;
                 case "--launch":
                     Invoke((MethodInvoker)(() =>
@@ -131,6 +133,17 @@ namespace Shotr.Ui.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            var hotkeyList = new Dictionary<KeyTask, HotKeyButton>
+            {
+                { KeyTask.ActiveWindow, activeWindowHotKeyButton },
+                { KeyTask.Fullscreen, fullScreenHotKeyButton },
+                { KeyTask.ActiveFullscreen, activeFullscreenHotKeyButton },
+                { KeyTask.Region, regionHotKeyButton },
+                { KeyTask.UploadClipboard, uploadClipboardHotKeyButton },
+                { KeyTask.ColorPicker, colorPickerHotKeyButton },
+                { KeyTask.RecordScreen, recordScreenHotKeyButton }
+            };
+
             _hotkeyService.KeyPressed += hook_KeyPressed;
             UpdateControls(firstLoad: true);
             _uploader.StartQueue();
@@ -138,44 +151,37 @@ namespace Shotr.Ui.Forms
             _uploader.OnError += Uploader_OnError;
             _uploader.OnProgress += Uploader_OnProgress;
 
-            activeWindowHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.ActiveWindow);
-            fullScreenHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.Fullscreen);
-            regionHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.Region);
-            uploadClipboardHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.UploadClipboard);
-            colorPickerHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.ColorPicker);
-            recordScreenHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.RecordScreen);
-            activeFullscreenHotKeyButton.OnHotKeyClicked += (_, _) => _hotkeyService.UnloadHotKey(KeyTask.ActiveFullscreen);
+            activeWindowHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.ActiveWindow);
+            fullScreenHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.Fullscreen);
+            regionHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.Region);
+            uploadClipboardHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.UploadClipboard);
+            colorPickerHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.ColorPicker);
+            recordScreenHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.RecordScreen);
+            activeFullscreenHotKeyButton.OnHotKeyClicked += (_, _) => UnloadAndDisableHotKeys(KeyTask.ActiveFullscreen);
 
-            activeWindowHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ActiveWindow);
-            fullScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.Fullscreen);
-            regionHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.Region);
-            uploadClipboardHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.UploadClipboard);
-            colorPickerHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ColorPicker);
-            recordScreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.RecordScreen);
-            activeFullscreenHotKeyButton.OnHotKeyCanceled += (button, _) => _hotkeyService.LoadSingleHotKey((button as HotKeyButton).HotKey.HotKey, KeyTask.ActiveFullscreen);
+            activeWindowHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
+            fullScreenHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
+            regionHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
+            uploadClipboardHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
+            colorPickerHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
+            recordScreenHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
+            activeFullscreenHotKeyButton.OnHotKeyCanceled += (_, _) => ReloadAndEnableHotKeys();
 
-            activeWindowHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Active Window",
-                activeWindowHotKeyButton.HotKey.ModifiersEnum, activeWindowHotKeyButton.HotKey.HotKey,
-                KeyTask.ActiveWindow);
-            fullScreenHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Fullscreen",
-                fullScreenHotKeyButton.HotKey.ModifiersEnum, fullScreenHotKeyButton.HotKey.HotKey,
-                KeyTask.Fullscreen);
-            regionHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Region",
-                regionHotKeyButton.HotKey.ModifiersEnum, regionHotKeyButton.HotKey.HotKey,
-                KeyTask.Region);
-            uploadClipboardHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Clipboard Upload",
-                uploadClipboardHotKeyButton.HotKey.ModifiersEnum, uploadClipboardHotKeyButton.HotKey.HotKey,
-                KeyTask.UploadClipboard);
-            colorPickerHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Color Picker",
-                colorPickerHotKeyButton.HotKey.ModifiersEnum, colorPickerHotKeyButton.HotKey.HotKey,
-                KeyTask.ColorPicker);
-            recordScreenHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Record Screen",
-                recordScreenHotKeyButton.HotKey.ModifiersEnum, recordScreenHotKeyButton.HotKey.HotKey,
-                KeyTask.RecordScreen);
-            activeFullscreenHotKeyButton.OnHotKeyChanged += (_, _) => SetNewHotKey("Active Fullscreen",
-                activeFullscreenHotKeyButton.HotKey.ModifiersEnum, activeFullscreenHotKeyButton.HotKey.HotKey,
-                KeyTask.ActiveFullscreen);
-            
+            activeWindowHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Active Window",
+                button, KeyTask.ActiveWindow);
+            fullScreenHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Fullscreen",
+                button, KeyTask.Fullscreen);
+            regionHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Region",
+                button, KeyTask.Region);
+            uploadClipboardHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Clipboard Upload",
+                button, KeyTask.UploadClipboard);
+            colorPickerHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Color Picker",
+                button, KeyTask.ColorPicker);
+            recordScreenHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Record Screen",
+                button, KeyTask.RecordScreen);
+            activeFullscreenHotKeyButton.OnHotKeyChanged += (button, _) => SetNewHotKey("Active Fullscreen",
+                button, KeyTask.ActiveFullscreen);
+
             notifyIcon1.Disposed += (_, _) =>
             {
                 notifyIcon1 = new NotifyIcon
@@ -187,16 +193,60 @@ namespace Shotr.Ui.Forms
             };
 
             notifyIcon1.Icon = (Icon)_shotrIcon.Clone();
-            
-            void SetNewHotKey(string name, HotKeyModifiers modifiers, Keys hotkeys, KeyTask task)
-            {
-                var hook = _hotkeyService.SetNewHook(modifiers, hotkeys, task);
-                if (!hook)
-                {
-                    MessageBox.Show(this, $"Failed to set hotkey hook for '{name}'. Please make sure the combinations you entered aren't being used by another application", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
 
-                UpdateHotKeys();
+            void SetNewHotKey(string name, object? passedHotKeyButtonObject, KeyTask task)
+            {
+                if (passedHotKeyButtonObject is HotKeyButton passedHotKeyButton)
+                {
+                    foreach (var (keyTask, keyButton) in hotkeyList)
+                    {
+                        // look at other items and see if there's one that already exists.
+                        if (keyButton.HotKey is { } && passedHotKeyButton.HotKey is { } &&
+                            keyButton.HotKey.HotKey == passedHotKeyButton.HotKey.HotKey && task != keyTask)
+                        {
+                            // set the hotkey for the found one to none.
+                            keyButton.Key = Keys.None;
+                            keyButton.HotKey = new HotKeyData(Keys.None);
+                            keyButton.Text = "None";
+                        }
+                    }
+
+                    var hook = _hotkeyService.SetNewHook(passedHotKeyButton.HotKey.ModifiersEnum,
+                        passedHotKeyButton.HotKey.HotKey, task);
+                    if (!hook)
+                    {
+                        MessageBox.Show(this,
+                            $"Failed to set hotkey hook for '{name}'. Please make sure the combinations you entered aren't being used by another application",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    UpdateHotKeys();
+                    ReloadAndEnableHotKeys();
+                }
+            }
+
+            void UnloadAndDisableHotKeys(KeyTask doNotDisable)
+            {
+                foreach (var (task, button) in hotkeyList)
+                {
+                    _hotkeyService.UnloadHotKey(task);
+
+                    if (task == doNotDisable)
+                    {
+                        continue;
+                    }
+
+                    button.Enabled = false;
+                }
+            }
+
+            void ReloadAndEnableHotKeys()
+            {
+                foreach (var (task, button) in hotkeyList)
+                {
+                    _hotkeyService.LoadSingleHotKey(button.HotKey.HotKey, task);
+                    button.Enabled = true;
+                }
             }
         }
 
@@ -226,6 +276,7 @@ namespace Shotr.Ui.Forms
                         m.Dispose();
                         return;
                     }
+
                     var s = ImageManipulation.ImageStatus(Convert.ToInt32(progress));
                     notifyIcon1.Icon.Dispose();
                     notifyIcon1.Icon = s;
@@ -233,10 +284,13 @@ namespace Shotr.Ui.Forms
                     s.Dispose();
                 }));
             }
-            catch { }
+            catch
+            {
+            }
         }
 
-        void Uploader_OnError(FileShell fileShell, bool allowReUpload, FileTypeEnum fileType, string uploader, string errorMessage)
+        void Uploader_OnError(FileShell fileShell, bool allowReUpload, FileTypeEnum fileType, string uploader,
+                              string errorMessage)
         {
             if (!WineDetectionService.IsWine())
             {
@@ -249,8 +303,8 @@ namespace Shotr.Ui.Forms
 
                 var message = $"Upload to {uploader} failed: {errorMessage}";
 
-                Toast.Send(null, message.Substring(0, message.Length > 128 ? 125 : message.Length)+"...", 
-                    allowReUpload ? "Retry Upload" : null, 
+                Toast.Send(null, message.Substring(0, message.Length > 128 ? 125 : message.Length) + "...",
+                    allowReUpload ? "Retry Upload" : null,
                     allowReUpload ? "retryUpload" : null,
                     allowReUpload ? $"path={filePath}" : null);
             }
@@ -258,7 +312,8 @@ namespace Shotr.Ui.Forms
             {
                 try
                 {
-                    var errorNotification = new ErrorNotification(fileShell, fileType, allowReUpload, uploader, errorMessage);
+                    var errorNotification =
+                        new ErrorNotification(fileShell, fileType, allowReUpload, uploader, errorMessage);
                     Invoke((MethodInvoker)(() => { errorNotification.Show(); }));
                 }
                 catch
@@ -268,13 +323,15 @@ namespace Shotr.Ui.Forms
             }
         }
 
-        private void Uploader_OnUploaded(FileShell fileShell, UploadResult? result, SaveResult? saveResult, FileTypeEnum fileType, string extension, string uploader)
+        private void Uploader_OnUploaded(FileShell fileShell, UploadResult? result, SaveResult? saveResult,
+                                         FileTypeEnum fileType, string extension, string uploader)
         {
             var fileName = $"{_settings.Capture.SaveToDirectoryPath}\\{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{extension}";
 
             if (_settings.Capture.SaveToDirectory)
             {
-                if (_settings.Capture.SaveToDirectoryPath is {} && !Directory.Exists(_settings.Capture.SaveToDirectoryPath))
+                if (_settings.Capture.SaveToDirectoryPath is { } &&
+                    !Directory.Exists(_settings.Capture.SaveToDirectoryPath))
                 {
                     Directory.CreateDirectory(_settings.Capture.SaveToDirectoryPath);
                 }
@@ -282,14 +339,14 @@ namespace Shotr.Ui.Forms
                 if (fileShell.Data is { })
                 {
                     File.WriteAllBytes(fileName, fileShell.Data);
-                } 
+                }
                 else if (fileShell.Path is { })
                 {
                     File.Copy(fileShell.Path, fileName);
                 }
             }
 
-            var url = result is {} ? _settings.Capture.DirectUrl ? result.Url : result.PageUrl : "";
+            var url = result is { } ? _settings.Capture.DirectUrl ? result.Url : result.PageUrl : "";
 
             if (result is { })
             {
@@ -314,7 +371,7 @@ namespace Shotr.Ui.Forms
                 _settings.Uploads ??= new List<UploadItem>();
                 _settings.Uploads.Add(uploadItem);
 
-                Invoke((MethodInvoker) (() =>
+                Invoke((MethodInvoker)(() =>
                 {
                     themedListView1.Items.Insert(0, listViewItem);
                     uploadCountLabel.Text = _settings.Uploads.Count.ToString();
@@ -355,7 +412,7 @@ namespace Shotr.Ui.Forms
                         fileName = Path.Combine(SettingsService.CachePath, "notification.png");
                         b.Save(fileName);
                     }
-                    
+
                     if (result != null)
                     {
                         if (_settings.ShowNotifications)
@@ -363,10 +420,14 @@ namespace Shotr.Ui.Forms
                             if (!WineDetectionService.IsWine())
                             {
                                 Toast.Send(fileName,
-                                    fileType == FileTypeEnum.Text ? "Text uploaded and link copied to clipboard!" :
-                                    fileType == FileTypeEnum.Video ? "Recording uploaded and link copied to clipboard!" :
-                                    fileType == FileTypeEnum.Image ? "Screenshot uploaded and link copied to clipboard!" :
-                                    "File uploaded and link copied to clipboard!", "View Upload", "viewUrl",
+                                    fileType == FileTypeEnum.Text
+                                        ? "Text uploaded and link copied to clipboard!"
+                                        : fileType == FileTypeEnum.Video
+                                            ? "Recording uploaded and link copied to clipboard!"
+                                            : fileType == FileTypeEnum.Image
+                                                ? "Screenshot uploaded and link copied to clipboard!"
+                                                : "File uploaded and link copied to clipboard!", "View Upload",
+                                    "viewUrl",
                                     $"url={url}");
                             }
                             else
@@ -382,7 +443,8 @@ namespace Shotr.Ui.Forms
                         {
                             if (!WineDetectionService.IsWine())
                             {
-                                var screenshotText = $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!";
+                                var screenshotText =
+                                    $"Screenshot {(_settings.Capture.SaveToDirectory ? "saved and " : "")}copied to clipboard!";
                                 Toast.Send(fileName,
                                     fileType == FileTypeEnum.Video
                                         ? "Recording saved!"
@@ -415,10 +477,10 @@ namespace Shotr.Ui.Forms
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 metroLabel8.Text = $"v{version.Major}.{version.Minor}.{version.Build}";
             }
-            
+
             UpdateHotKeys();
             UpdateListView(firstLoad);
-            
+
             if (_settings.Login.Enabled == true)
             {
                 loginToShotrPanel.Visible = false;
@@ -427,10 +489,11 @@ namespace Shotr.Ui.Forms
                 {
                     uploadCountLabel.Text = _settings.Uploads.Count.ToString();
                 }
+
                 myAccountPanel.BringToFront();
-                
+
                 clipboardLabel.Enabled = true;
-                
+
                 uploadClipboardHotKeyButton.Enabled = true;
 
                 // Show History tab
@@ -481,7 +544,7 @@ namespace Shotr.Ui.Forms
                 {
                     templist.AddRange(_settings.LegacyHistory.Select(p => p.Value).ToList());
                 }
-            
+
                 // Check with uploaded history.
                 var directUrl = _settings.Capture.DirectUrl;
                 for (var i = templist.Count - 1; i >= 0; i--)
@@ -489,7 +552,8 @@ namespace Shotr.Ui.Forms
                     if (directUrl)
                     {
                         var m = GetUploader(templist[i].Uploader);
-                        var x = new ListViewItem { Text = !m.SupportsPages && !directUrl ? templist[i].Url : templist[i].PageUrl };
+                        var x = new ListViewItem
+                            { Text = !m.SupportsPages && !directUrl ? templist[i].Url : templist[i].PageUrl };
                         x.SubItems.Add(templist[i].Time.FromUnixTime().ToString());
                         themedListView1.Items.Add(x);
                     }
@@ -507,7 +571,6 @@ namespace Shotr.Ui.Forms
         {
             if (themedListView1 is ListView listView)
             {
-
                 // Get the sum of all column tags
                 var totalColumnWidth = themedListView1.Size.Width;
 
@@ -531,7 +594,7 @@ namespace Shotr.Ui.Forms
                 activeWindowHotKeyButton.HotKey = activeWindowHotKey.Data;
                 _settings.Hotkey.ActiveWindow = activeWindowHotKey.Keys;
             }
-            
+
             var fullscreenHotKey = _hotkeyService.GetHotKey(KeyTask.Fullscreen);
             if (fullscreenHotKey is { })
             {
@@ -539,7 +602,7 @@ namespace Shotr.Ui.Forms
                 fullScreenHotKeyButton.HotKey = fullscreenHotKey.Data;
                 _settings.Hotkey.Fullscreen = fullscreenHotKey.Keys;
             }
-            
+
             var regionHotKey = _hotkeyService.GetHotKey(KeyTask.Region);
             if (regionHotKey is { })
             {
@@ -547,7 +610,7 @@ namespace Shotr.Ui.Forms
                 regionHotKeyButton.HotKey = regionHotKey.Data;
                 _settings.Hotkey.Region = regionHotKey.Keys;
             }
-            
+
             var colorPickerHotKey = _hotkeyService.GetHotKey(KeyTask.ColorPicker);
             if (colorPickerHotKey is { })
             {
@@ -555,7 +618,7 @@ namespace Shotr.Ui.Forms
                 colorPickerHotKeyButton.HotKey = colorPickerHotKey.Data;
                 _settings.Hotkey.ColorPicker = colorPickerHotKey.Keys;
             }
-            
+
             var recordScreenHotKey = _hotkeyService.GetHotKey(KeyTask.RecordScreen);
             if (recordScreenHotKey is { })
             {
@@ -563,7 +626,7 @@ namespace Shotr.Ui.Forms
                 recordScreenHotKeyButton.HotKey = recordScreenHotKey.Data;
                 _settings.Hotkey.RecordScreen = recordScreenHotKey.Keys;
             }
-            
+
             var uploadClipboardHotKey = _hotkeyService.GetHotKey(KeyTask.UploadClipboard);
             if (uploadClipboardHotKey is { })
             {
@@ -656,17 +719,18 @@ namespace Shotr.Ui.Forms
                     _tasks.CurrentTask = hotkey.Task;
                     Invoke((MethodInvoker)(() =>
                     {
-						var capture = Utils.CopyScreen();
+                        var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
                         var boundaries = Utils.GetScreenBoundaries();
 
                         var rect = hotkey.Task switch
                         {
-                            KeyTask.Fullscreen => new Rectangle(boundaries.X, boundaries.Y, capture.Width, capture.Height),
+                            KeyTask.Fullscreen => new Rectangle(boundaries.X, boundaries.Y, capture.Width,
+                                capture.Height),
                             KeyTask.ActiveWindow => Utils.GetActiveWindowCoords(),
                             KeyTask.ActiveFullscreen => Screen.FromPoint(Cursor.Position).Bounds,
                             _ => throw new ArgumentNullException("Cannot choose nonexistant capture type.")
                         };
-                        
+
 
                         var screenshotForm = new ScreenshotForm(_settings, _uploader, capture, _tasks, rect);
                         screenshotForm.ShowDialog();
@@ -690,7 +754,9 @@ namespace Shotr.Ui.Forms
                     }));
                     break;
                 case KeyTask.RecordScreen:
-                    if (!File.Exists(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) || Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) != "05a894305c9bd146dad4cc3ff0e21e83")
+                    if (!File.Exists(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) ||
+                        Utils.MD5File(Path.Combine(SettingsService.FolderPath, "ffmpeg.exe")) !=
+                        "05a894305c9bd146dad4cc3ff0e21e83")
                     {
                         var mpg = new FfMpegDownload();
                         if (mpg.ShowDialog() == DialogResult.Cancel)
@@ -723,10 +789,12 @@ namespace Shotr.Ui.Forms
                             }
 
                             var capture = Utils.CopyScreen(_settings.Capture.HideCursor);
-                            _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader, capture, _tasks);
+                            _videoRecorderForm = new VideoRecorderForm(_settings, _musicPlayerService, _uploader,
+                                capture, _tasks);
                             _videoRecorderForm.Show();
                         }));
                     }
+
                     break;
                 case KeyTask.UploadClipboard:
                     _tasks.CurrentTask = hotkey.Task;
@@ -757,6 +825,7 @@ namespace Shotr.Ui.Forms
                             }
                         }
                     }
+
                     _tasks.Reset();
                     break;
             }
@@ -771,11 +840,13 @@ namespace Shotr.Ui.Forms
                     var fileMimeType = mime.GetMimeForFileExtension(_settings.Capture.Extension);
                     var image = _settings.Capture.Extension switch
                     {
-                        { } p when p == "png" && _settings.Capture.CompressionEnabled => Utils.Quantize(bitmap).ImageToByteArrayConvert(fileMimeType),
+                        { } p when p == "png" && _settings.Capture.CompressionEnabled => Utils.Quantize(bitmap)
+                                                                                              .ImageToByteArrayConvert(
+                                                                                                  fileMimeType),
                         "png" => bitmap.ImageToByteArrayConvert(fileMimeType),
-                        _ => bitmap.ImageToByteArrayCompressed(fileMimeType, (long) _settings.Capture.CompressionLevel)
+                        _ => bitmap.ImageToByteArrayCompressed(fileMimeType, (long)_settings.Capture.CompressionLevel)
                     };
-                            
+
                     bitmap.Dispose();
 
                     if (upload)
@@ -788,7 +859,8 @@ namespace Shotr.Ui.Forms
                     {
                         var saveDialog = new SaveFileDialog
                         {
-                            Filter = $"{_settings.Capture.Extension} files (*.{_settings.Capture.Extension})|*.{_settings.Capture.Extension}|All files (*.*)|*.*",
+                            Filter =
+                                $"{_settings.Capture.Extension} files (*.{_settings.Capture.Extension})|*.{_settings.Capture.Extension}|All files (*.*)|*.*",
                             FileName = $"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.{_settings.Capture.Extension}",
                         };
 
@@ -796,12 +868,13 @@ namespace Shotr.Ui.Forms
                         if (result == DialogResult.OK)
                         {
                             File.WriteAllBytes(saveDialog.FileName, image);
-                            Toast.Send(null, "Image saved to file!", "Open Containing Folder", "openDirectory", $"path={saveDialog.FileName}");
+                            Toast.Send(null, "Image saved to file!", "Open Containing Folder", "openDirectory",
+                                $"path={saveDialog.FileName}");
                         }
 
                         return;
                     }
-                    
+
                     _uploader.ProcessWithoutUpload(new FileShell(image));
                 }
             }
@@ -835,7 +908,6 @@ namespace Shotr.Ui.Forms
             //see if item is selected.
             if (themedListView1.SelectedItems.Count > 0)
             {
-
                 if (_settings.LegacyHistory is { })
                 {
                     if (_settings.LegacyHistory.TryGetValue(
@@ -846,8 +918,8 @@ namespace Shotr.Ui.Forms
                         return;
                     }
                 }
-                
-                
+
+
                 if (_settings.Uploads is { })
                 {
                     var upload = _settings.Uploads.FirstOrDefault(p =>
@@ -880,7 +952,7 @@ namespace Shotr.Ui.Forms
         {
             new AboutForm().ShowDialog();
         }
-        
+
         private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (themedListView1.SelectedItems.Count > 0)
@@ -905,7 +977,7 @@ namespace Shotr.Ui.Forms
                 metroTabControl1.SelectTab(0);
             }
         }
-        
+
         private void customUploaderButton_Click(object sender, EventArgs e)
         {
             // TODO: Rework custom uploader functionality
@@ -914,14 +986,15 @@ namespace Shotr.Ui.Forms
 
         private void resetSettingsButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(this, "This will set your settings back to default, continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if (MessageBox.Show(this, "This will set your settings back to default, continue?", "Warning",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 SettingsService.Reset();
                 Application.Restart();
                 Environment.Exit(0);
             }
         }
-        
+
         private void settingsButton_Click(object sender, EventArgs e)
         {
             // Show global settings view
@@ -993,7 +1066,7 @@ namespace Shotr.Ui.Forms
         {
             var loginForm = new LoginForm(_settings, _shotrApiService);
             loginForm.ShowDialog();
-            if (loginForm.DialogResult == DialogResult.OK && _settings.Login.Token is {})
+            if (loginForm.DialogResult == DialogResult.OK && _settings.Login.Token is { })
             {
                 // Hide the login button and show the account panel.
                 _hotkeyService.UnloadHotKeys();
@@ -1002,6 +1075,7 @@ namespace Shotr.Ui.Forms
                 UpdateControls();
             }
         }
+
         private IImageUploader? GetUploader(string name)
         {
             return _uploaders.FirstOrDefault(p => p.Title == name);
