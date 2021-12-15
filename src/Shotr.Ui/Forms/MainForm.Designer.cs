@@ -36,7 +36,6 @@ namespace Shotr.Ui.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,6 +99,8 @@ namespace Shotr.Ui.Forms
             this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroLabel8 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.logoPictureBox = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
+            this.activeFullscreenHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
+            this.activeFullscreenLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.contextMenuStrip1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
@@ -115,7 +116,7 @@ namespace Shotr.Ui.Forms
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = Resources.shotr_icon_ico;
+            this.notifyIcon1.Icon = global::Shotr.Ui.Properties.Resources.shotr_icon_ico;
             this.notifyIcon1.Text = "Shotr";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
@@ -329,6 +330,8 @@ namespace Shotr.Ui.Forms
             // metroPanel2
             // 
             this.metroPanel2.BasePaint = false;
+            this.metroPanel2.Controls.Add(this.activeFullscreenHotKeyButton);
+            this.metroPanel2.Controls.Add(this.activeFullscreenLabel);
             this.metroPanel2.Controls.Add(this.colorPickerHotKeyButton);
             this.metroPanel2.Controls.Add(this.saveOnlyLabel);
             this.metroPanel2.Controls.Add(this.uploadClipboardHotKeyButton);
@@ -355,7 +358,7 @@ namespace Shotr.Ui.Forms
             this.colorPickerHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.colorPickerHotKeyButton.Highlight = false;
             this.colorPickerHotKeyButton.HotKey = null;
-            this.colorPickerHotKeyButton.Location = new System.Drawing.Point(121, 161);
+            this.colorPickerHotKeyButton.Location = new System.Drawing.Point(121, 190);
             this.colorPickerHotKeyButton.Name = "colorPickerHotKeyButton";
             this.colorPickerHotKeyButton.Scaled = true;
             this.colorPickerHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -366,7 +369,7 @@ namespace Shotr.Ui.Forms
             // 
             this.saveOnlyLabel.BasePaint = false;
             this.saveOnlyLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.saveOnlyLabel.Location = new System.Drawing.Point(16, 164);
+            this.saveOnlyLabel.Location = new System.Drawing.Point(11, 193);
             this.saveOnlyLabel.Name = "saveOnlyLabel";
             this.saveOnlyLabel.Scaled = true;
             this.saveOnlyLabel.Size = new System.Drawing.Size(103, 22);
@@ -379,7 +382,7 @@ namespace Shotr.Ui.Forms
             this.uploadClipboardHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.uploadClipboardHotKeyButton.Highlight = false;
             this.uploadClipboardHotKeyButton.HotKey = null;
-            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 135);
+            this.uploadClipboardHotKeyButton.Location = new System.Drawing.Point(121, 136);
             this.uploadClipboardHotKeyButton.Name = "uploadClipboardHotKeyButton";
             this.uploadClipboardHotKeyButton.Scaled = true;
             this.uploadClipboardHotKeyButton.Size = new System.Drawing.Size(142, 21);
@@ -390,7 +393,7 @@ namespace Shotr.Ui.Forms
             // 
             this.clipboardLabel.BasePaint = false;
             this.clipboardLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.clipboardLabel.Location = new System.Drawing.Point(16, 137);
+            this.clipboardLabel.Location = new System.Drawing.Point(11, 138);
             this.clipboardLabel.Name = "clipboardLabel";
             this.clipboardLabel.Scaled = true;
             this.clipboardLabel.Size = new System.Drawing.Size(81, 22);
@@ -414,7 +417,7 @@ namespace Shotr.Ui.Forms
             // 
             this.recordScreenLabel.BasePaint = false;
             this.recordScreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.recordScreenLabel.Location = new System.Drawing.Point(16, 111);
+            this.recordScreenLabel.Location = new System.Drawing.Point(11, 111);
             this.recordScreenLabel.Name = "recordScreenLabel";
             this.recordScreenLabel.Scaled = true;
             this.recordScreenLabel.Size = new System.Drawing.Size(96, 22);
@@ -475,7 +478,7 @@ namespace Shotr.Ui.Forms
             // 
             this.regionLabel.BasePaint = false;
             this.regionLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.regionLabel.Location = new System.Drawing.Point(16, 31);
+            this.regionLabel.Location = new System.Drawing.Point(11, 31);
             this.regionLabel.Name = "regionLabel";
             this.regionLabel.Scaled = true;
             this.regionLabel.Size = new System.Drawing.Size(53, 22);
@@ -486,7 +489,7 @@ namespace Shotr.Ui.Forms
             // 
             this.fullscreenLabel.BasePaint = false;
             this.fullscreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.fullscreenLabel.Location = new System.Drawing.Point(16, 58);
+            this.fullscreenLabel.Location = new System.Drawing.Point(11, 58);
             this.fullscreenLabel.Name = "fullscreenLabel";
             this.fullscreenLabel.Scaled = true;
             this.fullscreenLabel.Size = new System.Drawing.Size(70, 22);
@@ -497,7 +500,7 @@ namespace Shotr.Ui.Forms
             // 
             this.activeWindowLabel.BasePaint = false;
             this.activeWindowLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.activeWindowLabel.Location = new System.Drawing.Point(16, 85);
+            this.activeWindowLabel.Location = new System.Drawing.Point(11, 85);
             this.activeWindowLabel.Name = "activeWindowLabel";
             this.activeWindowLabel.Scaled = true;
             this.activeWindowLabel.Size = new System.Drawing.Size(99, 22);
@@ -764,9 +767,9 @@ namespace Shotr.Ui.Forms
             // logoPictureBox
             // 
             this.logoPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.logoPictureBox.BackgroundImage = global::Shotr.Ui.Properties.Resources.shotr_logo_banner;
             this.logoPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.logoPictureBox.BasePaint = false;
-            this.logoPictureBox.BackgroundImage = Resources.shotr_logo_banner;
             this.logoPictureBox.Location = new System.Drawing.Point(5, 11);
             this.logoPictureBox.Name = "logoPictureBox";
             this.logoPictureBox.Scaled = true;
@@ -774,6 +777,30 @@ namespace Shotr.Ui.Forms
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 6;
             this.logoPictureBox.TabStop = false;
+            // 
+            // activeFullscreenHotKeyButton
+            // 
+            this.activeFullscreenHotKeyButton.BasePaint = false;
+            this.activeFullscreenHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.activeFullscreenHotKeyButton.Highlight = false;
+            this.activeFullscreenHotKeyButton.HotKey = null;
+            this.activeFullscreenHotKeyButton.Location = new System.Drawing.Point(121, 163);
+            this.activeFullscreenHotKeyButton.Name = "activeFullscreenHotKeyButton";
+            this.activeFullscreenHotKeyButton.Scaled = true;
+            this.activeFullscreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.activeFullscreenHotKeyButton.TabIndex = 34;
+            this.activeFullscreenHotKeyButton.Text = "None";
+            // 
+            // activeFullscreenLabel
+            // 
+            this.activeFullscreenLabel.BasePaint = false;
+            this.activeFullscreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.activeFullscreenLabel.Location = new System.Drawing.Point(11, 166);
+            this.activeFullscreenLabel.Name = "activeFullscreenLabel";
+            this.activeFullscreenLabel.Scaled = true;
+            this.activeFullscreenLabel.Size = new System.Drawing.Size(121, 22);
+            this.activeFullscreenLabel.TabIndex = 33;
+            this.activeFullscreenLabel.Text = "Active Fullscreen:";
             // 
             // MainForm
             // 
@@ -784,7 +811,7 @@ namespace Shotr.Ui.Forms
             this.Controls.Add(this.logoPictureBox);
             this.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = Resources.shotr_icon_ico;
+            this.Icon = global::Shotr.Ui.Properties.Resources.shotr_icon_ico;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(20, 31, 20, 21);
@@ -873,6 +900,8 @@ namespace Shotr.Ui.Forms
         private ThemedLabel loginToShotrLabel;
         private ThemedLabel loginToShotrDescriptionLabel;
         private DpiScaledPictureBox logoPictureBox;
+        private HotKeyButton activeFullscreenHotKeyButton;
+        private ThemedLabel activeFullscreenLabel;
     }
 }
 

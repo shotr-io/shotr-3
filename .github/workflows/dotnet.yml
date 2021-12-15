@@ -24,7 +24,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.400
+        dotnet-version: 6.0.100
     - name: Restore dependencies
       run: dotnet restore
     - name: Set version number
@@ -48,11 +48,11 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Shotr
-        path: ./src/Shotr.Ui/bin/${{ env.CURRENT_BRANCH }}/net5.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
+        path: ./src/Shotr.Ui/bin/${{ env.CURRENT_BRANCH }}/net6.0-windows10.0.19041.0/win-x64/publish/Shotr.exe
     - uses: actions/upload-artifact@v2
       with:
         name: Shotr-Installer
-        path: ./src/Shotr.Ui.Installer/bin/${{ env.CURRENT_BRANCH }}/net5.0-windows/win-x64/publish/Shotr-Installer.exe
+        path: ./src/Shotr.Ui.Installer/bin/${{ env.CURRENT_BRANCH }}/net6.0-windows/win-x64/publish/Shotr-Installer.exe
 
   comment-on-pr:
     name: Leave a comment with a link to the build on the PR
