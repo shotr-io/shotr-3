@@ -439,7 +439,7 @@ namespace Shotr.Ui.Forms
                             {
                                 _x.X = currentRightX - _MinSize;
                             }
-                            // Prevent width from going into the negatives, this can cause overlap. No smaller than 10px.
+                            // Prevent width from going into the negatives, this can cause overlap.
                             if ((_x.Width - output) > _MinSize)
                             {
                                 _x.Width -= output;
