@@ -72,7 +72,8 @@ namespace Shotr.Ui.Forms
         private ThemedButton _saveButton;
         private ThemedButton _clipboardButton;
         private ThemedButton _editButton;
-        private const int _MinSize = 20;
+
+        private readonly int _MinSize = 1;
 
         private bool wasResizing = false;
 
@@ -424,7 +425,7 @@ namespace Shotr.Ui.Forms
                     if (mouse.X > _x.X)
                     {
                         // Move crop inwards
-                        if (_x.Width >= 50) 
+                        if (_x.Width >= _MinSize) 
                         {
                             var output = (mouse.X - _x.X);
                             var proposedLeftX = _x.X + output;
@@ -452,7 +453,7 @@ namespace Shotr.Ui.Forms
                     else // Move crop outwards
                     {
                         var output = (_x.X - mouse.X);
-                        if (_x.Width + output <= 50)
+                        if (_x.Width + output <= _MinSize)
                         {
                             return;
                         }
@@ -473,7 +474,7 @@ namespace Shotr.Ui.Forms
                     else
                     {
                         // Move crop inwards
-                        if (_x.Width >= 50)
+                        if (_x.Width >= _MinSize)
                         {
                             var output = (_x.X + _x.Width - mouse.X);
                             var proposedRightX = _x.Width - output;
@@ -495,7 +496,7 @@ namespace Shotr.Ui.Forms
                     if (mouse.Y > _x.Y)
                     {
                         // Move inwards
-                        if (_x.Height >= 50)
+                        if (_x.Height >= _MinSize)
                         {
                             var output = (mouse.Y - _x.Y);
                             _x.Y += output;
@@ -521,7 +522,7 @@ namespace Shotr.Ui.Forms
                     }
                     else
                     {
-                        if (_x.Height >= 50)
+                        if (_x.Height >= _MinSize)
                         {
                             // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
@@ -534,7 +535,7 @@ namespace Shotr.Ui.Forms
                 {
                     if (mouse.X > _x.X)
                     {
-                        if (_x.Width >= 50)
+                        if (_x.Width >= _MinSize)
                         {
                             var output = (mouse.X - _x.X);
                             _x.X += output;
@@ -544,7 +545,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y > _x.Y)
                     {
-                        if (_x.Height >= 50)
+                        if (_x.Height >= _MinSize)
                         {
                             // Move downwards
                             var output = (mouse.Y - _x.Y);
@@ -580,7 +581,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y > _x.Y)
                     {
-                        if (_x.Height >= 50)
+                        if (_x.Height >= _MinSize)
                         {
                             // Move downwards
                             var output = (mouse.Y - _x.Y);
@@ -591,7 +592,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.X < _x.X + _x.Width)
                     {
-                        if (_x.Width >= 50)
+                        if (_x.Width >= _MinSize)
                         {
                             // Move inwards
                             var output = (_x.X + _x.Width - mouse.X);
@@ -625,7 +626,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.X < _x.X + _x.Width)
                     {
-                        if (_x.Width >= 50)
+                        if (_x.Width >= _MinSize)
                         {
                             // Move inwards
                             var output = (_x.X + _x.Width - mouse.X);
@@ -635,7 +636,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y < _x.Y + _x.Height)
                     {
-                        if (_x.Height >= 50)
+                        if (_x.Height >= _MinSize)
                         {
                             // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
@@ -648,7 +649,7 @@ namespace Shotr.Ui.Forms
                 {
                     if (mouse.X > _x.X)
                     {
-                        if (_x.Width >= 50)
+                        if (_x.Width >= _MinSize)
                         {
                             var output = (mouse.X - _x.X);
                             _x.X += output;
@@ -673,7 +674,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y < _x.Y + _x.Height)
                     {
-                        if (_x.Height >= 50)
+                        if (_x.Height >= _MinSize)
                         {
                             // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
