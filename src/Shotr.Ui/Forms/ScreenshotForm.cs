@@ -492,10 +492,9 @@ namespace Shotr.Ui.Forms
                 // Y-axis Top
                 else if (_resizeLocation == ResizeLocation.Top)
                 {
-                    //should work fine hopefully.
+                    // Move crop inwards
                     if (mouse.Y > _x.Y)
                     {
-                        // Move inwards
                         if (_x.Height >= _MinSize)
                         {
                             var output = (mouse.Y - _x.Y);
@@ -503,7 +502,7 @@ namespace Shotr.Ui.Forms
                             _x.Height -= output;
                         }
                     }
-                    else
+                    else // Move crop outwards
                     {
                         var output = (_x.Y - mouse.Y);
                         _x.Y -= output;
@@ -513,18 +512,16 @@ namespace Shotr.Ui.Forms
                 // Y-axis Bottom
                 else if (_resizeLocation == ResizeLocation.Bottom)
                 {
-                    //should work fine hopefully.
+                    // Move crop outwards
                     if (mouse.Y > _x.Y + _x.Height)
                     {
-                        // Move inwards
                         var output = (mouse.Y - _x.Y);
                         _x.Height = output;
                     }
-                    else
+                    else // Move crop inwards
                     {
                         if (_x.Height >= _MinSize)
                         {
-                            // Move inwards
                             var output = (_x.Y + _x.Height - mouse.Y);
                             _x.Height -= output;
                         }
