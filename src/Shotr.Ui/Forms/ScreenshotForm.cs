@@ -498,8 +498,26 @@ namespace Shotr.Ui.Forms
                         if (_x.Height >= _MinSize)
                         {
                             var output = (mouse.Y - _x.Y);
-                            _x.Y += output;
-                            _x.Height -= output;
+                            var proposedTopY = _x.Y + output;
+                            var currentBottomY = _x.Y + _x.Height;
+                            // Prevent top Y from replacing bottom Y. This can cause the screenshot area to move.
+                            if (proposedTopY < currentBottomY)
+                            {
+                                _x.Y += output;
+                            }
+                            else
+                            {
+                                _x.Y = currentBottomY - _MinSize;
+                            }
+                            // Prevent height from going into the negatives, this can cause overlap.
+                            if ((_x.Height - output) > _MinSize)
+                            {
+                                _x.Height -= output;
+                            }
+                            else
+                            {
+                                _x.Height = _MinSize;
+                            }
                         }
                     }
                     else // Move crop outwards
@@ -523,7 +541,15 @@ namespace Shotr.Ui.Forms
                         if (_x.Height >= _MinSize)
                         {
                             var output = (_x.Y + _x.Height - mouse.Y);
-                            _x.Height -= output;
+                            var proposedBottomY = _x.Height - output;
+                            if (proposedBottomY > _MinSize)
+                            {
+                                _x.Height -= output;
+                            }
+                            else
+                            {
+                                _x.Height = _MinSize;
+                            }
                         }
                     }
                 }
