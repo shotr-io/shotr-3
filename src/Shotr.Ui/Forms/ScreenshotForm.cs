@@ -558,28 +558,65 @@ namespace Shotr.Ui.Forms
                 {
                     if (mouse.X > _x.X)
                     {
+                        // Move crop inwards
                         if (_x.Width >= _MinSize)
                         {
                             var output = (mouse.X - _x.X);
-                            _x.X += output;
-                            _x.Width -= output;
+                            var proposedTopLeftX = _x.X + output;
+                            var currentXBoundary = _x.X + _x.Width;
+                            // Prevent new X coordinate from replacing the current X boundary. This can cause the screenshot area to move.
+                            if (proposedTopLeftX < currentXBoundary)
+                            {
+                                _x.X += output;
+                            }
+                            else
+                            {
+                                _x.X = currentXBoundary - _MinSize;
+                            }
+                            // Prevent width from going into the negatives, this can cause overlap.
+                            if ((_x.Width - output) > _MinSize)
+                            {
+                                _x.Width -= output;
+                            }
+                            else
+                            {
+                                _x.Width = _MinSize;
+                            }
                         }
                     }
 
                     if (mouse.Y > _x.Y)
                     {
+                        // Move crop inwards
                         if (_x.Height >= _MinSize)
                         {
-                            // Move downwards
                             var output = (mouse.Y - _x.Y);
-                            _x.Y += output;
-                            _x.Height -= output;
+                            var proposedTopLeftY = _x.Y + output;
+                            var currentYBoundary = _x.Y + _x.Height;
+                            // Prevent new Y coordinate from replacing the current Y boundary. This can cause the screenshot area to move.
+                            if (proposedTopLeftY < currentYBoundary)
+                            {
+                                _x.Y += output;
+                            }
+                            else
+                            {
+                                _x.Y = currentYBoundary - _MinSize;
+                            }
+                            // Prevent height from going into the negatives,  this can cause overlap.
+                            if ((_x.Height - output) > _MinSize)
+                            {
+                                _x.Height -= output;
+                            }
+                            else
+                            {
+                                _x.Height = _MinSize;
+                            }
                         }
                     }
 
                     if (mouse.X < _x.X)
                     {
-                        // Move inwards
+                        // Move crop outwards
                         var output = (_x.X - mouse.X);
                         _x.X -= output;
                         _x.Width += output;
@@ -587,7 +624,7 @@ namespace Shotr.Ui.Forms
 
                     if (mouse.Y < _x.Y)
                     {
-                        // Move inwards
+                        // Move crop outwards
                         var output = (_x.Y - mouse.Y);
                         _x.Y -= output;
                         _x.Height += output;
