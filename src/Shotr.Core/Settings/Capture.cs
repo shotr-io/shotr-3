@@ -37,5 +37,8 @@ namespace Shotr.Core.Settings
         
         [ConfigurationItem(Required = false, Default = "Shotr")]
         public string Uploader { get; set; }
+
+        [ConfigurationItem(Required = false, Default = false)]
+        public bool HideCursor { get; set; }
     }
 }
