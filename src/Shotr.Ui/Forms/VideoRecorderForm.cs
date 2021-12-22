@@ -62,8 +62,7 @@ namespace Shotr.Ui.Forms
             
             InitializeComponent();
 
-            var scalingFactor = DpiScaler.GetScalingFactor(this);
-            Font = Theme.Font((int)(Font.Size * scalingFactor));
+            Font = Theme.Font(Theme.Font(Font.Size), this);
 
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
@@ -228,22 +227,25 @@ namespace Shotr.Ui.Forms
             if (_drawing)
             {
                 e.Graphics.FillRectangle(new SolidBrush(Color.Black), new Rectangle(-1, -1, Bounds.Width + 1, Bounds.Height + 1));
-                e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));//this.Bounds);
+                e.Graphics.FillRectangle(_textbrush, new Rectangle(0, 0, Bounds.Width, Bounds.Height));
 
                 if (_activated && _x.Height > 1 && _x.Width > 1)
                 {
                     try
                     {
                         e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
+
                         _pen.DashOffset = ((int)(Stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                        e.Graphics.DrawRectangle(_pen, _x);
-                        if ((_x.Width > 80 || _x.Height > Font.Height * 2) && _settings.Capture.ShowInformation)
+                        e.Graphics.DrawRectangle(_pen, new Rectangle(_x.X, _x.Y, _x.Width - 1, _x.Height - 1));
+                        if (_settings.Capture.ShowInformation)
                         {
-                            e.Graphics.DrawString(string.Format("X: {0} / Y: {1}", _x.X, _x.Y), Font, _brush, new PointF(_x.X, _x.Y));
-                            e.Graphics.DrawString(string.Format("W: {0} / H: {1}", _x.Width, _x.Height), Font, _brush, new PointF(_x.X, _x.Y + Font.Height));
+                            var scaledFont = Theme.Font(Theme.Font(12), this);
+                            TextRenderer.DrawText(e.Graphics, $"X: {_x.X} Y: {_x.Y} W: {_x.Width} H: {_x.Height}", scaledFont, new Point(_x.X, _x.Y - scaledFont.Height), Color.White);
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }
                 if (_settings.Capture.ShowZoom)
                 {
@@ -351,32 +353,30 @@ namespace Shotr.Ui.Forms
                     return;
                 }
 
+                var scale = DpiScaler.GetScalingFactor(this);
+
                 var newpoint = PointToScreen(new Point(_x.X, _x.Y));
                 _x = new Rectangle(newpoint, new Size(_x.Width, _x.Height));
                 _activated = false;
                 TransparencyKey = Color.LimeGreen;
                 //make a minimum size required.
                 Location = new Point(_x.X, _x.Y);
-                var themedPanel = new Panel()
-                {
-                    Size = new Size(_x.Width - 2, _x.Height - 1),
-                    Location = new Point(1, 1),
-                    BackColor = Color.LimeGreen,
-                };
+                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + (int)(20 * scale) + 4);
                 
-                Controls.Add(themedPanel);
-
-                var scale = DpiScaler.GetScalingFactor(this);
                 var font = Theme.Font(12);
+
+                var elapsed = string.Format("00:{0:#00}:{1:#00}", Stopwatch.Elapsed.Minutes, Stopwatch.Elapsed.Seconds);
+                var measurement = TextRenderer.MeasureText(elapsed, font);
 
                 var stopButtonText = "Stop";
                 var stopButtonTextMeasurement = TextRenderer.MeasureText(stopButtonText, font);
                 _stopButton = new ThemedButton()
                 {
-                    Scaled = false,
+                    Scaled = true,
+                    ScaleLocationY = false,
                     Text = stopButtonText,
-                    Size = new Size(stopButtonTextMeasurement.Width, (int)(23 * scale)),
-                    Location = new Point((int)(80 * scale), _x.Height + 4),
+                    Size = new Size((int)(stopButtonTextMeasurement.Width + (5 * scale)), (int)(20 * Math.Max(1, scale / 2))),
+                    Location = new Point(measurement.Width + 6, _x.Height + 4),
                     Font = font
                 };
                 _stopButton.Click += m_Click;
@@ -386,17 +386,16 @@ namespace Shotr.Ui.Forms
                 var cancelButtonTextMeasurement = TextRenderer.MeasureText(cancelButtonText, font);
                 _cancelButton = new ThemedButton()
                 {
-                    Scaled = false,
+                    Scaled = true,
+                    ScaleLocationY = false,
                     Text = cancelButtonText,
-                    Size = new Size(cancelButtonTextMeasurement.Width, (int)(23 * scale)),
-                    Location = new Point((int)(_stopButton.Location.X + _stopButton.Width + 6 * scale), _x.Height + 4),
+                    Size = new Size((int)(cancelButtonTextMeasurement.Width + (5 * scale)), (int)(20 * Math.Max(1, scale / 2))),
+                    Location = new Point((int)(_stopButton.Location.X + _stopButton.Width + 6), _x.Height + 4),
                     Font = font
                 };
 
                 _cancelButton.Click += mb_Click;
                 Controls.Add(_cancelButton);
-
-                Size = new Size(_x.Width < 216 ? 216 : _x.Width, _x.Height + _cancelButton.Height + 4);
 
                 TopMost = true;
                 BackColor = Color.LimeGreen;
@@ -407,11 +406,10 @@ namespace Shotr.Ui.Forms
                 _drawing = false;
                 _isRecording = true;
 
-                //new Thread(delegate() { this.CaptureScreen(); }).Start();
                 var sc = new ScreencastOptions();
                 sc.ScreenRecordFPS = _settings.Record.Framerate;
                 sc.Threads = _settings.Record.Threads;
-                //sc.Duration = 15;
+
                 var roundedX = ((_x.X + 1) % 2 != 0 ? _x.X + 2 : _x.X + 1);
                 var roundedY = ((_x.Y + 1) % 2 != 0 ? _x.Y + 2 : _x.Y + 1);
                 var roundedWidth = ((_x.Width - 3) % 2 != 0 ? _x.Width - 4 : _x.Width - 3);
@@ -447,6 +445,7 @@ namespace Shotr.Ui.Forms
                     {
                         // Ask to save.
                         string? filePath = null;
+                        var cancelSavingFile = false;
                         Invoke((MethodInvoker)(() =>
                         {
                             var xz = new SaveFileDialog
@@ -460,9 +459,29 @@ namespace Shotr.Ui.Forms
                                 //save file.
                                 File.Copy(sc.OutputPath, filePath);
                             }
+                            else
+                            {
+                                cancelSavingFile = true;
+                            }
                         }));
 
-                        _musicPlayerService.PlayCaptured();
+                        if (cancelSavingFile)
+                        {
+                            try
+                            {
+                                File.Delete(sc.OutputPath);
+                            }
+                            catch { }
+
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                CloseWindow();
+                            }));
+                        }
+                        else
+                        {
+                            _musicPlayerService.PlayCaptured();
+                        }
 
                         if (filePath is { })
                         {

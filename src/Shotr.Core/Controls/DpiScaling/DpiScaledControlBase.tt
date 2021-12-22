@@ -1,6 +1,6 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
-<#@ Assembly Name="System.Windows.Forms" #>
+<#@ assembly name="System.Windows.Forms" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -10,25 +10,25 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
+
 namespace Shotr.Core.Controls.DpiScaling {
-	<#
-	
-    var controls = new (string, bool)[]
+    <#
+    var controls = new (string, ControlTypeEnum)[]
     {
-        ("Control", true),
-        ("Button", true),
-        ("CheckBox", true),
-        ("ListView",true),
-        ("PictureBox",true),
-        ("ComboBox", true),
-        ("Form",false),
-        ("Label",true),
-        ("LinkLabel",true),
-        ("Panel",true),
-        ("ProgressBar",true),
-        ("TabControl",true),
-        ("TabPage",true),
-        ("TextBox",true),
+        ("Control", ControlTypeEnum.Control),
+        ("Button", ControlTypeEnum.Control),
+        ("CheckBox", ControlTypeEnum.Control),
+        ("ListView", ControlTypeEnum.Control),
+        ("PictureBox", ControlTypeEnum.Control),
+        ("ComboBox", ControlTypeEnum.Control),
+        ("Form", ControlTypeEnum.Form),
+        ("Label", ControlTypeEnum.Control),
+        ("LinkLabel", ControlTypeEnum.Control),
+        ("Panel", ControlTypeEnum.Control),
+        ("ProgressBar", ControlTypeEnum.Control),
+        ("TabControl", ControlTypeEnum.Control),
+        ("TabPage", ControlTypeEnum.Control),
+        ("TextBox", ControlTypeEnum.Control)
     };
 
 
@@ -38,6 +38,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaled<#=control.Item1#> : <#=control.Item1#>
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -45,7 +46,7 @@ namespace Shotr.Core.Controls.DpiScaling {
         private bool _alreadyRan { get; set; }
         private float? _dpiScalingFactor { get; set; }
         <#
-        if (control.Item1 == "Form") 
+        if (control.Item2 == ControlTypeEnum.Form) 
         {
         #>
         private int _storedScreenIndex { get; set; }
@@ -58,7 +59,7 @@ namespace Shotr.Core.Controls.DpiScaling {
         {
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             <#
-            if (control.Item1 == "Form") 
+            if (control.Item2 == ControlTypeEnum.Form) 
             {
                 #>
                 _storedScreenIndex = Array.IndexOf(Screen.AllScreens, Screen.FromControl(this));
@@ -123,7 +124,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -139,7 +140,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, <#=control.Item2.ToString().ToLower() #>);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, <#= (control.Item2 == ControlTypeEnum.Control).ToString().ToLower() #>);
+                }
+                
                 Console.WriteLine($"DPI Scaled <#=control.Item1#>: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -160,3 +170,11 @@ namespace Shotr.Core.Controls.DpiScaling {
 
 	<# } #>
 }
+
+<#+
+    enum ControlTypeEnum {
+        Form,
+        Control,
+        Menu
+    }
+#>

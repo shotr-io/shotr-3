@@ -122,6 +122,30 @@ namespace Shotr.Core.Controls.DpiScaling
             return (size, location);
         }
 
+        public static (Size, Point) ScaleLocationX(Control control, Size size, Point location)
+        {
+            if (NotDpiScaling(control))
+            {
+                return (size, location);
+            }
+
+            var dpiScalingFactor = GetScalingFactor(control);
+
+            if (size.IsEmpty)
+            {
+                size = control.Size;
+            }
+
+            if (location.IsEmpty)
+            {
+                location = control.Location;
+            }
+
+            control.Location = new Point((int)(location.X * dpiScalingFactor), location.Y);
+
+            return (size, location);
+        }
+
         public static Font ScaleFont(Font font, Control control)
         {
             if (NotDpiScaling(control))

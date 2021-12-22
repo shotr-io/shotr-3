@@ -39,8 +39,7 @@ namespace Shotr.Ui.Forms
             
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             InitializeComponent();
-            var scalingFactor = DpiScaler.GetScalingFactor(this);
-            Font = Theme.Font((int)(Font.Size * scalingFactor));
+            Font = Theme.Font(Theme.Font(Font.Size), this);
 
             AutoScaleMode = AutoScaleMode.None;
             StartPosition = FormStartPosition.Manual;
@@ -218,7 +217,7 @@ namespace Shotr.Ui.Forms
                         e.Graphics.DrawImage(magnifier, location);
 
                         // Draw hex code outside of the box
-                        var font = Theme.Font(14);
+                        var font = Theme.Font(Theme.Font(14), this);
                         var hexCode = GetHexCode(_screenshot.GetPixel(PointToClient(Cursor.Position).X, PointToClient(Cursor.Position).Y));
                         var textMeasurement = TextRenderer.MeasureText(hexCode, font);
                         var hexLocation = new Point(location.X, location.Y - textMeasurement.Height - 10);

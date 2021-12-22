@@ -3,11 +3,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
+
 namespace Shotr.Core.Controls.DpiScaling {
-	#region Control
+    #region Control
 	public class DpiScaledControl : Control
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -48,7 +50,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -64,7 +66,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled Control: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -87,6 +98,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledButton : Button
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -127,7 +139,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -143,7 +155,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled Button: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -166,6 +187,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledCheckBox : CheckBox
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -206,7 +228,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -222,7 +244,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled CheckBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -245,6 +276,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledListView : ListView
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -285,7 +317,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -301,7 +333,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled ListView: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -324,6 +365,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledPictureBox : PictureBox
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -364,7 +406,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -380,7 +422,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled PictureBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -403,6 +454,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledComboBox : ComboBox
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -443,7 +495,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -459,7 +511,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled ComboBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -482,6 +543,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledForm : Form
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -553,7 +615,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -569,7 +631,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, false);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, false);
+                }
+                
                 Console.WriteLine($"DPI Scaled Form: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -592,6 +663,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledLabel : Label
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -632,7 +704,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -648,7 +720,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled Label: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -671,6 +752,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledLinkLabel : LinkLabel
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -711,7 +793,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -727,7 +809,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled LinkLabel: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -750,6 +841,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledPanel : Panel
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -790,7 +882,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -806,7 +898,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled Panel: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -829,6 +930,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledProgressBar : ProgressBar
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -869,7 +971,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -885,7 +987,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled ProgressBar: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -908,6 +1019,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledTabControl : TabControl
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -948,7 +1060,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -964,7 +1076,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled TabControl: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -987,6 +1108,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledTabPage : TabPage
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -1027,7 +1149,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -1043,7 +1165,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled TabPage: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -1066,6 +1197,7 @@ namespace Shotr.Core.Controls.DpiScaling {
 	public class DpiScaledTextBox : TextBox
     {
         public virtual bool Scaled { get; set; } = true;
+        public virtual bool ScaleLocationY { get; set; } = true;
         public virtual bool BasePaint { get; set; } = false;
 
         private Size _originalSize { get; set; }
@@ -1106,7 +1238,7 @@ namespace Shotr.Core.Controls.DpiScaling {
             }
         }
 
-        private void Scale(bool onPaint = false, bool ignoreCheck = false)
+        public void Scale(bool onPaint = false, bool ignoreCheck = false)
         {
             if (onPaint && !ignoreCheck) 
             {
@@ -1122,7 +1254,16 @@ namespace Shotr.Core.Controls.DpiScaling {
 
             if (Scaled)
             {
-                (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                if (!ScaleLocationY) 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleSize(this, _originalSize, _originalLocation);
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleLocationX(this, _originalSize, _originalLocation);
+                }
+                else 
+                {
+                    (_originalSize, _originalLocation) = DpiScaler.ScaleControl(this, _originalSize, _originalLocation, true);
+                }
+                
                 Console.WriteLine($"DPI Scaled TextBox: {Text} - Size: {Width}x{Height} (orig {_originalSize.Width}x{_originalSize.Height}), Location: {Location.X}x{Location.Y} (orig: {_originalLocation.X}x{_originalLocation.Y}), {DpiScaler.GetScalingFactor(this)}f");
                 OnControlScaled(DpiScaler.GetScalingFactor(this));
             }
@@ -1142,3 +1283,4 @@ namespace Shotr.Core.Controls.DpiScaling {
     #endregion
 
 	}
+
