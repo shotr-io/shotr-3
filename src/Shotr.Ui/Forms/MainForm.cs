@@ -39,7 +39,6 @@ namespace Shotr.Ui.Forms
 
         private readonly ShotrApiService _shotrApiService;
 
-        private Icon _shotrIcon;
         private VideoRecorderForm _videoRecorderForm;
 
         public MainForm(BaseSettings settings,
@@ -67,8 +66,6 @@ namespace Shotr.Ui.Forms
             Shown += MainFormShown;
             _pipeServer.PipeServerReceivedClient += _pipeserver_PipeServerReceivedClient;
             _pipeServer.StartServer();
-
-            _shotrIcon = Icon;
         }
 
         public void SetUpForm(bool showInTaskBar, bool visible)
@@ -186,13 +183,14 @@ namespace Shotr.Ui.Forms
             {
                 notifyIcon1 = new NotifyIcon
                 {
+                    Icon = Properties.Resources.shotr_icon_ico,
                     ContextMenuStrip = contextMenuStrip1,
                     Visible = true,
                 };
                 notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
             };
 
-            notifyIcon1.Icon = (Icon)_shotrIcon.Clone();
+            notifyIcon1.Icon = Properties.Resources.shotr_icon_ico;
 
             void SetNewHotKey(string name, object? passedHotKeyButtonObject, KeyTask task)
             {
@@ -252,7 +250,6 @@ namespace Shotr.Ui.Forms
 
         void Uploader_OnProgress(double progress)
         {
-            //set up the icon.
             try
             {
                 Invoke((MethodInvoker)(() =>
@@ -269,7 +266,7 @@ namespace Shotr.Ui.Forms
 
                     if (progress == 100)
                     {
-                        var m = ImageManipulation.ImageStatus(99);
+                        var m = ImageManipulation.ImageStatus(99, DeviceDpi / 96f);
                         notifyIcon1.Icon.Dispose();
                         notifyIcon1.Icon = m;
                         notifyIcon1.Text = "Server is processing upload...";
@@ -277,7 +274,7 @@ namespace Shotr.Ui.Forms
                         return;
                     }
 
-                    var s = ImageManipulation.ImageStatus(Convert.ToInt32(progress));
+                    var s = ImageManipulation.ImageStatus(Convert.ToInt32(progress), DeviceDpi / 96f);
                     notifyIcon1.Icon.Dispose();
                     notifyIcon1.Icon = s;
                     notifyIcon1.Text = $"Upload Progress: {Convert.ToInt32(progress)}%";
@@ -502,6 +499,12 @@ namespace Shotr.Ui.Forms
                     metroTabControl1.SelectTab(0);
                     metroTabControl1.TabPages.Insert(0, metroTabPage4);
                 }
+                
+                // enable context menu controls
+                regionCaptureToolStripMenuItem.Enabled = true;
+                fullscreenCaptureToolStripMenuItem.Enabled = true;
+                recordScreenToolStripMenuItem.Enabled = true;
+                uploadClipboardToolStripMenuItem.Enabled = true;
             }
             else
             {
@@ -516,6 +519,11 @@ namespace Shotr.Ui.Forms
                     metroTabControl1.SelectTab(0);
                     metroTabControl1.TabPages.Remove(metroTabPage4);
                 }
+
+                regionCaptureToolStripMenuItem.Enabled = false;
+                fullscreenCaptureToolStripMenuItem.Enabled = false;
+                recordScreenToolStripMenuItem.Enabled = false;
+                uploadClipboardToolStripMenuItem.Enabled = false;
             }
         }
 
