@@ -6,10 +6,12 @@ namespace Shotr.Core.Image
 {
     public class ImageManipulation
     {
-        public static Icon ImageStatus(int progress)
+		private const int minSize = 16;
+        public static Icon ImageStatus(int progress, float dpiScalingFactor)
         {
+			var size = (int)(minSize * dpiScalingFactor);
 			try {
-	            using (var bmp = new Bitmap(16, 16))
+	            using (var bmp = new Bitmap(size, size))
 	            using (var g = Graphics.FromImage(bmp))
 	            {
 	                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;

@@ -13,11 +13,12 @@
     <Configurations>Debug;Release;ThemeDebugger;BetaTest;WindowsNotification;Testing;Local</Configurations>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>true</PublishSingleFile>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <PublishSingleFile>false</PublishSingleFile>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
@@ -27,6 +28,7 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Local'">
+    <PublishSingleFile>false</PublishSingleFile>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 

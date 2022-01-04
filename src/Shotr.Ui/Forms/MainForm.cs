@@ -67,8 +67,6 @@ namespace Shotr.Ui.Forms
             Shown += MainFormShown;
             _pipeServer.PipeServerReceivedClient += _pipeserver_PipeServerReceivedClient;
             _pipeServer.StartServer();
-
-            _shotrIcon = Icon;
         }
 
         public void SetUpForm(bool showInTaskBar, bool visible)
@@ -187,12 +185,13 @@ namespace Shotr.Ui.Forms
                 notifyIcon1 = new NotifyIcon
                 {
                     ContextMenuStrip = contextMenuStrip1,
+                    Icon = Properties.Resources.shotr_icon_ico,
                     Visible = true,
                 };
                 notifyIcon1.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
             };
 
-            notifyIcon1.Icon = (Icon)_shotrIcon.Clone();
+            notifyIcon1.Icon = Properties.Resources.shotr_icon_ico;
 
             void SetNewHotKey(string name, object? passedHotKeyButtonObject, KeyTask task)
             {
