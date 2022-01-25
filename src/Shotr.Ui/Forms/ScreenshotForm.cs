@@ -73,6 +73,8 @@ namespace Shotr.Ui.Forms
         private ThemedButton _clipboardButton;
         private ThemedButton _editButton;
 
+        private readonly int _MinSize = 1;
+
         private bool wasResizing = false;
 
         public ScreenshotForm(BaseSettings settings, Uploader uploader, Bitmap bitmap, SingleInstance tasks, Rectangle? coordinates = null)
@@ -359,310 +361,477 @@ namespace Shotr.Ui.Forms
 
         void ScreenshotForm_MouseMove(object sender, MouseEventArgs e)
         {
-            //change cursor to scalable stuff if we're out of activated.
-            var mouse = PointToClient(Cursor.Position);
-            if (!_activated && _resizing && !_resizemove)
+            try
             {
-                //left side.
-                if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
+                // Change cursor to scalable stuff if we're out of activated.
+                var mouse = PointToClient(Cursor.Position);
+                if (!_activated && _resizing && !_resizemove)
                 {
-                    Cursor = Cursors.SizeWE;
-                }
-                //right side.
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
-                         (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
-                {
-                    Cursor = Cursors.SizeWE;
-                }
-                //top
-                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
-                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
-                {
-                    Cursor = Cursors.SizeNS;
-                }
-                //bottom 
-                else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
-                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
-                {
-                    Cursor = Cursors.SizeNS;
-                }
-                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
-                {
-                    Cursor = Cursors.SizeNWSE;
-                }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
-                         (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
-                {
-                    Cursor = Cursors.SizeNESW;
-                }
-                else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
-                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
-                {
-                    Cursor = Cursors.SizeNWSE;
-                }
-                else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) &&
-                         (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
-                {
-                    Cursor = Cursors.SizeNESW;
-                }
-                else if ((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y &&
-                          mouse.Y <= _x.Y + _x.Height))
-                {
-                    Cursor = Cursors.SizeAll;
-                }
-                else
-                {
-                    Cursor = Cursors.Cross;
-                }
-            }
-            else if (_resizemove)
-            {
-                if (_resizeLocation == ResizeLocation.Left)
-                {
-                    //should work fine hopefully.
-                    if (mouse.X > _x.X)
+                    // Left side
+                    if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
                     {
-                        if (_x.Width >= 50)
-                        {
-                            //move inwards.
-                            var output = (mouse.X - _x.X);
-                            _x.X += output;
-                            _x.Width -= output;
-                        }
+                        Cursor = Cursors.SizeWE;
+                    }
+                    // Right side
+                    else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                             (mouse.Y >= _x.Y && mouse.Y <= _x.Y + _x.Height))
+                    {
+                        Cursor = Cursors.SizeWE;
+                    }
+                    // Top
+                    else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
+                             (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                    {
+                        Cursor = Cursors.SizeNS;
+                    }
+                    // Bottom
+                    else if ((mouse.X >= _x.X + 4 && mouse.X <= _x.X + _x.Width - 4) &&
+                             (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                    {
+                        Cursor = Cursors.SizeNS;
+                    }
+                    else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) && (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                    {
+                        Cursor = Cursors.SizeNWSE;
+                    }
+                    else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                             (mouse.Y >= _x.Y - 4 && mouse.Y <= _x.Y + 4))
+                    {
+                        Cursor = Cursors.SizeNESW;
+                    }
+                    else if ((mouse.X >= _x.X + _x.Width - 4 && mouse.X <= _x.X + _x.Width + 4) &&
+                             (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                    {
+                        Cursor = Cursors.SizeNWSE;
+                    }
+                    else if ((mouse.X >= _x.X - 4 && mouse.X <= _x.X + 4) &&
+                             (mouse.Y >= _x.Y + _x.Height - 4 && mouse.Y <= _x.Y + _x.Height + 4))
+                    {
+                        Cursor = Cursors.SizeNESW;
+                    }
+                    else if ((mouse.X >= _x.X && mouse.X <= _x.X + _x.Width && mouse.Y >= _x.Y &&
+                              mouse.Y <= _x.Y + _x.Height))
+                    {
+                        Cursor = Cursors.SizeAll;
                     }
                     else
                     {
-                        //move inwards.
-                        var output = (_x.X - mouse.X);
-                        if (_x.Width + output <= 50)
+                        Cursor = Cursors.Cross;
+                    }
+                }
+                else if (_resizemove) // Resize screenshot window
+                {
+                    if (_resizeLocation == ResizeLocation.Left)
+                    {
+                        // X-axis Left
+                        if (mouse.X > _x.X)
                         {
+                            // Move crop inwards
+                            if (_x.Width >= _MinSize)
+                            {
+                                var output = (mouse.X - _x.X);
+                                var proposedLeftX = _x.X + output;
+                                var currentRightX = _x.X + _x.Width;
+                                // Prevent left X from replacing right X. This can cause the screenshot area to move.
+                                if (proposedLeftX < currentRightX)
+                                {
+                                    _x.X += output;
+                                }
+                                else
+                                {
+                                    _x.X = currentRightX - _MinSize;
+                                }
+                                // Prevent width from going into the negatives, this can cause overlap.
+                                if ((_x.Width - output) > _MinSize)
+                                {
+                                    _x.Width -= output;
+                                }
+                                else
+                                {
+                                    _x.Width = _MinSize;
+                                }
+                            }
+                        }
+                        else // Move crop outwards
+                        {
+                            var output = (_x.X - mouse.X);
+                            if (_x.Width + output <= _MinSize)
+                            {
+                                return;
+                            }
+                            _x.X -= output;
+                            _x.Width += output;
+                        }
+                    }
+                    // X-axis Right
+                    else if (_resizeLocation == ResizeLocation.Right)
+                    {
+                        // Move crop outwards
+                        if (mouse.X > _x.X + _x.Width)
+                        {
+                            var output = (mouse.X - _x.X);
+                            //x.X += output;
+                            _x.Width = output;
+                        }
+                        else
+                        {
+                            // Move crop inwards
+                            if (_x.Width >= _MinSize)
+                            {
+                                var output = (_x.X + _x.Width - mouse.X);
+                                var proposedRightX = _x.Width - output;
+                                if (proposedRightX > _MinSize)
+                                {
+                                    _x.Width -= output;
+                                }
+                                else
+                                {
+                                    _x.Width = _MinSize;
+                                }
+                            }
+                        }
+                    }
+                    // Y-axis Top
+                    else if (_resizeLocation == ResizeLocation.Top)
+                    {
+                        // Move crop inwards
+                        if (mouse.Y > _x.Y)
+                        {
+                            if (_x.Height >= _MinSize)
+                            {
+                                var output = (mouse.Y - _x.Y);
+                                var proposedTopY = _x.Y + output;
+                                var currentBottomY = _x.Y + _x.Height;
+                                // Prevent top Y from replacing bottom Y. This can cause the screenshot area to move.
+                                if (proposedTopY < currentBottomY)
+                                {
+                                    _x.Y += output;
+                                }
+                                else
+                                {
+                                    _x.Y = currentBottomY - _MinSize;
+                                }
+                                // Prevent height from going into the negatives, this can cause overlap.
+                                if ((_x.Height - output) > _MinSize)
+                                {
+                                    _x.Height -= output;
+                                }
+                                else
+                                {
+                                    _x.Height = _MinSize;
+                                }
+                            }
+                        }
+                        else // Move crop outwards
+                        {
+                            var output = (_x.Y - mouse.Y);
+                            _x.Y -= output;
+                            _x.Height += output;
+                        }
+                    }
+                    // Y-axis Bottom
+                    else if (_resizeLocation == ResizeLocation.Bottom)
+                    {
+                        // Move crop outwards
+                        if (mouse.Y > _x.Y + _x.Height)
+                        {
+                            var output = (mouse.Y - _x.Y);
+                            _x.Height = output;
+                        }
+                        else // Move crop inwards
+                        {
+                            if (_x.Height >= _MinSize)
+                            {
+                                var output = (_x.Y + _x.Height - mouse.Y);
+                                var proposedBottomY = _x.Height - output;
+                                if (proposedBottomY > _MinSize)
+                                {
+                                    _x.Height -= output;
+                                }
+                                else
+                                {
+                                    _x.Height = _MinSize;
+                                }
+                            }
+                        }
+                    }
+                    // Top left corner X/Y
+                    else if (_resizeLocation == ResizeLocation.TopLeft)
+                    {
+                        if (mouse.X > _x.X)
+                        {
+                            // Move crop inwards
+                            if (_x.Width >= _MinSize)
+                            {
+                                var output = (mouse.X - _x.X);
+                                var proposedTopLeftX = _x.X + output;
+                                var currentXBoundary = _x.X + _x.Width;
+                                // Prevent new X coordinate from replacing the current X boundary. This can cause the screenshot area to move.
+                                if (proposedTopLeftX < currentXBoundary)
+                                {
+                                    _x.X += output;
+                                }
+                                else
+                                {
+                                    _x.X = currentXBoundary - _MinSize;
+                                }
+                                // Prevent width from going into the negatives, this can cause overlap.
+                                if ((_x.Width - output) > _MinSize)
+                                {
+                                    _x.Width -= output;
+                                }
+                                else
+                                {
+                                    _x.Width = _MinSize;
+                                }
+                            }
+                        }
+
+                        if (mouse.Y > _x.Y)
+                        {
+                            // Move crop inwards (downwards)
+                            if (_x.Height >= _MinSize)
+                            {
+                                var output = (mouse.Y - _x.Y);
+                                var proposedTopLeftY = _x.Y + output;
+                                var currentYBoundary = _x.Y + _x.Height;
+                                // Prevent new Y coordinate from replacing the current Y boundary. This can cause the screenshot area to move.
+                                if (proposedTopLeftY < currentYBoundary)
+                                {
+                                    _x.Y += output;
+                                }
+                                else
+                                {
+                                    _x.Y = currentYBoundary - _MinSize;
+                                }
+                                // Prevent height from going into the negatives,  this can cause overlap.
+                                if ((_x.Height - output) > _MinSize)
+                                {
+                                    _x.Height -= output;
+                                }
+                                else
+                                {
+                                    _x.Height = _MinSize;
+                                }
+                            }
+                        }
+
+                        if (mouse.X < _x.X)
+                        {
+                            // Move crop outwards
+                            var output = (_x.X - mouse.X);
+                            _x.X -= output;
+                            _x.Width += output;
+                        }
+
+                        if (mouse.Y < _x.Y)
+                        {
+                            // Move crop outwards (upwards)
+                            var output = (_x.Y - mouse.Y);
+                            _x.Y -= output;
+                            _x.Height += output;
+                        }
+                    }
+                    // Top right corner X/Y
+                    else if (_resizeLocation == ResizeLocation.TopRight)
+                    {
+                        // Move crop outwards
+                        if (mouse.X > _x.X + _x.Width)
+                        {
+                            var output = (mouse.X - _x.X);
+                            _x.Width = output;
+                        }
+
+                        if (mouse.Y > _x.Y)
+                        {
+                            // Move crop inwards (downwards)
+                            if (_x.Height >= _MinSize)
+                            {
+                                var output = (mouse.Y - _x.Y);
+                                var proposedTopRightY = _x.Y + output;
+                                var currentYBoundary = _x.Y + _x.Height;
+                                // Prevent new Y coordinate from replacing the current Y boundary. This can cause the screenshot area to move.
+                                if (proposedTopRightY < currentYBoundary)
+                                {
+                                    _x.Y += output;
+                                }
+                                else
+                                {
+                                    _x.Y = currentYBoundary - _MinSize;
+                                }
+                                // Prevent height from going into the negatives, this can cause overlap.
+                                if ((_x.Height - output) > _MinSize)
+                                {
+                                    _x.Height -= output;
+                                }
+                                else
+                                {
+                                    _x.Height = _MinSize;
+                                }
+                            }
+                        }
+
+                        if (mouse.X < _x.X + _x.Width)
+                        {
+                            // Move crop inwards
+                            if (_x.Width >= _MinSize)
+                            {
+                                var output = (_x.X + _x.Width - mouse.X);
+                                // Prevent width from going into the negatives, this can cause overlap.
+                                if ((_x.Width - output) > _MinSize)
+                                {
+                                    _x.Width -= output;
+                                }
+                                else
+                                {
+                                    _x.Width = _MinSize;
+                                }
+                            }
+                        }
+
+                        // Move crop outwards (upwards)
+                        if (mouse.Y < _x.Y)
+                        {
+                            var output = (_x.Y - mouse.Y);
+                            _x.Y -= output;
+                            _x.Height += output;
+                        }
+                    }
+                    // Bottom right corner X/Y
+                    else if (_resizeLocation == ResizeLocation.BottomRight)
+                    {
+                        // Move crop outwards
+                        if (mouse.X > _x.X + _x.Width)
+                        {
+                            var output = (mouse.X - _x.X);
+                            _x.Width = output;
+                        }
+                        // Move crop outwards (downwards)
+                        if (mouse.Y > _x.Y + _x.Height)
+                        {
+                            var output = (mouse.Y - _x.Y);
+                            _x.Height = output;
+                        }
+
+                        if (mouse.X < _x.X + _x.Width)
+                        {
+                            // Move crop inwards
+                            if (_x.Width >= _MinSize)
+                            {
+                                var output = (_x.X + _x.Width - mouse.X);
+                                // Prevent width from going into the negatives, this can cause overlap.
+                                if ((_x.Width - output) > _MinSize)
+                                {
+                                    _x.Width -= output;
+                                }
+                                else
+                                {
+                                    _x.Width = _MinSize;
+                                }
+                            }
+                        }
+
+                        if (mouse.Y < _x.Y + _x.Height)
+                        {
+                            // Move crop inwards (upwards)
+                            if (_x.Height >= _MinSize)
+                            {
+                                var output = (_x.Y + _x.Height - mouse.Y);
+                                // Prevent height from going into the negatives, this can cause overlap.
+                                if ((_x.Height - output) > _MinSize)
+                                {
+                                    _x.Height -= output;
+                                }
+                                else
+                                {
+                                    _x.Height = _MinSize;
+                                }
+                            }
+                        }
+                    }
+                    // Bottom left corner X/Y
+                    else if (_resizeLocation == ResizeLocation.BottomLeft)
+                    {
+                        if (mouse.X > _x.X)
+                        {
+                            // Move crop inwards
+                            if (_x.Width >= _MinSize)
+                            {
+                                var output = (mouse.X - _x.X);
+                                var proposedBottomLeftX = _x.X + output;
+                                var currentXBoundary = _x.X + _x.Width;
+                                // Prevent new X coordinate from replacing the current X boundary. This can cause the screenshot area to move.
+                                if (proposedBottomLeftX < currentXBoundary)
+                                {
+                                    _x.X += output;
+                                }
+                                else
+                                {
+                                    _x.X = currentXBoundary - _MinSize;
+                                }
+                                // Prevent width from going into the negatives, this can cause overlap.
+                                if ((_x.Width - output) > _MinSize)
+                                {
+                                    _x.Width -= output;
+                                }
+                                else
+                                {
+                                    _x.Width = _MinSize;
+                                }
+                            }
+                        }
+                        // Move crop outwards (downwards)
+                        if (mouse.Y > _x.Y + _x.Height)
+                        {
+                            var output = (mouse.Y - _x.Y);
+                            _x.Height += output;
+                        }
+                        // Move crop outwards
+                        if (mouse.X < _x.X)
+                        {
+                            var output = (_x.X - mouse.X);
+                            _x.X -= output;
+                            _x.Width += output;
+                        }
+
+                        if (mouse.Y < _x.Y + _x.Height)
+                        {
+                            // Move crop inwards (upwards)
+                            if (_x.Height >= _MinSize)
+                            {
+                                var output = (_x.Y + _x.Height - mouse.Y);
+                                // Prevent height from going into the negatives, this can cause overlap.
+                                if ((_x.Height - output) > _MinSize)
+                                {
+                                    _x.Height -= output;
+                                }
+                                else
+                                {
+                                    _x.Height = _MinSize;
+                                }
+
+                            }
+                        }
+                    }
+                    else if (_resizeLocation == ResizeLocation.Any)
+                    {
+                        if (_oldResizePosition == Point.Empty)
+                        {
+                            _oldResizePosition = mouse;
                             return;
                         }
 
-                        _x.X -= output;
-                        _x.Width += output;
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.Right)
-                {
-                    //should work fine hopefully.
-                    if (mouse.X > _x.X + _x.Width)
-                    {
-                        //move inwards.
-                        var output = (mouse.X - _x.X);
-                        //x.X += output;
-                        _x.Width = output;
-                    }
-                    else
-                    {
-                        if (_x.Width >= 50)
-                        {
-                            //move inwards.
-                            var output = (_x.X + _x.Width - mouse.X);
-                            _x.Width -= output;
-                        }
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.Top)
-                {
-                    //should work fine hopefully.
-                    if (mouse.Y > _x.Y)
-                    {
-                        //move inwards.
-                        if (_x.Height >= 50)
-                        {
-                            var output = (mouse.Y - _x.Y);
-                            _x.Y += output;
-                            _x.Height -= output;
-                        }
-                    }
-                    else
-                    {
-                        var output = (_x.Y - mouse.Y);
-                        _x.Y -= output;
-                        _x.Height += output;
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.Bottom)
-                {
-                    //should work fine hopefully.
-                    if (mouse.Y > _x.Y + _x.Height)
-                    {
-                        //move inwards.
-                        var output = (mouse.Y - _x.Y);
-                        _x.Height = output;
-                    }
-                    else
-                    {
-                        if (_x.Height >= 50)
-                        {
-                            //move inwards.
-                            var output = (_x.Y + _x.Height - mouse.Y);
-                            _x.Height -= output;
-                        }
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.TopLeft)
-                {
-                    if (mouse.X > _x.X)
-                    {
-                        if (_x.Width >= 50)
-                        {
-                            var output = (mouse.X - _x.X);
-                            _x.X += output;
-                            _x.Width -= output;
-                        }
-                    }
-
-                    if (mouse.Y > _x.Y)
-                    {
-                        if (_x.Height >= 50)
-                        {
-                            //move downwards.
-                            var output = (mouse.Y - _x.Y);
-                            _x.Y += output;
-                            _x.Height -= output;
-                        }
-                    }
-
-                    if (mouse.X < _x.X)
-                    {
-                        //move inwards.
-                        var output = (_x.X - mouse.X);
-                        _x.X -= output;
-                        _x.Width += output;
-                    }
-
-                    if (mouse.Y < _x.Y)
-                    {
-                        //move inwards.
-                        var output = (_x.Y - mouse.Y);
-                        _x.Y -= output;
-                        _x.Height += output;
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.TopRight)
-                {
-                    if (mouse.X > _x.X + _x.Width)
-                    {
-                        var output = (mouse.X - _x.X);
-                        _x.Width = output;
-                    }
-
-                    if (mouse.Y > _x.Y)
-                    {
-                        if (_x.Height >= 50)
-                        {
-                            //move downwards.
-                            var output = (mouse.Y - _x.Y);
-                            _x.Y += output;
-                            _x.Height -= output;
-                        }
-                    }
-
-                    if (mouse.X < _x.X + _x.Width)
-                    {
-                        if (_x.Width >= 50)
-                        {
-                            //move inwards.
-                            var output = (_x.X + _x.Width - mouse.X);
-                            _x.Width -= output;
-                        }
-                    }
-
-                    if (mouse.Y < _x.Y)
-                    {
-                        //move inwards.
-                        var output = (_x.Y - mouse.Y);
-                        _x.Y -= output;
-                        _x.Height += output;
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.BottomRight)
-                {
-                    if (mouse.X > _x.X + _x.Width)
-                    {
-                        var output = (mouse.X - _x.X);
-                        _x.Width = output;
-                    }
-
-                    if (mouse.Y > _x.Y + _x.Height)
-                    {
-                        //move inwards.
-                        var output = (mouse.Y - _x.Y);
-                        _x.Height = output;
-                    }
-
-                    if (mouse.X < _x.X + _x.Width)
-                    {
-                        if (_x.Width >= 50)
-                        {
-                            //move inwards.
-                            var output = (_x.X + _x.Width - mouse.X);
-                            _x.Width -= output;
-                        }
-                    }
-
-                    if (mouse.Y < _x.Y + _x.Height)
-                    {
-                        if (_x.Height >= 50)
-                        {
-                            //move inwards.
-                            var output = (_x.Y + _x.Height - mouse.Y);
-                            _x.Height -= output;
-                        }
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.BottomLeft)
-                {
-                    if (mouse.X > _x.X)
-                    {
-                        if (_x.Width >= 50)
-                        {
-                            var output = (mouse.X - _x.X);
-                            _x.X += output;
-                            _x.Width -= output;
-                        }
-                    }
-
-                    if (mouse.Y > _x.Y + _x.Height)
-                    {
-                        //move inwards.
-                        var output = (mouse.Y - _x.Y);
-                        _x.Height += output;
-                    }
-
-                    if (mouse.X < _x.X)
-                    {
-                        //move inwards.
-                        var output = (_x.X - mouse.X);
-                        _x.X -= output;
-                        _x.Width += output;
-                    }
-
-                    if (mouse.Y < _x.Y + _x.Height)
-                    {
-                        if (_x.Height >= 50)
-                        {
-                            //move inwards.
-                            var output = (_x.Y + _x.Height - mouse.Y);
-                            _x.Height -= output;
-                        }
-                    }
-                }
-                else if (_resizeLocation == ResizeLocation.Any)
-                {
-                    if (_oldResizePosition == Point.Empty)
-                    {
+                        // Move position relative to mouse
+                        _x.X += (mouse.X - _oldResizePosition.X);
+                        _x.Y += (mouse.Y - _oldResizePosition.Y);
                         _oldResizePosition = mouse;
-                        return;
                     }
-
-                    //move relative to mouse.
-                    _x.X += (mouse.X - _oldResizePosition.X);
-                    _x.Y += (mouse.Y - _oldResizePosition.Y);
-                    _oldResizePosition = mouse;
                 }
+            }
+            catch (System.OutOfMemoryException)
+            {
+                // This exception is thrown when the user moves the cursor past any of the crop borders. 
+                // No need to take any action other than suppressing the exception.
             }
         }
 
@@ -764,7 +933,7 @@ namespace Shotr.Ui.Forms
                     e.Graphics.DrawImage(_screenshot, _x, _x, GraphicsUnit.Pixel);
 
                     _pen.DashOffset = ((int) (_stopwatch.Elapsed.TotalMilliseconds / 100.0)) % 10;
-                    e.Graphics.DrawRectangle(_pen, _x);
+                    e.Graphics.DrawRectangle(_pen, new Rectangle(_x.X, _x.Y, _x.Width - 1, _x.Height - 1));
                     if (_settings.Capture.ShowInformation)
                     {
                         TextRenderer.DrawText(e.Graphics, string.Format("X: {0} Y: {1} W: {0} H: {1}", _x.X, _x.Y, _x.Width, _x.Height), Theme.Font(12),new Point(_x.X, _x.Y - Font.Height), Color.White);
