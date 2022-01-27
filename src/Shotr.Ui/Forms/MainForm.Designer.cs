@@ -126,34 +126,34 @@ namespace Shotr.Ui.Forms
             this.contextMenuStrip1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolsToolStripMenuItem,
-            this.historyToolStripMenuItem,
-            this.settingsToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.toolStripMenuItem1,
-            this.toolStripSeparator2,
-            this.exitToolStripMenuItem});
+                this.toolsToolStripMenuItem,
+                this.historyToolStripMenuItem,
+                this.settingsToolStripMenuItem,
+                this.toolStripSeparator1,
+                this.toolStripMenuItem1,
+                this.toolStripSeparator2,
+                this.exitToolStripMenuItem });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(121, 126);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.regionCaptureToolStripMenuItem,
-            this.fullscreenCaptureToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.recordScreenToolStripMenuItem,
-            this.toolStripSeparator6,
-            this.uploadClipboardToolStripMenuItem,
-            this.toolStripSeparator7,
-            this.colorPickerToolStripMenuItem});
+                this.regionCaptureToolStripMenuItem,
+                this.fullscreenCaptureToolStripMenuItem,
+                this.toolStripSeparator5,
+                this.recordScreenToolStripMenuItem,
+                this.toolStripSeparator6,
+                this.uploadClipboardToolStripMenuItem,
+                this.toolStripSeparator7,
+                this.colorPickerToolStripMenuItem });
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.toolsToolStripMenuItem.Text = "Capture";
             // 
             // regionCaptureToolStripMenuItem
             // 
-            this.regionCaptureToolStripMenuItem.Enabled = false;
+            this.regionCaptureToolStripMenuItem.Enabled = true;
             this.regionCaptureToolStripMenuItem.Name = "regionCaptureToolStripMenuItem";
             this.regionCaptureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.regionCaptureToolStripMenuItem.Text = "Region Capture";
@@ -161,7 +161,7 @@ namespace Shotr.Ui.Forms
             // 
             // fullscreenCaptureToolStripMenuItem
             // 
-            this.fullscreenCaptureToolStripMenuItem.Enabled = false;
+            this.fullscreenCaptureToolStripMenuItem.Enabled = true;
             this.fullscreenCaptureToolStripMenuItem.Name = "fullscreenCaptureToolStripMenuItem";
             this.fullscreenCaptureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fullscreenCaptureToolStripMenuItem.Text = "Fullscreen Capture";
@@ -174,7 +174,7 @@ namespace Shotr.Ui.Forms
             // 
             // recordScreenToolStripMenuItem
             // 
-            this.recordScreenToolStripMenuItem.Enabled = false;
+            this.recordScreenToolStripMenuItem.Enabled = true;
             this.recordScreenToolStripMenuItem.Name = "recordScreenToolStripMenuItem";
             this.recordScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recordScreenToolStripMenuItem.Text = "Record Screen";
@@ -187,7 +187,7 @@ namespace Shotr.Ui.Forms
             // 
             // uploadClipboardToolStripMenuItem
             // 
-            this.uploadClipboardToolStripMenuItem.Enabled = false;
+            this.uploadClipboardToolStripMenuItem.Enabled = true;
             this.uploadClipboardToolStripMenuItem.Name = "uploadClipboardToolStripMenuItem";
             this.uploadClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.uploadClipboardToolStripMenuItem.Text = "Upload Clipboard";
@@ -199,7 +199,8 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // colorPickerToolStripMenuItem
-            // 
+            //
+            this.colorPickerToolStripMenuItem.Enabled = true;
             this.colorPickerToolStripMenuItem.Name = "colorPickerToolStripMenuItem";
             this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.colorPickerToolStripMenuItem.Text = "Color Picker";
