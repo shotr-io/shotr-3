@@ -17,8 +17,14 @@
     <PublishTrimmed>false</PublishTrimmed>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'WindowsNotification' ">
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <PlatformTarget>x64</PlatformTarget>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'BetaTest' ">
     <PlatformTarget>x64</PlatformTarget>
