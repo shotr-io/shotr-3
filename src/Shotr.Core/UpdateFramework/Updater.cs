@@ -12,7 +12,7 @@ namespace Shotr.Core.UpdateFramework
         public static int TimeToCheck = 60 * 60 * 1000 * 24;
         public static BaseSettings BaseSettings = null;
         public static event EventHandler<UpdaterInfoArgs> OnUpdateCheck = delegate { };
-        public static void CheckForUpdates()
+        public static void CheckForUpdatesThreaded()
         {
             new Thread(delegate()
             {
@@ -26,21 +26,26 @@ namespace Shotr.Core.UpdateFramework
                     Thread.Sleep(15 * 1000);
                 }
 
-                //download shotr update url.
-                var p = new WebClient { Proxy = null };
-                try
-                {
-                    var updateData = p.DownloadString("https://shotr.dev/api/updates/latest");
-                    var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
-                    OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, BaseSettings));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Updater Exception: {ex}");
-                }
-
+                CheckForUpdates(false);
+                
                 FirstRun = false;
             }).Start();
+        }
+
+        public static void CheckForUpdates(bool showRunningLatest)
+        {
+            //download shotr update url.
+            var p = new WebClient { Proxy = null };
+            try
+            {
+                var updateData = p.DownloadString("https://shotr.dev/api/updates/latest");
+                var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
+                OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, BaseSettings, showRunningLatest));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Updater Exception: {ex}");
+            }
         }
     }
     public class UpdaterInfoArgs : EventArgs
@@ -49,14 +54,16 @@ namespace Shotr.Core.UpdateFramework
         {
             Error = error;
         }
-        public UpdaterInfoArgs(UpdaterResponse updaterResponse, BaseSettings settings)
+        public UpdaterInfoArgs(UpdaterResponse updaterResponse, BaseSettings settings, bool showLatestNotification)
         {
             UpdateInfo = updaterResponse;
             Settings = settings;
+            ShowLatestNotification = showLatestNotification;
         }
-        
+
         public readonly bool Error = false;
         public readonly UpdaterResponse UpdateInfo;
         public readonly BaseSettings Settings;
+        public readonly bool ShowLatestNotification;
     }
 }
