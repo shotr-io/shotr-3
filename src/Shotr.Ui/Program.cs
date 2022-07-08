@@ -169,11 +169,11 @@ namespace Shotr.Ui
             
             form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
 
-#if TESTING
+#if TESTING || DEBUG
 #else
             Updater.BaseSettings = settings;
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
-            Updater.CheckForUpdates();
+            Updater.CheckForUpdatesThreaded();
 #endif       
 
             // Do not require mandatory login
@@ -309,6 +309,13 @@ namespace Shotr.Ui
             else
             {
                 Console.WriteLine($"You are running Shotr - v{displayVersion}{alphaBetaTag}.");
+                if (!WineDetectionService.IsWine())
+                {
+                    if (e.ShowLatestNotification) 
+                    {
+                        Toast.SendNoUpdateNotifications($"You are already running the latest version of Shotr: v{displayVersion}!");
+                    }
+                }
 
                 return;
             }

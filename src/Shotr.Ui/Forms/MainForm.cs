@@ -17,6 +17,7 @@ using Shotr.Core.MimeDetect;
 using Shotr.Core.Pipes;
 using Shotr.Core.Services;
 using Shotr.Core.Settings;
+using Shotr.Core.UpdateFramework;
 using Shotr.Core.Uploader;
 using Shotr.Core.Utils;
 using Shotr.Ui.Forms.Settings;
@@ -1095,6 +1096,11 @@ namespace Shotr.Ui.Forms
             {
                 token.Token.OpenUrl();
             }
+        }
+
+        private void checkForUpdatesMenuItem_Click(object sender, EventArgs e)
+        {
+            Updater.CheckForUpdates(true);
         }
     }
 }

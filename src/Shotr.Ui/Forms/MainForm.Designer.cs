@@ -61,6 +61,8 @@ namespace Shotr.Ui.Forms
             this.betterListViewColumnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.metroTabPage2 = new Shotr.Core.Controls.Theme.ThemedTabPage();
             this.metroPanel2 = new Shotr.Core.Controls.Theme.ThemedPanel();
+            this.activeFullscreenHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
+            this.activeFullscreenLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.colorPickerHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
             this.saveOnlyLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.uploadClipboardHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
@@ -99,8 +101,7 @@ namespace Shotr.Ui.Forms
             this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metroLabel8 = new Shotr.Core.Controls.Theme.ThemedLabel();
             this.logoPictureBox = new Shotr.Core.Controls.DpiScaling.DpiScaledPictureBox();
-            this.activeFullscreenHotKeyButton = new Shotr.Core.Controls.Hotkey.HotKeyButton();
-            this.activeFullscreenLabel = new Shotr.Core.Controls.Theme.ThemedLabel();
+            this.checkForUpdatesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
@@ -131,10 +132,11 @@ namespace Shotr.Ui.Forms
             this.settingsToolStripMenuItem,
             this.toolStripSeparator1,
             this.toolStripMenuItem1,
+            this.checkForUpdatesMenuItem,
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(121, 126);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 170);
             // 
             // toolsToolStripMenuItem
             // 
@@ -148,7 +150,7 @@ namespace Shotr.Ui.Forms
             this.toolStripSeparator7,
             this.colorPickerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.toolsToolStripMenuItem.Text = "Capture";
             // 
             // regionCaptureToolStripMenuItem
@@ -208,37 +210,37 @@ namespace Shotr.Ui.Forms
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
-            this.historyToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.historyToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.historyToolStripMenuItem.Text = "History";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(117, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(179, 6);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 22);
             this.toolStripMenuItem1.Text = "About";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(117, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(179, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -274,11 +276,11 @@ namespace Shotr.Ui.Forms
             // 
             this.metroTabPage4.BasePaint = false;
             this.metroTabPage4.Controls.Add(this.themedListView1);
-            this.metroTabPage4.Location = new System.Drawing.Point(4, 25);
+            this.metroTabPage4.Location = new System.Drawing.Point(4, 24);
             this.metroTabPage4.Name = "metroTabPage4";
             this.metroTabPage4.Padding = new System.Windows.Forms.Padding(10);
             this.metroTabPage4.Scaled = true;
-            this.metroTabPage4.Size = new System.Drawing.Size(593, 263);
+            this.metroTabPage4.Size = new System.Drawing.Size(593, 264);
             this.metroTabPage4.TabIndex = 3;
             this.metroTabPage4.Text = "History";
             // 
@@ -292,7 +294,6 @@ namespace Shotr.Ui.Forms
             this.themedListView1.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.themedListView1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(231)))), ((int)(((byte)(255)))));
             this.themedListView1.FullRowSelect = true;
-            this.themedListView1.HideSelection = false;
             this.themedListView1.Location = new System.Drawing.Point(6, 6);
             this.themedListView1.Name = "themedListView1";
             this.themedListView1.Scaled = true;
@@ -351,6 +352,30 @@ namespace Shotr.Ui.Forms
             this.metroPanel2.Scaled = true;
             this.metroPanel2.Size = new System.Drawing.Size(282, 254);
             this.metroPanel2.TabIndex = 25;
+            // 
+            // activeFullscreenHotKeyButton
+            // 
+            this.activeFullscreenHotKeyButton.BasePaint = false;
+            this.activeFullscreenHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.activeFullscreenHotKeyButton.Highlight = false;
+            this.activeFullscreenHotKeyButton.HotKey = null;
+            this.activeFullscreenHotKeyButton.Location = new System.Drawing.Point(121, 163);
+            this.activeFullscreenHotKeyButton.Name = "activeFullscreenHotKeyButton";
+            this.activeFullscreenHotKeyButton.Scaled = true;
+            this.activeFullscreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
+            this.activeFullscreenHotKeyButton.TabIndex = 34;
+            this.activeFullscreenHotKeyButton.Text = "None";
+            // 
+            // activeFullscreenLabel
+            // 
+            this.activeFullscreenLabel.BasePaint = false;
+            this.activeFullscreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.activeFullscreenLabel.Location = new System.Drawing.Point(11, 166);
+            this.activeFullscreenLabel.Name = "activeFullscreenLabel";
+            this.activeFullscreenLabel.Scaled = true;
+            this.activeFullscreenLabel.Size = new System.Drawing.Size(121, 22);
+            this.activeFullscreenLabel.TabIndex = 33;
+            this.activeFullscreenLabel.Text = "Active Fullscreen:";
             // 
             // colorPickerHotKeyButton
             // 
@@ -778,29 +803,12 @@ namespace Shotr.Ui.Forms
             this.logoPictureBox.TabIndex = 6;
             this.logoPictureBox.TabStop = false;
             // 
-            // activeFullscreenHotKeyButton
+            // checkForUpdatesMenuItem
             // 
-            this.activeFullscreenHotKeyButton.BasePaint = false;
-            this.activeFullscreenHotKeyButton.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.activeFullscreenHotKeyButton.Highlight = false;
-            this.activeFullscreenHotKeyButton.HotKey = null;
-            this.activeFullscreenHotKeyButton.Location = new System.Drawing.Point(121, 163);
-            this.activeFullscreenHotKeyButton.Name = "activeFullscreenHotKeyButton";
-            this.activeFullscreenHotKeyButton.Scaled = true;
-            this.activeFullscreenHotKeyButton.Size = new System.Drawing.Size(142, 21);
-            this.activeFullscreenHotKeyButton.TabIndex = 34;
-            this.activeFullscreenHotKeyButton.Text = "None";
-            // 
-            // activeFullscreenLabel
-            // 
-            this.activeFullscreenLabel.BasePaint = false;
-            this.activeFullscreenLabel.Font = new System.Drawing.Font("Inter", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.activeFullscreenLabel.Location = new System.Drawing.Point(11, 166);
-            this.activeFullscreenLabel.Name = "activeFullscreenLabel";
-            this.activeFullscreenLabel.Scaled = true;
-            this.activeFullscreenLabel.Size = new System.Drawing.Size(121, 22);
-            this.activeFullscreenLabel.TabIndex = 33;
-            this.activeFullscreenLabel.Text = "Active Fullscreen:";
+            this.checkForUpdatesMenuItem.Name = "checkForUpdatesMenuItem";
+            this.checkForUpdatesMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.checkForUpdatesMenuItem.Text = "Check For Updates";
+            this.checkForUpdatesMenuItem.Click += new System.EventHandler(this.checkForUpdatesMenuItem_Click);
             // 
             // MainForm
             // 
@@ -902,6 +910,7 @@ namespace Shotr.Ui.Forms
         private DpiScaledPictureBox logoPictureBox;
         private HotKeyButton activeFullscreenHotKeyButton;
         private ThemedLabel activeFullscreenLabel;
+        private ToolStripMenuItem checkForUpdatesMenuItem;
     }
 }
 
