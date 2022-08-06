@@ -1100,7 +1100,8 @@ namespace Shotr.Ui.Forms
 
         private void checkForUpdatesMenuItem_Click(object sender, EventArgs e)
         {
-            Updater.CheckForUpdates(true);
+            //Updater.CheckForUpdates(true);
+            Updater.CheckForUpdatesThreaded(true);
         }
     }
 }
