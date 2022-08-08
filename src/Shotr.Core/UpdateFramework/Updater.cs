@@ -12,36 +12,22 @@ namespace Shotr.Core.UpdateFramework
         public static int TimeToCheck = 60 * 60 * 1000 * 24;
         public static BaseSettings BaseSettings = null;
         public static event EventHandler<UpdaterInfoArgs> OnUpdateCheck = delegate { };
-        public static void CheckForUpdatesThreaded(bool showRunningLatest = false)
+        public static void CheckForUpdatesThreaded()
         {
             new Thread(delegate()
             {
-                if (!showRunningLatest) { 
-                    if (!FirstRun)
-                    {
-                        Thread.Sleep(TimeToCheck);
-                    }
-                    else
-                    {
-                        // Wait 15 seconds to get the update, as to not just spam the user.
-                        Thread.Sleep(15 * 1000);
-                    }
+                if (!FirstRun)
+                {
+                    Thread.Sleep(TimeToCheck);
+                }
+                else
+                {
+                    // Wait 15 seconds to get the update, as to not just spam the user.
+                    Thread.Sleep(15 * 1000);
                 }
 
-                //CheckForUpdates(false);
-                // Download Shotr update url.
-                var p = new WebClient { Proxy = null };
-                try
-                {
-                    var updateData = p.DownloadString("https://shotr.dev/api/updates/latest");
-                    var deserializedUpdateData = JsonConvert.DeserializeObject<UpdaterResponse>(updateData);
-                    OnUpdateCheck.Invoke(null, new UpdaterInfoArgs(deserializedUpdateData, BaseSettings, showRunningLatest));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Updater Exception: {ex}");
-                }
-
+                CheckForUpdates(false);
+                
                 FirstRun = false;
             }).Start();
         }
