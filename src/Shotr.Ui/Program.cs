@@ -169,10 +169,11 @@ namespace Shotr.Ui
             
             form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
 
-#if TESTING || DEBUG
-#else
             Updater.BaseSettings = settings;
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
+
+#if TESTING || DEBUG      
+#else
             Updater.CheckForUpdatesThreaded();
 #endif       
 
