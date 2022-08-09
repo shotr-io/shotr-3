@@ -91,22 +91,23 @@ namespace Shotr.Ui
 #endif
 
 #if WINDOWSNOTIFICATION
-            var stuff = new ToastContentBuilder()
+            /*var stuff = new ToastContentBuilder()
                 .AddText("Shotr")
                 .AddText("Image Saved to Clipboard!")
                 .AddAppLogoOverride(new Uri(@"C:\Users\zac\Desktop\New Color Logos\Shotr App Icon - full square new color.png"), ToastGenericAppLogoCrop.Circle)
-                .AddHeroImage(new Uri(@"C:\Users\Zac\Downloads\_images_2021_02_01_20_gVph8F.mp4.thumbnail.png"))
+                //.AddHeroImage(new Uri(@"C:\Users\Zac\Downloads\_images_2021_02_01_20_gVph8F.mp4.thumbnail.png"))
                 .GetToastContent();
 
             var things = stuff.GetContent();
 
-            XmlDocument x = new XmlDocument();
+            Windows.Data.Xml.Dom.XmlDocument x = new Windows.Data.Xml.Dom.XmlDocument();
             x.LoadXml(things);
 
-            ToastNotification toast = new ToastNotification(x);
+            Windows.UI.Notifications.ToastNotification toast = new Windows.UI.Notifications.ToastNotification(x);
 
-            ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
-            Thread.Sleep(10000);
+            Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
+            Thread.Sleep(10000);*/
+            Toast.Send("test!", 10000);
             return;
 #endif
 
@@ -168,11 +169,12 @@ namespace Shotr.Ui
             
             form.SetUpForm(!settings.StartMinimized, !settings.StartMinimized);
 
-#if TESTING
-#else
             Updater.BaseSettings = settings;
             Updater.OnUpdateCheck += Updater_OnUpdateCheck;
-            Updater.CheckForUpdates();
+
+#if TESTING || DEBUG      
+#else
+            Updater.CheckForUpdatesThreaded();
 #endif       
 
             // Do not require mandatory login
@@ -308,6 +310,13 @@ namespace Shotr.Ui
             else
             {
                 Console.WriteLine($"You are running Shotr - v{displayVersion}{alphaBetaTag}.");
+                if (!WineDetectionService.IsWine())
+                {
+                    if (e.ShowLatestNotification) 
+                    {
+                        Toast.SendNoUpdateNotifications($"You are already running the latest version of Shotr: v{displayVersion}!");
+                    }
+                }
 
                 return;
             }

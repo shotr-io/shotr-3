@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Shotr, Inc.")]
 [assembly: AssemblyProduct("Shotr")]
-[assembly: AssemblyCopyright("Copyright © 2014-2021 Shotr, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2014-2022 Shotr, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

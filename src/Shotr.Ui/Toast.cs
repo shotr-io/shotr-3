@@ -81,7 +81,7 @@ namespace Shotr.Ui
                             };
 
                             Updater.TimeToCheck = (int)timeToSnooze.TotalMilliseconds;
-                            Updater.CheckForUpdates();
+                            Updater.CheckForUpdatesThreaded();
                         }
 
                         break;
@@ -151,9 +151,35 @@ namespace Shotr.Ui
                     if (args.Reason == ToastDismissalReason.TimedOut ||
                         args.Reason == ToastDismissalReason.UserCanceled)
                     {
-                        Updater.CheckForUpdates();
+                        Updater.TimeToCheck = (int)TimeSpan.FromDays(1).TotalMilliseconds;
+                        Updater.CheckForUpdatesThreaded();
                     }
                 };
+
+                ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        public static void SendNoUpdateNotifications(string text)
+        {
+            try
+            {
+                var toastBuilder = new ToastContentBuilder()
+                    .AddAppLogoOverride(new Uri(Path.Combine(SettingsService.CachePath, "shotr.png")),
+                        ToastGenericAppLogoCrop.Default)
+                    .AddText("Shotr")
+                    .AddText(text);
+
+                var x = new XmlDocument();
+                var content = toastBuilder.GetToastContent().GetContent();
+                x.LoadXml(content);
+
+                var toast = new ToastNotification(x);
+                toast.ExpiresOnReboot = true;
 
                 ToastNotificationManager.CreateToastNotifier("Shotr").Show(toast);
             }
